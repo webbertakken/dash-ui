@@ -1,0 +1,15 @@
+{
+  "name": "@dash-ui/tokens",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./src/tokens.ts",
+  "types": "./src/tokens.ts",
+  "exports": {
+    ".": "./src/tokens.ts",
+    "./css": "./src/tokens.css",
+    "./dashboard.css": "./src/dashboard.css"
+  },
+  "files": [
+    "src"
+  ]
+}

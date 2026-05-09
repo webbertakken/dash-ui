@@ -1,0 +1,30 @@
+{
+  "name": "@dash-ui/svelte",
+  "version": "0.1.0",
+  "type": "module",
+  "svelte": "./src/lib/index.ts",
+  "main": "./src/lib/index.ts",
+  "types": "./src/lib/index.ts",
+  "exports": {
+    ".": {
+      "svelte": "./src/lib/index.ts",
+      "types": "./src/lib/index.ts",
+      "default": "./src/lib/index.ts"
+    },
+    "./styles.css": "./src/lib/styles.css"
+  },
+  "peerDependencies": {
+    "svelte": ">=4"
+  },
+  "dependencies": {
+    "@dash-ui/tokens": "workspace:*",
+    "@dash-ui/assets": "workspace:*"
+  },
+  "devDependencies": {
+    "svelte": "^4.2.19",
+    "typescript": "^5.5.0"
+  },
+  "files": [
+    "src"
+  ]
+}
