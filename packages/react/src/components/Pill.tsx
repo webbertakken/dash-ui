@@ -13,7 +13,7 @@ export interface PillProps {
 export function Pill({ variant = 'neutral', showDot = true, children, style, className = '' }: PillProps) {
   return (
     <span className={`pill pill-${variant} ${className}`.trim()} style={style}>
-      {showDot && <span className="dot" />}
+      {showDot && <span className="dot" aria-hidden="true" />}
       {children}
     </span>
   );

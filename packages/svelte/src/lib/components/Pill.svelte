@@ -7,6 +7,6 @@
 </script>
 
 <span class="pill pill-{variant} {className}" {style}>
-  {#if showDot}<span class="dot"></span>{/if}
+  {#if showDot}<span class="dot" aria-hidden="true"></span>{/if}
   <slot />
 </span>

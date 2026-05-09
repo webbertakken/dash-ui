@@ -27,15 +27,16 @@
 />
 <div style="padding:0 24px 24px;">
   <table style="background:#141415;border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;">
+    <caption class="sr-only">Devices</caption>
     <thead>
       <tr>
-        <th>Name / Model</th>
-        <th>MAC / IP</th>
-        <th>Site</th>
-        <th style="text-align:right;">Uptime</th>
-        <th style="text-align:right;">Clients</th>
-        <th style="text-align:right;">Signal</th>
-        <th>Status</th>
+        <th scope="col">Name / Model</th>
+        <th scope="col">MAC / IP</th>
+        <th scope="col">Site</th>
+        <th scope="col" style="text-align:right;">Uptime</th>
+        <th scope="col" style="text-align:right;">Clients</th>
+        <th scope="col" style="text-align:right;">Signal</th>
+        <th scope="col">Status</th>
       </tr>
     </thead>
     <tbody>

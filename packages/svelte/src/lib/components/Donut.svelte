@@ -5,10 +5,13 @@
   export let centerValue: string | number;
   export let centerLabel: string;
   export let trackColor: string = 'rgba(255,255,255,0.06)';
+  export let ariaLabel: string | undefined = undefined;
 
   $: total = segments.reduce((s, x) => s + x.value, 0) || 1;
   $: r = (size - 20) / 2;
   $: c = 2 * Math.PI * r;
+  $: segDesc = segments.map((s) => `${s.label} ${Math.round((s.value / total) * 100)}%`).join(', ');
+  $: label = ariaLabel ?? `${centerValue} ${centerLabel}${segDesc ? `: ${segDesc}` : ''}`;
   $: arcs = (() => {
     let cum = 0;
     return segments.map((seg) => {
@@ -21,8 +24,8 @@
   })();
 </script>
 
-<div style="position:relative;width:{size}px;height:{size}px;flex-shrink:0;">
-  <svg width={size} height={size} style="transform:rotate(-90deg);">
+<div role="img" aria-label={label} style="position:relative;width:{size}px;height:{size}px;flex-shrink:0;">
+  <svg width={size} height={size} aria-hidden="true" focusable="false" style="transform:rotate(-90deg);">
     <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={trackColor} stroke-width="10" />
     {#each arcs as a (a.label)}
       <circle
@@ -39,7 +42,7 @@
       />
     {/each}
   </svg>
-  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <div aria-hidden="true" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="font-size:20px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;">{centerValue}</div>
     <div style="font-size:10px;color:#6E7079;">{centerLabel}</div>
   </div>

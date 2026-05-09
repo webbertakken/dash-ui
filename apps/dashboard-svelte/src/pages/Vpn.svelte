@@ -82,10 +82,11 @@
       <h3 style="margin:0;color:#fff;">VPN Servers</h3>
     </div>
     <table>
+      <caption class="sr-only">VPN servers</caption>
       <thead>
         <tr>
-          <th>Name</th><th>Type</th><th>Endpoint</th><th>Network</th>
-          <th style="text-align:right;">Clients</th><th>Status</th>
+          <th scope="col">Name</th><th scope="col">Type</th><th scope="col">Endpoint</th><th scope="col">Network</th>
+          <th scope="col" style="text-align:right;">Clients</th><th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>

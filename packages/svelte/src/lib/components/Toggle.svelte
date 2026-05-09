@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   export let on: boolean = false;
   export let ariaLabel: string | undefined = undefined;
+  export let ariaDescribedBy: string | undefined = undefined;
   const dispatch = createEventDispatcher<{ toggle: boolean }>();
   function flip() {
     on = !on;
@@ -9,14 +10,14 @@
   }
 </script>
 
-<span
+<button
+  type="button"
   role="switch"
   aria-checked={on}
   aria-label={ariaLabel}
-  tabindex="0"
+  aria-describedby={ariaDescribedBy}
   class="toggle-track {on ? 'on' : 'off'}"
   on:click={flip}
-  on:keydown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); } }}
 >
   <span class="knob"></span>
-</span>
+</button>

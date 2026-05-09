@@ -43,14 +43,15 @@ export function Logs() {
             fontSize: 12,
           }}
         >
+          <caption className="sr-only">Logs</caption>
           <thead style={{ fontFamily: 'Inter, sans-serif' }}>
             <tr>
-              <th style={{ width: 90 }}>Severity</th>
-              <th style={{ width: 90 }}>Source</th>
-              <th style={{ width: 90 }}>Time</th>
-              <th>Event</th>
-              <th>Subject</th>
-              <th>Detail</th>
+              <th scope="col" style={{ width: 90 }}>Severity</th>
+              <th scope="col" style={{ width: 90 }}>Source</th>
+              <th scope="col" style={{ width: 90 }}>Time</th>
+              <th scope="col">Event</th>
+              <th scope="col">Subject</th>
+              <th scope="col">Detail</th>
             </tr>
           </thead>
           <tbody>

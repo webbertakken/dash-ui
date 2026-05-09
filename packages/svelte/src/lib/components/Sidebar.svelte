@@ -20,21 +20,25 @@
   const dispatch = createEventDispatcher<{ change: string }>();
 </script>
 
-<aside class="sidebar">
+<nav class="sidebar" aria-label="Primary">
   {#each sections as sec (sec.title)}
-    <div class="sb-section">{sec.title}</div>
-    <div class="sb-list">
+    <h2 class="sb-section">{sec.title}</h2>
+    <ul class="sb-list">
       {#each sec.items as it (it.id)}
-        <a
-          class="sb-item {it.id === activeId ? 'active' : ''}"
-          on:click={() => { activeId = it.id; dispatch('change', it.id); }}
-        >
-          <span class="sb-ico"><svelte:component this={it.icon} /></span>
-          {it.label}
-          {#if it.count !== undefined}<span class="sb-count">{it.count}</span>{/if}
-          {#if it.pill !== undefined}<span class="sb-pill">{it.pill}</span>{/if}
-        </a>
+        <li>
+          <button
+            type="button"
+            class="sb-item {it.id === activeId ? 'active' : ''}"
+            aria-current={it.id === activeId ? 'page' : undefined}
+            on:click={() => { activeId = it.id; dispatch('change', it.id); }}
+          >
+            <span class="sb-ico"><svelte:component this={it.icon} /></span>
+            {it.label}
+            {#if it.count !== undefined}<span class="sb-count">{it.count}</span>{/if}
+            {#if it.pill !== undefined}<span class="sb-pill">{it.pill}<span class="sr-only"> alert{it.pill !== 1 ? 's' : ''}</span></span>{/if}
+          </button>
+        </li>
       {/each}
-    </div>
+    </ul>
   {/each}
-</aside>
+</nav>

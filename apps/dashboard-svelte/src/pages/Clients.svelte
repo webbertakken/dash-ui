@@ -23,14 +23,15 @@
 />
 <div style="padding:0 24px 24px;">
   <table style="background:#141415;border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;">
+    <caption class="sr-only">Client devices</caption>
     <thead>
       <tr>
-        <th>Name</th>
-        <th>IP / MAC</th>
-        <th>Network</th>
-        <th>Connected to</th>
-        <th style="text-align:right;">RX / TX</th>
-        <th style="text-align:right;">Signal</th>
+        <th scope="col">Name</th>
+        <th scope="col">IP / MAC</th>
+        <th scope="col">Network</th>
+        <th scope="col">Connected to</th>
+        <th scope="col" style="text-align:right;">RX / TX</th>
+        <th scope="col" style="text-align:right;">Signal</th>
       </tr>
     </thead>
     <tbody>
