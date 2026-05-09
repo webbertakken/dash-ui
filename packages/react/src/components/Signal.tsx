@@ -1,15 +1,10 @@
 export interface SignalProps {
   weak?: boolean;
-  label?: string;
 }
 
-export function Signal({ weak = false, label }: SignalProps) {
+export function Signal({ weak = false }: SignalProps) {
   return (
-    <span
-      className={`signal ${weak ? 'weak' : ''}`.trim()}
-      role="img"
-      aria-label={label ?? (weak ? 'Signal: weak' : 'Signal: strong')}
-    >
+    <span className={`signal ${weak ? 'weak' : ''}`.trim()}>
       <i />
       <i />
       <i />

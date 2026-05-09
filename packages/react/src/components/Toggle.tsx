@@ -1,25 +1,29 @@
-import { useId } from 'react';
+import type { ReactNode } from 'react';
 
 export interface ToggleProps {
   on: boolean;
   onToggle?: () => void;
   ariaLabel?: string;
-  ariaDescribedBy?: string;
 }
 
-export function Toggle({ on, onToggle, ariaLabel, ariaDescribedBy }: ToggleProps) {
+export function Toggle({ on, onToggle, ariaLabel }: ToggleProps) {
   return (
-    <button
-      type="button"
+    <span
       role="switch"
       aria-checked={on}
       aria-label={ariaLabel}
-      aria-describedby={ariaDescribedBy}
+      tabIndex={0}
       onClick={onToggle}
+      onKeyDown={(e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          onToggle?.();
+        }
+      }}
       className={`toggle-track ${on ? 'on' : 'off'}`}
     >
       <span className="knob" />
-    </button>
+    </span>
   );
 }
 
@@ -31,14 +35,13 @@ export interface RowToggleProps {
 }
 
 export function RowToggle({ title, description, on, onToggle }: RowToggleProps) {
-  const descId = useId();
   return (
     <div className="row-toggle">
       <div className="info">
         <div className="t">{title}</div>
-        <div className="d" id={descId}>{description}</div>
+        <div className="d">{description}</div>
       </div>
-      <Toggle on={on} onToggle={onToggle} ariaLabel={title} ariaDescribedBy={descId} />
+      <Toggle on={on} onToggle={onToggle} ariaLabel={title} />
     </div>
   );
 }

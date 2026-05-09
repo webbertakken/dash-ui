@@ -2,7 +2,6 @@
   export let bars: number = 36;
   export let active: boolean = false;
   export let seed: number = 1;
-  export let ariaLabel: string = 'Activity sparkline';
 
   function rng(s0: number) {
     let s = s0;
@@ -25,8 +24,8 @@
   })();
 </script>
 
-<div class="spark" role="img" aria-label={ariaLabel}>
+<div class="spark">
   {#each heights as h, i}
-    <div class="b" aria-hidden="true" style="height:{h}px;opacity:{active ? 0.4 + i / (bars * 1.4) : 0.5 + i / (bars * 1.6)}"></div>
+    <div class="b" style="height:{h}px;opacity:{active ? 0.4 + i / (bars * 1.4) : 0.5 + i / (bars * 1.6)}"></div>
   {/each}
 </div>

@@ -70,12 +70,11 @@
       <Button>View all</Button>
     </div>
     <table>
-      <caption class="sr-only">Recent blocked threats</caption>
       <thead>
         <tr>
-          <th scope="col">Severity</th><th scope="col">Signature</th><th scope="col">Source</th>
-          <th scope="col">Destination</th><th scope="col">Action</th>
-          <th scope="col" style="text-align:right;">When</th>
+          <th>Severity</th><th>Signature</th><th>Source</th>
+          <th>Destination</th><th>Action</th>
+          <th style="text-align:right;">When</th>
         </tr>
       </thead>
       <tbody>

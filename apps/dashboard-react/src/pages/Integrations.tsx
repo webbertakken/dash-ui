@@ -108,13 +108,12 @@ export function Integrations() {
             <Button style={{ marginLeft: 'auto', fontSize: 11 }}>+ New endpoint</Button>
           </h3>
           <table>
-            <caption className="sr-only">Webhooks</caption>
             <thead>
               <tr>
-                <th scope="col">Endpoint</th>
-                <th scope="col">Events</th>
-                <th scope="col">Last delivery</th>
-                <th scope="col">Status</th>
+                <th>Endpoint</th>
+                <th>Events</th>
+                <th>Last delivery</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>

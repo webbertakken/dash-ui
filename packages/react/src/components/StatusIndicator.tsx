@@ -16,7 +16,7 @@ export function StatusIndicator({ color, text, textColor }: StatusIndicatorProps
   };
   return (
     <span style={style}>
-      <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: '50%', background: color }} />
+      <span style={{ width: 6, height: 6, borderRadius: '50%', background: color }} />
       {text}
     </span>
   );

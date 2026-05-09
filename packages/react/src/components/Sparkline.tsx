@@ -4,7 +4,6 @@ export interface SparklineProps {
   bars?: number;
   active?: boolean;
   seed?: number;
-  ariaLabel?: string;
 }
 
 function rng(seed: number) {
@@ -15,7 +14,7 @@ function rng(seed: number) {
   };
 }
 
-export function Sparkline({ bars = 36, active = false, seed = 1, ariaLabel = 'Activity sparkline' }: SparklineProps) {
+export function Sparkline({ bars = 36, active = false, seed = 1 }: SparklineProps) {
   const heights = useMemo(() => {
     const out: number[] = [];
     let prev = 12;
@@ -28,11 +27,10 @@ export function Sparkline({ bars = 36, active = false, seed = 1, ariaLabel = 'Ac
     return out;
   }, [bars, seed]);
   return (
-    <div className="spark" role="img" aria-label={ariaLabel}>
+    <div className="spark">
       {heights.map((h, i) => (
         <div
           key={i}
-          aria-hidden="true"
           className="b"
           style={{
             height: `${h}px`,

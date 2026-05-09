@@ -25,11 +25,10 @@
 />
 <div style="padding:0 24px 24px;">
   <table style="background:#141415;border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;">
-    <caption class="sr-only">Alarms</caption>
     <thead>
       <tr>
-        <th scope="col">Severity</th><th scope="col">Source</th><th scope="col">Message</th><th scope="col">Site</th>
-        <th scope="col" style="text-align:right;">When</th><th scope="col"></th>
+        <th>Severity</th><th>Source</th><th>Message</th><th>Site</th>
+        <th style="text-align:right;">When</th><th></th>
       </tr>
     </thead>
     <tbody>

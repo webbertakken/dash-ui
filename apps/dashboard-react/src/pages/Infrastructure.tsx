@@ -74,13 +74,12 @@ export function Infrastructure() {
         <Card span={6}>
           <h3>PoE consumption by switch</h3>
           <table>
-            <caption className="sr-only">PoE consumption by switch</caption>
             <thead>
               <tr>
-                <th scope="col">Switch</th>
-                <th scope="col">Model</th>
-                <th scope="col">Used / Budget</th>
-                <th scope="col">Ports</th>
+                <th>Switch</th>
+                <th>Model</th>
+                <th>Used / Budget</th>
+                <th>Ports</th>
               </tr>
             </thead>
             <tbody>
@@ -101,15 +100,14 @@ export function Infrastructure() {
             Adoption queue <Pill variant="info">2 pending</Pill>
           </h3>
           <table>
-            <caption className="sr-only">Adoption queue</caption>
             <thead>
               <tr>
-                <th scope="col">Device</th>
-                <th scope="col">Model</th>
-                <th scope="col">MAC</th>
-                <th scope="col">IP</th>
-                <th scope="col">Firmware</th>
-                <th scope="col" />
+                <th>Device</th>
+                <th>Model</th>
+                <th>MAC</th>
+                <th>IP</th>
+                <th>Firmware</th>
+                <th />
               </tr>
             </thead>
             <tbody>

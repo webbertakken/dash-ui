@@ -124,14 +124,12 @@ export function Topology() {
             </Pill>
           </div>
           <div className="dr-b">
-            <dl className="dr-list">
-              <DrRow k="Model" v="EG-X1" />
-              <DrRow k="Firmware" v="9.4.21" />
-              <DrRow k="Uptime" v="24d 14h 02m" />
-              <DrRow k="CPU" v="41%" />
-              <DrRow k="Memory" v="6.2 / 16 GB" />
-              <DrRow k="Temperature" v="52 °C" />
-            </dl>
+            <DrRow k="Model" v="EG-X1" />
+            <DrRow k="Firmware" v="9.4.21" />
+            <DrRow k="Uptime" v="24d 14h 02m" />
+            <DrRow k="CPU" v="41%" />
+            <DrRow k="Memory" v="6.2 / 16 GB" />
+            <DrRow k="Temperature" v="52 °C" />
 
             <div className="dr-section">Throughput</div>
             <div style={{ margin: '6px 0 4px', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#A4A7B5' }}>
@@ -171,8 +169,8 @@ export function Topology() {
 function DrRow({ k, v }: { k: string; v: string }) {
   return (
     <div className="dr-row">
-      <dt className="k">{k}</dt>
-      <dd className="v">{v}</dd>
+      <span className="k">{k}</span>
+      <span className="v">{v}</span>
     </div>
   );
 }
@@ -186,22 +184,11 @@ function TopologyNodeView({
   selected: boolean;
   onClick: () => void;
 }) {
-  const statusText = node.status === 'good' ? 'online' : node.status === 'warn' ? 'warning' : 'offline';
   return (
     <div
       className={`node ${selected ? 'selected' : ''}`}
       style={{ left: `${node.x * 100}%`, top: `${node.y * 100}%`, transform: 'translate(-50%, -50%)' }}
-      role="button"
-      tabIndex={0}
-      aria-label={`${node.name}, ${statusText}`}
-      aria-pressed={selected}
       onClick={onClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick();
-        }
-      }}
     >
       <div className={`node-card ${node.type === 'gateway' ? 'gateway' : ''}`}>
         {node.type !== 'isp' && (

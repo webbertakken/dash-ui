@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
-  SkipLink,
   Topbar,
   Sidebar,
   Modal,
@@ -70,10 +69,6 @@ const SECTIONS: SidebarSectionDef[] = [
   },
 ];
 
-const PAGE_LABELS: Record<string, string> = Object.fromEntries(
-  SECTIONS.flatMap((s) => s.items).map((i) => [i.id, i.label]),
-);
-
 export function App() {
   const [activeApp, setActiveApp] = useState('network');
   const [page, setPage] = useState('topology');
@@ -82,20 +77,12 @@ export function App() {
   const openAdopt = () => setAdoptOpen(true);
   const closeAdopt = () => setAdoptOpen(false);
 
-  const pageLabel = PAGE_LABELS[page] ?? page;
-
-  useEffect(() => {
-    document.title = `${pageLabel} · Dash Network`;
-  }, [pageLabel]);
-
   return (
     <div className="app">
-      <SkipLink />
       <Topbar siteName="Edge Gateway (Gateway)" activeApp={activeApp} onAppChange={setActiveApp} />
       <div className="workspace">
         <Sidebar sections={SECTIONS} activeId={page} onChange={setPage} />
-        <main className="content" id="main-content" tabIndex={-1} aria-labelledby="page-title">
-          <h1 id="page-title" className="sr-only">{pageLabel}</h1>
+        <main className="content">
           {page === 'dashboard' && <Dashboard onAdopt={openAdopt} />}
           {page === 'devices' && <Devices onAdopt={openAdopt} />}
           {page === 'clients' && <Clients />}

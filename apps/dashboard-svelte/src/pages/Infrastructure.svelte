@@ -65,9 +65,8 @@
   <Card span={6}>
     <h3>PoE consumption by switch</h3>
     <table>
-      <caption class="sr-only">PoE consumption by switch</caption>
       <thead>
-        <tr><th scope="col">Switch</th><th scope="col">Model</th><th scope="col">Used / Budget</th><th scope="col">Ports</th></tr>
+        <tr><th>Switch</th><th>Model</th><th>Used / Budget</th><th>Ports</th></tr>
       </thead>
       <tbody>
         {#each SWITCHES as r (r[0])}
@@ -85,9 +84,8 @@
   <Card span={12}>
     <h3>Adoption queue <Pill variant="info">2 pending</Pill></h3>
     <table>
-      <caption class="sr-only">Adoption queue</caption>
       <thead>
-        <tr><th scope="col">Device</th><th scope="col">Model</th><th scope="col">MAC</th><th scope="col">IP</th><th scope="col">Firmware</th><th scope="col"></th></tr>
+        <tr><th>Device</th><th>Model</th><th>MAC</th><th>IP</th><th>Firmware</th><th></th></tr>
       </thead>
       <tbody>
         {#each ADOPTION as r (r[0])}

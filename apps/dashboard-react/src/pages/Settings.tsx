@@ -18,16 +18,14 @@ export function Settings() {
       <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24, padding: '16px 24px 24px' }}>
         <aside style={{ display: 'flex', flexDirection: 'column', gap: 1, fontSize: 13 }}>
           {TAB_NAMES.map((s) => (
-            <button
+            <a
               key={s}
-              type="button"
               className={`sb-item ${tab === s ? 'active' : ''}`}
-              aria-current={tab === s ? 'page' : undefined}
               style={{ padding: '8px 10px' }}
               onClick={() => setTab(s)}
             >
               {s}
-            </button>
+            </a>
           ))}
         </aside>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -105,14 +103,13 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
           <Card>
             <h3 style={{ color: '#fff', fontSize: 14 }}>Networks</h3>
             <table style={{ marginTop: 4 }}>
-              <caption className="sr-only">Networks</caption>
               <thead>
                 <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">VLAN</th>
-                  <th scope="col">Subnet</th>
-                  <th scope="col">Clients</th>
-                  <th scope="col" />
+                  <th>Name</th>
+                  <th>VLAN</th>
+                  <th>Subnet</th>
+                  <th>Clients</th>
+                  <th />
                 </tr>
               </thead>
               <tbody>
@@ -178,14 +175,13 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             <Button style={{ marginLeft: 'auto', fontSize: 11 }}>+ Create VLAN</Button>
           </h3>
           <table style={{ marginTop: 4 }}>
-            <caption className="sr-only">VLANs</caption>
             <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">VLAN ID</th>
-                <th scope="col">Purpose</th>
-                <th scope="col">Isolation</th>
-                <th scope="col">DHCP</th>
+                <th>Name</th>
+                <th>VLAN ID</th>
+                <th>Purpose</th>
+                <th>Isolation</th>
+                <th>DHCP</th>
               </tr>
             </thead>
             <tbody>
@@ -215,13 +211,12 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
           <Card>
             <h3 style={{ color: '#fff', fontSize: 14 }}>Static routes</h3>
             <table style={{ marginTop: 4 }}>
-              <caption className="sr-only">Static routes</caption>
               <thead>
                 <tr>
-                  <th scope="col">Destination</th>
-                  <th scope="col">Next hop</th>
-                  <th scope="col">Distance</th>
-                  <th scope="col">Status</th>
+                  <th>Destination</th>
+                  <th>Next hop</th>
+                  <th>Distance</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -263,12 +258,11 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
           <Card>
             <h3 style={{ color: '#fff', fontSize: 14 }}>RADIUS profiles</h3>
             <table style={{ marginTop: 4 }}>
-              <caption className="sr-only">RADIUS profiles</caption>
               <thead>
                 <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Auth server</th>
-                  <th scope="col">Used by</th>
+                  <th>Name</th>
+                  <th>Auth server</th>
+                  <th>Used by</th>
                 </tr>
               </thead>
               <tbody>
@@ -288,12 +282,11 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
           <Card>
             <h3 style={{ color: '#fff', fontSize: 14 }}>Schedules</h3>
             <table style={{ marginTop: 4 }}>
-              <caption className="sr-only">Schedules</caption>
               <thead>
                 <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Days</th>
-                  <th scope="col">Hours</th>
+                  <th>Name</th>
+                  <th>Days</th>
+                  <th>Hours</th>
                 </tr>
               </thead>
               <tbody>

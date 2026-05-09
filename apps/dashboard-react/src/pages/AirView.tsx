@@ -120,14 +120,13 @@ export function AirView() {
         <Card span={12}>
           <h3>Access points (5 GHz)</h3>
           <table>
-            <caption className="sr-only">Access points (5 GHz)</caption>
             <thead>
               <tr>
-                <th scope="col">AP</th>
-                <th scope="col">Channel · Width</th>
-                <th scope="col">Utilization</th>
-                <th scope="col">Noise floor</th>
-                <th scope="col">Clients</th>
+                <th>AP</th>
+                <th>Channel · Width</th>
+                <th>Utilization</th>
+                <th>Noise floor</th>
+                <th>Clients</th>
               </tr>
             </thead>
             <tbody>

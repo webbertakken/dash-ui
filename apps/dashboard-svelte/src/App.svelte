@@ -1,6 +1,5 @@
 <script lang="ts">
   import {
-    SkipLink,
     Topbar,
     Sidebar,
     Modal,
@@ -74,25 +73,13 @@
       ],
     },
   ];
-
-  const PAGE_LABELS: Record<string, string> = Object.fromEntries(
-    SECTIONS.flatMap((s) => s.items).map((i) => [i.id, i.label]),
-  );
-
-  $: pageLabel = PAGE_LABELS[page] ?? page;
 </script>
 
-<svelte:head>
-  <title>{pageLabel} · Dash Network</title>
-</svelte:head>
-
 <div class="app">
-  <SkipLink />
   <Topbar siteName="Edge Gateway (Gateway)" bind:activeApp />
   <div class="workspace">
     <Sidebar sections={SECTIONS} bind:activeId={page} />
-    <main class="content" id="main-content" tabindex="-1" aria-labelledby="page-title">
-      <h1 id="page-title" class="sr-only">{pageLabel}</h1>
+    <main class="content">
       {#if page === 'dashboard'}<Dashboard on:adopt={() => (adoptOpen = true)} />
       {:else if page === 'devices'}<Devices on:adopt={() => (adoptOpen = true)} />
       {:else if page === 'clients'}<Clients />

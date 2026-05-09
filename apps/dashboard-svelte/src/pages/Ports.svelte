@@ -70,13 +70,12 @@
       <h3 style="margin:0;color:#fff;">Port Configuration</h3>
     </div>
     <table>
-      <caption class="sr-only">Port configuration</caption>
       <thead>
         <tr>
-          <th scope="col">Port</th><th scope="col">Name</th><th scope="col">Network / VLAN</th><th scope="col">Profile</th><th scope="col">PoE</th>
-          <th scope="col" style="text-align:right;">Speed</th>
-          <th scope="col" style="text-align:right;">RX / TX</th>
-          <th scope="col">Status</th>
+          <th>Port</th><th>Name</th><th>Network / VLAN</th><th>Profile</th><th>PoE</th>
+          <th style="text-align:right;">Speed</th>
+          <th style="text-align:right;">RX / TX</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>

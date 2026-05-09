@@ -12,13 +12,12 @@ export function Button({
   variant = 'ghost',
   iconOnly = false,
   className = '',
-  type = 'button',
   children,
   ...rest
 }: ButtonProps) {
   const cls = ['btn', `btn-${variant}`, iconOnly && 'btn-icon', className].filter(Boolean).join(' ');
   return (
-    <button type={type} className={cls} {...rest}>
+    <button className={cls} {...rest}>
       {children}
     </button>
   );
@@ -28,22 +27,9 @@ export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>
   children?: ReactNode;
 }
 
-export function IconButton({
-  className = '',
-  type = 'button',
-  children,
-  title,
-  'aria-label': ariaLabel,
-  ...rest
-}: IconButtonProps) {
+export function IconButton({ className = '', children, ...rest }: IconButtonProps) {
   return (
-    <button
-      type={type}
-      className={`icon-btn ${className}`.trim()}
-      title={title}
-      aria-label={ariaLabel ?? title}
-      {...rest}
-    >
+    <button className={`icon-btn ${className}`.trim()} {...rest}>
       {children}
     </button>
   );

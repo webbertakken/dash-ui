@@ -10,7 +10,6 @@ export interface DonutProps {
   centerValue: string | number;
   centerLabel: string;
   trackColor?: string;
-  ariaLabel?: string;
 }
 
 export function Donut({
@@ -19,19 +18,14 @@ export function Donut({
   centerValue,
   centerLabel,
   trackColor = 'rgba(255,255,255,0.06)',
-  ariaLabel,
 }: DonutProps) {
   const total = segments.reduce((s, x) => s + x.value, 0) || 1;
   const r = (size - 20) / 2;
   const c = 2 * Math.PI * r;
   let cumulative = 0;
-  const segDesc = segments
-    .map((s) => `${s.label} ${Math.round((s.value / total) * 100)}%`)
-    .join(', ');
-  const label = ariaLabel ?? `${centerValue} ${centerLabel}${segDesc ? `: ${segDesc}` : ''}`;
   return (
-    <div role="img" aria-label={label} style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} aria-hidden="true" focusable="false" style={{ transform: 'rotate(-90deg)' }}>
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={trackColor} strokeWidth={10} />
         {segments.map((seg) => {
           const frac = seg.value / total;
@@ -57,7 +51,6 @@ export function Donut({
         })}
       </svg>
       <div
-        aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,

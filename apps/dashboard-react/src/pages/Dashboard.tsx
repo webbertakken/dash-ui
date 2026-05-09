@@ -88,12 +88,12 @@ export function Dashboard({ onAdopt }: DashboardProps) {
             <table>
               <thead>
                 <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Model</th>
-                  <th scope="col">IP</th>
-                  <th scope="col" style={{ textAlign: 'right' }}>Uptime</th>
-                  <th scope="col" style={{ textAlign: 'right' }}>CPU / Mem</th>
-                  <th scope="col">Status</th>
+                  <th>Name</th>
+                  <th>Model</th>
+                  <th>IP</th>
+                  <th style={{ textAlign: 'right' }}>Uptime</th>
+                  <th style={{ textAlign: 'right' }}>CPU / Mem</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>

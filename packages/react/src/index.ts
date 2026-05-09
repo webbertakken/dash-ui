@@ -11,6 +11,4 @@ export * from './components/Signal.js';
 export * from './components/Donut.js';
 export * from './components/StatusIndicator.js';
 export * from './components/AppShell.js';
-export * from './components/Skeleton.js';
-export * from './components/SkipLink.js';
 export * from './icons.js';

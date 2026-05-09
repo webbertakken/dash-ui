@@ -53,16 +53,15 @@ export function Wifi() {
       </div>
       <div style={{ padding: '0 24px 24px' }}>
         <table style={{ background: '#141415', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden' }}>
-          <caption className="sr-only">Wi-Fi networks</caption>
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Security</th>
-              <th scope="col">Bands</th>
-              <th scope="col">Network</th>
-              <th scope="col" style={{ textAlign: 'right' }}>Clients</th>
-              <th scope="col">Status</th>
-              <th scope="col" />
+              <th>Name</th>
+              <th>Security</th>
+              <th>Bands</th>
+              <th>Network</th>
+              <th style={{ textAlign: 'right' }}>Clients</th>
+              <th>Status</th>
+              <th />
             </tr>
           </thead>
           <tbody>
