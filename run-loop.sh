@@ -8,10 +8,29 @@
 #   ./run-loop.sh may09-v2 50 480       # custom tag + iters + per-iter timeout (sec)
 #
 # Env overrides:
-#   CLAUDE_MODEL=claude-sonnet-4-6      # pin a cheaper model
+#   CLAUDE_MODEL=claude-opus-4-7        # override the default (sonnet 4.6)
 #   CLAUDE_BIN=claude                   # path to claude CLI
 
 set -euo pipefail
+
+# `claude -p` swallows SIGINT, so Ctrl-C alone won't break the loop.
+# Convert INT/TERM into SIGTERM for the whole subtree, then exit.
+# Hit Ctrl-C twice if the first round doesn't catch a stuck child.
+INTERRUPTED=0
+on_signal() {
+  if [[ ${INTERRUPTED} -eq 1 ]]; then
+    echo
+    echo "→ second signal — SIGKILL to subtree" >&2
+    pkill -KILL -P $$ 2>/dev/null || true
+    exit 137
+  fi
+  INTERRUPTED=1
+  echo
+  echo "→ stopping — SIGTERM to subtree (Ctrl-C again for SIGKILL)" >&2
+  pkill -TERM -P $$ 2>/dev/null || true
+  exit 130
+}
+trap on_signal INT TERM
 
 TAG="${1:-$(date +%b%d | tr '[:upper:]' '[:lower:]')}"
 ITERATIONS="${2:-200}"
@@ -67,10 +86,8 @@ chmod +x "${HOOK_PATH}"
 
 PROMPT='Read program.md and OBJECTIVES.md. Run exactly ONE iteration of the autoresearch loop as described in program.md: pick an experiment, edit in-scope files, commit, verify, append a row to results.tsv, then keep or git reset. Return as soon as that single iteration is done. Do not loop. Do not ask the human anything. NEVER run git push under any circumstance — commits stay local.'
 
-MODEL_FLAG=()
-if [[ -n "${CLAUDE_MODEL:-}" ]]; then
-  MODEL_FLAG=(--model "${CLAUDE_MODEL}")
-fi
+CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-4-6}"
+MODEL_FLAG=(--model "${CLAUDE_MODEL}")
 
 START_EPOCH=$(date +%s)
 echo "→ starting ${ITERATIONS} iterations on ${BRANCH} (timeout ${ITER_TIMEOUT}s each)"
