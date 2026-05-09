@@ -46,7 +46,26 @@ if [[ ! -f results.tsv ]]; then
   echo "→ initialised results.tsv"
 fi
 
-PROMPT='Read program.md and OBJECTIVES.md. Run exactly ONE iteration of the autoresearch loop as described in program.md: pick an experiment, edit in-scope files, commit, verify, append a row to results.tsv, then keep or git reset. Return as soon as that single iteration is done. Do not loop. Do not ask the human anything.'
+# Install a pre-push hook that blocks pushes from autoresearch/* branches.
+# Idempotent: re-written every run.
+HOOK_PATH=".git/hooks/pre-push"
+cat > "${HOOK_PATH}" <<'HOOK'
+#!/usr/bin/env bash
+# Installed by run-loop.sh — blocks pushes from autoresearch/* branches.
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "${local_ref}" in
+    refs/heads/autoresearch/*)
+      echo "pre-push: refusing to push ${local_ref} (autoresearch branch)" >&2
+      echo "pre-push: remove .git/hooks/pre-push to override" >&2
+      exit 1
+      ;;
+  esac
+done
+exit 0
+HOOK
+chmod +x "${HOOK_PATH}"
+
+PROMPT='Read program.md and OBJECTIVES.md. Run exactly ONE iteration of the autoresearch loop as described in program.md: pick an experiment, edit in-scope files, commit, verify, append a row to results.tsv, then keep or git reset. Return as soon as that single iteration is done. Do not loop. Do not ask the human anything. NEVER run git push under any circumstance — commits stay local.'
 
 MODEL_FLAG=()
 if [[ -n "${CLAUDE_MODEL:-}" ]]; then

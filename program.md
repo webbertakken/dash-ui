@@ -37,8 +37,11 @@ loop; agent runs **one** iteration per invocation. The shell driver
 
 ## Hard rules
 
+- **NEVER `git push`.** Not under any circumstance. Commits stay local; the
+  human pushes when they review. A pre-push hook is installed as a safety net,
+  but you must not even attempt it.
 - Time budget: ~5 min wall clock. The driver kills the process at 10 min.
-- Never push. Never edit the gitignored files. Never modify `program.md`,
+- Never edit the gitignored files. Never modify `program.md`,
   `OBJECTIVES.md`, `run-loop.sh`.
 - No new runtime dependencies without an explicit note in the commit message
   AND a measurable benefit recorded in `results.tsv`.
