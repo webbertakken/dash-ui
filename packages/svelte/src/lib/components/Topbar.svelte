@@ -26,34 +26,40 @@
   const dispatch = createEventDispatcher<{ appchange: string }>();
 </script>
 
-<div class="topbar">
+<header class="topbar">
   <div class="site-switch">
     <span class="status-ring"></span>
     <span class="site-name">{siteName}</span>
     <CaretIcon class="caret" />
   </div>
-  <div class="app-tabs">
+  <nav class="app-tabs" aria-label="Apps">
     {#each apps as a (a.id)}
-      <a
+      <button
+        type="button"
         class="app-tab {a.id === activeApp ? 'active' : ''}"
+        aria-current={a.id === activeApp ? 'page' : undefined}
         on:click={() => { activeApp = a.id; dispatch('appchange', a.id); }}
       >
         <img src={appLogos[a.logo]} alt="" width="24" height="24" />
         <span class="label">{a.label}</span>
-      </a>
+      </button>
     {/each}
-  </div>
+  </nav>
   <div class="topbar-spacer"></div>
   <div class="topbar-right">
-    <IconButton title="Search"><SearchIcon /></IconButton>
-    <IconButton title="Updates"><UpdatesIcon /></IconButton>
-    <IconButton title="Notifications" style="position:relative;">
+    <IconButton aria-label="Search" title="Search"><SearchIcon /></IconButton>
+    <IconButton aria-label="Updates" title="Updates"><UpdatesIcon /></IconButton>
+    <IconButton
+      aria-label={notificationCount > 0 ? `Notifications, ${notificationCount} new` : 'Notifications'}
+      title="Notifications"
+      style="position:relative;"
+    >
       <BellIcon />
       {#if notificationCount > 0}
-        <span style="position:absolute;top:6px;right:6px;width:6px;height:6px;background:#F03A3A;border-radius:50%;border:1.5px solid #0A0A0B;"></span>
+        <span aria-hidden="true" style="position:absolute;top:6px;right:6px;width:6px;height:6px;background:#F03A3A;border-radius:50%;border:1.5px solid #0A0A0B;"></span>
       {/if}
     </IconButton>
-    <IconButton title="Help"><HelpIcon /></IconButton>
-    <div class="avatar">{initials}</div>
+    <IconButton aria-label="Help" title="Help"><HelpIcon /></IconButton>
+    <div class="avatar" role="img" aria-label="Account, {initials}">{initials}</div>
   </div>
-</div>
+</header>

@@ -28,12 +28,13 @@
 />
 <div style="padding:0 24px 24px;">
   <table style="background:#141415;border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:12px;">
+    <caption class="sr-only">Logs</caption>
     <thead style="font-family:Inter,sans-serif;">
       <tr>
-        <th style="width:90px;">Severity</th>
-        <th style="width:90px;">Source</th>
-        <th style="width:90px;">Time</th>
-        <th>Event</th><th>Subject</th><th>Detail</th>
+        <th scope="col" style="width:90px;">Severity</th>
+        <th scope="col" style="width:90px;">Source</th>
+        <th scope="col" style="width:90px;">Time</th>
+        <th scope="col">Event</th><th scope="col">Subject</th><th scope="col">Detail</th>
       </tr>
     </thead>
     <tbody>

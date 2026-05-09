@@ -81,10 +81,10 @@
       <table>
         <thead>
           <tr>
-            <th>Name</th><th>Model</th><th>IP</th>
-            <th style="text-align:right;">Uptime</th>
-            <th style="text-align:right;">CPU / Mem</th>
-            <th>Status</th>
+            <th scope="col">Name</th><th scope="col">Model</th><th scope="col">IP</th>
+            <th scope="col" style="text-align:right;">Uptime</th>
+            <th scope="col" style="text-align:right;">CPU / Mem</th>
+            <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>

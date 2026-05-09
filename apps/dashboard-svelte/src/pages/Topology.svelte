@@ -111,9 +111,11 @@
         class="node {selected === n.id ? 'selected' : ''}"
         style="left:{n.x * 100}%;top:{n.y * 100}%;transform:translate(-50%,-50%);"
         on:click={() => (selected = n.id)}
-        on:keydown={(e) => { if (e.key === 'Enter') selected = n.id; }}
+        on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selected = n.id; } }}
         role="button"
         tabindex="0"
+        aria-label={`${n.name}, ${n.status === 'good' ? 'online' : n.status === 'warn' ? 'warning' : 'offline'}`}
+        aria-pressed={selected === n.id}
       >
         <div class="node-card {n.type === 'gateway' ? 'gateway' : ''}">
           {#if n.type !== 'isp'}
@@ -146,12 +148,14 @@
       </Pill>
     </div>
     <div class="dr-b">
-      <div class="dr-row"><span class="k">Model</span><span class="v">EG-X1</span></div>
-      <div class="dr-row"><span class="k">Firmware</span><span class="v">9.4.21</span></div>
-      <div class="dr-row"><span class="k">Uptime</span><span class="v">24d 14h 02m</span></div>
-      <div class="dr-row"><span class="k">CPU</span><span class="v">41%</span></div>
-      <div class="dr-row"><span class="k">Memory</span><span class="v">6.2 / 16 GB</span></div>
-      <div class="dr-row"><span class="k">Temperature</span><span class="v">52 °C</span></div>
+      <dl class="dr-list">
+        <div class="dr-row"><dt class="k">Model</dt><dd class="v">EG-X1</dd></div>
+        <div class="dr-row"><dt class="k">Firmware</dt><dd class="v">9.4.21</dd></div>
+        <div class="dr-row"><dt class="k">Uptime</dt><dd class="v">24d 14h 02m</dd></div>
+        <div class="dr-row"><dt class="k">CPU</dt><dd class="v">41%</dd></div>
+        <div class="dr-row"><dt class="k">Memory</dt><dd class="v">6.2 / 16 GB</dd></div>
+        <div class="dr-row"><dt class="k">Temperature</dt><dd class="v">52 °C</dd></div>
+      </dl>
 
       <div class="dr-section">Throughput</div>
       <div style="margin:6px 0 4px;display:flex;justify-content:space-between;font-size:11px;color:#A4A7B5;">

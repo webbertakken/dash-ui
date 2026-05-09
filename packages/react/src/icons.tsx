@@ -6,6 +6,8 @@ const base = (props: IconProps): SVGProps<SVGSVGElement> => ({
   width: props.size ?? 16,
   height: props.size ?? 16,
   fill: 'none',
+  'aria-hidden': true,
+  focusable: false,
   ...props,
 });
 

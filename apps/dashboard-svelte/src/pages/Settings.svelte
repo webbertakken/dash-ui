@@ -23,7 +23,7 @@
 <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;padding:16px 24px 24px;">
   <aside style="display:flex;flex-direction:column;gap:1px;font-size:13px;">
     {#each TAB_NAMES as s}
-      <a class="sb-item {tab === s ? 'active' : ''}" style="padding:8px 10px;" on:click={() => (tab = s)}>{s}</a>
+      <button type="button" class="sb-item {tab === s ? 'active' : ''}" aria-current={tab === s ? 'page' : undefined} style="padding:8px 10px;" on:click={() => (tab = s)}>{s}</button>
     {/each}
   </aside>
   <div style="display:flex;flex-direction:column;gap:12px;">
@@ -76,9 +76,10 @@
       <Card>
         <h3 style="color:#fff;font-size:14px;">Networks</h3>
         <table style="margin-top:4px;">
+          <caption class="sr-only">Networks</caption>
           <thead>
             <tr>
-              <th>Name</th><th>VLAN</th><th>Subnet</th><th>Clients</th><th></th>
+              <th scope="col">Name</th><th scope="col">VLAN</th><th scope="col">Subnet</th><th scope="col">Clients</th><th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -133,9 +134,10 @@
           <Button style="margin-left:auto;font-size:11px;">+ Create VLAN</Button>
         </h3>
         <table style="margin-top:4px;">
+          <caption class="sr-only">VLANs</caption>
           <thead>
             <tr>
-              <th>Name</th><th>VLAN ID</th><th>Purpose</th><th>Isolation</th><th>DHCP</th>
+              <th scope="col">Name</th><th scope="col">VLAN ID</th><th scope="col">Purpose</th><th scope="col">Isolation</th><th scope="col">DHCP</th>
             </tr>
           </thead>
           <tbody>
@@ -162,8 +164,9 @@
       <Card>
         <h3 style="color:#fff;font-size:14px;">Static routes</h3>
         <table style="margin-top:4px;">
+          <caption class="sr-only">Static routes</caption>
           <thead>
-            <tr><th>Destination</th><th>Next hop</th><th>Distance</th><th>Status</th></tr>
+            <tr><th scope="col">Destination</th><th scope="col">Next hop</th><th scope="col">Distance</th><th scope="col">Status</th></tr>
           </thead>
           <tbody>
             {#each [
@@ -197,7 +200,8 @@
       <Card>
         <h3 style="color:#fff;font-size:14px;">RADIUS profiles</h3>
         <table style="margin-top:4px;">
-          <thead><tr><th>Name</th><th>Auth server</th><th>Used by</th></tr></thead>
+          <caption class="sr-only">RADIUS profiles</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Auth server</th><th scope="col">Used by</th></tr></thead>
           <tbody>
             {#each [['Corp 802.1X', '10.0.50.21:1812', 'Default, Mgmt'], ['Guest portal', 'radius.local:1812', 'Guest']] as r}
               <tr>
@@ -212,7 +216,8 @@
       <Card>
         <h3 style="color:#fff;font-size:14px;">Schedules</h3>
         <table style="margin-top:4px;">
-          <thead><tr><th>Name</th><th>Days</th><th>Hours</th></tr></thead>
+          <caption class="sr-only">Schedules</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Days</th><th scope="col">Hours</th></tr></thead>
           <tbody>
             {#each [['Business hours', 'Mon–Fri', '08:00 – 18:00'], ['Quiet', 'Daily', '22:00 – 06:00'], ['Weekend', 'Sat–Sun', 'All day']] as r}
               <tr>

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { appLogos, brand } from '@dash-ui/assets';
 import { IconButton } from './Button.js';
 import { CaretIcon, SearchIcon, UpdatesIcon, BellIcon, HelpIcon } from '../icons.js';
@@ -38,36 +38,47 @@ export function Topbar({
   notificationCount = 1,
 }: TopbarProps) {
   return (
-    <div className="topbar">
+    <header className="topbar">
       <div className="site-switch">
         <span className="status-ring" />
         <span className="site-name">{siteName}</span>
         <CaretIcon className="caret" />
       </div>
-      <div className="app-tabs">
+      <nav className="app-tabs" aria-label="Apps">
         {apps.map((a) => (
-          <a
+          <button
             key={a.id}
+            type="button"
             className={`app-tab ${a.id === activeApp ? 'active' : ''}`}
+            aria-current={a.id === activeApp ? 'page' : undefined}
             onClick={() => onAppChange?.(a.id)}
           >
             <img src={appLogos[a.logo]} alt="" width={24} height={24} />
             <span className="label">{a.label}</span>
-          </a>
+          </button>
         ))}
-      </div>
+      </nav>
       <div className="topbar-spacer" />
       <div className="topbar-right">
-        <IconButton title="Search">
+        <IconButton aria-label="Search" title="Search">
           <SearchIcon />
         </IconButton>
-        <IconButton title="Updates">
+        <IconButton aria-label="Updates" title="Updates">
           <UpdatesIcon />
         </IconButton>
-        <IconButton title="Notifications" style={{ position: 'relative' }}>
+        <IconButton
+          aria-label={
+            notificationCount > 0
+              ? `Notifications, ${notificationCount} new`
+              : 'Notifications'
+          }
+          title="Notifications"
+          style={{ position: 'relative' }}
+        >
           <BellIcon />
           {notificationCount > 0 && (
             <span
+              aria-hidden="true"
               style={{
                 position: 'absolute',
                 top: 6,
@@ -81,12 +92,12 @@ export function Topbar({
             />
           )}
         </IconButton>
-        <IconButton title="Help">
+        <IconButton aria-label="Help" title="Help">
           <HelpIcon />
         </IconButton>
-        <div className="avatar">{initials}</div>
+        <div className="avatar" role="img" aria-label={`Account, ${initials}`}>{initials}</div>
       </div>
-    </div>
+    </header>
   );
 }
 
@@ -111,26 +122,34 @@ export interface SidebarProps {
 
 export function Sidebar({ sections, activeId, onChange }: SidebarProps) {
   return (
-    <aside className="sidebar">
+    <nav className="sidebar" aria-label="Primary">
       {sections.map((sec) => (
-        <div key={sec.title}>
-          <div className="sb-section">{sec.title}</div>
-          <div className="sb-list">
+        <Fragment key={sec.title}>
+          <h2 className="sb-section">{sec.title}</h2>
+          <ul className="sb-list">
             {sec.items.map((it) => (
-              <a
-                key={it.id}
-                className={`sb-item ${it.id === activeId ? 'active' : ''}`}
-                onClick={() => onChange?.(it.id)}
-              >
-                <span className="sb-ico">{it.icon}</span>
-                {it.label}
-                {it.count !== undefined && <span className="sb-count">{it.count}</span>}
-                {it.pill !== undefined && <span className="sb-pill">{it.pill}</span>}
-              </a>
+              <li key={it.id}>
+                <button
+                  type="button"
+                  className={`sb-item ${it.id === activeId ? 'active' : ''}`}
+                  aria-current={it.id === activeId ? 'page' : undefined}
+                  onClick={() => onChange?.(it.id)}
+                >
+                  <span className="sb-ico">{it.icon}</span>
+                  {it.label}
+                  {it.count !== undefined && <span className="sb-count">{it.count}</span>}
+                  {it.pill !== undefined && (
+                    <span className="sb-pill">
+                      {it.pill}
+                      <span className="sr-only"> alert{it.pill !== 1 ? 's' : ''}</span>
+                    </span>
+                  )}
+                </button>
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </Fragment>
       ))}
-    </aside>
+    </nav>
   );
 }
