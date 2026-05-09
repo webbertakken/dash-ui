@@ -99,12 +99,18 @@ for i in $(seq 1 "${ITERATIONS}"); do
   STAMP=$(date -Iseconds)
   echo "=== iter ${IDX}/${ITERATIONS} @ ${STAMP} ==="
 
+  # Run the iteration in the background and `wait` for it. `wait` is
+  # interruptible by traps; a synchronous foreground call would queue the
+  # SIGINT trap until the child exits, but `claude -p` swallows SIGINT so
+  # that never happens. Background + wait makes Ctrl-C actually fire the trap.
   set +e
   timeout "${ITER_TIMEOUT}" "${CLAUDE_BIN}" \
     -p "${PROMPT}" \
     --dangerously-skip-permissions \
     "${MODEL_FLAG[@]}" \
-    > "${LOG}" 2>&1
+    > "${LOG}" 2>&1 &
+  CHILD_PID=$!
+  wait "${CHILD_PID}"
   RC=$?
   set -e
 
