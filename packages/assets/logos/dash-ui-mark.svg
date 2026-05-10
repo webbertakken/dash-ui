@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="d-bg" cx="0.5" cy="0" r="1">
+      <stop stop-color="#006FFF"/><stop offset="1" stop-color="#003386"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#d-bg)"/>
+  <!-- Stylised "D" formed from a vertical bar plus a half-circle dashboard tile.
+       The negative space evokes a sidebar + content layout, in keeping with a
+       dashboard design system. -->
+  <rect x="14" y="14" width="6" height="36" rx="2" fill="#fff"/>
+  <path d="M22 14 H32 a18 18 0 0 1 0 36 H22 Z" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+</svg>

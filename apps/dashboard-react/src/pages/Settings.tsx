@@ -176,8 +176,8 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             <div style={{ marginTop: 12 }}>
               <FileUpload
                 label="Restore from backup file"
-                hint=".unf · .dash-ui backup files"
-                accept=".unf,.dash-ui,application/zip"
+                hint=".dashx backup files"
+                accept=".dashx,application/zip"
               />
             </div>
           </Card>

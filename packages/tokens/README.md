@@ -1,6 +1,6 @@
 # @dash-ui/tokens
 
-Design tokens for the Dash design system. CSS variables + typed JS constants.
+Design tokens for the Dash UI design system. CSS variables + typed JS constants.
 
 ```ts
 import '@dash-ui/tokens/css';      // imports the CSS variable definitions

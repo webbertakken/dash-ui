@@ -1,26 +1,18 @@
-import accessUrl from '../logos/access.svg';
-import connectUrl from '../logos/connect.svg';
-import driveUrl from '../logos/drive.svg';
-import networkUrl from '../logos/network.svg';
-import protectUrl from '../logos/protect.svg';
-import sitemanagerUrl from '../logos/sitemanager.svg';
-import talkUrl from '../logos/talk.svg';
-import dash-uiMarkUrl from '../logos/dash-ui-mark.svg';
-import dash-uiWordmarkUrl from '../logos/dash-ui-wordmark.svg';
+import agentsUrl from '../logos/agents.svg';
+import instancesUrl from '../logos/instances.svg';
+import systemUrl from '../logos/system.svg';
+import dashUiMarkUrl from '../logos/dash-ui-mark.svg';
+import dashUiWordmarkUrl from '../logos/dash-ui-wordmark.svg';
 
 export const appLogos = {
-  access: accessUrl,
-  connect: connectUrl,
-  drive: driveUrl,
-  network: networkUrl,
-  protect: protectUrl,
-  sitemanager: sitemanagerUrl,
-  talk: talkUrl,
+  agents: agentsUrl,
+  instances: instancesUrl,
+  system: systemUrl,
 } as const;
+
+export type AppLogoKey = keyof typeof appLogos;
 
 export const brand = {
-  mark: dash-uiMarkUrl,
-  wordmark: dash-uiWordmarkUrl,
+  mark: dashUiMarkUrl,
+  wordmark: dashUiWordmarkUrl,
 } as const;
-
-export type AppLogo = keyof typeof appLogos;

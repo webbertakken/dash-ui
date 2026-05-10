@@ -20,7 +20,7 @@
   const HOOKS: [string, string, string, string, string][] = [
     ['https://hooks.slack.com/services/T0…', 'alarm.danger, alarm.warn', '2 min ago', '200 OK', 'success'],
     ['https://api.pagerduty.com/incidents', 'alarm.danger', '42 min ago', '200 OK', 'success'],
-    ['https://int.acme.local/dash-ui', 'client.connect, client.disconnect', '5 min ago', '200 OK', 'success'],
+    ['https://int.acme.local/integration', 'client.connect, client.disconnect', '5 min ago', '200 OK', 'success'],
     ['https://logs.acme.local/ingest', 'log.security', '12 min ago', '503 Retry', 'warn'],
   ];
   const KEYS: [string, string, string, string][] = [

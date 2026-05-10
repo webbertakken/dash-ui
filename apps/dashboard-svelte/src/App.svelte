@@ -44,7 +44,7 @@
 
   import { onMount, onDestroy } from 'svelte';
 
-  let activeApp = 'network';
+  let activeApp = 'system';
   let page = 'topology';
   let adoptOpen = false;
   let cmdOpen = false;
@@ -113,12 +113,12 @@
 </script>
 
 <svelte:head>
-  <title>{pageLabel} · Dash Network</title>
+  <title>{pageLabel} · Dash UI</title>
 </svelte:head>
 
 <div class="app">
   <SkipLink />
-  <Topbar siteName="Edge Gateway (Gateway)" bind:activeApp />
+  <Topbar siteName="Demo cluster" bind:activeApp />
   <div class="workspace">
     <Sidebar sections={SECTIONS} bind:activeId={page} />
     <main class="content" id="main-content" tabindex="-1" aria-labelledby="page-title">
@@ -160,7 +160,7 @@
       <Pill variant="info">Pending</Pill>
     </div>
     <Field label="Device name" value="AP Pro · Warehouse" />
-    <Field label="Site" value="Edge Gateway (Gateway)" />
+    <Field label="Site" value="Demo cluster" />
     <svelte:fragment slot="footer">
       <Button on:click={() => (adoptOpen = false)}>Cancel</Button>
       <Button variant="primary" on:click={() => (adoptOpen = false)}>Adopt</Button>

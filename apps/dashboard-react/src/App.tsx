@@ -92,7 +92,7 @@ const CMD_ITEMS: CommandItem[] = SECTIONS.flatMap((s) =>
 );
 
 export function App() {
-  const [activeApp, setActiveApp] = useState('network');
+  const [activeApp, setActiveApp] = useState('system');
   const [page, setPage] = useState('topology');
   const [adoptOpen, setAdoptOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
@@ -103,7 +103,7 @@ export function App() {
   const pageLabel = PAGE_LABELS[page] ?? page;
 
   useEffect(() => {
-    document.title = `${pageLabel} · Dash Network`;
+    document.title = `${pageLabel} · Dash UI`;
   }, [pageLabel]);
 
   useEffect(() => {
@@ -120,7 +120,7 @@ export function App() {
   return (
     <div className="app">
       <SkipLink />
-      <Topbar siteName="Edge Gateway (Gateway)" activeApp={activeApp} onAppChange={setActiveApp} />
+      <Topbar siteName="Demo cluster" activeApp={activeApp} onAppChange={setActiveApp} />
       <div className="workspace">
         <Sidebar sections={SECTIONS} activeId={page} onChange={setPage} />
         <main className="content" id="main-content" tabIndex={-1} aria-labelledby="page-title">
@@ -188,7 +188,7 @@ export function App() {
           <Pill variant="info">Pending</Pill>
         </div>
         <Field label="Device name" defaultValue="AP Pro · Warehouse" />
-        <Field label="Site" defaultValue="Edge Gateway (Gateway)" />
+        <Field label="Site" defaultValue="Demo cluster" />
       </Modal>
     </div>
   );

@@ -3,74 +3,111 @@ This repo contains Design Systems and their implementations. Design Systems can 
 Design Systems present:
 | name | prefix | description |
 | --- | --- | --- |
-| Dashboard | @dash-ui | Dash inspired components for dashboards - Subtle, clean and factual style - [example](link-to-svelte-storybook) |
+| Dashboard | @dash-ui | Subtle, clean and factual dashboard components - dark-first, blue accent, generous data density - [example](link-to-svelte-storybook) |
 
-# Dash design system
+# Dash UI
 
-Complete recreation of the **Dash design system** delivered by Claude Design (claude.ai/design), implemented as a pnpm monorepo with both **React** and **Svelte** component libraries plus two fully functional **dashboard apps**.
+A multi-framework dashboard design system: tokens, components and a full reference dashboard, shipped for **React**, **Svelte**, and as **framework-agnostic Web Components**.
 
-## What's in here
+## Origin and independence
+
+The visual direction was originally explored as a study of Dash's dashboard aesthetic. **Dash UI is not affiliated with, endorsed by, or derived from Demo Inc.** All identifiers, brand marks, product names and demo content are independent of any Demo product. What remains is the generic visual style - dark canvases, a single saturated brand blue, restrained type, dense information layouts - none of which is unique to or owned by any one company.
+
+If you spot anything you believe is misattributed, open an issue.
+
+## Packages
 
 ```
 packages/
-├── tokens/          @dash-ui/tokens   - CSS variables (light + dark) + JS token map
-├── assets/          @dash-ui/assets   - 9 brand SVG logos (Network/Protect/Access/...)
-├── react/           @dash-ui/react    - React component library
-└── svelte/          @dash-ui/svelte   - Svelte component library
+├── tokens/         @dash-ui/tokens          CSS variables (dark + light motifs) + JS token map
+├── assets/         @dash-ui/assets          Mark, wordmark, app rail icons
+├── react/          @dash-ui/react           ~170 React 18 components
+├── svelte/         @dash-ui/svelte          ~170 Svelte 4 components, mirrored API
+├── wc/             @dash-ui/wc              ~165 framework-agnostic custom elements
+└── storybook-meta/ @dash-ui/storybook-meta  Sidebar category map shared by all storybooks
 
 apps/
-├── dashboard-react/   Vite + React app   — full Edge Gateway X1 dashboard
-└── dashboard-svelte/  Vite + Svelte app  — feature parity with the React app
-
-design-bundle/      Original Claude Design handoff bundle (read-only reference)
+├── dashboard-react/   Vite + React reference dashboard
+├── dashboard-svelte/  Vite + Svelte reference dashboard (feature parity)
+├── storybook-react/   Storybook 8 (React renderer)
+├── storybook-svelte/  Storybook 8 (Svelte renderer)
+├── storybook-wc/      Storybook 8 (Web Components renderer)
+└── storybook-site/    Static site assembling all three Storybooks under one host
 ```
 
-## What the apps cover
+## What the reference dashboard covers
 
-Both apps implement **all 14 pages** from the original prototype, with the same data, layout and visual fidelity:
+Both `dashboard-react` and `dashboard-svelte` implement 14 pages with the same data, layout, and visual fidelity:
 
 | Manage | Configure | Insights |
 |---|---|---|
 | Dashboard | Wi-Fi | AirView |
 | Devices | Ports | Infrastructure |
-| Client Devices | VPN | Integrations |
+| Client devices | VPN | Integrations |
 | Topology | Security | |
-| Alarm Manager | Settings (8 tabs) | |
+| Alarm manager | Settings (8 tabs) | |
 | Logs | | |
 
-Plus the shared chrome (top app rail, site switcher, notification bell, sidebar, Adopt Device modal) and the interactive parts: tab switching, sidebar navigation, app switching, modal open/close, toggle switches with state, and the live Topology view that draws curved SVG links between draggable device nodes.
+Plus the shared chrome: top app rail (System / Instances / Agents), site switcher, notification bell, sidebar, command palette, Adopt Device modal, the live Topology view with draggable nodes, and toggle / tab / modal interactions throughout.
 
-## Component libraries
+## Component categories (12)
 
-`@dash-ui/react` and `@dash-ui/svelte` ship 1-to-1 component sets:
+Stories in every Storybook are grouped under the same 12 sidebar categories:
 
-- **Layout**: `Topbar`, `Sidebar`, `Card`
-- **Inputs**: `Button`, `IconButton`, `Input`, `Field`, `SearchBox`, `Toggle`, `RowToggle`
-- **Display**: `Pill`, `Tabs`, `Modal`, `Sparkline`, `HealthBar`, `Donut`, `Signal`, `StatusIndicator`
-- **Icons**: 22 outline icons (`Search`, `Plus`, `Download`, `Caret`, `Close`, `Bell`, `Help`, `Updates`, `Dashboard`, `Devices`, `Clients`, `Topology`, `Alarm`, `Logs`, `Wifi`, `Ports`, `Vpn`, `Security`, `Settings`, `Airview`, `Infra`, `Integrations`)
+1. Foundations
+2. Layout
+3. Inputs
+4. Selection & menus
+5. Navigation
+6. Feedback
+7. Data display
+8. Charts: comparison
+9. Charts: time-series
+10. Charts: distribution
+11. Charts: hierarchy & flow
+12. Specialised
 
-Both libraries depend only on `@dash-ui/tokens` (CSS variables + JS constants) and `@dash-ui/assets` (SVG URLs).
+Source of truth for the mapping: `packages/storybook-meta/src/categories.ts`.
 
 ## Commands
 
 ```bash
 pnpm install           # install everything
-pnpm dev:react         # http://localhost:5173
-pnpm dev:svelte        # http://localhost:5174
-pnpm build             # build all packages and apps
+pnpm dev:react         # reference dashboard, http://localhost:5173
+pnpm dev:svelte        # reference dashboard, http://localhost:5174
+pnpm dev:storybook     # storybook for React,  http://localhost:6006
+pnpm test              # vitest, ~1,300 tests across all three frameworks
+pnpm test:coverage     # v8 coverage report
+pnpm build             # build all packages
+pnpm build:site        # build all three storybooks + landing page into apps/storybook-site/dist
+pnpm serve:site        # serve the assembled site, http://localhost:4173
 ```
 
 ## Tokens
 
-Two motifs ship in `tokens.css`. The dashboards use `dark`; switch to `light` for store / marketing surfaces.
+Two motifs ship in `tokens.css`. Apply via a data attribute on `<html>`:
 
 ```html
-<html data-motif="dark">  <!-- the default -->
+<html data-motif="dark">   <!-- default -->
 <html data-motif="light">
 ```
 
-Brand blue is `#006FFF` (the only saturated colour). Status: `#00B070` ok, `#F5A623` warn, `#F03A3A` critical. Type: Inter (UI) + JetBrains Mono (IPs/MACs/SKUs). Default radius 6 px (12 for modals, 9999 for pills).
+Brand blue is `#006FFF`. Status: `#00B070` ok, `#F5A623` warn, `#F03A3A` critical. Type: Inter (UI) + JetBrains Mono (IPs / MACs / SKUs). Default radius 6 px (12 for modals, 9999 for pills).
 
-## Source of truth
+## Tri-framework story
 
-The full visual + content spec lives in `design-bundle/dash-ui-design-system/project/README.md` — content fundamentals, voice, iconography rules, layout tokens. `colors_and_type.css` from that bundle is copied verbatim into `packages/tokens/src/tokens.css`.
+- **React** users: `pnpm add @dash-ui/react @dash-ui/tokens` then `import { Button } from '@dash-ui/react'`
+- **Svelte** users: `pnpm add @dash-ui/svelte @dash-ui/tokens` then `import Button from '@dash-ui/svelte/components/Button.svelte'`
+- **Anywhere else** (Vue, Angular, vanilla, Astro, Hugo): `pnpm add @dash-ui/wc @dash-ui/tokens`, import `@dash-ui/wc` once for its registration side effect, then use `<dash-button variant="primary">Save</dash-button>` etc.
+
+The web component layer is generated from the Svelte sources at build time via thin custom-element wrappers; props mirror the Svelte API.
+
+## SSR
+
+- React: `react-dom/server.renderToString` is smoke-tested for every component on every PR
+- Svelte: SSR-compile (`generate: 'ssr'`) is smoke-tested for every component on every PR
+- Web Components: hydrate client-side; declarative shadow DOM is not yet shipped
+
+## Trademarks
+
+Dash and Demo are trademarks of Demo Inc., used here only in this disclaimer to clarify the project's relationship to that brand. Inter is a Rasmus Andersson typeface (OFL); JetBrains Mono is a JetBrains s.r.o. typeface (OFL).

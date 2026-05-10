@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import { appLogos, type AppLogo } from '@dash-ui/assets';
+  import { appLogos, type AppLogoKey as AppLogo } from '@dash-ui/assets';
   import IconButton from './IconButton.svelte';
   import Avatar from './Avatar.svelte';
   import CaretIcon from '../icons/CaretIcon.svelte';
@@ -11,12 +11,9 @@
 
   export interface AppDef { id: string; label: string; logo: AppLogo }
   export const DEFAULT_APPS: AppDef[] = [
-    { id: 'network', label: 'Network', logo: 'network' },
-    { id: 'protect', label: 'Protect', logo: 'protect' },
-    { id: 'access', label: 'Access', logo: 'access' },
-    { id: 'talk', label: 'Talk', logo: 'talk' },
-    { id: 'connect', label: 'Connect', logo: 'connect' },
-    { id: 'drive', label: 'Drive', logo: 'drive' },
+    { id: 'system', label: 'System', logo: 'system' },
+    { id: 'instances', label: 'Instances', logo: 'instances' },
+    { id: 'agents', label: 'Agents', logo: 'agents' },
   ];
 
   export let siteName: string;

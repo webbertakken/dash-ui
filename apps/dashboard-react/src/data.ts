@@ -22,8 +22,8 @@ export const NODES: TopologyNode[] = [
   { id: 'sw1', type: 'switch', name: 'ES-24-Pro-PoE', meta: '192.168.1.2', status: 'good', x: 0.22, y: 0.5, clients: 18 },
   { id: 'sw2', type: 'switch', name: 'ES-8-Lite-PoE', meta: '192.168.1.3', status: 'good', x: 0.78, y: 0.5, clients: 6 },
   { id: 'ap1', type: 'ap', name: 'AP Pro · Lobby', meta: '192.168.1.18', status: 'warn', x: 0.1, y: 0.78, clients: 24 },
-  { id: 'ap2', type: 'ap', name: 'U6+ · Conference', meta: '192.168.1.20', status: 'good', x: 0.28, y: 0.78, clients: 31 },
-  { id: 'ap3', type: 'ap', name: 'U6+ · Reception', meta: '192.168.1.21', status: 'good', x: 0.46, y: 0.78, clients: 14 },
+  { id: 'ap2', type: 'ap', name: 'AP-Plus · Conference', meta: '192.168.1.20', status: 'good', x: 0.28, y: 0.78, clients: 31 },
+  { id: 'ap3', type: 'ap', name: 'AP-Plus · Reception', meta: '192.168.1.21', status: 'good', x: 0.46, y: 0.78, clients: 14 },
   { id: 'cam1', type: 'cam', name: 'Cam-Pro 5 · Reception', meta: '192.168.1.30', status: 'good', x: 0.66, y: 0.78 },
   { id: 'cam2', type: 'cam', name: 'Cam-Bullet 5 · Side Entry', meta: '—', status: 'danger', x: 0.84, y: 0.78 },
 ];
@@ -56,11 +56,11 @@ export const DEVICES: DeviceRow[] = [
   ['Front Office EG', 'EG-X1', 'f4:b1:00:11:22:33', '192.168.1.1', '24d 14h', '—', '#00B070', 'Connected', '#5DDB9F', 'EG', null],
   ['ES-24-Pro-PoE', 'ES-24-Pro-PoE', 'f4:b1:00:11:22:34', '192.168.1.2', '24d 14h', '—', '#00B070', 'Connected', '#5DDB9F', 'ES', null],
   ['ES-8-Lite-PoE', 'ES-8-Lite-PoE', 'f4:b1:00:11:22:35', '192.168.1.3', '5d 02h', '—', '#00B070', 'Connected', '#5DDB9F', 'ES', null],
-  ['AP Pro · Lobby', 'AP-Pro', 'f4:b1:00:aa:bb:c1', '192.168.1.18', '—', '24', '#F5A623', 'Updating · 64%', '#F5C26B', 'U7', 'strong'],
-  ['AP Pro · Warehouse', 'AP-Pro', 'f4:b1:00:aa:bb:c2', '192.168.1.19', '—', '—', '#006FFF', 'Adopting', '#7FB6FF', 'U7', null],
-  ['U6+ · Conference', 'AP-Plus', 'f4:b1:00:aa:bb:c3', '192.168.1.20', '12d 03h', '31', '#00B070', 'Connected', '#5DDB9F', 'U6', 'strong'],
-  ['U6+ · Reception', 'AP-Plus', 'f4:b1:00:aa:bb:c4', '192.168.1.21', '12d 03h', '14', '#00B070', 'Connected', '#5DDB9F', 'U6', 'strong'],
-  ['AP-Wall · Office 4', 'AP-Wall', 'f4:b1:00:aa:bb:c5', '192.168.1.22', '3d 19h', '9', '#00B070', 'Connected', '#5DDB9F', 'U6', 'weak'],
+  ['AP Pro · Lobby', 'AP-Pro', 'f4:b1:00:aa:bb:c1', '192.168.1.18', '—', '24', '#F5A623', 'Updating · 64%', '#F5C26B', 'AP7', 'strong'],
+  ['AP Pro · Warehouse', 'AP-Pro', 'f4:b1:00:aa:bb:c2', '192.168.1.19', '—', '—', '#006FFF', 'Adopting', '#7FB6FF', 'AP7', null],
+  ['AP-Plus · Conference', 'AP-Plus', 'f4:b1:00:aa:bb:c3', '192.168.1.20', '12d 03h', '31', '#00B070', 'Connected', '#5DDB9F', 'AP6', 'strong'],
+  ['AP-Plus · Reception', 'AP-Plus', 'f4:b1:00:aa:bb:c4', '192.168.1.21', '12d 03h', '14', '#00B070', 'Connected', '#5DDB9F', 'AP6', 'strong'],
+  ['AP-Wall · Office 4', 'AP-Wall', 'f4:b1:00:aa:bb:c5', '192.168.1.22', '3d 19h', '9', '#00B070', 'Connected', '#5DDB9F', 'AP6', 'weak'],
   ['Cam-Bullet 5 · Side Entry', 'CAM-Bullet5', 'f4:b1:00:cc:dd:01', '—', '—', '—', '#F03A3A', 'Offline', '#FF7B7B', 'CAM', null],
   ['Cam-Pro 5 · Reception', 'CAM-Pro5', 'f4:b1:00:cc:dd:02', '192.168.1.30', '9d 02h', '—', '#00B070', 'Connected', '#5DDB9F', 'CAM', null],
   ['Cam-Flex 5 · Stockroom', 'CAM-Flex5', 'f4:b1:00:cc:dd:03', '192.168.1.31', '9d 02h', '—', '#00B070', 'Connected', '#5DDB9F', 'CAM', null],
@@ -71,11 +71,11 @@ export type ClientRow = [string, string, string, string, string, string, string,
 export const CLIENTS: ClientRow[] = [
   ['Maria · MacBook Pro', '192.168.1.142', 'c8:69:cd:11:23:11', 'Office', '5 GHz', 'AP Pro · Lobby', '42.1 / 8.4 MB/s', 'strong'],
   ['Tobias · iPhone 15', '192.168.20.84', '3a:42:90:ab:cc:01', 'Staff', '5 GHz', 'AP Pro · Warehouse', '5.4 / 1.1 MB/s', 'strong'],
-  ['Pixel 8 Pro', '192.168.1.156', 'b8:c1:71:dd:ee:02', 'Guest', '2.4 GHz', 'U6+ · Reception', '1.2 / 0.8 MB/s', 'weak'],
+  ['Pixel 8 Pro', '192.168.1.156', 'b8:c1:71:dd:ee:02', 'Guest', '2.4 GHz', 'AP-Plus · Reception', '1.2 / 0.8 MB/s', 'weak'],
   ['HP-LaserJet-M404', '192.168.10.4', '3c:5a:b4:00:11:21', 'Office', 'Wired', 'ES-24-Pro · port 12', '—', null],
   ['NAS-Synology', '192.168.10.6', '00:11:32:cc:dd:31', 'Office', 'Wired · 10G', 'Edge Gateway · SFP+ 1', '118 / 46 MB/s', null],
-  ['ESPRESSO-Hub', '192.168.30.18', 'aa:bb:cc:33:44:55', 'IoT VLAN', '2.4 GHz', 'U6+ · Conference', '0.04 / 0.02 MB/s', 'weak'],
-  ['Nest-Thermostat', '192.168.30.19', 'aa:bb:cc:33:44:56', 'IoT VLAN', '2.4 GHz', 'U6+ · Reception', '—', 'weak'],
+  ['ESPRESSO-Hub', '192.168.30.18', 'aa:bb:cc:33:44:55', 'IoT VLAN', '2.4 GHz', 'AP-Plus · Conference', '0.04 / 0.02 MB/s', 'weak'],
+  ['Nest-Thermostat', '192.168.30.19', 'aa:bb:cc:33:44:56', 'IoT VLAN', '2.4 GHz', 'AP-Plus · Reception', '—', 'weak'],
 ];
 
 export type DashboardDeviceRow = [string, string, string, string, string, string, string, string];
@@ -115,7 +115,7 @@ export const PORT_STATES: [string, string, string][] = [
 
 export const LOG_ROWS: [string, string, string, string, string, string][] = [
   ['info', 'Network', '12:42:18', 'Client connected', 'Maria · MacBook Pro', 'c8:69:cd:11:23:11 ↔ AP Pro · Lobby (5 GHz)'],
-  ['warn', 'Network', '12:41:55', 'High channel utilisation', 'U6+ · Conference', '2.4 GHz at 71% over 3 min'],
+  ['warn', 'Network', '12:41:55', 'High channel utilisation', 'AP-Plus · Conference', '2.4 GHz at 71% over 3 min'],
   ['danger', 'Security', '12:41:02', 'Threat blocked · Mirai C2', '192.168.30.18', '185.220.101.42:8443 — IDS sig 1:2024918'],
   ['info', 'System', '12:39:14', 'Firmware updated', 'AP Pro · Lobby', '9.4.20 → 9.4.21 (signed)'],
   ['warn', 'Network', '12:38:42', 'PoE budget warning', 'ES-24-Pro-PoE', '186 / 400 W · port 13 spike'],
