@@ -1,14 +1,24 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import path from 'node:path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({ include: /\.tsx?$/ }),
+    svelte({
+      compilerOptions: { customElement: false },
+      include: [/packages\/svelte\/.*\.svelte$/],
+      preprocess: vitePreprocess(),
+      hot: false,
+    }),
+  ],
   resolve: {
     alias: {
       '@dash-ui/tokens': path.resolve(__dirname, 'packages/tokens/src/tokens.ts'),
       '@dash-ui/assets': path.resolve(__dirname, 'packages/assets/src/index.ts'),
       '@dash-ui/react': path.resolve(__dirname, 'packages/react/src/index.ts'),
+      '@dash-ui/svelte': path.resolve(__dirname, 'packages/svelte/src/lib/index.ts'),
     },
   },
   test: {

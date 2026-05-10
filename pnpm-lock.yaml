@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^3.1.2
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21)
       '@testing-library/jest-dom':
         specifier: ^6.5.0
         version: 6.9.1
@@ -41,6 +44,9 @@ importers:
       react-dom:
         specifier: ^18.3.0
         version: 18.3.1(react@18.3.1)
+      svelte:
+        specifier: ^4.2.19
+        version: 4.2.20
       tsx:
         specifier: ^4.19.2
         version: 4.21.0

@@ -608,4 +608,18 @@ export const BUNDLES: Record<string, Bundle[]> = {
   ],
 };
 
+// Icon components
+const ICON_NAMES = [
+  'SearchIcon', 'PlusIcon', 'DownloadIcon', 'CaretIcon', 'CloseIcon', 'BellIcon',
+  'HelpIcon', 'UpdatesIcon', 'DashboardIcon', 'DevicesIcon', 'ClientsIcon',
+  'TopologyIcon', 'AlarmIcon', 'LogsIcon', 'WifiIcon', 'PortsIcon', 'VpnIcon',
+  'SecurityIcon', 'SettingsIcon', 'AirviewIcon', 'InfraIcon', 'IntegrationsIcon',
+];
+for (const name of ICON_NAMES) {
+  BUNDLES[name] = [
+    { name: 'default', props: {} },
+    { name: 'sized', props: { size: 32 } },
+  ];
+}
+
 export const COMPONENT_NAMES = Object.keys(BUNDLES).sort();
