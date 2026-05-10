@@ -12,6 +12,7 @@
     "build:wc": "pnpm --filter @dash-ui/wc build",
     "build:storybook": "pnpm --filter storybook-react build && pnpm --filter storybook-svelte build && pnpm --filter storybook-wc build",
     "build:site": "pnpm build:wc && pnpm build:storybook && pnpm --filter storybook-site build",
+    "serve:site": "pnpm --filter storybook-site serve",
     "build": "pnpm -r --filter=!storybook-* build",
     "test": "vitest run",
     "test:watch": "vitest",

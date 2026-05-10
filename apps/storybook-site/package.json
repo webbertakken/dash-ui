@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsx ./scripts/build.ts"
+    "build": "tsx ./scripts/build.ts",
+    "serve": "tsx ./scripts/serve.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.2",
