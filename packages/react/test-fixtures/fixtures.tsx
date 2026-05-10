@@ -155,6 +155,8 @@ export const FIXTURES: Record<string, Variant[]> = {
   ],
   CirclePacking: [
     { name: 'default', node: <U.CirclePacking items={[{ id: 'a', label: 'A', value: 10 }, { id: 'b', label: 'B', value: 20, color: '#0f0' }]} /> },
+    { name: 'many circles', node: <U.CirclePacking items={Array.from({ length: 8 }, (_, i) => ({ id: String(i), label: `n${i}`, value: 100 - i * 8 }))} /> },
+    { name: 'empty', node: <U.CirclePacking items={[]} /> },
   ],
   CodeBlock: [
     { name: 'default', node: <U.CodeBlock code="echo hi" /> },
@@ -204,6 +206,8 @@ export const FIXTURES: Record<string, Variant[]> = {
   CountUp: [
     { name: 'default', node: <U.CountUp to={100} /> },
     { name: 'all options', node: <U.CountUp from={10} to={1234} duration={50} decimals={2} prefix="$" suffix="!" separator="," className="x" /> },
+    { name: 'zero duration', node: <U.CountUp to={0} duration={0} /> },
+    { name: 'no separator', node: <U.CountUp to={1000} separator="" /> },
   ],
   CumulativeDistribution: [
     { name: 'default', node: <U.CumulativeDistribution series={[{ label: 'a', color: '#006FFF', values: values6a }]} /> },
@@ -319,7 +323,7 @@ export const FIXTURES: Record<string, Variant[]> = {
     { name: 'disabled', node: <U.IPInput label="IP" disabled /> },
   ],
   IcicleChart: [
-    { name: 'default', node: <U.IcicleChart root={{ label: 'r', children: [{ label: 'a', value: 5 }, { label: 'b', value: 10, color: '#0f0' }] }} /> },
+    { name: 'default', node: <U.IcicleChart root={{ label: 'r', children: [{ label: 'a', value: 5 }, { label: 'b', value: 10, color: '#0f0', children: [{ label: 'b1', value: 4 }, { label: 'b2', value: 6 }] }] }} /> },
   ],
   InlineEdit: [
     { name: 'default', node: <U.InlineEdit value="hi" onConfirm={noop} label="Name" /> },
@@ -349,6 +353,7 @@ export const FIXTURES: Record<string, Variant[]> = {
   ],
   KanbanBoard: [
     { name: 'default', node: <U.KanbanBoard columns={[{ id: 'todo', title: 'To do', color: '#0f0', cards: [{ id: '1', title: 'A', subtitle: 's', meta: 'm' }] }, { id: 'done', title: 'Done', cards: [] }]} /> },
+    { name: 'no callback', node: <U.KanbanBoard columns={[{ id: 'a', title: 'A', cards: [{ id: '1', title: 't' }] }]} /> },
   ],
   Kbd: [
     { name: 'string', node: <U.Kbd keys="K" /> },
@@ -371,6 +376,7 @@ export const FIXTURES: Record<string, Variant[]> = {
   ],
   MarimekkoChart: [
     { name: 'default', node: <U.MarimekkoChart columns={[{ label: 'A', segments: [{ label: 'a', value: 1 }, { label: 'b', value: 2, color: '#0f0' }] }, { label: 'B', segments: [{ label: 'a', value: 2 }] }]} /> },
+    { name: 'empty segments', node: <U.MarimekkoChart columns={[{ label: 'A', segments: [] }, { label: 'B', segments: [{ label: 'x', value: 5 }] }]} /> },
   ],
   MatrixChart: [
     { name: 'default', node: <U.MatrixChart rows={['r1']} cols={['c1', 'c2']} values={[[0.1, 0.5]]} unit="x" /> },
@@ -448,17 +454,21 @@ export const FIXTURES: Record<string, Variant[]> = {
     { name: 'with label', node: <U.ProgressBar value={0.9} label="cpu" valueText="90%" color="#0f0" /> },
   ],
   PunchCard: [
-    { name: 'default', node: <U.PunchCard data={[[0, 1, 2], [2, 1, 0]]} rowLabels={['r1', 'r2']} colLabels={['c1', 'c2', 'c3']} /> },
+    { name: 'default', node: <U.PunchCard data={[[0, 1, 2, 5, 3], [2, 1, 0, 4, 2], [3, 5, 1, 0, 6]]} rowLabels={['r1', 'r2', 'r3']} colLabels={['c1', 'c2', 'c3', 'c4', 'c5']} /> },
+    { name: 'no labels', node: <U.PunchCard data={[[1, 2], [3, 4]]} /> },
   ],
   QuadrantChart: [
     { name: 'default', node: <U.QuadrantChart points={[{ x: 1, y: 4, label: 'a' }, { x: 9, y: 9, label: 'b' }, { x: 1, y: 1, label: 'c' }, { x: 9, y: 1, label: 'd' }]} xThreshold={5} yThreshold={5} /> },
     { name: 'with axes labels', node: <U.QuadrantChart points={[{ x: 1, y: 1, label: 'a' }]} xThreshold={5} yThreshold={5} xRange={[0, 10]} yRange={[0, 10]} xLabel="cost" yLabel="value" /> },
+    { name: 'with custom labels + colors', node: <U.QuadrantChart points={[{ x: 5, y: 5, label: 'mid' }]} xThreshold={5} yThreshold={5} quadrantLabels={['tl', 'tr', 'bl', 'br']} quadrantColors={['#000', '#111', '#222', '#333']} /> },
   ],
   RadarChart: [
     { name: 'default', node: <U.RadarChart series={[{ label: 'a', color: '#006FFF', values: [0.2, 0.5, 0.8, 0.3] }]} axes={['a', 'b', 'c', 'd']} /> },
   ],
   RadialBarChart: [
     { name: 'default', node: <U.RadialBarChart items={[{ label: 'A', value: 60, max: 100 }, { label: 'B', value: 80, max: 100, color: '#0f0', unit: '%' }]} /> },
+    { name: 'over max', node: <U.RadialBarChart items={[{ label: 'A', value: 200, max: 100 }]} /> },
+    { name: 'zero', node: <U.RadialBarChart items={[{ label: 'A', value: 0, max: 100 }]} /> },
   ],
   RadioGroup: [
     { name: 'default', node: <U.RadioGroup legend="L" options={[{ value: 'a', label: 'A' }, { value: 'b', label: 'B', description: 'd', disabled: true }]} /> },
@@ -523,6 +533,7 @@ export const FIXTURES: Record<string, Variant[]> = {
   ],
   SlopeChart: [
     { name: 'default', node: <U.SlopeChart items={[{ label: 'A', before: 5, after: 8 }, { label: 'B', before: 9, after: 4 }]} unit="ms" positiveIsGood /> },
+    { name: 'no positive flag', node: <U.SlopeChart items={[{ label: 'A', before: 5, after: 5 }, { label: 'B', before: 1, after: 9 }]} /> },
   ],
   SortableList: [
     { name: 'default', node: <U.SortableList items={[{ id: '1', label: 'A', meta: 'm' }, { id: '2', label: 'B' }]} onChange={noop} /> },
@@ -538,7 +549,7 @@ export const FIXTURES: Record<string, Variant[]> = {
     { name: 'active', node: <U.Sparkline bars={10} active seed={42} ariaLabel="x" /> },
   ],
   SparklineMatrix: [
-    { name: 'default', node: <U.SparklineMatrix rows={[{ label: 'a', values: values6a }, { label: 'b', values: values4a, color: '#0f0' }]} /> },
+    { name: 'default', node: <U.SparklineMatrix rows={[{ label: 'a', values: values6a }, { label: 'b', values: values4a, color: '#0f0', meta: 'm', delta: '+1', deltaDir: 'up' }, { label: 'c', values: [1, 1], delta: '-1', deltaDir: 'down' }]} /> },
   ],
   Spinner: [
     { name: 'default', node: <U.Spinner /> },
@@ -557,6 +568,7 @@ export const FIXTURES: Record<string, Variant[]> = {
   StackedBarChart: [
     { name: 'default', node: <U.StackedBarChart series={series2x4} labels={labels4} /> },
     { name: 'normalised', node: <U.StackedBarChart series={series2x4} labels={labels4} normalized /> },
+    { name: 'no labels', node: <U.StackedBarChart series={series2x4} /> },
   ],
   StackedProgress: [
     { name: 'default', node: <U.StackedProgress segments={[{ label: 'A', value: 30, color: '#006FFF' }, { label: 'B', value: 60, color: '#0f0' }]} /> },
@@ -671,7 +683,8 @@ export const FIXTURES: Record<string, Variant[]> = {
   ],
   VennDiagram: [
     { name: 'two sets', node: <U.VennDiagram sets={[{ label: 'A', size: 10 }, { label: 'B', size: 8 }]} intersections={[{ sets: ['A', 'B'], size: 3 }]} /> },
-    { name: 'three sets', node: <U.VennDiagram sets={[{ label: 'A', size: 10, color: '#0f0' }, { label: 'B', size: 8 }, { label: 'C', size: 6 }]} /> },
+    { name: 'three sets', node: <U.VennDiagram sets={[{ label: 'A', size: 10, color: '#0f0' }, { label: 'B', size: 8 }, { label: 'C', size: 6 }]} intersections={[{ sets: ['A', 'B'], size: 2 }, { sets: ['A', 'B', 'C'], size: 1 }]} /> },
+    { name: 'one set', node: <U.VennDiagram sets={[{ label: 'A', size: 10 }]} /> },
   ],
   ViolinPlot: [
     { name: 'default', node: <U.ViolinPlot series={[{ label: 'A', values: [1, 2, 2, 3, 4, 5, 5, 6] }, { label: 'B', values: [2, 3, 3, 4, 5], color: '#0f0' }]} /> },
@@ -687,9 +700,11 @@ export const FIXTURES: Record<string, Variant[]> = {
   ],
   WaterfallChart: [
     { name: 'default', node: <U.WaterfallChart bars={[{ label: 'a', value: 10, kind: 'start' }, { label: 'b', value: 5, kind: 'pos' }, { label: 'c', value: -3, kind: 'neg' }, { label: 'd', value: 12, kind: 'end' }]} /> },
+    { name: 'all positive', node: <U.WaterfallChart bars={[{ label: 'a', value: 10, kind: 'start' }, { label: 'b', value: 1, kind: 'pos' }, { label: 'c', value: 11, kind: 'end' }]} /> },
   ],
   WordCloud: [
-    { name: 'default', node: <U.WordCloud items={[{ word: 'foo', weight: 1 }, { word: 'bar', weight: 5, color: '#0f0' }]} /> },
+    { name: 'default', node: <U.WordCloud items={Array.from({ length: 25 }, (_, i) => ({ word: `w${i}`, weight: 1 + (i % 5) }))} /> },
+    { name: 'colored', node: <U.WordCloud items={[{ word: 'a', weight: 1, color: '#0f0' }, { word: 'b', weight: 5 }]} /> },
   ],
 };
 
