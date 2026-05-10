@@ -227,6 +227,34 @@ importers:
 
   packages/tokens: {}
 
+  packages/wc:
+    dependencies:
+      '@dash-ui/assets':
+        specifier: workspace:*
+        version: link:../assets
+      '@dash-ui/svelte':
+        specifier: workspace:*
+        version: link:../svelte
+      '@dash-ui/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^3.1.2
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21)
+      svelte:
+        specifier: ^4.2.19
+        version: 4.2.20
+      tsx:
+        specifier: ^4.19.2
+        version: 4.21.0
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.11
+        version: 5.4.21
+
 packages:
 
   '@adobe/css-tools@4.4.4':

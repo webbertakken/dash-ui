@@ -1,0 +1,666 @@
+[
+  {
+    "name": "Accordion",
+    "tag": "uni-accordion"
+  },
+  {
+    "name": "ActionMenu",
+    "tag": "uni-action-menu"
+  },
+  {
+    "name": "ActivityFeed",
+    "tag": "uni-activity-feed"
+  },
+  {
+    "name": "Alert",
+    "tag": "uni-alert"
+  },
+  {
+    "name": "AnnotatedTimeSeries",
+    "tag": "uni-annotated-time-series"
+  },
+  {
+    "name": "ArcDiagram",
+    "tag": "uni-arc-diagram"
+  },
+  {
+    "name": "AreaChart",
+    "tag": "uni-area-chart"
+  },
+  {
+    "name": "Avatar",
+    "tag": "uni-avatar"
+  },
+  {
+    "name": "AvatarGroup",
+    "tag": "uni-avatar-group"
+  },
+  {
+    "name": "Badge",
+    "tag": "uni-badge"
+  },
+  {
+    "name": "Banner",
+    "tag": "uni-banner"
+  },
+  {
+    "name": "BarChart",
+    "tag": "uni-bar-chart"
+  },
+  {
+    "name": "BeeswarmChart",
+    "tag": "uni-beeswarm-chart"
+  },
+  {
+    "name": "BoxPlot",
+    "tag": "uni-box-plot"
+  },
+  {
+    "name": "Breadcrumb",
+    "tag": "uni-breadcrumb"
+  },
+  {
+    "name": "BubbleChart",
+    "tag": "uni-bubble-chart"
+  },
+  {
+    "name": "BulletChart",
+    "tag": "uni-bullet-chart"
+  },
+  {
+    "name": "BumpChart",
+    "tag": "uni-bump-chart"
+  },
+  {
+    "name": "Button",
+    "tag": "uni-button"
+  },
+  {
+    "name": "CIDRInput",
+    "tag": "uni-cidrinput"
+  },
+  {
+    "name": "CalendarHeatmap",
+    "tag": "uni-calendar-heatmap"
+  },
+  {
+    "name": "Callout",
+    "tag": "uni-callout"
+  },
+  {
+    "name": "CandlestickChart",
+    "tag": "uni-candlestick-chart"
+  },
+  {
+    "name": "Card",
+    "tag": "uni-card"
+  },
+  {
+    "name": "Carousel",
+    "tag": "uni-carousel"
+  },
+  {
+    "name": "Checkbox",
+    "tag": "uni-checkbox"
+  },
+  {
+    "name": "ChordDiagram",
+    "tag": "uni-chord-diagram"
+  },
+  {
+    "name": "CirclePacking",
+    "tag": "uni-circle-packing"
+  },
+  {
+    "name": "CodeBlock",
+    "tag": "uni-code-block"
+  },
+  {
+    "name": "ColorPicker",
+    "tag": "uni-color-picker"
+  },
+  {
+    "name": "ColumnToggle",
+    "tag": "uni-column-toggle"
+  },
+  {
+    "name": "Combobox",
+    "tag": "uni-combobox"
+  },
+  {
+    "name": "CommandPalette",
+    "tag": "uni-command-palette"
+  },
+  {
+    "name": "ConfirmDialog",
+    "tag": "uni-confirm-dialog"
+  },
+  {
+    "name": "ContextMenu",
+    "tag": "uni-context-menu"
+  },
+  {
+    "name": "ContextualHelp",
+    "tag": "uni-contextual-help"
+  },
+  {
+    "name": "ContourPlot",
+    "tag": "uni-contour-plot"
+  },
+  {
+    "name": "CopyButton",
+    "tag": "uni-copy-button"
+  },
+  {
+    "name": "CorrelationMatrix",
+    "tag": "uni-correlation-matrix"
+  },
+  {
+    "name": "CountUp",
+    "tag": "uni-count-up"
+  },
+  {
+    "name": "CumulativeDistribution",
+    "tag": "uni-cumulative-distribution"
+  },
+  {
+    "name": "DatePicker",
+    "tag": "uni-date-picker"
+  },
+  {
+    "name": "DateRangePicker",
+    "tag": "uni-date-range-picker"
+  },
+  {
+    "name": "Dendrogram",
+    "tag": "uni-dendrogram"
+  },
+  {
+    "name": "Donut",
+    "tag": "uni-donut"
+  },
+  {
+    "name": "DotPlot",
+    "tag": "uni-dot-plot"
+  },
+  {
+    "name": "Drawer",
+    "tag": "uni-drawer"
+  },
+  {
+    "name": "DualAxisChart",
+    "tag": "uni-dual-axis-chart"
+  },
+  {
+    "name": "DumbbellChart",
+    "tag": "uni-dumbbell-chart"
+  },
+  {
+    "name": "DurationInput",
+    "tag": "uni-duration-input"
+  },
+  {
+    "name": "EmptyState",
+    "tag": "uni-empty-state"
+  },
+  {
+    "name": "ErrorBandChart",
+    "tag": "uni-error-band-chart"
+  },
+  {
+    "name": "ExpandableRow",
+    "tag": "uni-expandable-row"
+  },
+  {
+    "name": "Field",
+    "tag": "uni-field"
+  },
+  {
+    "name": "FileUpload",
+    "tag": "uni-file-upload"
+  },
+  {
+    "name": "FilterBuilder",
+    "tag": "uni-filter-builder"
+  },
+  {
+    "name": "FlameGraph",
+    "tag": "uni-flame-graph"
+  },
+  {
+    "name": "ForceGraph",
+    "tag": "uni-force-graph"
+  },
+  {
+    "name": "FunnelChart",
+    "tag": "uni-funnel-chart"
+  },
+  {
+    "name": "GanttChart",
+    "tag": "uni-gantt-chart"
+  },
+  {
+    "name": "Gauge",
+    "tag": "uni-gauge"
+  },
+  {
+    "name": "GroupedList",
+    "tag": "uni-grouped-list"
+  },
+  {
+    "name": "HealthBar",
+    "tag": "uni-health-bar"
+  },
+  {
+    "name": "HeatMap",
+    "tag": "uni-heat-map"
+  },
+  {
+    "name": "HexbinChart",
+    "tag": "uni-hexbin-chart"
+  },
+  {
+    "name": "Histogram",
+    "tag": "uni-histogram"
+  },
+  {
+    "name": "HorizonChart",
+    "tag": "uni-horizon-chart"
+  },
+  {
+    "name": "HoverCard",
+    "tag": "uni-hover-card"
+  },
+  {
+    "name": "IPInput",
+    "tag": "uni-ipinput"
+  },
+  {
+    "name": "IcicleChart",
+    "tag": "uni-icicle-chart"
+  },
+  {
+    "name": "IconButton",
+    "tag": "uni-icon-button"
+  },
+  {
+    "name": "InlineEdit",
+    "tag": "uni-inline-edit"
+  },
+  {
+    "name": "Input",
+    "tag": "uni-input"
+  },
+  {
+    "name": "InputGroup",
+    "tag": "uni-input-group"
+  },
+  {
+    "name": "JsonViewer",
+    "tag": "uni-json-viewer"
+  },
+  {
+    "name": "JsonViewerNode",
+    "tag": "uni-json-viewer-node"
+  },
+  {
+    "name": "KVTable",
+    "tag": "uni-kvtable"
+  },
+  {
+    "name": "KanbanBoard",
+    "tag": "uni-kanban-board"
+  },
+  {
+    "name": "Kbd",
+    "tag": "uni-kbd"
+  },
+  {
+    "name": "LineChart",
+    "tag": "uni-line-chart"
+  },
+  {
+    "name": "LogViewer",
+    "tag": "uni-log-viewer"
+  },
+  {
+    "name": "LollipopChart",
+    "tag": "uni-lollipop-chart"
+  },
+  {
+    "name": "MACInput",
+    "tag": "uni-macinput"
+  },
+  {
+    "name": "MarimekkoChart",
+    "tag": "uni-marimekko-chart"
+  },
+  {
+    "name": "MatrixChart",
+    "tag": "uni-matrix-chart"
+  },
+  {
+    "name": "Menubar",
+    "tag": "uni-menubar"
+  },
+  {
+    "name": "MirroredBarChart",
+    "tag": "uni-mirrored-bar-chart"
+  },
+  {
+    "name": "Modal",
+    "tag": "uni-modal"
+  },
+  {
+    "name": "MultiSelect",
+    "tag": "uni-multi-select"
+  },
+  {
+    "name": "NightingaleChart",
+    "tag": "uni-nightingale-chart"
+  },
+  {
+    "name": "NotificationPanel",
+    "tag": "uni-notification-panel"
+  },
+  {
+    "name": "NumberInput",
+    "tag": "uni-number-input"
+  },
+  {
+    "name": "OTPInput",
+    "tag": "uni-otpinput"
+  },
+  {
+    "name": "Pagination",
+    "tag": "uni-pagination"
+  },
+  {
+    "name": "ParallelCoordinates",
+    "tag": "uni-parallel-coordinates"
+  },
+  {
+    "name": "ParetoChart",
+    "tag": "uni-pareto-chart"
+  },
+  {
+    "name": "PasswordInput",
+    "tag": "uni-password-input"
+  },
+  {
+    "name": "PieChart",
+    "tag": "uni-pie-chart"
+  },
+  {
+    "name": "Pill",
+    "tag": "uni-pill"
+  },
+  {
+    "name": "PolarHeatmap",
+    "tag": "uni-polar-heatmap"
+  },
+  {
+    "name": "Popover",
+    "tag": "uni-popover"
+  },
+  {
+    "name": "ProgressBar",
+    "tag": "uni-progress-bar"
+  },
+  {
+    "name": "PunchCard",
+    "tag": "uni-punch-card"
+  },
+  {
+    "name": "QuadrantChart",
+    "tag": "uni-quadrant-chart"
+  },
+  {
+    "name": "RadarChart",
+    "tag": "uni-radar-chart"
+  },
+  {
+    "name": "RadialBarChart",
+    "tag": "uni-radial-bar-chart"
+  },
+  {
+    "name": "RadioGroup",
+    "tag": "uni-radio-group"
+  },
+  {
+    "name": "RangeSlider",
+    "tag": "uni-range-slider"
+  },
+  {
+    "name": "RankedList",
+    "tag": "uni-ranked-list"
+  },
+  {
+    "name": "ResizablePanel",
+    "tag": "uni-resizable-panel"
+  },
+  {
+    "name": "RidgelinePlot",
+    "tag": "uni-ridgeline-plot"
+  },
+  {
+    "name": "RowToggle",
+    "tag": "uni-row-toggle"
+  },
+  {
+    "name": "SankeyDiagram",
+    "tag": "uni-sankey-diagram"
+  },
+  {
+    "name": "ScatterPlot",
+    "tag": "uni-scatter-plot"
+  },
+  {
+    "name": "SearchBox",
+    "tag": "uni-search-box"
+  },
+  {
+    "name": "SegmentedControl",
+    "tag": "uni-segmented-control"
+  },
+  {
+    "name": "Select",
+    "tag": "uni-select"
+  },
+  {
+    "name": "SelectionToolbar",
+    "tag": "uni-selection-toolbar"
+  },
+  {
+    "name": "Sidebar",
+    "tag": "uni-sidebar"
+  },
+  {
+    "name": "Signal",
+    "tag": "uni-signal"
+  },
+  {
+    "name": "Skeleton",
+    "tag": "uni-skeleton"
+  },
+  {
+    "name": "SkipLink",
+    "tag": "uni-skip-link"
+  },
+  {
+    "name": "Slider",
+    "tag": "uni-slider"
+  },
+  {
+    "name": "SlopeChart",
+    "tag": "uni-slope-chart"
+  },
+  {
+    "name": "SortHeader",
+    "tag": "uni-sort-header"
+  },
+  {
+    "name": "SortableList",
+    "tag": "uni-sortable-list"
+  },
+  {
+    "name": "Sparkline",
+    "tag": "uni-sparkline"
+  },
+  {
+    "name": "SparklineMatrix",
+    "tag": "uni-sparkline-matrix"
+  },
+  {
+    "name": "Spinner",
+    "tag": "uni-spinner"
+  },
+  {
+    "name": "SplitButton",
+    "tag": "uni-split-button"
+  },
+  {
+    "name": "Spoiler",
+    "tag": "uni-spoiler"
+  },
+  {
+    "name": "StackedBarChart",
+    "tag": "uni-stacked-bar-chart"
+  },
+  {
+    "name": "StackedProgress",
+    "tag": "uni-stacked-progress"
+  },
+  {
+    "name": "StarRating",
+    "tag": "uni-star-rating"
+  },
+  {
+    "name": "Stat",
+    "tag": "uni-stat"
+  },
+  {
+    "name": "StatusIndicator",
+    "tag": "uni-status-indicator"
+  },
+  {
+    "name": "StepChart",
+    "tag": "uni-step-chart"
+  },
+  {
+    "name": "Stepper",
+    "tag": "uni-stepper"
+  },
+  {
+    "name": "StreamGraph",
+    "tag": "uni-stream-graph"
+  },
+  {
+    "name": "StripeChart",
+    "tag": "uni-stripe-chart"
+  },
+  {
+    "name": "SunburstChart",
+    "tag": "uni-sunburst-chart"
+  },
+  {
+    "name": "SwitchPortGrid",
+    "tag": "uni-switch-port-grid"
+  },
+  {
+    "name": "TabPanel",
+    "tag": "uni-tab-panel"
+  },
+  {
+    "name": "Tabs",
+    "tag": "uni-tabs"
+  },
+  {
+    "name": "Tag",
+    "tag": "uni-tag"
+  },
+  {
+    "name": "TagInput",
+    "tag": "uni-tag-input"
+  },
+  {
+    "name": "Textarea",
+    "tag": "uni-textarea"
+  },
+  {
+    "name": "ThresholdAreaChart",
+    "tag": "uni-threshold-area-chart"
+  },
+  {
+    "name": "TimePicker",
+    "tag": "uni-time-picker"
+  },
+  {
+    "name": "TimeRange",
+    "tag": "uni-time-range"
+  },
+  {
+    "name": "Timeline",
+    "tag": "uni-timeline"
+  },
+  {
+    "name": "Toast",
+    "tag": "uni-toast"
+  },
+  {
+    "name": "Toggle",
+    "tag": "uni-toggle"
+  },
+  {
+    "name": "ToggleGroup",
+    "tag": "uni-toggle-group"
+  },
+  {
+    "name": "Tooltip",
+    "tag": "uni-tooltip"
+  },
+  {
+    "name": "Topbar",
+    "tag": "uni-topbar"
+  },
+  {
+    "name": "TransferList",
+    "tag": "uni-transfer-list"
+  },
+  {
+    "name": "TreeMap",
+    "tag": "uni-tree-map"
+  },
+  {
+    "name": "TreeView",
+    "tag": "uni-tree-view"
+  },
+  {
+    "name": "UptimeTimeline",
+    "tag": "uni-uptime-timeline"
+  },
+  {
+    "name": "VennDiagram",
+    "tag": "uni-venn-diagram"
+  },
+  {
+    "name": "ViolinPlot",
+    "tag": "uni-violin-plot"
+  },
+  {
+    "name": "VirtualList",
+    "tag": "uni-virtual-list"
+  },
+  {
+    "name": "WaffleChart",
+    "tag": "uni-waffle-chart"
+  },
+  {
+    "name": "WaterfallChart",
+    "tag": "uni-waterfall-chart"
+  },
+  {
+    "name": "WordCloud",
+    "tag": "uni-word-cloud"
+  }
+]

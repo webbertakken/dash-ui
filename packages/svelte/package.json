@@ -11,7 +11,8 @@
       "types": "./src/lib/index.ts",
       "default": "./src/lib/index.ts"
     },
-    "./styles.css": "./src/lib/styles.css"
+    "./styles.css": "./src/lib/styles.css",
+    "./components/*.svelte": "./src/lib/components/*.svelte"
   },
   "peerDependencies": {
     "svelte": ">=4"

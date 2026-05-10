@@ -1,0 +1,38 @@
+{
+  "name": "@dash-ui/wc",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./src/styles.css",
+    "./register": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "generate": "tsx ./scripts/generate-wrappers.ts",
+    "build": "pnpm generate && vite build",
+    "dev": "vite build --watch",
+    "typecheck": "echo skip"
+  },
+  "dependencies": {
+    "@dash-ui/svelte": "workspace:*",
+    "@dash-ui/tokens": "workspace:*",
+    "@dash-ui/assets": "workspace:*"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "svelte": "^4.2.19",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
