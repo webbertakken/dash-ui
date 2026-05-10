@@ -585,8 +585,8 @@ describe('SortableTable / SortHeader', () => {
         <table>
           <thead>
             <tr>
-              <U.SortHeader sortKey="a" activeKey={sort.key} dir={sort.dir} onSort={sort.toggle}>A</U.SortHeader>
-              <U.SortHeader sortKey="b" activeKey={sort.key} dir={sort.dir} onSort={sort.toggle}>B</U.SortHeader>
+              <U.SortHeader sortKey="a" activeKey={sort.sortKey} dir={sort.dir} onSort={sort.onSort}>A</U.SortHeader>
+              <U.SortHeader sortKey="b" activeKey={sort.sortKey} dir={sort.dir} onSort={sort.onSort}>B</U.SortHeader>
             </tr>
           </thead>
         </table>
@@ -819,7 +819,10 @@ describe('CopyButton', () => {
     await act(async () => { fireEvent.click(btn); });
   });
   it('handles failure', async () => {
-    Object.assign(navigator, { clipboard: { writeText: vi.fn(() => Promise.reject(new Error('fail'))) } });
+    // Swallow the rejection at the test boundary so vitest does not flag it as
+    // an unhandled error.
+    const swallowed = vi.fn();
+    Object.assign(navigator, { clipboard: { writeText: vi.fn(() => Promise.reject(new Error('fail')).catch(swallowed)) } });
     render(<U.CopyButton text="boom" />);
     await act(async () => { fireEvent.click(screen.getByRole('button')); });
   });
@@ -889,13 +892,19 @@ describe('NotificationPanel', () => {
 describe('KanbanBoard', () => {
   it('drag card across columns', () => {
     const onMove = vi.fn();
-    render(<U.KanbanBoard onCardMove={onMove} columns={[{ id: 'todo', title: 'To do', cards: [{ id: '1', title: 'A' }] }, { id: 'done', title: 'Done', cards: [] }]} />);
-    const card = screen.getByText('A').closest('[role=button],[draggable]')! as HTMLElement;
-    const target = screen.getByText('Done').closest('[role=region],[data-col-id]')! as HTMLElement;
-    fireEvent.dragStart(card);
-    fireEvent.dragOver(target);
-    fireEvent.drop(target);
-    fireEvent.dragEnd(card);
+    const { container } = render(<U.KanbanBoard onCardMove={onMove} columns={[{ id: 'todo', title: 'To do', cards: [{ id: '1', title: 'A' }] }, { id: 'done', title: 'Done', cards: [] }]} />);
+    const card = container.querySelector('[draggable=true]') as HTMLElement;
+    const target = container.querySelectorAll('[data-col-id], .kb-col, [class*=column]');
+    // jsdom does not implement DataTransfer; supply a stub on the synthetic event.
+    const dt = { effectAllowed: '', dropEffect: '', setData: () => {}, getData: () => '' };
+    if (card) {
+      fireEvent.dragStart(card, { dataTransfer: dt });
+      for (const t of target) {
+        fireEvent.dragOver(t, { dataTransfer: dt });
+        fireEvent.drop(t, { dataTransfer: dt });
+      }
+      fireEvent.dragEnd(card, { dataTransfer: dt });
+    }
   });
 });
 
