@@ -9,14 +9,7 @@ import './preview.css';
 const preview: Preview = {
   parameters: {
     layout: 'padded',
-    backgrounds: {
-      default: 'dashboard',
-      values: [
-        { name: 'dashboard', value: '#0A1623' },
-        { name: 'card', value: '#13202E' },
-        { name: 'light', value: '#F4F6F9' },
-      ],
-    },
+    backgrounds: { disable: true, grid: { disable: true } },
     options: {
       storySort: {
         order: [

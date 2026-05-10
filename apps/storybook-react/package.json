@@ -13,6 +13,7 @@
     "@dash-ui/react": "workspace:*",
     "@dash-ui/storybook-meta": "workspace:*",
     "@dash-ui/tokens": "workspace:*",
+    "dashboard-react": "workspace:*",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   },

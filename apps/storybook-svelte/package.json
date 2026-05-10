@@ -12,6 +12,7 @@
     "@dash-ui/storybook-meta": "workspace:*",
     "@dash-ui/svelte": "workspace:*",
     "@dash-ui/tokens": "workspace:*",
+    "dashboard-svelte": "workspace:*",
     "svelte": "^4.2.19"
   },
   "devDependencies": {

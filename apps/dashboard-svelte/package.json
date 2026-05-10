@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./pages/*.svelte": "./src/pages/*.svelte",
+    "./App.svelte": "./src/App.svelte"
+  },
   "scripts": {
     "dev": "vite --port 5174 --host",
     "build": "vite build",

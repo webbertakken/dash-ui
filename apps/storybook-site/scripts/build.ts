@@ -64,9 +64,9 @@ const indexHtml = `<!doctype html>
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: var(--font-sans);
+      background: var(--bg-page);
+      color: var(--text-1);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -74,45 +74,63 @@ const indexHtml = `<!doctype html>
       padding: 64px 24px;
     }
     main { width: 100%; max-width: 920px; }
+    .topbar { width: 100%; max-width: 920px; display: flex; justify-content: flex-end; margin-bottom: 16px; }
+    .motif-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-2);
+      background: var(--depthBg-1);
+      color: var(--text-2);
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .motif-toggle:hover { color: var(--text-1); border-color: var(--brand-05); }
     h1 { font-size: 32px; margin: 0 0 8px; letter-spacing: -0.01em; }
-    p.lead { color: var(--text-muted); font-size: 16px; margin: 0 0 32px; }
+    p.lead { color: var(--text-2); font-size: 16px; margin: 0 0 32px; max-width: 640px; }
     .pickers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
     a.card {
       display: flex;
       flex-direction: column;
       gap: 8px;
       padding: 20px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--card);
-      color: var(--text);
+      border: 1px solid var(--border-2);
+      border-radius: var(--radius-lg);
+      background: var(--depthBg-2);
+      color: var(--text-1);
       text-decoration: none;
       transition: border-color 120ms ease, transform 120ms ease;
+      box-shadow: var(--shadow-card);
     }
-    a.card:hover { border-color: var(--brand); transform: translateY(-1px); }
-    a.card:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+    a.card:hover { border-color: var(--brand-05); transform: translateY(-1px); }
+    a.card:focus-visible { outline: 2px solid var(--brand-05); outline-offset: 2px; }
     .badge {
       align-self: flex-start;
       padding: 2px 10px;
-      border-radius: 9999px;
-      font-size: 12px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
       font-weight: 500;
-      background: rgba(0, 111, 255, 0.18);
-      color: #6FB3FF;
+      background: var(--status-info-bg);
+      color: var(--brand-06);
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
     h2 { font-size: 18px; margin: 4px 0 0; }
-    .desc { color: var(--text-muted); font-size: 14px; margin: 0; }
-    .meta { color: var(--text-muted); font-size: 12px; margin-top: 12px; font-family: 'JetBrains Mono', monospace; }
-    footer { margin-top: 64px; color: var(--text-muted); font-size: 12px; text-align: center; }
-    a.footer-link { color: var(--text-muted); text-decoration: underline; }
+    .desc { color: var(--text-2); font-size: 14px; margin: 0; }
+    .meta { color: var(--text-3); font-size: 12px; margin-top: 12px; font-family: var(--font-mono); }
+    footer { margin-top: 64px; color: var(--text-3); font-size: 12px; text-align: center; }
   </style>
 </head>
 <body>
+  <div class="topbar">
+    <button class="motif-toggle" type="button" id="motif">Switch to light</button>
+  </div>
   <main>
     <h1>Dash UI design system</h1>
-    <p class="lead">Dash-inspired components for dashboards. Subtle, clean and factual style. Pick a renderer to browse the catalogue.</p>
+    <p class="lead">Dash-inspired components for dashboards. Subtle, clean and factual style. Pick a renderer to browse the catalogue, or jump to the live dashboard examples in any of them.</p>
     <div class="pickers">
       <a class="card" href="./react/">
         <span class="badge">React</span>
@@ -137,6 +155,23 @@ const indexHtml = `<!doctype html>
       Dash UI is a recreation of the Dash design system as a portable, multi-framework library.
     </footer>
   </main>
+  <script>
+    const html = document.documentElement;
+    const btn = document.getElementById('motif');
+    const stored = localStorage.getItem('motif');
+    if (stored) html.setAttribute('data-motif', stored);
+    function syncLabel() {
+      const m = html.getAttribute('data-motif');
+      btn.textContent = m === 'light' ? 'Switch to dark' : 'Switch to light';
+    }
+    syncLabel();
+    btn.addEventListener('click', () => {
+      const next = html.getAttribute('data-motif') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-motif', next);
+      localStorage.setItem('motif', next);
+      syncLabel();
+    });
+  </script>
 </body>
 </html>
 `;

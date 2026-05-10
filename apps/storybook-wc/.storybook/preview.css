@@ -1,8 +1,32 @@
-html, body, #storybook-root {
-  font-family: 'Inter', system-ui, sans-serif;
-  color: var(--text);
-  background: var(--bg);
+:root,
+html,
+body,
+.sb-show-main,
+.sb-main-padded,
+.docs-story,
+#storybook-root,
+#storybook-docs {
+  background: var(--bg-page) !important;
+  color: var(--text-1);
+  font-family: var(--font-sans);
 }
+
 html[data-motif='dark'] { color-scheme: dark; }
 html[data-motif='light'] { color-scheme: light; }
-#storybook-root { padding: 16px; }
+
+#storybook-root {
+  padding: 16px;
+  min-height: 100vh;
+}
+
+.sbdocs.sbdocs-wrapper,
+.sbdocs.sbdocs-content,
+.sbdocs-preview,
+.docs-story > div {
+  background: var(--bg-page) !important;
+  color: var(--text-1) !important;
+}
+
+.sbdocs h1, .sbdocs h2, .sbdocs h3, .sbdocs h4, .sbdocs p, .sbdocs li,
+.sbdocs td, .sbdocs th { color: var(--text-1); }
+.sbdocs code { color: var(--text-2); background: var(--neutral-08); padding: 1px 4px; border-radius: 3px; }

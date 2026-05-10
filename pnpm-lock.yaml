@@ -142,6 +142,9 @@ importers:
       '@dash-ui/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
+      dashboard-react:
+        specifier: workspace:*
+        version: link:../dashboard-react
       react:
         specifier: ^18.3.0
         version: 18.3.1
@@ -209,6 +212,9 @@ importers:
       '@dash-ui/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
+      dashboard-svelte:
+        specifier: workspace:*
+        version: link:../dashboard-svelte
       svelte:
         specifier: ^4.2.19
         version: 4.2.20

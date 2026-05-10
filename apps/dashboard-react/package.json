@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./pages/*": "./src/pages/*.tsx",
+    "./App": "./src/App.tsx",
+    "./data": "./src/data.ts",
+    "./*": "./src/*"
+  },
   "scripts": {
     "dev": "vite --port 5173 --host",
     "build": "tsc --noEmit && vite build",
