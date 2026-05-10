@@ -11,3 +11,16 @@ dist
 # autoresearch
 results.tsv
 runs/
+
+# session state / tracked locally only
+AMBIGUITIES.md
+DECISIONS.md
+LESSONS_LEARNED.md
+PROMPT.md
+ALL_PROMPTS.md
+.claude-session
+
+# storybook output
+storybook-static
+*.tsbuildinfo
+coverage

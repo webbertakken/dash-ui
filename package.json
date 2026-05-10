@@ -6,12 +6,39 @@
   "scripts": {
     "dev:react": "pnpm --filter dashboard-react dev",
     "dev:svelte": "pnpm --filter dashboard-svelte dev",
+    "dev:storybook": "pnpm --filter storybook-react dev",
     "build:react": "pnpm --filter dashboard-react build",
     "build:svelte": "pnpm --filter dashboard-svelte build",
-    "build": "pnpm -r build"
+    "build:wc": "pnpm --filter @dash-ui/wc build",
+    "build:storybook": "pnpm --filter storybook-react build && pnpm --filter storybook-svelte build && pnpm --filter storybook-wc build",
+    "build:site": "pnpm build:wc && pnpm build:storybook && pnpm --filter storybook-site build",
+    "build": "pnpm -r --filter=!storybook-* build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ssr": "tsx scripts/ssr-smoke.ts",
+    "typecheck": "pnpm -r --filter=./packages/* --filter=./apps/dashboard-* typecheck",
+    "lint": "echo 'no linter configured'"
   },
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@9.12.0"
+  "packageManager": "pnpm@9.12.0",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/svelte": "^5.2.4",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^2.1.8",
+    "jsdom": "^25.0.1",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
 }
