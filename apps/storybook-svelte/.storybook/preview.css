@@ -1,0 +1,8 @@
+html, body, #storybook-root {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+html[data-motif='dark'] { color-scheme: dark; }
+html[data-motif='light'] { color-scheme: light; }
+#storybook-root { padding: 16px; }

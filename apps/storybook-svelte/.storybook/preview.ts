@@ -1,7 +1,7 @@
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/svelte';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import '@dash-ui/tokens/tokens.css';
-import '@dash-ui/react/styles.css';
+import '@dash-ui/svelte/styles.css';
 import './preview.css';
 
 const preview: Preview = {
@@ -35,7 +35,6 @@ const preview: Preview = {
       },
     },
     controls: { expanded: true },
-    a11y: { context: '#storybook-root' },
   },
   decorators: [
     withThemeByDataAttribute({
