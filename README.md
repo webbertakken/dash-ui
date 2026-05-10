@@ -1,3 +1,10 @@
+This repo contains Design Systems and their implementations. Design Systems can be used in projects to easily style chosen components.
+
+Design Systems present:
+| name | prefix | description |
+| --- | --- | --- |
+| Dashboard | @dash-ui | Dash inspired components for dashboards - Subtle, clean and factual style - [example](link-to-svelte-storybook) |
+
 # Dash design system
 
 Complete recreation of the **Dash design system** delivered by Claude Design (claude.ai/design), implemented as a pnpm monorepo with both **React** and **Svelte** component libraries plus two fully functional **dashboard apps**.
