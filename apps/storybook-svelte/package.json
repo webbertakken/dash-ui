@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6007 --no-open --ci",
-    "build": "storybook build --output-dir storybook-static"
+    "build": "storybook build --output-dir storybook-static --disable-telemetry"
   },
   "dependencies": {
     "@dash-ui/assets": "workspace:*",
