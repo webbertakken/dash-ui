@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Type" />
+
+# Typography
+
+UI uses **Inter**. Hex / IPs / MAC addresses / SKUs use **JetBrains Mono**. We do not use display / serif faces.
+
+<div style={{ display: 'grid', gap: 16, marginTop: 16 }}>
+  {[
+    { name: 'Display 1', size: 28, weight: 600 },
+    { name: 'Display 2', size: 22, weight: 600 },
+    { name: 'Title', size: 16, weight: 600 },
+    { name: 'Body', size: 14, weight: 400 },
+    { name: 'Caption', size: 12, weight: 500 },
+    { name: 'Mono', size: 13, weight: 500, mono: true },
+  ].map((t) => (
+    <div key={t.name} style={{ borderBottom: '1px solid var(--border)', paddingBottom: 12 }}>
+      <div style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 6 }}>
+        {t.name} - {t.size}px / {t.weight}
+      </div>
+      <div style={{ fontSize: t.size, fontWeight: t.weight, fontFamily: t.mono ? 'JetBrains Mono, monospace' : undefined }}>
+        {t.mono ? '00:1A:2B:3C:4D:5E' : 'The quick brown fox jumps over the lazy dog'}
+      </div>
+    </div>
+  ))}
+</div>

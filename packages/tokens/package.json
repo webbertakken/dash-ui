@@ -7,6 +7,7 @@
   "exports": {
     ".": "./src/tokens.ts",
     "./css": "./src/tokens.css",
+    "./tokens.css": "./src/tokens.css",
     "./dashboard.css": "./src/dashboard.css"
   },
   "files": [

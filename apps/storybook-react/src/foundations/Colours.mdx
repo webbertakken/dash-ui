@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Colours" />
+
+# Colours
+
+The dashboard uses a small, restrained palette. Brand blue `#006FFF` is the only saturated colour. Greys, status colours and series colours are sampled from the original Dash tokens.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+  {[
+    { name: 'Brand', value: '#006FFF' },
+    { name: 'OK', value: '#00B070' },
+    { name: 'Warn', value: '#F5A623' },
+    { name: 'Critical', value: '#F03A3A' },
+    { name: 'BG', value: 'var(--bg)' },
+    { name: 'Surface', value: 'var(--surface)' },
+    { name: 'Card', value: 'var(--card)' },
+    { name: 'Text', value: 'var(--text)' },
+    { name: 'Muted', value: 'var(--text-muted)' },
+    { name: 'Border', value: 'var(--border)' },
+  ].map((c) => (
+    <div key={c.name} style={{ borderRadius: 8, overflow: 'hidden', background: 'var(--card)', border: '1px solid var(--border)' }}>
+      <div style={{ height: 60, background: c.value }} />
+      <div style={{ padding: 8 }}>
+        <div style={{ fontWeight: 600 }}>{c.name}</div>
+        <div style={{ color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontSize: 12 }}>{c.value}</div>
+      </div>
+    </div>
+  ))}
+</div>

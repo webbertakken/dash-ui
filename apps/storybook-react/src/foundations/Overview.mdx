@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Overview" />
+
+# Dash Design System
+
+A complete recreation of the Dash design system, exposed as **React**, **Svelte**, and **Web Component** packages.
+
+## Packages
+
+| Package | Description |
+|---|---|
+| `@dash-ui/tokens` | CSS variables (light + dark motifs) + JS token map |
+| `@dash-ui/assets` | Brand SVG logos + product marks |
+| `@dash-ui/react` | 168 React components |
+| `@dash-ui/svelte` | 168 Svelte components (mirrored API) |
+| `@dash-ui/wc` | Web Components compiled from the Svelte source |
+
+## Visual identity
+
+- **Brand blue**: `#006FFF` (the only saturated colour in the dashboard motif)
+- **Status**: `#00B070` ok, `#F5A623` warn, `#F03A3A` critical
+- **Type**: Inter (UI) + JetBrains Mono (IPs / MACs / SKUs)
+- **Default radius**: 6 px (12 for modals, 9999 for pills)
+
+Two motifs ship in `tokens.css`:
+
+```html
+<html data-motif="dark">  <!-- the default -->
+<html data-motif="light">
+```
+
+## Sidebar layout
+
+Components are grouped into 12 categories (max), the same set as the Svelte and Web Components Storybooks at `/svelte/` and `/wc/`.
