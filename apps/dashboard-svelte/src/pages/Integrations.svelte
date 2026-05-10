@@ -1,16 +1,21 @@
 <script lang="ts">
-  import { Card, Button, Pill, SearchBox, Tabs, PlusIcon } from '@dash-ui/svelte';
+  import { Card, Button, Pill, SearchBox, Tabs, Carousel, StarRating, PlusIcon } from '@dash-ui/svelte';
   let tab = 'all';
-  const ITEMS: [string, string, string, string][] = [
-    ['Microsoft Entra ID', 'SAML & SCIM for VPN, Wi-Fi, and Identity Enterprise. Sync up to 10,000 users.', 'Connected', '#0078D4'],
-    ['Google Workspace', 'Identity provider for portal sign-in and Wi-Fi captive portal.', 'Connected', '#4285F4'],
-    ['Okta', 'SAML 2.0 SSO for the Dash console and site manager.', 'Available', '#007DC1'],
-    ['Webhook · Slack', 'Posts critical alarms to #netops every 60 s.', 'Connected', '#611F69'],
-    ['PagerDuty', 'Routes danger-severity alarms to the on-call schedule.', 'Available', '#06AC38'],
-    ['Datadog', 'Streams device metrics and topology events.', 'Connected', '#632CA6'],
-    ['Home Assistant', 'Local control of lights, locks, and door-access events.', 'Available', '#41BDF5'],
-    ['Zabbix', 'SNMP v3 polling and trap forwarding.', 'Available', '#D40000'],
-    ['IFTTT · Door Access', 'Trigger flows on entry, denied, or alarm events.', 'Beta', '#406AFF'],
+  const FEATURED = [
+    { id: 'entra', title: 'New: Microsoft Entra ID', description: 'Sync up to 10,000 users via SAML & SCIM — now generally available.', color: '#0078D4' },
+    { id: 'datadog', title: 'Datadog metrics streaming', description: 'Stream device metrics and topology events to your Datadog account in real time.', color: '#632CA6' },
+    { id: 'ha', title: 'Home Assistant integration', description: 'Control lights, locks, and door-access events locally without cloud relay.', color: '#41BDF5' },
+  ];
+  const ITEMS: [string, string, string, string, number][] = [
+    ['Microsoft Entra ID', 'SAML & SCIM for VPN, Wi-Fi, and Identity Enterprise. Sync up to 10,000 users.', 'Connected', '#0078D4', 5],
+    ['Google Workspace', 'Identity provider for portal sign-in and Wi-Fi captive portal.', 'Connected', '#4285F4', 5],
+    ['Okta', 'SAML 2.0 SSO for the Dash console and site manager.', 'Available', '#007DC1', 4],
+    ['Webhook · Slack', 'Posts critical alarms to #netops every 60 s.', 'Connected', '#611F69', 4],
+    ['PagerDuty', 'Routes danger-severity alarms to the on-call schedule.', 'Available', '#06AC38', 5],
+    ['Datadog', 'Streams device metrics and topology events.', 'Connected', '#632CA6', 4],
+    ['Home Assistant', 'Local control of lights, locks, and door-access events.', 'Available', '#41BDF5', 5],
+    ['Zabbix', 'SNMP v3 polling and trap forwarding.', 'Available', '#D40000', 3],
+    ['IFTTT · Door Access', 'Trigger flows on entry, denied, or alarm events.', 'Beta', '#406AFF', 3],
   ];
   const HOOKS: [string, string, string, string, string][] = [
     ['https://hooks.slack.com/services/T0…', 'alarm.danger, alarm.warn', '2 min ago', '200 OK', 'success'],
@@ -43,8 +48,13 @@
     { id: 'api', label: 'API & Webhooks' },
   ]}
 />
+<div class="grid" style="padding-bottom:0;">
+  <div style="grid-column:span 12;">
+    <Carousel slides={FEATURED} label="Featured integrations" />
+  </div>
+</div>
 <div class="grid">
-  {#each ITEMS as [name, desc, status, color] (name)}
+  {#each ITEMS as [name, desc, status, color, rating] (name)}
     <Card span={4} style="flex-direction:row;gap:12px;align-items:flex-start;">
       <div style="width:36px;height:36px;border-radius:8px;background:{color};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0;">
         {name[0]}
@@ -61,6 +71,7 @@
           {/if}
         </div>
         <div style="color:#6E7079;font-size:12px;margin-top:4px;line-height:1.5;">{desc}</div>
+        <StarRating label="{name} community rating" value={rating} readOnly size="sm" />
         <div style="margin-top:10px;display:flex;gap:6px;">
           <Button style="font-size:11px;padding:4px 10px;">{status === 'Connected' ? 'Configure' : 'Connect'}</Button>
           {#if status === 'Connected'}

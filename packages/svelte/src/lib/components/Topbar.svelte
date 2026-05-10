@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import { appLogos, type AppLogo } from '@dash-ui/assets';
   import IconButton from './IconButton.svelte';
+  import Avatar from './Avatar.svelte';
   import CaretIcon from '../icons/CaretIcon.svelte';
   import SearchIcon from '../icons/SearchIcon.svelte';
   import UpdatesIcon from '../icons/UpdatesIcon.svelte';
@@ -27,11 +28,11 @@
 </script>
 
 <header class="topbar">
-  <div class="site-switch">
+  <button type="button" class="site-switch" aria-label="Switch site: {siteName}" aria-haspopup="menu">
     <span class="status-ring"></span>
-    <span class="site-name">{siteName}</span>
-    <CaretIcon class="caret" />
-  </div>
+    <span class="site-name" aria-hidden="true">{siteName}</span>
+    <CaretIcon class="caret" aria-hidden="true" />
+  </button>
   <nav class="app-tabs" aria-label="Apps">
     {#each apps as a (a.id)}
       <button
@@ -60,6 +61,6 @@
       {/if}
     </IconButton>
     <IconButton aria-label="Help" title="Help"><HelpIcon /></IconButton>
-    <div class="avatar" role="img" aria-label="Account, {initials}">{initials}</div>
+    <Avatar initials={initials} size="sm" alt="Account, {initials}" />
   </div>
 </header>

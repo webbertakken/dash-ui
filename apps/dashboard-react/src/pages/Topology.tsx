@@ -1,13 +1,84 @@
-import { useEffect, useRef, useState } from 'react';
-import { Button, IconButton, Pill, SearchBox, HealthBar, DownloadIcon } from '@dash-ui/react';
+import { useEffect, useRef, useState, useMemo } from 'react';
+import { Button, IconButton, Pill, SearchBox, HealthBar, DownloadIcon, Tooltip, TreeView, ContextMenu, Dendrogram } from '@dash-ui/react';
+import type { TreeNode, ContextMenuEntry, DendrogramNode } from '@dash-ui/react';
 import { NODES, LINKS, NODE_LABEL, type TopologyNode } from '../data.js';
 
-export function Topology() {
+const TYPE_COLORS: Record<string, string> = {
+  isp: '#6E7079',
+  gateway: '#006FFF',
+  switch: '#00C8C8',
+  ap: '#F5A623',
+  cam: '#A878F5',
+};
+
+function buildDendrogram(nodes: typeof NODES, links: typeof LINKS): DendrogramNode {
+  const children = new Map<string, string[]>();
+  const hasParent = new Set<string>();
+  for (const link of links) {
+    if (!children.has(link.a)) children.set(link.a, []);
+    children.get(link.a)!.push(link.b);
+    hasParent.add(link.b);
+  }
+  const roots = nodes.filter((n) => !hasParent.has(n.id));
+  function buildNode(id: string): DendrogramNode {
+    const node = nodes.find((n) => n.id === id)!;
+    const childIds = children.get(id) ?? [];
+    return {
+      id: node.id,
+      label: node.name,
+      color: TYPE_COLORS[node.type],
+      children: childIds.length ? childIds.map(buildNode) : undefined,
+    };
+  }
+  return roots.length === 1 ? buildNode(roots[0].id) : { id: '__root', label: 'Network', children: roots.map((r) => buildNode(r.id)) };
+}
+
+function buildTree(nodes: typeof NODES, links: typeof LINKS): TreeNode[] {
+  const children = new Map<string, string[]>();
+  const hasParent = new Set<string>();
+  for (const link of links) {
+    if (!children.has(link.a)) children.set(link.a, []);
+    children.get(link.a)!.push(link.b);
+    hasParent.add(link.b);
+  }
+  const roots = nodes.filter((n) => !hasParent.has(n.id));
+  function buildNode(id: string): TreeNode {
+    const node = nodes.find((n) => n.id === id)!;
+    const childIds = children.get(id) ?? [];
+    return {
+      id: node.id,
+      label: node.name,
+      meta: node.meta,
+      children: childIds.length ? childIds.map(buildNode) : undefined,
+    };
+  }
+  return roots.map((r) => buildNode(r.id));
+}
+
+export interface TopologyProps {
+  onAdopt?: () => void;
+}
+
+const NODE_CTX_ITEMS: ContextMenuEntry[] = [
+  { id: 'details', label: 'View details' },
+  { id: 'configure', label: 'Configure' },
+  { id: 'restart', label: 'Restart device' },
+  { separator: true },
+  { id: 'forget', label: 'Forget device', danger: true },
+];
+
+export function Topology({ onAdopt }: TopologyProps) {
   const [selected, setSelected] = useState('udm');
+  const [view, setView] = useState<'map' | 'list' | 'tree'>('map');
   const canvasRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
+
+  const treeNodes = useMemo(() => buildTree(NODES, LINKS), []);
+  const dendrogramRoot = useMemo(() => buildDendrogram(NODES, LINKS), []);
 
   useEffect(() => {
+    if (view !== 'map') return;
     function draw() {
       const canvas = canvasRef.current;
       const svg = svgRef.current;
@@ -34,7 +105,7 @@ export function Topology() {
     draw();
     window.addEventListener('resize', draw);
     return () => window.removeEventListener('resize', draw);
-  }, []);
+  }, [view]);
 
   const sel = NODES.find((n) => n.id === selected) ?? NODES[1];
 
@@ -52,19 +123,45 @@ export function Topology() {
       </div>
       <div className="topo">
         <div className="topo-toolbar">
-          <IconButton title="Map">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <circle cx="7" cy="3" r="1.4" stroke="currentColor" strokeWidth="1.4" />
-              <circle cx="3" cy="11" r="1.4" stroke="currentColor" strokeWidth="1.4" />
-              <circle cx="11" cy="11" r="1.4" stroke="currentColor" strokeWidth="1.4" />
-              <path d="M7 4.4v3M5.8 8.4l-2 1.6M8.2 8.4l2 1.6" stroke="currentColor" strokeWidth="1.4" />
-            </svg>
-          </IconButton>
-          <IconButton title="List">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 3.5h8M3 7h8M3 10.5h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </IconButton>
+          <Tooltip label="Map view" placement="bottom">
+            <IconButton
+              title="Map"
+              aria-pressed={view === 'map'}
+              onClick={() => setView('map')}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="3" r="1.4" stroke="currentColor" strokeWidth="1.4" />
+                <circle cx="3" cy="11" r="1.4" stroke="currentColor" strokeWidth="1.4" />
+                <circle cx="11" cy="11" r="1.4" stroke="currentColor" strokeWidth="1.4" />
+                <path d="M7 4.4v3M5.8 8.4l-2 1.6M8.2 8.4l2 1.6" stroke="currentColor" strokeWidth="1.4" />
+              </svg>
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="List view" placement="bottom">
+            <IconButton
+              title="List"
+              aria-pressed={view === 'list'}
+              onClick={() => setView('list')}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 3.5h8M3 7h8M3 10.5h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="Tree view" placement="bottom">
+            <IconButton
+              title="Tree"
+              aria-pressed={view === 'tree'}
+              onClick={() => setView('tree')}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="2.5" cy="7" r="1.5" stroke="currentColor" strokeWidth="1.2" />
+                <circle cx="11.5" cy="3" r="1.5" stroke="currentColor" strokeWidth="1.2" />
+                <circle cx="11.5" cy="11" r="1.5" stroke="currentColor" strokeWidth="1.2" />
+                <path d="M4 7h2.5c0-2 .5-2.5 3.5-4M4 7h2.5c0 2 .5 2.5 3.5 4" stroke="currentColor" strokeWidth="1.2" />
+              </svg>
+            </IconButton>
+          </Tooltip>
           <div className="sep" />
           <IconButton title="Show clients">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -81,36 +178,71 @@ export function Topology() {
         </div>
 
         <div className="topo-zoom">
-          <IconButton title="Zoom in">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M7 3v8M3 7h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </IconButton>
-          <IconButton title="Zoom out">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 7h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </IconButton>
-          <IconButton title="Fit">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 5V3h2M11 5V3H9M3 9v2h2M11 9v2H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </IconButton>
+          <Tooltip label="Zoom in" placement="left">
+            <IconButton title="Zoom in">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 3v8M3 7h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="Zoom out" placement="left">
+            <IconButton title="Zoom out">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="Fit to screen" placement="left">
+            <IconButton title="Fit">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 5V3h2M11 5V3H9M3 9v2h2M11 9v2H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </IconButton>
+          </Tooltip>
         </div>
 
-        <div className="topo-legend">
-          <div className="row"><span className="swatch tenG" />10 GbE</div>
-          <div className="row"><span className="swatch fiveG" />2.5 GbE</div>
-          <div className="row"><span className="swatch oneG" />1 GbE</div>
-          <div className="row"><span className="swatch wifi" />Wireless</div>
-        </div>
+        {view === 'map' && (
+          <div className="topo-legend">
+            <div className="row"><span className="swatch tenG" />10 GbE</div>
+            <div className="row"><span className="swatch fiveG" />2.5 GbE</div>
+            <div className="row"><span className="swatch oneG" />1 GbE</div>
+            <div className="row"><span className="swatch wifi" />Wireless</div>
+          </div>
+        )}
 
-        <div className="topo-canvas" ref={canvasRef}>
-          <svg className="topo-svg" ref={svgRef} />
-          {NODES.map((n) => (
-            <TopologyNodeView key={n.id} node={n} selected={selected === n.id} onClick={() => setSelected(n.id)} />
-          ))}
-        </div>
+        {view === 'map' ? (
+          <div className="topo-canvas" ref={canvasRef}>
+            <svg className="topo-svg" ref={svgRef} />
+            {NODES.map((n) => (
+              <TopologyNodeView
+                key={n.id}
+                node={n}
+                selected={selected === n.id}
+                onClick={() => setSelected(n.id)}
+                onContextMenu={(x, y) => { setSelected(n.id); setCtxMenu({ x, y }); }}
+              />
+            ))}
+          </div>
+        ) : view === 'list' ? (
+          <div className="topo-list">
+            <TreeView
+              nodes={treeNodes}
+              selected={selected}
+              onSelect={setSelected}
+              defaultExpanded={['isp', 'udm', 'sw1', 'sw2']}
+              label="Network hierarchy"
+            />
+          </div>
+        ) : (
+          <div className="topo-list" style={{ padding: '16px' }}>
+            <Dendrogram
+              root={dendrogramRoot}
+              ariaLabel="Network topology tree"
+              colWidth={120}
+              rowHeight={30}
+            />
+          </div>
+        )}
 
         <div className="drawer">
           <div className="dr-h">
@@ -164,6 +296,15 @@ export function Topology() {
           </div>
         </div>
       </div>
+      <ContextMenu
+        items={NODE_CTX_ITEMS}
+        x={ctxMenu?.x ?? 0}
+        y={ctxMenu?.y ?? 0}
+        open={ctxMenu !== null}
+        onClose={() => setCtxMenu(null)}
+        onAction={() => setCtxMenu(null)}
+        label="Device actions"
+      />
     </>
   );
 }
@@ -181,10 +322,12 @@ function TopologyNodeView({
   node,
   selected,
   onClick,
+  onContextMenu,
 }: {
   node: TopologyNode;
   selected: boolean;
   onClick: () => void;
+  onContextMenu?: (x: number, y: number) => void;
 }) {
   const statusText = node.status === 'good' ? 'online' : node.status === 'warn' ? 'warning' : 'offline';
   return (
@@ -195,7 +338,9 @@ function TopologyNodeView({
       tabIndex={0}
       aria-label={`${node.name}, ${statusText}`}
       aria-pressed={selected}
+      aria-haspopup="menu"
       onClick={onClick}
+      onContextMenu={(e) => { e.preventDefault(); onContextMenu?.(e.clientX, e.clientY); }}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();

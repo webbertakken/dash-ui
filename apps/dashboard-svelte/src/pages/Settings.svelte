@@ -1,9 +1,90 @@
 <script lang="ts">
-  import { Card, Button, Pill, Field, RowToggle } from '@dash-ui/svelte';
-  const TAB_NAMES = ['System', 'Console', 'Network', 'Internet', 'VLANs', 'Routing', 'Profiles', 'Advanced'] as const;
+  import { Card, Button, Pill, Field, Input, RowToggle, RadioGroup, NumberInput, Textarea, Slider, Accordion, AccordionItem, Breadcrumb, Stepper, FileUpload, Combobox, SplitButton, IPInput, CodeBlock, TimePicker, PasswordInput, OTPInput, ColorPicker, COLOR_SWATCHES, MACInput, DurationInput, CIDRInput, Callout, InputGroup, Menubar, TagInput, ContextualHelp, toast } from '@dash-ui/svelte';
+  import type { ComboboxOption } from '@dash-ui/svelte';
+  const TAB_NAMES = ['System', 'Console', 'Network', 'Internet', 'WiFi', 'VLANs', 'Routing', 'Profiles', 'Advanced'] as const;
   type SettingsTab = (typeof TAB_NAMES)[number];
   let tab: SettingsTab = 'System';
+  let country = 'gb';
+  let timezone = 'Europe/London';
+  let maintStart = '03:00';
+  let maintEnd = '05:00';
 
+  const VLAN_ROWS = [
+    { name: 'Default', id: '1', purpose: 'Corporate LAN', isolation: '—', dhcp: 'Yes', color: 'blue' },
+    { name: 'IoT', id: '20', purpose: 'Smart home', isolation: 'Isolated', dhcp: 'Yes', color: 'amber' },
+    { name: 'Guest', id: '30', purpose: 'Captive portal', isolation: 'Isolated', dhcp: 'Yes', color: 'green' },
+    { name: 'Cameras', id: '40', purpose: 'Camera Service', isolation: 'Isolated from LAN', dhcp: 'Yes', color: 'purple' },
+    { name: 'Servers', id: '50', purpose: 'Rack / NAS', isolation: '—', dhcp: 'Static', color: 'teal' },
+    { name: 'Mgmt', id: '99', purpose: 'Switch/AP mgmt', isolation: 'Isolated', dhcp: 'Yes', color: 'slate' },
+  ];
+  let vlanColors: Record<string, string> = Object.fromEntries(VLAN_ROWS.map((r) => [r.name, r.color]));
+  let selectedVlan = VLAN_ROWS[0].name;
+  $: selectedVlanColor = vlanColors[selectedVlan] ?? 'blue';
+
+  const COUNTRY_OPTIONS: ComboboxOption[] = [
+    { value: 'au', label: 'Australia' },
+    { value: 'br', label: 'Brazil' },
+    { value: 'ca', label: 'Canada' },
+    { value: 'cn', label: 'China' },
+    { value: 'de', label: 'Germany' },
+    { value: 'fr', label: 'France' },
+    { value: 'in', label: 'India' },
+    { value: 'jp', label: 'Japan' },
+    { value: 'nl', label: 'Netherlands' },
+    { value: 'sg', label: 'Singapore' },
+    { value: 'us', label: 'United States' },
+    { value: 'gb', label: 'United Kingdom' },
+  ];
+
+  const TIMEZONE_OPTIONS: ComboboxOption[] = [
+    { value: 'America/New_York', label: 'America/New_York (GMT-4)' },
+    { value: 'America/Chicago', label: 'America/Chicago (GMT-5)' },
+    { value: 'America/Denver', label: 'America/Denver (GMT-6)' },
+    { value: 'America/Los_Angeles', label: 'America/Los_Angeles (GMT-7)' },
+    { value: 'America/Sao_Paulo', label: 'America/Sao_Paulo (GMT-3)' },
+    { value: 'Europe/London', label: 'Europe/London (GMT+1)' },
+    { value: 'Europe/Paris', label: 'Europe/Paris (GMT+2)' },
+    { value: 'Europe/Berlin', label: 'Europe/Berlin (GMT+2)' },
+    { value: 'Europe/Amsterdam', label: 'Europe/Amsterdam (GMT+2)' },
+    { value: 'Asia/Tokyo', label: 'Asia/Tokyo (GMT+9)' },
+    { value: 'Asia/Shanghai', label: 'Asia/Shanghai (GMT+8)' },
+    { value: 'Asia/Singapore', label: 'Asia/Singapore (GMT+8)' },
+    { value: 'Australia/Sydney', label: 'Australia/Sydney (GMT+10)' },
+    { value: 'UTC', label: 'UTC (GMT+0)' },
+  ];
+  let txPower2g = 80;
+  let txPower5g = 100;
+  let rxSensitivity = 50;
+
+  let otpValue = '';
+  const SETTINGS_MENUS = [
+    { id: 'file', label: 'File', items: [
+      { id: 'save', label: 'Save' },
+      { id: 'save-apply', label: 'Save & apply now' },
+      { id: 'sep1', label: '', separator: true },
+      { id: 'export', label: 'Export config…' },
+      { id: 'import', label: 'Import config…' },
+    ]},
+    { id: 'edit', label: 'Edit', items: [
+      { id: 'reset', label: 'Reset to defaults' },
+      { id: 'duplicate', label: 'Duplicate profile' },
+      { id: 'sep2', label: '', separator: true },
+      { id: 'revert', label: 'Revert changes' },
+    ]},
+    { id: 'view', label: 'View', items: [
+      { id: 'compact', label: 'Compact view' },
+      { id: 'advanced', label: 'Show advanced settings' },
+    ]},
+  ];
+  function onMenuAction(e: CustomEvent<{ menuId: string; itemId: string }>) {
+    const { itemId } = e.detail;
+    if (itemId === 'save' || itemId === 'save-apply') toast.success('Settings saved');
+    else if (itemId === 'export') toast.info('Config exported');
+    else if (itemId === 'import') toast.info('Import config…');
+    else if (itemId === 'reset') toast.warn('Reset to defaults');
+    else if (itemId === 'revert') toast.warn('Changes reverted');
+    else toast.info(itemId);
+  }
   const CONSOLE_TOGGLES: [string, string, boolean][] = [
     ['Application updates', 'Automatically update Network, Protect, Access', true],
     ['Telemetry', 'Send anonymized diagnostic data to Dash', true],
@@ -17,8 +98,23 @@
   <div class="ph-title">Settings</div>
   <div class="ph-actions">
     <Button>Discard</Button>
-    <Button variant="primary">Save</Button>
+    <SplitButton
+      label="Save"
+      variant="primary"
+      items={[
+        { id: 'save-apply', label: 'Save & apply now' },
+        { id: 'export', label: 'Export config…' },
+      ]}
+      on:primary={() => toast.success('Settings saved')}
+      on:action={(e) => {
+        if (e.detail === 'save-apply') toast.success('Saved & applying…');
+        else toast.info('Config exported');
+      }}
+    />
   </div>
+</div>
+<div style="padding:8px 24px 0;">
+  <Menubar label="Settings toolbar" menus={SETTINGS_MENUS} on:action={onMenuAction} />
 </div>
 <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;padding:16px 24px 24px;">
   <aside style="display:flex;flex-direction:column;gap:1px;font-size:13px;">
@@ -27,14 +123,28 @@
     {/each}
   </aside>
   <div style="display:flex;flex-direction:column;gap:12px;">
+    <Breadcrumb items={[{ label: 'Settings' }, { label: tab }]} />
     {#if tab === 'System'}
       <Card>
         <h3 style="color:#fff;font-size:14px;">System</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px;">
           <Field label="Site name" value="Edge Gateway (Gateway)" />
-          <Field label="Country / Region" value="United Kingdom" />
-          <Field label="Timezone" value="Europe/London (GMT+1)" />
-          <Field label="Update schedule" value="Sundays · 03:00" />
+          <div class="field">
+            <label for="sys-country" style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:4px;">Country / Region</label>
+            <Combobox id="sys-country" options={COUNTRY_OPTIONS} value={country} on:change={(e) => (country = e.detail)} placeholder="Search country…" />
+          </div>
+          <div class="field">
+            <label for="sys-tz" style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:4px;">Timezone</label>
+            <Combobox id="sys-tz" options={TIMEZONE_OPTIONS} value={timezone} on:change={(e) => (timezone = e.detail)} placeholder="Search timezone…" />
+          </div>
+          <div class="field">
+            <span style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:6px;">Maintenance window (Sundays)</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <TimePicker label="Start" value={maintStart} on:change={(e) => (maintStart = e.detail)} />
+              <span style="color:#6E7079;font-size:13px;margin-top:18px;">–</span>
+              <TimePicker label="End" value={maintEnd} on:change={(e) => (maintEnd = e.detail)} />
+            </div>
+          </div>
         </div>
       </Card>
       <Card>
@@ -42,7 +152,13 @@
         <RowToggle title="Auto-backup to Dash Cloud" description="Daily · last successful 04:00 today" on={true} />
         <div style="display:flex;gap:8px;margin-top:10px;">
           <Button>Download backup</Button>
-          <Button>Restore from file</Button>
+        </div>
+        <div style="margin-top:12px;">
+          <FileUpload
+            label="Restore from backup file"
+            hint=".unf · .dash-ui backup files"
+            accept=".unf,.dash-ui,application/zip"
+          />
         </div>
       </Card>
     {:else if tab === 'Console'}
@@ -51,6 +167,25 @@
         {#each CONSOLE_TOGGLES as [t, d, on]}
           <RowToggle title={t} description={d} {on} />
         {/each}
+      </Card>
+      <Card>
+        <h3 style="color:#fff;font-size:14px;">SSH authorized keys</h3>
+        <Callout variant="warn" title="SSH access is powerful">
+          Authorized keys bypass password auth. Only add keys from devices you own and trust.
+        </Callout>
+        <p style="font-size:12px;color:#6E7079;margin:10px 0 10px;">Paste one public key per line. Accepted formats: ssh-rsa, ssh-ed25519, ecdsa-sha2-nistp256.</p>
+        <Field label="Authorized keys" id="settings-ssh-keys">
+          <Textarea id="settings-ssh-keys" rows={5} placeholder="ssh-ed25519 AAAA... user@host" style="font-family:'JetBrains Mono',monospace;font-size:12px;" />
+        </Field>
+      </Card>
+      <Card>
+        <h3 style="color:#fff;font-size:14px;">Quick commands</h3>
+        <p style="font-size:12px;color:#6E7079;margin:0 0 10px;">Useful CLI commands for device diagnostics via SSH.</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <CodeBlock language="sh" label="Show system info command" code="dashctl sysinfo" />
+          <CodeBlock language="sh" label="Show interface status command" code="ip -br addr show" />
+          <CodeBlock language="sh" label="Show active sessions command" code="cat /proc/net/nf_conntrack_count 2>/dev/null || conntrack -L -o extended | wc -l" />
+        </div>
       </Card>
       <Card>
         <h3 style="color:#fff;font-size:14px;">Hardware</h3>
@@ -62,13 +197,16 @@
         </div>
       </Card>
     {:else if tab === 'Network'}
+      <Callout variant="info" title="DHCP changes take effect immediately">
+        Existing leases are not revoked. Clients will receive new settings on the next renewal cycle (typically within the lease time).
+      </Callout>
       <Card>
         <h3 style="color:#fff;font-size:14px;">Default network</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px;">
           <Field label="Network name" value="Default" />
-          <Field label="Gateway / Subnet" value="192.168.1.1/24" />
+          <CIDRInput label="Subnet" value="192.168.1.0/24" />
           <Field label="DHCP range" value="192.168.1.6 – 192.168.1.254" />
-          <Field label="Lease time" value="86400 s" />
+          <DurationInput label="Lease time (HH:MM:SS)" value={86400} maxHours={168} />
         </div>
         <RowToggle title="IGMP snooping" description="Optimize multicast on this network" on={true} />
         <RowToggle title="Multicast DNS" description="Forward mDNS across VLANs" on={false} />
@@ -102,14 +240,41 @@
         </table>
       </Card>
     {:else if tab === 'Internet'}
+      <Stepper
+        steps={[
+          { id: 'detect', label: 'Detected' },
+          { id: 'configure', label: 'Configure' },
+          { id: 'verify', label: 'Verify' },
+          { id: 'online', label: 'Online' },
+        ]}
+        active="verify"
+      />
       <Card>
         <h3 style="color:#fff;font-size:14px;">WAN1 <Pill variant="success">Online</Pill></h3>
+        <div style="margin-bottom:14px;">
+          <RadioGroup
+            legend="Connection type"
+            value="dhcp"
+            horizontal={true}
+            options={[
+              { value: 'dhcp', label: 'DHCP', description: 'Automatic address from ISP' },
+              { value: 'static', label: 'Static IP', description: 'Fixed address' },
+              { value: 'pppoe', label: 'PPPoE', description: 'Username / password' },
+            ]}
+          />
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px;">
-          <Field label="Connection" value="DHCP" />
-          <Field label="Public IP" value="185.42.118.214" />
-          <Field label="Gateway" value="185.42.118.1" />
-          <Field label="DNS" value="1.1.1.1, 1.0.0.1" />
-          <Field label="MTU" value="1500" />
+          <IPInput label="Public IP" value="185.42.118.214" />
+          <IPInput label="Gateway" value="185.42.118.1" />
+          <TagInput label="DNS servers" value={['1.1.1.1', '1.0.0.1']} placeholder="Add IP…" />
+          <div style="display:flex;align-items:flex-end;gap:6px;">
+            <NumberInput label="MTU" value={1500} min={576} max={9000} />
+            <ContextualHelp
+              placement="top"
+              title="MTU (Maximum Transmission Unit)"
+              body="Maximum packet size in bytes. 1500 is standard for Ethernet; PPPoE typically requires 1492. Jumbo frames use 9000."
+            />
+          </div>
           <Field label="Uptime" value="42d 6h 12m" />
         </div>
       </Card>
@@ -127,6 +292,41 @@
         <RowToggle title="Smart Queues (QoS)" description="Prioritize realtime traffic" on={true} />
         <RowToggle title="IPv6 prefix delegation" description="/56 from ISP" on={true} />
       </Card>
+    {:else if tab === 'WiFi'}
+      <Card>
+        <h3 style="color:#fff;font-size:14px;">SSIDs</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px;">
+          <Field label="SSID name" value="Office-Net" />
+          <PasswordInput label="WPA2 passphrase" value="s3cur3passw0rd" autocomplete="new-password" />
+          <Field label="SSID name (guest)" value="Guest-Net" />
+          <PasswordInput label="WPA2 passphrase (guest)" placeholder="Enter passphrase…" autocomplete="new-password" />
+        </div>
+      </Card>
+      <Card>
+        <h3 style="color:#fff;font-size:14px;">MAC filter</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:6px;">
+          <MACInput label="Allowed device 1" value="A4:C3:F0:11:22:33" />
+          <MACInput label="Allowed device 2" value="DC:A6:32:AB:CD:EF" />
+        </div>
+      </Card>
+      <Card>
+        <h3 style="color:#fff;font-size:14px;">2.4 GHz radio</h3>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:6px;">
+          <Slider label="Transmit power" bind:value={txPower2g} min={0} max={100} step={10} suffix="%" />
+          <Slider label="RX sensitivity" bind:value={rxSensitivity} min={0} max={100} step={5} suffix="%" />
+        </div>
+        <RowToggle title="Auto channel" description="Select least congested channel automatically" on={true} />
+        <RowToggle title="Band steering" description="Prefer 5 GHz for capable clients" on={true} />
+      </Card>
+      <Card>
+        <h3 style="color:#fff;font-size:14px;">5 GHz radio</h3>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:6px;">
+          <Slider label="Transmit power" bind:value={txPower5g} min={0} max={100} step={10} suffix="%" />
+        </div>
+        <RowToggle title="Auto channel" description="Select least congested channel automatically" on={true} />
+        <RowToggle title="DFS channels" description="Enable radar-protected DFS channels" on={false} />
+        <RowToggle title="802.11k/v/r" description="Fast BSS transition and neighbour reports" on={true} />
+      </Card>
     {:else if tab === 'VLANs'}
       <Card>
         <h3 style="color:#fff;font-size:14px;display:flex;align-items:center;">
@@ -137,28 +337,39 @@
           <caption class="sr-only">VLANs</caption>
           <thead>
             <tr>
+              <th scope="col" style="width:28px;" aria-label="Label colour"></th>
               <th scope="col">Name</th><th scope="col">VLAN ID</th><th scope="col">Purpose</th><th scope="col">Isolation</th><th scope="col">DHCP</th>
             </tr>
           </thead>
           <tbody>
-            {#each [
-              ['Default', '1', 'Corporate LAN', '—', 'Yes'],
-              ['IoT', '20', 'Smart home', 'Isolated', 'Yes'],
-              ['Guest', '30', 'Captive portal', 'Isolated', 'Yes'],
-              ['Cameras', '40', 'Camera Service', 'Isolated from LAN', 'Yes'],
-              ['Servers', '50', 'Rack / NAS', '—', 'Static'],
-              ['Mgmt', '99', 'Switch/AP mgmt', 'Isolated', 'Yes'],
-            ] as r}
-              <tr>
-                <td style="color:#fff;">{r[0]}</td>
-                <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">{r[1]}</td>
-                <td>{r[2]}</td>
-                <td style="color:#A4A7B5;">{r[3]}</td>
-                <td style="color:#A4A7B5;">{r[4]}</td>
+            {#each VLAN_ROWS as r}
+              {@const swatch = COLOR_SWATCHES.find((s) => s.value === vlanColors[r.name])}
+              <tr
+                on:click={() => (selectedVlan = r.name)}
+                style="cursor:pointer;{selectedVlan === r.name ? 'background:rgba(255,255,255,0.03);' : ''}"
+              >
+                <td>
+                  <span
+                    style="display:inline-block;width:12px;height:12px;border-radius:50%;background:{swatch?.color ?? '#6E7079'};vertical-align:middle;"
+                    aria-hidden="true"
+                  />
+                </td>
+                <td style="color:#fff;">{r.name}</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">{r.id}</td>
+                <td>{r.purpose}</td>
+                <td style="color:#A4A7B5;">{r.isolation}</td>
+                <td style="color:#A4A7B5;">{r.dhcp}</td>
               </tr>
             {/each}
           </tbody>
         </table>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+          <ColorPicker
+            label="Label colour — {selectedVlan}"
+            value={selectedVlanColor}
+            onChange={(v) => { vlanColors[selectedVlan] = v; vlanColors = vlanColors; }}
+          />
+        </div>
       </Card>
     {:else if tab === 'Routing'}
       <Card>
@@ -198,6 +409,17 @@
       </Card>
     {:else if tab === 'Profiles'}
       <Card>
+        <h3 style="color:#fff;font-size:14px;">Two-factor authentication</h3>
+        <p style="font-size:13px;color:#A4A7B5;margin:6px 0 14px;">Enter the 6-digit code from your authenticator app to verify 2FA setup.</p>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <OTPInput label="Verification code" bind:value={otpValue} />
+          <div style="display:flex;gap:8px;">
+            <Button variant="primary" disabled={otpValue.length < 6}>Verify</Button>
+            <Button on:click={() => (otpValue = '')}>Reset</Button>
+          </div>
+        </div>
+      </Card>
+      <Card>
         <h3 style="color:#fff;font-size:14px;">RADIUS profiles</h3>
         <table style="margin-top:4px;">
           <caption class="sr-only">RADIUS profiles</caption>
@@ -212,6 +434,31 @@
             {/each}
           </tbody>
         </table>
+      </Card>
+      <Card>
+        <h3 style="color:#fff;font-size:14px;">Add RADIUS profile</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px;">
+          <Field label="Profile name">
+            <Input placeholder="e.g. Corp 802.1X" />
+          </Field>
+          <Field label="Authentication server">
+            <InputGroup suffix=":1812">
+              <Input placeholder="hostname or IP" value="10.0.50.21" />
+            </InputGroup>
+          </Field>
+          <Field label="Accounting server">
+            <InputGroup suffix=":1813">
+              <Input placeholder="hostname or IP" value="10.0.50.21" />
+            </InputGroup>
+          </Field>
+          <Field label="Shared secret">
+            <PasswordInput placeholder="RADIUS shared secret" />
+          </Field>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <Button variant="primary">Add profile</Button>
+          <Button>Cancel</Button>
+        </div>
       </Card>
       <Card>
         <h3 style="color:#fff;font-size:14px;">Schedules</h3>
@@ -231,20 +478,24 @@
       </Card>
     {:else if tab === 'Advanced'}
       <Card>
-        <h3 style="color:#fff;font-size:14px;">Advanced</h3>
-        <RowToggle title="Hardware offload" description="Accelerate routing in NPU" on={true} />
-        <RowToggle title="Smart DNS" description="Cache and filter queries locally" on={true} />
-        <RowToggle title="Connectivity monitor" description="Probe gateway every 5 s" on={true} />
-        <RowToggle title="Crash reports" description="Send kernel panics to Dash" on={true} />
-        <RowToggle title="Debug logging" description="Verbose · increases write IO" on={false} />
-      </Card>
-      <Card>
-        <h3 style="color:#fff;font-size:14px;">Danger zone</h3>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <Button>Restart console</Button>
-          <Button>Forget all clients</Button>
-          <Button variant="danger">Factory reset</Button>
-        </div>
+        <Accordion>
+          <AccordionItem title="Performance" defaultOpen={true}>
+            <RowToggle title="Hardware offload" description="Accelerate routing in NPU" on={true} />
+            <RowToggle title="Smart DNS" description="Cache and filter queries locally" on={true} />
+            <RowToggle title="Connectivity monitor" description="Probe gateway every 5 s" on={true} />
+          </AccordionItem>
+          <AccordionItem title="Diagnostics">
+            <RowToggle title="Crash reports" description="Send kernel panics to Dash" on={true} />
+            <RowToggle title="Debug logging" description="Verbose · increases write IO" on={false} />
+          </AccordionItem>
+          <AccordionItem title="Danger zone">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;padding-bottom:4px;">
+              <Button>Restart console</Button>
+              <Button>Forget all clients</Button>
+              <Button variant="danger">Factory reset</Button>
+            </div>
+          </AccordionItem>
+        </Accordion>
       </Card>
     {/if}
   </div>

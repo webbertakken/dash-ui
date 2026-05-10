@@ -1,16 +1,22 @@
 import { useState } from 'react';
-import { Card, Button, Pill, SearchBox, Tabs, PlusIcon } from '@dash-ui/react';
+import { Card, Button, Pill, SearchBox, Tabs, Carousel, StarRating, PlusIcon } from '@dash-ui/react';
 
-const ITEMS: [string, string, string, string][] = [
-  ['Microsoft Entra ID', 'SAML & SCIM for VPN, Wi-Fi, and Identity Enterprise. Sync up to 10,000 users.', 'Connected', '#0078D4'],
-  ['Google Workspace', 'Identity provider for portal sign-in and Wi-Fi captive portal.', 'Connected', '#4285F4'],
-  ['Okta', 'SAML 2.0 SSO for the Dash console and site manager.', 'Available', '#007DC1'],
-  ['Webhook · Slack', 'Posts critical alarms to #netops every 60 s.', 'Connected', '#611F69'],
-  ['PagerDuty', 'Routes danger-severity alarms to the on-call schedule.', 'Available', '#06AC38'],
-  ['Datadog', 'Streams device metrics and topology events.', 'Connected', '#632CA6'],
-  ['Home Assistant', 'Local control of lights, locks, and door-access events.', 'Available', '#41BDF5'],
-  ['Zabbix', 'SNMP v3 polling and trap forwarding.', 'Available', '#D40000'],
-  ['IFTTT · Door Access', 'Trigger flows on entry, denied, or alarm events.', 'Beta', '#406AFF'],
+const FEATURED = [
+  { id: 'entra', title: 'New: Microsoft Entra ID', description: 'Sync up to 10,000 users via SAML & SCIM — now generally available.', color: '#0078D4' },
+  { id: 'datadog', title: 'Datadog metrics streaming', description: 'Stream device metrics and topology events to your Datadog account in real time.', color: '#632CA6' },
+  { id: 'ha', title: 'Home Assistant integration', description: 'Control lights, locks, and door-access events locally without cloud relay.', color: '#41BDF5' },
+];
+
+const ITEMS: [string, string, string, string, number][] = [
+  ['Microsoft Entra ID', 'SAML & SCIM for VPN, Wi-Fi, and Identity Enterprise. Sync up to 10,000 users.', 'Connected', '#0078D4', 5],
+  ['Google Workspace', 'Identity provider for portal sign-in and Wi-Fi captive portal.', 'Connected', '#4285F4', 5],
+  ['Okta', 'SAML 2.0 SSO for the Dash console and site manager.', 'Available', '#007DC1', 4],
+  ['Webhook · Slack', 'Posts critical alarms to #netops every 60 s.', 'Connected', '#611F69', 4],
+  ['PagerDuty', 'Routes danger-severity alarms to the on-call schedule.', 'Available', '#06AC38', 5],
+  ['Datadog', 'Streams device metrics and topology events.', 'Connected', '#632CA6', 4],
+  ['Home Assistant', 'Local control of lights, locks, and door-access events.', 'Available', '#41BDF5', 5],
+  ['Zabbix', 'SNMP v3 polling and trap forwarding.', 'Available', '#D40000', 3],
+  ['IFTTT · Door Access', 'Trigger flows on entry, denied, or alarm events.', 'Beta', '#406AFF', 3],
 ];
 
 const HOOKS: [string, string, string, string, string][] = [
@@ -26,7 +32,7 @@ const KEYS: [string, string, string, string][] = [
   ['Legacy bridge', 'leg_•••• 1100', 'ro, expired', 'revoked'],
 ];
 
-function ServiceCard({ name, desc, status, color }: { name: string; desc: string; status: string; color: string }) {
+function ServiceCard({ name, desc, status, color, rating }: { name: string; desc: string; status: string; color: string; rating: number }) {
   const pill =
     status === 'Connected' ? (
       <Pill variant="success">Connected</Pill>
@@ -62,6 +68,7 @@ function ServiceCard({ name, desc, status, color }: { name: string; desc: string
           {pill}
         </div>
         <div style={{ color: '#6E7079', fontSize: 12, marginTop: 4, lineHeight: 1.5 }}>{desc}</div>
+        <StarRating label={`${name} community rating`} value={rating} readOnly size="sm" />
         <div style={{ marginTop: 10, display: 'flex', gap: 6 }}>
           <Button style={{ fontSize: 11, padding: '4px 10px' }}>{status === 'Connected' ? 'Configure' : 'Connect'}</Button>
           {status === 'Connected' && <Button style={{ fontSize: 11, padding: '4px 10px' }}>Logs</Button>}
@@ -96,9 +103,14 @@ export function Integrations() {
           { id: 'api', label: 'API & Webhooks' },
         ]}
       />
+      <div className="grid" style={{ paddingBottom: 0 }}>
+        <div style={{ gridColumn: 'span 12' }}>
+          <Carousel slides={FEATURED} label="Featured integrations" />
+        </div>
+      </div>
       <div className="grid">
-        {ITEMS.map(([name, desc, status, color]) => (
-          <ServiceCard key={name} name={name} desc={desc} status={status} color={color} />
+        {ITEMS.map(([name, desc, status, color, rating]) => (
+          <ServiceCard key={name} name={name} desc={desc} status={status} color={color} rating={rating} />
         ))}
       </div>
       <div className="grid" style={{ paddingTop: 0 }}>

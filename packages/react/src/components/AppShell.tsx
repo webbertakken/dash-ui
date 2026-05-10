@@ -1,6 +1,7 @@
 import { Fragment, type ReactNode } from 'react';
 import { appLogos, brand } from '@dash-ui/assets';
 import { IconButton } from './Button.js';
+import { Avatar } from './Avatar.js';
 import { CaretIcon, SearchIcon, UpdatesIcon, BellIcon, HelpIcon } from '../icons.js';
 
 void brand;
@@ -39,11 +40,11 @@ export function Topbar({
 }: TopbarProps) {
   return (
     <header className="topbar">
-      <div className="site-switch">
+      <button type="button" className="site-switch" aria-label={`Switch site: ${siteName}`} aria-haspopup="menu">
         <span className="status-ring" />
-        <span className="site-name">{siteName}</span>
-        <CaretIcon className="caret" />
-      </div>
+        <span className="site-name" aria-hidden="true">{siteName}</span>
+        <CaretIcon className="caret" aria-hidden="true" />
+      </button>
       <nav className="app-tabs" aria-label="Apps">
         {apps.map((a) => (
           <button
@@ -95,7 +96,7 @@ export function Topbar({
         <IconButton aria-label="Help" title="Help">
           <HelpIcon />
         </IconButton>
-        <div className="avatar" role="img" aria-label={`Account, ${initials}`}>{initials}</div>
+        <Avatar initials={initials} size="sm" alt={`Account, ${initials}`} />
       </div>
     </header>
   );

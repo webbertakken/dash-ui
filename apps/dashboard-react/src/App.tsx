@@ -7,6 +7,9 @@ import {
   Field,
   Pill,
   Button,
+  Toaster,
+  CommandPalette,
+  type CommandItem,
   DashboardIcon,
   DevicesIcon,
   ClientsIcon,
@@ -74,10 +77,25 @@ const PAGE_LABELS: Record<string, string> = Object.fromEntries(
   SECTIONS.flatMap((s) => s.items).map((i) => [i.id, i.label]),
 );
 
+const SHORTCUTS: Record<string, string> = {
+  dashboard: 'G+D',
+  devices: 'G+V',
+  clients: 'G+C',
+  topology: 'G+T',
+  alarms: 'G+A',
+  logs: 'G+L',
+  settings: 'G+S',
+};
+
+const CMD_ITEMS: CommandItem[] = SECTIONS.flatMap((s) =>
+  s.items.map((i) => ({ id: i.id, label: i.label, group: s.title, shortcut: SHORTCUTS[i.id] })),
+);
+
 export function App() {
   const [activeApp, setActiveApp] = useState('network');
   const [page, setPage] = useState('topology');
   const [adoptOpen, setAdoptOpen] = useState(false);
+  const [cmdOpen, setCmdOpen] = useState(false);
 
   const openAdopt = () => setAdoptOpen(true);
   const closeAdopt = () => setAdoptOpen(false);
@@ -87,6 +105,17 @@ export function App() {
   useEffect(() => {
     document.title = `${pageLabel} · Dash Network`;
   }, [pageLabel]);
+
+  useEffect(() => {
+    function handler(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setCmdOpen((o) => !o);
+      }
+    }
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
 
   return (
     <div className="app">
@@ -112,6 +141,15 @@ export function App() {
           {page === 'integrations' && <Integrations />}
         </main>
       </div>
+
+      <Toaster />
+
+      <CommandPalette
+        open={cmdOpen}
+        onClose={() => setCmdOpen(false)}
+        items={CMD_ITEMS}
+        onSelect={(id) => { setPage(id); setCmdOpen(false); }}
+      />
 
       <Modal
         open={adoptOpen}

@@ -7,6 +7,9 @@
     Field,
     Pill,
     Button,
+    Toaster,
+    CommandPalette,
+    type CommandItem,
     DashboardIcon,
     DevicesIcon,
     ClientsIcon,
@@ -39,9 +42,12 @@
   import Infrastructure from './pages/Infrastructure.svelte';
   import Integrations from './pages/Integrations.svelte';
 
+  import { onMount, onDestroy } from 'svelte';
+
   let activeApp = 'network';
   let page = 'topology';
   let adoptOpen = false;
+  let cmdOpen = false;
 
   const SECTIONS: SidebarSectionDef[] = [
     {
@@ -80,6 +86,30 @@
   );
 
   $: pageLabel = PAGE_LABELS[page] ?? page;
+
+  const SHORTCUTS: Record<string, string> = {
+    dashboard: 'G+D',
+    devices: 'G+V',
+    clients: 'G+C',
+    topology: 'G+T',
+    alarms: 'G+A',
+    logs: 'G+L',
+    settings: 'G+S',
+  };
+
+  const cmdItems: CommandItem[] = SECTIONS.flatMap((s) =>
+    s.items.map((i) => ({ id: i.id, label: i.label, group: s.title, shortcut: SHORTCUTS[i.id] })),
+  );
+
+  function handleCmdKey(e: KeyboardEvent) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      cmdOpen = !cmdOpen;
+    }
+  }
+
+  onMount(() => window.addEventListener('keydown', handleCmdKey));
+  onDestroy(() => window.removeEventListener('keydown', handleCmdKey));
 </script>
 
 <svelte:head>
@@ -110,6 +140,15 @@
       {/if}
     </main>
   </div>
+
+  <Toaster />
+
+  <CommandPalette
+    open={cmdOpen}
+    items={cmdItems}
+    on:select={(e) => { page = e.detail; cmdOpen = false; }}
+    on:close={() => (cmdOpen = false)}
+  />
 
   <Modal bind:open={adoptOpen} title="Adopt Device">
     <div style="display:flex;gap:12px;align-items:center;padding:10px 12px;background:#0A0A0B;border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-bottom:14px;">

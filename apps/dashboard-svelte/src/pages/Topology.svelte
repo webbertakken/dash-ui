@@ -1,11 +1,79 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { Button, IconButton, Pill, SearchBox, HealthBar, DownloadIcon } from '@dash-ui/svelte';
+  import { Button, IconButton, Pill, SearchBox, HealthBar, DownloadIcon, Tooltip, TreeView, ContextMenu, Dendrogram } from '@dash-ui/svelte';
+  import type { TreeNode, ContextMenuEntry, DendrogramNode } from '@dash-ui/svelte';
   import { NODES, LINKS, NODE_LABEL, type TopologyNode } from '../data';
 
+  const NODE_CTX_ITEMS: ContextMenuEntry[] = [
+    { id: 'details', label: 'View details' },
+    { id: 'configure', label: 'Configure' },
+    { id: 'restart', label: 'Restart device' },
+    { separator: true },
+    { id: 'forget', label: 'Forget device', danger: true },
+  ];
+
+  const TYPE_COLORS: Record<string, string> = {
+    isp: '#6E7079',
+    gateway: '#006FFF',
+    switch: '#00C8C8',
+    ap: '#F5A623',
+    cam: '#A878F5',
+  };
+
   let selected = 'udm';
+  let view: 'map' | 'list' | 'tree' = 'map';
+  let ctxMenu: { x: number; y: number } | null = null;
   let canvas: HTMLDivElement;
   let svg: SVGSVGElement;
+
+  function buildTree(nodes: typeof NODES, links: typeof LINKS): TreeNode[] {
+    const children = new Map<string, string[]>();
+    const hasParent = new Set<string>();
+    for (const link of links) {
+      if (!children.has(link.a)) children.set(link.a, []);
+      children.get(link.a)!.push(link.b);
+      hasParent.add(link.b);
+    }
+    const roots = nodes.filter((n) => !hasParent.has(n.id));
+    function buildNode(id: string): TreeNode {
+      const node = nodes.find((n) => n.id === id)!;
+      const childIds = children.get(id) ?? [];
+      return {
+        id: node.id,
+        label: node.name,
+        meta: node.meta,
+        children: childIds.length ? childIds.map(buildNode) : undefined,
+      };
+    }
+    return roots.map((r) => buildNode(r.id));
+  }
+
+  function buildDendrogram(nodes: typeof NODES, links: typeof LINKS): DendrogramNode {
+    const children = new Map<string, string[]>();
+    const hasParent = new Set<string>();
+    for (const link of links) {
+      if (!children.has(link.a)) children.set(link.a, []);
+      children.get(link.a)!.push(link.b);
+      hasParent.add(link.b);
+    }
+    const roots = nodes.filter((n) => !hasParent.has(n.id));
+    function buildNode(id: string): DendrogramNode {
+      const node = nodes.find((n) => n.id === id)!;
+      const childIds = children.get(id) ?? [];
+      return {
+        id: node.id,
+        label: node.name,
+        color: TYPE_COLORS[node.type],
+        children: childIds.length ? childIds.map(buildNode) : undefined,
+      };
+    }
+    return roots.length === 1
+      ? buildNode(roots[0].id)
+      : { id: '__root', label: 'Network', children: roots.map((r) => buildNode(r.id)) };
+  }
+
+  const treeNodes = buildTree(NODES, LINKS);
+  const dendrogramRoot = buildDendrogram(NODES, LINKS);
 
   function draw() {
     if (!canvas || !svg) return;
@@ -25,6 +93,10 @@
       const lblY = my;
       return `<path class="topo-link ${l.cls}" d="${d}"/><rect x="${lblX - 22}" y="${lblY - 7}" width="44" height="14" rx="3" fill="#0A0A0B" stroke="rgba(255,255,255,0.10)"/><text class="link-label" x="${lblX}" y="${lblY + 3}">${l.speed}</text>`;
     }).join('');
+  }
+
+  $: if (view === 'map') {
+    if (canvas && svg) draw();
   }
 
   onMount(() => {
@@ -51,19 +123,33 @@
 </div>
 <div class="topo">
   <div class="topo-toolbar">
-    <IconButton title="Map">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <circle cx="7" cy="3" r="1.4" stroke="currentColor" stroke-width="1.4" />
-        <circle cx="3" cy="11" r="1.4" stroke="currentColor" stroke-width="1.4" />
-        <circle cx="11" cy="11" r="1.4" stroke="currentColor" stroke-width="1.4" />
-        <path d="M7 4.4v3M5.8 8.4l-2 1.6M8.2 8.4l2 1.6" stroke="currentColor" stroke-width="1.4" />
-      </svg>
-    </IconButton>
-    <IconButton title="List">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M3 3.5h8M3 7h8M3 10.5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-    </IconButton>
+    <Tooltip label="Map view" placement="bottom">
+      <IconButton title="Map" aria-pressed={view === 'map'} on:click={() => (view = 'map')}>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="3" r="1.4" stroke="currentColor" stroke-width="1.4" />
+          <circle cx="3" cy="11" r="1.4" stroke="currentColor" stroke-width="1.4" />
+          <circle cx="11" cy="11" r="1.4" stroke="currentColor" stroke-width="1.4" />
+          <path d="M7 4.4v3M5.8 8.4l-2 1.6M8.2 8.4l2 1.6" stroke="currentColor" stroke-width="1.4" />
+        </svg>
+      </IconButton>
+    </Tooltip>
+    <Tooltip label="List view" placement="bottom">
+      <IconButton title="List" aria-pressed={view === 'list'} on:click={() => (view = 'list')}>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 3.5h8M3 7h8M3 10.5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </IconButton>
+    </Tooltip>
+    <Tooltip label="Tree view" placement="bottom">
+      <IconButton title="Tree" aria-pressed={view === 'tree'} on:click={() => (view = 'tree')}>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="2.5" cy="7" r="1.5" stroke="currentColor" stroke-width="1.2" />
+          <circle cx="11.5" cy="3" r="1.5" stroke="currentColor" stroke-width="1.2" />
+          <circle cx="11.5" cy="11" r="1.5" stroke="currentColor" stroke-width="1.2" />
+          <path d="M4 7h2.5c0-2 .5-2.5 3.5-4M4 7h2.5c0 2 .5 2.5 3.5 4" stroke="currentColor" stroke-width="1.2" />
+        </svg>
+      </IconButton>
+    </Tooltip>
     <div class="sep"></div>
     <IconButton title="Show clients">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -80,61 +166,89 @@
   </div>
 
   <div class="topo-zoom">
-    <IconButton title="Zoom in">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-    </IconButton>
-    <IconButton title="Zoom out">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-    </IconButton>
-    <IconButton title="Fit">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M3 5V3h2M11 5V3H9M3 9v2h2M11 9v2H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-    </IconButton>
+    <Tooltip label="Zoom in" placement="left">
+      <IconButton title="Zoom in">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </IconButton>
+    </Tooltip>
+    <Tooltip label="Zoom out" placement="left">
+      <IconButton title="Zoom out">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </IconButton>
+    </Tooltip>
+    <Tooltip label="Fit to screen" placement="left">
+      <IconButton title="Fit">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 5V3h2M11 5V3H9M3 9v2h2M11 9v2H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </IconButton>
+    </Tooltip>
   </div>
 
-  <div class="topo-legend">
-    <div class="row"><span class="swatch tenG"></span>10 GbE</div>
-    <div class="row"><span class="swatch fiveG"></span>2.5 GbE</div>
-    <div class="row"><span class="swatch oneG"></span>1 GbE</div>
-    <div class="row"><span class="swatch wifi"></span>Wireless</div>
-  </div>
+  {#if view === 'map'}
+    <div class="topo-legend">
+      <div class="row"><span class="swatch tenG"></span>10 GbE</div>
+      <div class="row"><span class="swatch fiveG"></span>2.5 GbE</div>
+      <div class="row"><span class="swatch oneG"></span>1 GbE</div>
+      <div class="row"><span class="swatch wifi"></span>Wireless</div>
+    </div>
 
-  <div class="topo-canvas" bind:this={canvas}>
-    <svg class="topo-svg" bind:this={svg}></svg>
-    {#each NODES as n (n.id)}
-      <div
-        class="node {selected === n.id ? 'selected' : ''}"
-        style="left:{n.x * 100}%;top:{n.y * 100}%;transform:translate(-50%,-50%);"
-        on:click={() => (selected = n.id)}
-        on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selected = n.id; } }}
-        role="button"
-        tabindex="0"
-        aria-label={`${n.name}, ${n.status === 'good' ? 'online' : n.status === 'warn' ? 'warning' : 'offline'}`}
-        aria-pressed={selected === n.id}
-      >
-        <div class="node-card {n.type === 'gateway' ? 'gateway' : ''}">
-          {#if n.type !== 'isp'}
-            <span class="node-status {n.status === 'good' ? '' : n.status}"></span>
-          {/if}
-          {#if n.type === 'isp'}
-            <div class="node-img" style="width:60px;height:38px;display:flex;align-items:center;justify-content:center;font-size:9px;">🌐 WAN</div>
-          {:else}
-            <div class="node-img {n.type}">{toLabel(n)}</div>
-          {/if}
-          <div class="node-name">{n.name}</div>
-          <div class="node-meta">{n.meta}</div>
-          {#if n.clients !== undefined}
-            <div class="node-clients">{n.clients} clients</div>
-          {/if}
+    <div class="topo-canvas" bind:this={canvas}>
+      <svg class="topo-svg" bind:this={svg}></svg>
+      {#each NODES as n (n.id)}
+        <div
+          class="node {selected === n.id ? 'selected' : ''}"
+          style="left:{n.x * 100}%;top:{n.y * 100}%;transform:translate(-50%,-50%);"
+          on:click={() => (selected = n.id)}
+          on:contextmenu|preventDefault={(e) => { selected = n.id; ctxMenu = { x: e.clientX, y: e.clientY }; }}
+          on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selected = n.id; } }}
+          role="button"
+          tabindex="0"
+          aria-label={`${n.name}, ${n.status === 'good' ? 'online' : n.status === 'warn' ? 'warning' : 'offline'}`}
+          aria-pressed={selected === n.id}
+          aria-haspopup="menu"
+        >
+          <div class="node-card {n.type === 'gateway' ? 'gateway' : ''}">
+            {#if n.type !== 'isp'}
+              <span class="node-status {n.status === 'good' ? '' : n.status}"></span>
+            {/if}
+            {#if n.type === 'isp'}
+              <div class="node-img" style="width:60px;height:38px;display:flex;align-items:center;justify-content:center;font-size:9px;">🌐 WAN</div>
+            {:else}
+              <div class="node-img {n.type}">{toLabel(n)}</div>
+            {/if}
+            <div class="node-name">{n.name}</div>
+            <div class="node-meta">{n.meta}</div>
+            {#if n.clients !== undefined}
+              <div class="node-clients">{n.clients} clients</div>
+            {/if}
+          </div>
         </div>
-      </div>
-    {/each}
-  </div>
+      {/each}
+    </div>
+  {:else if view === 'list'}
+    <div class="topo-list">
+      <TreeView
+        nodes={treeNodes}
+        bind:selected
+        defaultExpanded={['isp', 'udm', 'sw1', 'sw2']}
+        label="Network hierarchy"
+      />
+    </div>
+  {:else}
+    <div class="topo-list" style="padding:16px;">
+      <Dendrogram
+        root={dendrogramRoot}
+        ariaLabel="Network topology tree"
+        colWidth={120}
+        rowHeight={30}
+      />
+    </div>
+  {/if}
 
   <div class="drawer">
     <div class="dr-h">
@@ -181,3 +295,13 @@
     </div>
   </div>
 </div>
+
+<ContextMenu
+  items={NODE_CTX_ITEMS}
+  x={ctxMenu?.x ?? 0}
+  y={ctxMenu?.y ?? 0}
+  open={ctxMenu !== null}
+  on:close={() => (ctxMenu = null)}
+  on:action={() => (ctxMenu = null)}
+  label="Device actions"
+/>
