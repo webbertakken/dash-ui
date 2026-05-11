@@ -1,28 +1,40 @@
-# Dashboard design system monorepo
+# Dash UI - design-system monorepo
 
-Dash-flavored dashboard design system, recreated from the Claude Design handoff bundle in `design-bundle/`.
+Multi-framework dashboard design system: tokens, brand assets, and component libraries for React, Svelte and framework-agnostic Web Components, plus two reference dashboard apps and three Storybook instances.
 
 ## Layout
 
 ```
 packages/
-  tokens/   CSS variables + JS token map (single source of truth)
-  assets/   Brand SVG logos (Network, Protect, Access, Talk, Connect, Drive, Site Manager, Demo mark + wordmark)
-  react/    React component library (@dash-ui/react)
-  svelte/   Svelte component library (@dash-ui/svelte)
+  tokens/          @dash-ui/tokens          CSS variables (dark + light motifs) + JS token map
+  assets/          @dash-ui/assets          Brand mark, wordmark, app-rail icons
+  react/           @dash-ui/react           ~170 React 18 components
+  svelte/          @dash-ui/svelte          ~170 Svelte 4 components, mirrored API
+  wc/              @dash-ui/wc              ~165 framework-agnostic custom elements compiled from the Svelte sources
+  storybook-meta/  @dash-ui/storybook-meta  Shared sidebar category map (single source of truth across all storybooks)
+
 apps/
-  dashboard-react/   Vite + React app: full Dash Network dashboard
-  dashboard-svelte/  Vite + Svelte app: feature parity with the React app
-design-bundle/       Original handoff bundle (read-only reference)
+  dashboard-react/   Vite + React reference dashboard (14 pages, full chrome)
+  dashboard-svelte/  Vite + Svelte reference dashboard (feature parity)
+  storybook-react/   Storybook 8 (React renderer)
+  storybook-svelte/  Storybook 8 (Svelte renderer)
+  storybook-wc/      Storybook 8 (Web Components renderer)
+  storybook-site/    Assembles all three Storybooks into a single static site under /, /svelte/, /wc/
 ```
 
 ## Commands
 
 - `pnpm install` - install everything
-- `pnpm dev:react` - start the React dashboard at `http://localhost:5173`
-- `pnpm dev:svelte` - start the Svelte dashboard at `http://localhost:5174`
-- `pnpm build` - build all packages and apps
+- `pnpm dev:react` - reference dashboard at http://localhost:5173
+- `pnpm dev:svelte` - reference dashboard at http://localhost:5174
+- `pnpm dev:storybook` - React Storybook at http://localhost:6006
+- `pnpm test` - ~1,300 vitest tests across React, Svelte and Web Components
+- `pnpm build` - build all packages
+- `pnpm build:site` - build the static tri-framework Storybook site into `apps/storybook-site/dist`
+- `pnpm serve:site` - serve the assembled site at http://localhost:4173
 
 ## Source of truth
 
-Visual fidelity targets live in `design-bundle/dash-ui-design-system/`. The README there has the full content/visual/iconography spec. `colors_and_type.css` is copied verbatim into `packages/tokens/src/tokens.css`.
+- Component-category mapping (12 sidebar groups): `packages/storybook-meta/src/categories.ts`
+- Design tokens: `packages/tokens/src/tokens.css` (CSS variables for both motifs) and `packages/tokens/src/tokens.ts` (the JS surface)
+- Reference dashboard pages (the canonical usage examples): `apps/dashboard-react/src/pages/*` and `apps/dashboard-svelte/src/pages/*`

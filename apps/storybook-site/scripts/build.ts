@@ -58,7 +58,7 @@ const indexHtml = `<!doctype html>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dash UI design system</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23006FFF'/%3E%3Cpath d='M9 11h14v6a7 7 0 0 1-14 0z' fill='white'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231C1C1E'/%3E%3Crect x='22' y='12' width='30' height='22' rx='3' fill='white' fill-opacity='0.16'/%3E%3Crect x='12' y='28' width='30' height='22' rx='3' fill='white'/%3E%3Cpath d='M17 43 L22 39 L27 41 L32 35 L37 38' stroke='%23006FFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" />
   <style>
     ${tokensCss}
     *, *::before, *::after { box-sizing: border-box; }
@@ -89,7 +89,9 @@ const indexHtml = `<!doctype html>
       cursor: pointer;
     }
     .motif-toggle:hover { color: var(--text-1); border-color: var(--brand-05); }
-    h1 { font-size: 32px; margin: 0 0 8px; letter-spacing: -0.01em; }
+    .brand { display: flex; align-items: center; gap: 16px; margin: 0 0 24px; }
+    .brand svg { width: 56px; height: 56px; border-radius: 12px; box-shadow: var(--shadow-card); }
+    h1 { font-size: 32px; margin: 0; letter-spacing: -0.01em; }
     p.lead { color: var(--text-2); font-size: 16px; margin: 0 0 32px; max-width: 640px; }
     .pickers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
     a.card {
@@ -129,7 +131,15 @@ const indexHtml = `<!doctype html>
     <button class="motif-toggle" type="button" id="motif">Switch to light</button>
   </div>
   <main>
-    <h1>Dash UI design system</h1>
+    <div class="brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#1C1C1E"/>
+        <rect x="22" y="12" width="30" height="22" rx="3" fill="#FFFFFF" fill-opacity="0.16"/>
+        <rect x="12" y="28" width="30" height="22" rx="3" fill="#FFFFFF"/>
+        <path d="M17 43 L22 39 L27 41 L32 35 L37 38" stroke="#006FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <h1>Dash UI design system</h1>
+    </div>
     <p class="lead">Dash-inspired components for dashboards. Subtle, clean and factual style. Pick a renderer to browse the catalogue, or jump to the live dashboard examples in any of them.</p>
     <div class="pickers">
       <a class="card" href="./react/">

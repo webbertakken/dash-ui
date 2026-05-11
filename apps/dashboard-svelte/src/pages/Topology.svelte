@@ -20,7 +20,7 @@
     cam: '#A878F5',
   };
 
-  let selected = 'udm';
+  let selected = 'gw';
   let view: 'map' | 'list' | 'tree' = 'map';
   let ctxMenu: { x: number; y: number } | null = null;
   let canvas: HTMLDivElement;
@@ -235,7 +235,7 @@
       <TreeView
         nodes={treeNodes}
         bind:selected
-        defaultExpanded={['isp', 'udm', 'sw1', 'sw2']}
+        defaultExpanded={['isp', 'gw', 'sw1', 'sw2']}
         label="Network hierarchy"
       />
     </div>

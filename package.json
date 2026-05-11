@@ -1,5 +1,14 @@
 {
   "name": "design-system-monorepo",
+  "description": "Webber's design systems - a multi-framework dashboard design system shipped as @dash-ui/* packages (tokens, assets, React, Svelte, Web Components) plus reference dashboards and Storybooks.",
+  "author": "Webber Takken (https://github.com/webbertakken)",
+  "license": "MIT",
+  "homepage": "https://github.com/webbertakken/design-system#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webbertakken/design-system.git"
+  },
+  "bugs": "https://github.com/webbertakken/design-system/issues",
   "private": true,
   "version": "0.1.0",
   "type": "module",

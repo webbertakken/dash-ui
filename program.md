@@ -13,7 +13,7 @@ loop; agent runs **one** iteration per invocation. The shell driver
 2. **Pick the next experiment.** Avoid repeating ideas already in `results.tsv`
    unless combining them or going deeper. Bias toward simple changes first.
 3. **Edit code.**
-   - In-scope: `apps/**`, `packages/**`, `design-bundle/**`.
+   - In-scope: `apps/**`, `packages/**`.
    - Out-of-scope: `program.md`, `OBJECTIVES.md`, `results.tsv`, `run-loop.sh`,
      `runs/**`. Do not edit.
 4. **Commit.** Single commit per iteration, one-line message describing the

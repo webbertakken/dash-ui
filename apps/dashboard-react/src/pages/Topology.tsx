@@ -68,7 +68,7 @@ const NODE_CTX_ITEMS: ContextMenuEntry[] = [
 ];
 
 export function Topology({ onAdopt }: TopologyProps) {
-  const [selected, setSelected] = useState('udm');
+  const [selected, setSelected] = useState('gw');
   const [view, setView] = useState<'map' | 'list' | 'tree'>('map');
   const canvasRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -229,7 +229,7 @@ export function Topology({ onAdopt }: TopologyProps) {
               nodes={treeNodes}
               selected={selected}
               onSelect={setSelected}
-              defaultExpanded={['isp', 'udm', 'sw1', 'sw2']}
+              defaultExpanded={['isp', 'gw', 'sw1', 'sw2']}
               label="Network hierarchy"
             />
           </div>

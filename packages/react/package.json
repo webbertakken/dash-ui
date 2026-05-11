@@ -1,6 +1,17 @@
 {
   "name": "@dash-ui/react",
   "version": "0.1.0",
+  "description": "React 18 components for the Dash UI design system - ~170 dashboard-focused components with full type defs and SSR support. Part of Webber's design systems.",
+  "keywords": ["react", "components", "design-system", "dashboard", "ui-library", "dash-ui"],
+  "author": "Webber Takken (https://github.com/webbertakken)",
+  "license": "MIT",
+  "homepage": "https://github.com/webbertakken/design-system#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webbertakken/design-system.git",
+    "directory": "packages/react"
+  },
+  "bugs": "https://github.com/webbertakken/design-system/issues",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

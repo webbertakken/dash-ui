@@ -1,6 +1,9 @@
 {
   "name": "@dash-ui/storybook-meta",
   "version": "0.1.0",
+  "description": "Internal: shared sidebar category map used by all @dash-ui storybook instances. Not published.",
+  "author": "Webber Takken (https://github.com/webbertakken)",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "main": "./src/index.ts",

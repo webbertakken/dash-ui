@@ -98,7 +98,7 @@ export function Ports() {
         items={[
           { id: 'main', label: 'ES-24-Pro-PoE', badge: 26 },
           { id: 'lite', label: 'ES-8-Lite-PoE', badge: 10 },
-          { id: 'udm', label: 'Edge Gateway X1', badge: 10 },
+          { id: 'gw', label: 'Edge Gateway X1', badge: 10 },
         ]}
       />
       <div className="grid">

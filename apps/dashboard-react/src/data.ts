@@ -18,7 +18,7 @@ export interface TopologyLink {
 
 export const NODES: TopologyNode[] = [
   { id: 'isp', type: 'isp', name: 'Internet', meta: '847 / 312 Mbps', status: 'good', x: 0.5, y: 0.06 },
-  { id: 'udm', type: 'gateway', name: 'Edge Gateway X1', meta: '192.168.1.1', status: 'good', x: 0.5, y: 0.24, clients: 142 },
+  { id: 'gw', type: 'gateway', name: 'Edge Gateway X1', meta: '192.168.1.1', status: 'good', x: 0.5, y: 0.24, clients: 142 },
   { id: 'sw1', type: 'switch', name: 'ES-24-Pro-PoE', meta: '192.168.1.2', status: 'good', x: 0.22, y: 0.5, clients: 18 },
   { id: 'sw2', type: 'switch', name: 'ES-8-Lite-PoE', meta: '192.168.1.3', status: 'good', x: 0.78, y: 0.5, clients: 6 },
   { id: 'ap1', type: 'ap', name: 'AP Pro · Lobby', meta: '192.168.1.18', status: 'warn', x: 0.1, y: 0.78, clients: 24 },
@@ -29,9 +29,9 @@ export const NODES: TopologyNode[] = [
 ];
 
 export const LINKS: TopologyLink[] = [
-  { a: 'isp', b: 'udm', speed: '10 GbE', cls: 'tenG' },
-  { a: 'udm', b: 'sw1', speed: '10 GbE', cls: 'tenG' },
-  { a: 'udm', b: 'sw2', speed: '2.5 GbE', cls: 'fiveG' },
+  { a: 'isp', b: 'gw', speed: '10 GbE', cls: 'tenG' },
+  { a: 'gw', b: 'sw1', speed: '10 GbE', cls: 'tenG' },
+  { a: 'gw', b: 'sw2', speed: '2.5 GbE', cls: 'fiveG' },
   { a: 'sw1', b: 'ap1', speed: '2.5 GbE', cls: 'fiveG' },
   { a: 'sw1', b: 'ap2', speed: '1 GbE', cls: 'oneG' },
   { a: 'sw1', b: 'ap3', speed: '1 GbE', cls: 'oneG' },
@@ -56,11 +56,11 @@ export const DEVICES: DeviceRow[] = [
   ['Front Office EG', 'EG-X1', 'f4:b1:00:11:22:33', '192.168.1.1', '24d 14h', '—', '#00B070', 'Connected', '#5DDB9F', 'EG', null],
   ['ES-24-Pro-PoE', 'ES-24-Pro-PoE', 'f4:b1:00:11:22:34', '192.168.1.2', '24d 14h', '—', '#00B070', 'Connected', '#5DDB9F', 'ES', null],
   ['ES-8-Lite-PoE', 'ES-8-Lite-PoE', 'f4:b1:00:11:22:35', '192.168.1.3', '5d 02h', '—', '#00B070', 'Connected', '#5DDB9F', 'ES', null],
-  ['AP Pro · Lobby', 'AP-Pro', 'f4:b1:00:aa:bb:c1', '192.168.1.18', '—', '24', '#F5A623', 'Updating · 64%', '#F5C26B', 'AP7', 'strong'],
-  ['AP Pro · Warehouse', 'AP-Pro', 'f4:b1:00:aa:bb:c2', '192.168.1.19', '—', '—', '#006FFF', 'Adopting', '#7FB6FF', 'AP7', null],
-  ['AP-Plus · Conference', 'AP-Plus', 'f4:b1:00:aa:bb:c3', '192.168.1.20', '12d 03h', '31', '#00B070', 'Connected', '#5DDB9F', 'AP6', 'strong'],
-  ['AP-Plus · Reception', 'AP-Plus', 'f4:b1:00:aa:bb:c4', '192.168.1.21', '12d 03h', '14', '#00B070', 'Connected', '#5DDB9F', 'AP6', 'strong'],
-  ['AP-Wall · Office 4', 'AP-Wall', 'f4:b1:00:aa:bb:c5', '192.168.1.22', '3d 19h', '9', '#00B070', 'Connected', '#5DDB9F', 'AP6', 'weak'],
+  ['AP Pro · Lobby', 'AP-Pro', 'f4:b1:00:aa:bb:c1', '192.168.1.18', '—', '24', '#F5A623', 'Updating · 64%', '#F5C26B', 'AP', 'strong'],
+  ['AP Pro · Warehouse', 'AP-Pro', 'f4:b1:00:aa:bb:c2', '192.168.1.19', '—', '—', '#006FFF', 'Adopting', '#7FB6FF', 'AP', null],
+  ['AP-Plus · Conference', 'AP-Plus', 'f4:b1:00:aa:bb:c3', '192.168.1.20', '12d 03h', '31', '#00B070', 'Connected', '#5DDB9F', 'AP', 'strong'],
+  ['AP-Plus · Reception', 'AP-Plus', 'f4:b1:00:aa:bb:c4', '192.168.1.21', '12d 03h', '14', '#00B070', 'Connected', '#5DDB9F', 'AP', 'strong'],
+  ['AP-Wall · Office 4', 'AP-Wall', 'f4:b1:00:aa:bb:c5', '192.168.1.22', '3d 19h', '9', '#00B070', 'Connected', '#5DDB9F', 'AP', 'weak'],
   ['Cam-Bullet 5 · Side Entry', 'CAM-Bullet5', 'f4:b1:00:cc:dd:01', '—', '—', '—', '#F03A3A', 'Offline', '#FF7B7B', 'CAM', null],
   ['Cam-Pro 5 · Reception', 'CAM-Pro5', 'f4:b1:00:cc:dd:02', '192.168.1.30', '9d 02h', '—', '#00B070', 'Connected', '#5DDB9F', 'CAM', null],
   ['Cam-Flex 5 · Stockroom', 'CAM-Flex5', 'f4:b1:00:cc:dd:03', '192.168.1.31', '9d 02h', '—', '#00B070', 'Connected', '#5DDB9F', 'CAM', null],
