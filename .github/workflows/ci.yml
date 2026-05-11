@@ -27,11 +27,13 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      - name: Build packages
+        # Must run before tests because the @dash-ui/wc registration test
+        # imports the built bundle at packages/wc/dist/index.js.
+        run: pnpm build
+
       - name: Tests
         run: pnpm test
-
-      - name: Build packages
-        run: pnpm build
 
       - name: Build the static tri-framework site (proves all three storybooks build)
         env:
