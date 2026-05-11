@@ -11,7 +11,7 @@ A multi-framework dashboard design system: tokens, components and a full referen
 
 ## Origin and independence
 
-The visual direction was originally explored as a study of UniFi's dashboard aesthetic. **Dash UI is not affiliated with, endorsed by, or derived from Ubiquiti Inc.** All identifiers, brand marks, product names and demo content are independent of any Ubiquiti product. What remains is the generic visual style - dark canvases, a single saturated brand blue, restrained type, dense information layouts - none of which is unique to or owned by any one company.
+The visual direction was originally explored as a study of UniFi's dashboard aesthetic. **Dash UI is not affiliated with, endorsed by, or derived from Ubiquiti Inc.**
 
 If you spot anything you believe is misattributed, open an issue.
 
