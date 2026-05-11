@@ -13,7 +13,7 @@ import { Ports } from 'dashboard-react/pages/Ports';
 import { Vpn } from 'dashboard-react/pages/Vpn';
 import { Security } from 'dashboard-react/pages/Security';
 import { Settings } from 'dashboard-react/pages/Settings';
-import { AirView } from 'dashboard-react/pages/AirView';
+import { Wireless } from 'dashboard-react/pages/Wireless';
 import { Infrastructure } from 'dashboard-react/pages/Infrastructure';
 import { Integrations } from 'dashboard-react/pages/Integrations';
 
@@ -37,6 +37,6 @@ export const PortsPage: Story = { name: 'Ports', render: () => <Ports /> };
 export const VpnPage: Story = { name: 'VPN', render: () => <Vpn /> };
 export const SecurityPage: Story = { name: 'Security', render: () => <Security /> };
 export const SettingsPage: Story = { name: 'Settings', render: () => <Settings /> };
-export const AirViewPage: Story = { name: 'AirView', render: () => <AirView /> };
+export const WirelessPage: Story = { name: 'Wireless', render: () => <Wireless /> };
 export const InfrastructurePage: Story = { name: 'Infrastructure', render: () => <Infrastructure /> };
 export const IntegrationsPage: Story = { name: 'Integrations', render: () => <Integrations /> };

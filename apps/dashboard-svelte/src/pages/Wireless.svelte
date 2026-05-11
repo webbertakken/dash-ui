@@ -175,7 +175,7 @@
 </script>
 
 <div class="ph-bar">
-  <div class="ph-title">AirView</div>
+  <div class="ph-title">Wireless</div>
   <div class="ph-actions">
     <SegmentedControl label="Frequency band" options={BAND_OPTIONS} bind:value={band} />
     <SegmentedControl label="Time range" options={TIME_OPTIONS} bind:value={timeRange} />
@@ -427,7 +427,7 @@
   </Card>
 
   <Card span={6}>
-    <h3>Interference sources <span style="color:#6E7079;font-weight:400;">classified by AirView</span></h3>
+    <h3>Interference sources <span style="color:#6E7079;font-weight:400;">classified by analytics</span></h3>
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px;">
       {#each SOURCES as [name, freq, sev] (name)}
         <div style="background:#141415;border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:10px 12px;">

@@ -2,10 +2,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FIXTURES } from '../../../../packages/react/test-fixtures/fixtures.js';
 
-const variants = FIXTURES.AirviewIcon!;
+const variants = FIXTURES.WirelessIcon!;
 
 const meta: Meta = {
-  title: 'Foundations/Icons/AirviewIcon',
+  title: 'Foundations/Icons/WirelessIcon',
   parameters: { layout: 'padded' },
 };
 export default meta;

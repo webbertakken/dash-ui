@@ -613,7 +613,7 @@ const ICON_NAMES = [
   'SearchIcon', 'PlusIcon', 'DownloadIcon', 'CaretIcon', 'CloseIcon', 'BellIcon',
   'HelpIcon', 'UpdatesIcon', 'DashboardIcon', 'DevicesIcon', 'ClientsIcon',
   'TopologyIcon', 'AlarmIcon', 'LogsIcon', 'WifiIcon', 'PortsIcon', 'VpnIcon',
-  'SecurityIcon', 'SettingsIcon', 'AirviewIcon', 'InfraIcon', 'IntegrationsIcon',
+  'SecurityIcon', 'SettingsIcon', 'WirelessIcon', 'InfraIcon', 'IntegrationsIcon',
 ];
 for (const name of ICON_NAMES) {
   BUNDLES[name] = [

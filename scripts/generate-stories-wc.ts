@@ -26,7 +26,7 @@ const ICON_NAMES = new Set([
   'SearchIcon', 'PlusIcon', 'DownloadIcon', 'CaretIcon', 'CloseIcon', 'BellIcon',
   'HelpIcon', 'UpdatesIcon', 'DashboardIcon', 'DevicesIcon', 'ClientsIcon',
   'TopologyIcon', 'AlarmIcon', 'LogsIcon', 'WifiIcon', 'PortsIcon', 'VpnIcon',
-  'SecurityIcon', 'SettingsIcon', 'AirviewIcon', 'InfraIcon', 'IntegrationsIcon',
+  'SecurityIcon', 'SettingsIcon', 'WirelessIcon', 'InfraIcon', 'IntegrationsIcon',
 ]);
 
 await rm(OUT_DIR, { recursive: true, force: true });

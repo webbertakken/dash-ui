@@ -21,7 +21,7 @@ import {
   VpnIcon,
   SecurityIcon,
   SettingsIcon,
-  AirviewIcon,
+  WirelessIcon,
   InfraIcon,
   IntegrationsIcon,
   type SidebarSectionDef,
@@ -37,7 +37,7 @@ import { Ports } from './pages/Ports.js';
 import { Vpn } from './pages/Vpn.js';
 import { Security } from './pages/Security.js';
 import { Settings } from './pages/Settings.js';
-import { AirView } from './pages/AirView.js';
+import { Wireless } from './pages/Wireless.js';
 import { Infrastructure } from './pages/Infrastructure.js';
 import { Integrations } from './pages/Integrations.js';
 
@@ -66,7 +66,7 @@ const SECTIONS: SidebarSectionDef[] = [
   {
     title: 'Insights',
     items: [
-      { id: 'airview', label: 'AirView', icon: <AirviewIcon /> },
+      { id: 'wireless', label: 'Wireless', icon: <WirelessIcon /> },
       { id: 'infra', label: 'Infrastructure', icon: <InfraIcon /> },
       { id: 'integrations', label: 'Integrations', icon: <IntegrationsIcon /> },
     ],
@@ -136,7 +136,7 @@ export function App() {
           {page === 'vpn' && <Vpn />}
           {page === 'security' && <Security />}
           {page === 'settings' && <Settings />}
-          {page === 'airview' && <AirView />}
+          {page === 'wireless' && <Wireless />}
           {page === 'infra' && <Infrastructure />}
           {page === 'integrations' && <Integrations />}
         </main>

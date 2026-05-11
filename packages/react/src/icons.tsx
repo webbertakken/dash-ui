@@ -143,7 +143,7 @@ export const SettingsIcon = (p: IconProps) => (
   </svg>
 );
 
-export const AirviewIcon = (p: IconProps) => (
+export const WirelessIcon = (p: IconProps) => (
   <svg viewBox="0 0 16 16" {...base(p)}>
     <path d="M2 11s1.5-1 6-1 6 1 6 1M2 8s1.5-1.5 6-1.5 6 1.5 6 1.5M2 5s1.5-2 6-2 6 2 6 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
   </svg>

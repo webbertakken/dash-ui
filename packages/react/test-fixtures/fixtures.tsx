@@ -713,7 +713,7 @@ const ICON_NAMES = [
   'SearchIcon', 'PlusIcon', 'DownloadIcon', 'CaretIcon', 'CloseIcon', 'BellIcon',
   'HelpIcon', 'UpdatesIcon', 'DashboardIcon', 'DevicesIcon', 'ClientsIcon',
   'TopologyIcon', 'AlarmIcon', 'LogsIcon', 'WifiIcon', 'PortsIcon', 'VpnIcon',
-  'SecurityIcon', 'SettingsIcon', 'AirviewIcon', 'InfraIcon', 'IntegrationsIcon',
+  'SecurityIcon', 'SettingsIcon', 'WirelessIcon', 'InfraIcon', 'IntegrationsIcon',
 ] as const;
 for (const name of ICON_NAMES) {
   const Icon = (U as unknown as Record<string, (p: { size?: number; className?: string }) => React.ReactElement>)[name];

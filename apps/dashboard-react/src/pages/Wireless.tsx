@@ -40,7 +40,7 @@ const TIME_OPTIONS = [
   { value: '24h', label: 'Last 24 h' },
 ];
 
-export function AirView() {
+export function Wireless() {
   const [band, setBand] = useState('5');
   const [timeRange, setTimeRange] = useState('1h');
   const [noiseRange, setNoiseRange] = useState<[number, number]>([-110, -60]);
@@ -165,7 +165,7 @@ export function AirView() {
   return (
     <>
       <div className="ph-bar">
-        <div className="ph-title">AirView</div>
+        <div className="ph-title">Wireless</div>
         <div className="ph-actions">
           <SegmentedControl label="Frequency band" options={BAND_OPTIONS} value={band} onChange={setBand} />
           <SegmentedControl label="Time range" options={TIME_OPTIONS} value={timeRange} onChange={setTimeRange} />
@@ -433,7 +433,7 @@ export function AirView() {
 
         <Card span={6}>
           <h3>
-            Interference sources <span style={{ color: '#6E7079', fontWeight: 400 }}>classified by AirView</span>
+            Interference sources <span style={{ color: '#6E7079', fontWeight: 400 }}>classified by analytics</span>
           </h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, marginTop: 4 }}>
             {SOURCES.map(([name, freq, sev]) => (

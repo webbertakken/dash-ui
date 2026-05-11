@@ -21,7 +21,7 @@
     VpnIcon,
     SecurityIcon,
     SettingsIcon,
-    AirviewIcon,
+    WirelessIcon,
     InfraIcon,
     IntegrationsIcon,
     type SidebarSectionDef,
@@ -38,7 +38,7 @@
   import Vpn from './pages/Vpn.svelte';
   import Security from './pages/Security.svelte';
   import Settings from './pages/Settings.svelte';
-  import AirView from './pages/AirView.svelte';
+  import Wireless from './pages/Wireless.svelte';
   import Infrastructure from './pages/Infrastructure.svelte';
   import Integrations from './pages/Integrations.svelte';
 
@@ -74,7 +74,7 @@
     {
       title: 'Insights',
       items: [
-        { id: 'airview', label: 'AirView', icon: AirviewIcon },
+        { id: 'wireless', label: 'Wireless', icon: WirelessIcon },
         { id: 'infra', label: 'Infrastructure', icon: InfraIcon },
         { id: 'integrations', label: 'Integrations', icon: IntegrationsIcon },
       ],
@@ -134,7 +134,7 @@
       {:else if page === 'vpn'}<Vpn />
       {:else if page === 'security'}<Security />
       {:else if page === 'settings'}<Settings />
-      {:else if page === 'airview'}<AirView />
+      {:else if page === 'wireless'}<Wireless />
       {:else if page === 'infra'}<Infrastructure />
       {:else if page === 'integrations'}<Integrations />
       {/if}

@@ -17,6 +17,6 @@ export { default as PortsIcon } from './icons/PortsIcon.svelte';
 export { default as VpnIcon } from './icons/VpnIcon.svelte';
 export { default as SecurityIcon } from './icons/SecurityIcon.svelte';
 export { default as SettingsIcon } from './icons/SettingsIcon.svelte';
-export { default as AirviewIcon } from './icons/AirviewIcon.svelte';
+export { default as WirelessIcon } from './icons/WirelessIcon.svelte';
 export { default as InfraIcon } from './icons/InfraIcon.svelte';
 export { default as IntegrationsIcon } from './icons/IntegrationsIcon.svelte';
