@@ -12,7 +12,7 @@ export const appLogos = {
 
 export type AppLogoKey = keyof typeof appLogos;
 
-export const brand = {
+export const logos = {
   mark: dashUiMarkUrl,
   wordmark: dashUiWordmarkUrl,
 } as const;

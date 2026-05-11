@@ -1,10 +1,10 @@
 import { Fragment, type ReactNode } from 'react';
-import { appLogos, brand } from '@dash-ui/assets';
+import { appLogos, logos } from '@dash-ui/assets';
 import { IconButton } from './Button.js';
 import { Avatar } from './Avatar.js';
 import { CaretIcon, SearchIcon, UpdatesIcon, BellIcon, HelpIcon } from '../icons.js';
 
-void brand;
+void logos;
 
 export interface AppDef {
   id: string;

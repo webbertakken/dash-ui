@@ -11,7 +11,7 @@ A multi-framework dashboard design system: tokens, components and a full referen
 
 ## Origin and independence
 
-The visual direction was originally explored as a study of Dash's dashboard aesthetic. **Dash UI is not affiliated with, endorsed by, or derived from Demo Inc.** All identifiers, brand marks, product names and demo content are independent of any Demo product. What remains is the generic visual style - dark canvases, a single saturated brand blue, restrained type, dense information layouts - none of which is unique to or owned by any one company.
+The visual direction was originally explored as a study of UniFi's dashboard aesthetic. **Dash UI is not affiliated with, endorsed by, or derived from Ubiquiti Inc.** All identifiers, brand marks, product names and demo content are independent of any Ubiquiti product. What remains is the generic visual style - dark canvases, a single saturated brand blue, restrained type, dense information layouts - none of which is unique to or owned by any one company.
 
 If you spot anything you believe is misattributed, open an issue.
 
@@ -110,4 +110,4 @@ The web component layer is generated from the Svelte sources at build time via t
 
 ## Trademarks
 
-Dash and Demo are trademarks of Demo Inc., used here only in this disclaimer to clarify the project's relationship to that brand. Inter is a Rasmus Andersson typeface (OFL); JetBrains Mono is a JetBrains s.r.o. typeface (OFL).
+UniFi and Ubiquiti are trademarks of Ubiquiti Inc., used here only in this disclaimer to clarify the project's relationship to that brand. Inter is a Rasmus Andersson typeface (OFL); JetBrains Mono is a JetBrains s.r.o. typeface (OFL).

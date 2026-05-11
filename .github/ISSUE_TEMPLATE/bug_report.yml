@@ -1,0 +1,57 @@
+name: Bug report
+description: Something is broken or doesn't work as expected
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - "@dash-ui/react"
+        - "@dash-ui/svelte"
+        - "@dash-ui/wc"
+        - "@dash-ui/tokens"
+        - "@dash-ui/assets"
+        - "Reference dashboard (apps/dashboard-react)"
+        - "Reference dashboard (apps/dashboard-svelte)"
+        - "Storybook site"
+        - "Other / not sure"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "e.g. 0.1.0"
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the bug and what you expected instead. Screenshots welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Minimal steps or a CodeSandbox / repo link. The smaller the better.
+      placeholder: |
+        1. Render `<Button variant="primary" loading>...`
+        2. Click the button
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      placeholder: |
+        OS:
+        Browser:
+        Node:
+        Framework version (React 18.3 / Svelte 4.2 / vanilla):
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?

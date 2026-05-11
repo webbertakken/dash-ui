@@ -1,0 +1,31 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Amsterdam
+    open-pull-requests-limit: 5
+    groups:
+      types:
+        patterns: ["@types/*"]
+      vitest:
+        patterns: ["vitest", "@vitest/*"]
+      testing-library:
+        patterns: ["@testing-library/*"]
+      storybook:
+        patterns: ["@storybook/*", "storybook"]
+      svelte:
+        patterns: ["svelte", "@sveltejs/*"]
+    ignore:
+      # Pin majors manually
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
