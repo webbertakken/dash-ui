@@ -1,9 +1,9 @@
-This repo contains Design Systems and their implementations. Design Systems can be used in projects to easily style chosen components.
+This repo contains my prototyping Design Systems and their implementations. 
 
 Design Systems present:
 | name | prefix | description |
 | --- | --- | --- |
-| Dashboard | @dash-ui | Subtle, clean and factual dashboard components - dark-first, blue accent, generous data density - [example](link-to-svelte-storybook) |
+| Dashboard | @dash-ui | Subtle, clean and factual dashboard components - dark-first, blue accent, generous data density - live demos: [React](https://webbertakken.github.io/design-system/react/) · [Svelte](https://webbertakken.github.io/design-system/svelte/) · [Web Components](https://webbertakken.github.io/design-system/wc/) |
 
 # Dash UI
 
@@ -102,12 +102,6 @@ Brand blue is `#006FFF`. Status: `#00B070` ok, `#F5A623` warn, `#F03A3A` critica
 
 The web component layer is generated from the Svelte sources at build time via thin custom-element wrappers; props mirror the Svelte API.
 
-## SSR
+## License
 
-- React: `react-dom/server.renderToString` is smoke-tested for every component on every PR
-- Svelte: SSR-compile (`generate: 'ssr'`) is smoke-tested for every component on every PR
-- Web Components: hydrate client-side; declarative shadow DOM is not yet shipped
-
-## Trademarks
-
-UniFi and Ubiquiti are trademarks of Ubiquiti Inc., used here only in this disclaimer to clarify the project's relationship to that brand. Inter is a Rasmus Andersson typeface (OFL); JetBrains Mono is a JetBrains s.r.o. typeface (OFL).
+[MIT](./LICENSE) License.
