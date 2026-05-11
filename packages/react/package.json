@@ -2,7 +2,14 @@
   "name": "@dash-ui/react",
   "version": "0.1.0",
   "description": "React 18 components for the Dash UI design system - ~170 dashboard-focused components with full type defs and SSR support. Part of Webber's design systems.",
-  "keywords": ["react", "components", "design-system", "dashboard", "ui-library", "dash-ui"],
+  "keywords": [
+    "react",
+    "components",
+    "design-system",
+    "dashboard",
+    "ui-library",
+    "dash-ui"
+  ],
   "author": "Webber Takken (https://github.com/webbertakken)",
   "license": "MIT",
   "homepage": "https://github.com/webbertakken/dash-ui#readme",
@@ -24,8 +31,8 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "@dash-ui/tokens": "workspace:*",
-    "@dash-ui/assets": "workspace:*"
+    "@dash-ui/assets": "workspace:*",
+    "@dash-ui/tokens": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",

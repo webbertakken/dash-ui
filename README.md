@@ -28,9 +28,9 @@ Brand blue is `#006FFF`. Status: `#00B070` ok, `#F5A623` warn, `#F03A3A` critica
 
 ## Usage
 
-- **React** users: `pnpm add @dash-ui/react @dash-ui/tokens` then `import { Button } from '@dash-ui/react'`
-- **Svelte** users: `pnpm add @dash-ui/svelte @dash-ui/tokens` then `import Button from '@dash-ui/svelte/components/Button.svelte'`
-- **Anywhere else** (Vue, Angular, vanilla, Astro, Hugo): `pnpm add @dash-ui/wc @dash-ui/tokens`, import `@dash-ui/wc` once for its registration side effect, then use `<dash-button variant="primary">Save</dash-button>` etc.
+- **React** users: `yarn add @dash-ui/react @dash-ui/tokens` then `import { Button } from '@dash-ui/react'`
+- **Svelte** users: `yarn add @dash-ui/svelte @dash-ui/tokens` then `import Button from '@dash-ui/svelte/components/Button.svelte'`
+- **Anywhere else** (Vue, Angular, vanilla, Astro, Hugo): `yarn add @dash-ui/wc @dash-ui/tokens`, import `@dash-ui/wc` once for its registration side effect, then use `<dash-button variant="primary">Save</dash-button>` etc.
 
 The web component layer is generated from the Svelte sources at build time via thin custom-element wrappers; props mirror the Svelte API.
 
@@ -57,15 +57,15 @@ apps/
 ## Commands
 
 ```bash
-pnpm install           # install everything
-pnpm dev:react         # reference dashboard, http://localhost:5173
-pnpm dev:svelte        # reference dashboard, http://localhost:5174
-pnpm dev:storybook     # storybook for React,  http://localhost:6006
-pnpm test              # vitest, ~1,300 tests across all three frameworks
-pnpm test:coverage     # v8 coverage report
-pnpm build             # build all packages
-pnpm build:site        # build all three storybooks + landing page into apps/storybook-site/dist
-pnpm serve:site        # serve the assembled site, http://localhost:4173
+yarn install           # install everything
+yarn dev:react         # reference dashboard, http://localhost:5173
+yarn dev:svelte        # reference dashboard, http://localhost:5174
+yarn dev:storybook     # storybook for React,  http://localhost:6006
+yarn test              # vitest, ~1,300 tests across all three frameworks
+yarn test:coverage     # v8 coverage report
+yarn build             # build all packages
+yarn build:site        # build all three storybooks + landing page into apps/storybook-site/dist
+yarn serve:site        # serve the assembled site, http://localhost:4173
 ```
 
 ## License

@@ -24,14 +24,14 @@ apps/
 
 ## Commands
 
-- `pnpm install` - install everything
-- `pnpm dev:react` - reference dashboard at http://localhost:5173
-- `pnpm dev:svelte` - reference dashboard at http://localhost:5174
-- `pnpm dev:storybook` - React Storybook at http://localhost:6006
-- `pnpm test` - ~1,300 vitest tests across React, Svelte and Web Components
-- `pnpm build` - build all packages
-- `pnpm build:site` - build the static tri-framework Storybook site into `apps/storybook-site/dist`
-- `pnpm serve:site` - serve the assembled site at http://localhost:4173
+- `yarn install` - install everything
+- `yarn dev:react` - reference dashboard at http://localhost:5173
+- `yarn dev:svelte` - reference dashboard at http://localhost:5174
+- `yarn dev:storybook` - React Storybook at http://localhost:6006
+- `yarn test` - ~1,300 vitest tests across React, Svelte and Web Components
+- `yarn build` - build all packages
+- `yarn build:site` - build the static tri-framework Storybook site into `apps/storybook-site/dist`
+- `yarn serve:site` - serve the assembled site at http://localhost:4173
 
 ## Source of truth
 

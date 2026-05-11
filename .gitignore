@@ -8,6 +8,16 @@ dist
 .env.local
 .turbo
 
+# yarn 4 caches and ephemeral install state (we use the node-modules linker,
+# so yarn.lock + package.json are the source of truth; the rest can regen)
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 # autoresearch
 results.tsv
 runs/

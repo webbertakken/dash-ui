@@ -2,7 +2,14 @@
   "name": "@dash-ui/wc",
   "version": "0.1.0",
   "description": "Framework-agnostic web components for the Dash UI design system - ~165 custom elements (dash-*) compiled from @dash-ui/svelte. Use in any framework or vanilla HTML. Part of Webber's design systems.",
-  "keywords": ["web-components", "custom-elements", "design-system", "dashboard", "ui-library", "dash-ui"],
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "design-system",
+    "dashboard",
+    "ui-library",
+    "dash-ui"
+  ],
   "author": "Webber Takken (https://github.com/webbertakken)",
   "license": "MIT",
   "homepage": "https://github.com/webbertakken/dash-ui#readme",
@@ -30,14 +37,14 @@
   ],
   "scripts": {
     "generate": "tsx ./scripts/generate-wrappers.ts",
-    "build": "pnpm generate && vite build",
+    "build": "yarn generate && vite build",
     "dev": "vite build --watch",
     "typecheck": "echo skip"
   },
   "dependencies": {
+    "@dash-ui/assets": "workspace:*",
     "@dash-ui/svelte": "workspace:*",
-    "@dash-ui/tokens": "workspace:*",
-    "@dash-ui/assets": "workspace:*"
+    "@dash-ui/tokens": "workspace:*"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.2",

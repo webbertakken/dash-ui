@@ -2,7 +2,14 @@
   "name": "@dash-ui/svelte",
   "version": "0.1.0",
   "description": "Svelte 4 components for the Dash UI design system - mirrors the @dash-ui/react API 1:1. Part of Webber's design systems.",
-  "keywords": ["svelte", "components", "design-system", "dashboard", "ui-library", "dash-ui"],
+  "keywords": [
+    "svelte",
+    "components",
+    "design-system",
+    "dashboard",
+    "ui-library",
+    "dash-ui"
+  ],
   "author": "Webber Takken (https://github.com/webbertakken)",
   "license": "MIT",
   "homepage": "https://github.com/webbertakken/dash-ui#readme",
@@ -29,8 +36,8 @@
     "svelte": ">=4"
   },
   "dependencies": {
-    "@dash-ui/tokens": "workspace:*",
-    "@dash-ui/assets": "workspace:*"
+    "@dash-ui/assets": "workspace:*",
+    "@dash-ui/tokens": "workspace:*"
   },
   "devDependencies": {
     "svelte": "^4.2.19",
