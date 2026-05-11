@@ -37,7 +37,7 @@ jobs:
           STORYBOOK_DISABLE_TELEMETRY: "1"
         run: pnpm build:site
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
       - uses: actions/upload-pages-artifact@v3
         with:
