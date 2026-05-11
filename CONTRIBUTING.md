@@ -7,7 +7,7 @@ Thanks for your interest in contributing!
 Prerequisites: Node 22+, pnpm 9+.
 
 ```sh
-git clone https://github.com/webbertakken/design-system.git
+git clone https://github.com/webbertakken/dash-ui.git
 cd design-system
 pnpm install
 pnpm test          # ~1,300 tests across React, Svelte and Web Components

@@ -3,7 +3,7 @@ This repo contains my prototyping Design Systems and their implementations.
 Design Systems present:
 | name | prefix | description |
 | --- | --- | --- |
-| Dashboard | @dash-ui | Subtle, clean and factual dashboard components - dark-first, blue accent, generous data density - live demos: [React](https://webbertakken.github.io/design-system/react/) · [Svelte](https://webbertakken.github.io/design-system/svelte/) · [Web Components](https://webbertakken.github.io/design-system/wc/) |
+| Dashboard | @dash-ui | Subtle, clean and factual dashboard components - dark-first, blue accent, generous data density - live demos: [React](https://webbertakken.github.io/dash-ui/react/) · [Svelte](https://webbertakken.github.io/dash-ui/svelte/) · [Web Components](https://webbertakken.github.io/dash-ui/wc/) |
 
 # Dash UI
 

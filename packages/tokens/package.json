@@ -5,13 +5,13 @@
   "keywords": ["design-tokens", "css-variables", "design-system", "dashboard", "dash-ui"],
   "author": "Webber Takken (https://github.com/webbertakken)",
   "license": "MIT",
-  "homepage": "https://github.com/webbertakken/design-system#readme",
+  "homepage": "https://github.com/webbertakken/dash-ui#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webbertakken/design-system.git",
+    "url": "git+https://github.com/webbertakken/dash-ui.git",
     "directory": "packages/tokens"
   },
-  "bugs": "https://github.com/webbertakken/design-system/issues",
+  "bugs": "https://github.com/webbertakken/dash-ui/issues",
   "type": "module",
   "main": "./src/tokens.ts",
   "types": "./src/tokens.ts",

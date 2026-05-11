@@ -10,7 +10,7 @@ Please **do not** open a public issue for security reports.
 
 Instead, use GitHub's private vulnerability reporting:
 
-1. Go to https://github.com/webbertakken/design-system/security/advisories/new
+1. Go to https://github.com/webbertakken/dash-ui/security/advisories/new
 2. Describe the issue, the affected package(s) and version(s), and a reproduction if you have one
 3. We aim to acknowledge within 72 hours and to ship a fix or mitigation within 14 days for confirmed issues
 
