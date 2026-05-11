@@ -13,7 +13,7 @@ A multi-framework dashboard design system: tokens, components and a full referen
 
 The visual direction was originally explored as a study of UniFi's dashboard aesthetic. **Dash UI is not affiliated with, endorsed by, or derived from Ubiquiti Inc.**
 
-If you spot anything you believe is misattributed, open an issue.
+If you spot anything you believe is misattributed, please let me know by opening an issue.
 
 ## Packages
 
