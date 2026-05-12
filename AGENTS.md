@@ -35,6 +35,12 @@ apps/
 - `yarn build:site` - build the static tri-framework Storybook site into `apps/storybook-site/dist`
 - `yarn serve:site` - serve the assembled site at http://localhost:4173
 
+## Releases
+
+- `yarn changeset` before merge to bump versions
+- Merge to main opens auto Version Packages PR
+- GH Releases fire only on `X.0.0` where X >= 1
+
 ## Source of truth
 
 - Component-category mapping (12 sidebar groups): `packages/storybook-meta/src/categories.ts`
