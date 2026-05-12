@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { run, preventDefault } from 'svelte/legacy';
-
   import { onMount, onDestroy } from 'svelte';
   import { Button, IconButton, Pill, SearchBox, HealthBar, DownloadIcon, Tooltip, TreeView, ContextMenu, Dendrogram } from '@w5-ui/svelte';
   import type { TreeNode, ContextMenuEntry, DendrogramNode } from '@w5-ui/svelte';
@@ -97,7 +95,7 @@
     }).join('');
   }
 
-  run(() => {
+  $effect(() => {
     if (view === 'map') {
       if (canvas && svg) draw();
     }
@@ -208,7 +206,7 @@
           class="node {selected === n.id ? 'selected' : ''}"
           style="left:{n.x * 100}%;top:{n.y * 100}%;transform:translate(-50%,-50%);"
           onclick={() => (selected = n.id)}
-          oncontextmenu={preventDefault((e) => { selected = n.id; ctxMenu = { x: e.clientX, y: e.clientY }; })}
+          oncontextmenu={(e) => { e.preventDefault(); ((e) => { selected = n.id; ctxMenu = { x: e.clientX, y: e.clientY }; })(e); }}
           onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selected = n.id; } }}
           role="button"
           tabindex="0"

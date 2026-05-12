@@ -8,8 +8,6 @@
 </script>
 
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import { createEventDispatcher, tick } from 'svelte';
   import Kbd from './Kbd.svelte';
 
@@ -44,7 +42,7 @@
     [] as { group: string; items: CommandItem[] }[],
   ));
 
-  run(() => {
+  $effect(() => {
     if (open) {
       query = '';
       activeIdx = 0;
@@ -52,7 +50,7 @@
     }
   });
 
-  run(() => {
+  $effect(() => {
     if (query !== undefined) activeIdx = 0;
   });
 

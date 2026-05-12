@@ -3,8 +3,6 @@
 </script>
 
 <script lang="ts">
-  import { stopPropagation } from 'svelte/legacy';
-
   import { createEventDispatcher } from 'svelte';
 
   interface Props {
@@ -79,7 +77,7 @@
             type="button"
             class="tag__remove"
             aria-label="Remove {tag}"
-            onclick={stopPropagation(() => removeTag(i))}
+            onclick={(e) => { e.stopPropagation(); (() => removeTag(i))(e); }}
           >
             <svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true" focusable="false">
               <path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>

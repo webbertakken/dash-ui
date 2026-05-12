@@ -11,8 +11,6 @@
 </script>
 
 <script lang="ts">
-  import { preventDefault } from 'svelte/legacy';
-
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
   interface Props {
@@ -95,7 +93,7 @@
           data-active={idx === activeIdx ? 'true' : undefined}
           class="time-range-option"
           onmouseenter={() => { activeIdx = idx; }}
-          onmousedown={preventDefault(() => select(p.id))}
+          onmousedown={(e) => { e.preventDefault(); (() => select(p.id))(e); }}
         >
           {p.label}
           {#if p.id === value}

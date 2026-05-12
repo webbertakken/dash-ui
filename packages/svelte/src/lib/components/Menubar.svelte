@@ -5,8 +5,6 @@
 </script>
 
 <script lang="ts">
-  import { preventDefault } from 'svelte/legacy';
-
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
   interface Props {
@@ -126,7 +124,7 @@
                 data-active={eligIdx === activeItemIdx && !item.disabled ? 'true' : undefined}
                 class="menubar-item"
                 onmouseenter={() => { if (!item.disabled) activeItemIdx = eligIdx; }}
-                onmousedown={preventDefault(() => { if (!item.disabled) activate(menu.id, item.id); })}
+                onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(menu.id, item.id); })(e); }}
               >{item.label}</li>
             {/if}
           {/each}

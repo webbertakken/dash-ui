@@ -9,8 +9,6 @@
 </script>
 
 <script lang="ts">
-  import { run, preventDefault } from 'svelte/legacy';
-
   import { onDestroy, tick, createEventDispatcher } from 'svelte';
 
   interface Props {
@@ -67,7 +65,7 @@
     if (!menuEl?.contains(e.target as Node)) dispatch('close');
   }
 
-  run(() => {
+  $effect(() => {
     if (open) {
       activeIdx = 0;
       tick().then(() => menuEl?.focus());
@@ -111,7 +109,7 @@
           data-danger={entry.danger || undefined}
           class="ctx-menu-item"
           onmouseenter={() => (activeIdx = actionIndex(entry))}
-          onmousedown={preventDefault(() => { if (!entry.disabled) activate(entry.id); })}
+          onmousedown={(e) => { e.preventDefault(); (() => { if (!entry.disabled) activate(entry.id); })(e); }}
         >
           {entry.label}
         </li>

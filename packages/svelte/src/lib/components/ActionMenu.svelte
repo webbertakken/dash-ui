@@ -4,8 +4,6 @@
 </script>
 
 <script lang="ts">
-  import { preventDefault } from 'svelte/legacy';
-
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
   interface Props {
@@ -94,7 +92,7 @@
           data-danger={item.danger ? 'true' : undefined}
           class="action-menu-item"
           onmouseenter={() => { activeIdx = idx; }}
-          onmousedown={preventDefault(() => { if (!item.disabled) activate(item.id); })}
+          onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(item.id); })(e); }}
         >{item.label}</li>
       {/each}
     </ul>

@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import { tick } from 'svelte';
   import IconButton from './IconButton.svelte';
   import CloseIcon from '../icons/CloseIcon.svelte';
@@ -25,7 +23,7 @@
   let prevOverflow = $state('');
   let wasOpen = $state(false);
   let downOnBackdrop = $state(false);
-  run(() => {
+  $effect(() => {
     if (open && !wasOpen) {
       previouslyFocused = (typeof document !== 'undefined'
         ? (document.activeElement as HTMLElement | null)

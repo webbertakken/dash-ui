@@ -13,8 +13,6 @@
 </script>
 
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import { onDestroy } from 'svelte';
 
 
@@ -73,7 +71,7 @@
     else if (!e.shiftKey && active === l) { e.preventDefault(); f.focus(); }
   }
 
-  run(() => {
+  $effect(() => {
     if (open) {
       prevFocus = document.activeElement as HTMLElement | null;
       setTimeout(() => {

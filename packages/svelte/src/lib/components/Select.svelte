@@ -4,8 +4,6 @@
 </script>
 
 <script lang="ts">
-  import { preventDefault } from 'svelte/legacy';
-
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
   interface Props {
@@ -115,7 +113,7 @@
           aria-selected={opt.value === value}
           data-active={idx === activeIdx ? 'true' : undefined}
           class="select-option"
-          onmousedown={preventDefault(() => pick(opt.value))}
+          onmousedown={(e) => { e.preventDefault(); (() => pick(opt.value))(e); }}
           onmouseenter={() => { activeIdx = idx; }}
         >{opt.label}</li>
       {/each}
