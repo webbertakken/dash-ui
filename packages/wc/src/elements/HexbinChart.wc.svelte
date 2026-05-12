@@ -1,6 +1,6 @@
 <svelte:options tag="uni-hexbin-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/HexbinChart.svelte';
+  import Original from '@w5-ui/svelte/components/HexbinChart.svelte';
   export let points = [];
   export let xRange = undefined;
   export let yRange = undefined;

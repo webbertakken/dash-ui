@@ -8,9 +8,9 @@
     "build": "storybook build --output-dir storybook-static --disable-telemetry"
   },
   "dependencies": {
-    "@dash-ui/storybook-meta": "workspace:*",
-    "@dash-ui/tokens": "workspace:*",
-    "@dash-ui/wc": "workspace:*",
+    "@w5-ui/storybook-meta": "workspace:*",
+    "@w5-ui/tokens": "workspace:*",
+    "@w5-ui/wc": "workspace:*",
     "lit": "^3.2.1",
     "lit-html": "^3.2.1",
     "react": "^18.3.0",

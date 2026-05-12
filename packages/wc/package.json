@@ -1,7 +1,7 @@
 {
-  "name": "@dash-ui/wc",
+  "name": "@w5-ui/wc",
   "version": "0.1.0",
-  "description": "Framework-agnostic web components for the Dash UI design system - ~165 custom elements (dash-*) compiled from @dash-ui/svelte. Use in any framework or vanilla HTML. Part of Webber's design systems.",
+  "description": "Framework-agnostic web components for the Dash UI design system - ~165 custom elements (dash-*) compiled from @w5-ui/svelte. Use in any framework or vanilla HTML. Part of Webber's design systems.",
   "keywords": [
     "web-components",
     "custom-elements",
@@ -20,6 +20,11 @@
   },
   "bugs": "https://github.com/webbertakken/dash-ui/issues",
   "type": "module",
+  "sideEffects": true,
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -32,19 +37,19 @@
     "./register": "./dist/index.js"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "generate": "tsx ./scripts/generate-wrappers.ts",
     "build": "yarn generate && vite build",
     "dev": "vite build --watch",
-    "typecheck": "echo skip"
+    "typecheck": "echo skip",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@dash-ui/assets": "workspace:*",
-    "@dash-ui/svelte": "workspace:*",
-    "@dash-ui/tokens": "workspace:*"
+    "@w5-ui/assets": "workspace:*",
+    "@w5-ui/svelte": "workspace:*",
+    "@w5-ui/tokens": "workspace:*"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.2",

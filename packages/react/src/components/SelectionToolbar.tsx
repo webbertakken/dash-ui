@@ -1,23 +1,29 @@
-import type { ReactNode } from 'react';
-import { CloseIcon } from '../icons.js';
+import type { ReactNode } from 'react'
+import { CloseIcon } from '../icons.js'
 
 export interface SelectionToolbarAction {
-  label: string;
-  onClick: () => void;
-  variant?: 'default' | 'danger';
+  label: string
+  onClick: () => void
+  variant?: 'default' | 'danger'
 }
 
 export interface SelectionToolbarProps {
-  count: number;
-  actions: SelectionToolbarAction[];
-  onClear: () => void;
+  count: number
+  actions: SelectionToolbarAction[]
+  onClear: () => void
   /** sr-only label for the toolbar (default: "Selection actions") */
-  ariaLabel?: string;
-  children?: ReactNode;
+  ariaLabel?: string
+  children?: ReactNode
 }
 
-export function SelectionToolbar({ count, actions, onClear, ariaLabel = 'Selection actions', children }: SelectionToolbarProps) {
-  if (count === 0) return null;
+export function SelectionToolbar({
+  count,
+  actions,
+  onClear,
+  ariaLabel = 'Selection actions',
+  children,
+}: SelectionToolbarProps) {
+  if (count === 0) return null
   return (
     <div className="sel-toolbar" role="toolbar" aria-label={ariaLabel}>
       <span className="sel-toolbar__count" aria-live="polite" aria-atomic="true">
@@ -45,5 +51,5 @@ export function SelectionToolbar({ count, actions, onClear, ariaLabel = 'Selecti
         <CloseIcon aria-hidden="true" />
       </button>
     </div>
-  );
+  )
 }

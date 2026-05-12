@@ -1,6 +1,6 @@
 <svelte:options tag="uni-threshold-area-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/ThresholdAreaChart.svelte';
+  import Original from '@w5-ui/svelte/components/ThresholdAreaChart.svelte';
   // no public props
 </script>
 

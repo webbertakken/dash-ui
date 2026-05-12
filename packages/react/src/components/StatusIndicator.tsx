@@ -1,9 +1,9 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties } from 'react'
 
 export interface StatusIndicatorProps {
-  color: string;
-  text: string;
-  textColor?: string;
+  color: string
+  text: string
+  textColor?: string
 }
 
 export function StatusIndicator({ color, text, textColor }: StatusIndicatorProps) {
@@ -13,11 +13,14 @@ export function StatusIndicator({ color, text, textColor }: StatusIndicatorProps
     gap: 6,
     color: textColor ?? color,
     fontSize: 12,
-  };
+  }
   return (
     <span style={style}>
-      <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: '50%', background: color }} />
+      <span
+        aria-hidden="true"
+        style={{ width: 6, height: 6, borderRadius: '50%', background: color }}
+      />
       {text}
     </span>
-  );
+  )
 }

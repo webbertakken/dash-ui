@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, Button, Pill, DownloadIcon, ProgressBar, Gauge, Stat, BulletChart, GanttChart, SparklineMatrix, ThresholdAreaChart, QuadrantChart, CorrelationMatrix, FlameGraph, ResizablePanel, CountUp, ToggleGroup, StackedProgress } from '@dash-ui/svelte';
-  import type { BulletItem, GanttTask, SparklineMatrixRow, QuadrantPoint, FlameNode, StackedProgressSegment } from '@dash-ui/svelte';
+  import { Card, Button, Pill, DownloadIcon, ProgressBar, Gauge, Stat, BulletChart, GanttChart, SparklineMatrix, ThresholdAreaChart, QuadrantChart, CorrelationMatrix, FlameGraph, ResizablePanel, CountUp, ToggleGroup, StackedProgress } from '@w5-ui/svelte';
+  import type { BulletItem, GanttTask, SparklineMatrixRow, QuadrantPoint, FlameNode, StackedProgressSegment } from '@w5-ui/svelte';
 
   const SYSTEM_METRICS: BulletItem[] = [
     { label: 'CPU', value: 41, target: 70, ranges: [50, 75], color: '#006FFF' },

@@ -2,10 +2,11 @@
 
 ## Goal
 
-To research the internet for missing useful patterns and components to use in the dashboard.
-Update the dashboard with additional components or improve the quality of existing components.
+To research the internet for missing useful patterns and components to use in the dashboard. Update
+the dashboard with additional components or improve the quality of existing components.
 
-The overarching idea is that we have a mega complete dashboard UI and design system that's ready to use for svelte 5 and latest react. 
+The overarching idea is that we have a mega complete dashboard UI and design system that's ready to
+use for svelte 5 and latest react.
 
 ## Success criteria
 
@@ -21,7 +22,7 @@ A row in `results.tsv` is `keep` only if the change improves at least one of:
 
 ## Constraints
 
-- Maintain the public API of `@dash-ui/react` or `@dash-ui/svelte`.
+- Maintain the public API of `@w5-ui/react` or `@w5-ui/svelte`.
 - Maintain WCAG 2.2 AA contrast.
 - No new runtime deps without a recorded benefit.
 

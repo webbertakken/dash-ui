@@ -1,18 +1,18 @@
-import { useState, useId } from 'react';
-import type { KeyboardEvent, ChangeEvent } from 'react';
+import { useState, useId } from 'react'
+import type { KeyboardEvent, ChangeEvent } from 'react'
 
 export interface NumberInputProps {
-  label?: string;
-  value?: number;
-  defaultValue?: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  suffix?: string;
-  disabled?: boolean;
-  onChange?: (value: number) => void;
-  id?: string;
-  className?: string;
+  label?: string
+  value?: number
+  defaultValue?: number
+  min?: number
+  max?: number
+  step?: number
+  suffix?: string
+  disabled?: boolean
+  onChange?: (value: number) => void
+  id?: string
+  className?: string
 }
 
 export function NumberInput({
@@ -28,40 +28,53 @@ export function NumberInput({
   id,
   className = '',
 }: NumberInputProps) {
-  const generatedId = useId();
-  const inputId = id ?? generatedId;
-  const [internalValue, setInternalValue] = useState(defaultValue);
-  const value = valueProp !== undefined ? valueProp : internalValue;
+  const generatedId = useId()
+  const inputId = id ?? generatedId
+  const [internalValue, setInternalValue] = useState(defaultValue)
+  const value = valueProp !== undefined ? valueProp : internalValue
 
   function clamp(n: number) {
-    let v = n;
-    if (min !== undefined) v = Math.max(min, v);
-    if (max !== undefined) v = Math.min(max, v);
-    return v;
+    let v = n
+    if (min !== undefined) v = Math.max(min, v)
+    if (max !== undefined) v = Math.min(max, v)
+    return v
   }
 
   function commit(next: number) {
-    const clamped = clamp(next);
-    if (valueProp === undefined) setInternalValue(clamped);
-    onChange?.(clamped);
+    const clamped = clamp(next)
+    if (valueProp === undefined) setInternalValue(clamped)
+    onChange?.(clamped)
   }
 
   function handleKey(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'ArrowUp') { e.preventDefault(); commit(value + step); }
-    else if (e.key === 'ArrowDown') { e.preventDefault(); commit(value - step); }
-    else if (e.key === 'PageUp') { e.preventDefault(); commit(value + step * 10); }
-    else if (e.key === 'PageDown') { e.preventDefault(); commit(value - step * 10); }
-    else if (e.key === 'Home' && min !== undefined) { e.preventDefault(); commit(min); }
-    else if (e.key === 'End' && max !== undefined) { e.preventDefault(); commit(max); }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      commit(value + step)
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      commit(value - step)
+    } else if (e.key === 'PageUp') {
+      e.preventDefault()
+      commit(value + step * 10)
+    } else if (e.key === 'PageDown') {
+      e.preventDefault()
+      commit(value - step * 10)
+    } else if (e.key === 'Home' && min !== undefined) {
+      e.preventDefault()
+      commit(min)
+    } else if (e.key === 'End' && max !== undefined) {
+      e.preventDefault()
+      commit(max)
+    }
   }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const n = Number(e.target.value);
-    if (!isNaN(n)) commit(n);
+    const n = Number(e.target.value)
+    if (!isNaN(n)) commit(n)
   }
 
-  const canDecrement = !disabled && (min === undefined || value > min);
-  const canIncrement = !disabled && (max === undefined || value < max);
+  const canDecrement = !disabled && (min === undefined || value > min)
+  const canIncrement = !disabled && (max === undefined || value < max)
 
   return (
     <div className={`number-input ${className}`.trim()}>
@@ -112,5 +125,5 @@ export function NumberInput({
         </button>
       </div>
     </div>
-  );
+  )
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { ActivityFeed, Alert, AnnotatedTimeSeries, Badge, BellIcon, Button, Card, EmptyState, GroupedList, NotificationPanel, Pill, Tabs, Timeline } from '@dash-ui/svelte';
-  import type { ActivityItem, GroupedListGroup, NotificationItem, TimelineEvent, TimeSeriesAnnotation } from '@dash-ui/svelte';
+  import { ActivityFeed, Alert, AnnotatedTimeSeries, Badge, BellIcon, Button, Card, EmptyState, GroupedList, NotificationPanel, Pill, Tabs, Timeline } from '@w5-ui/svelte';
+  import type { ActivityItem, GroupedListGroup, NotificationItem, TimelineEvent, TimeSeriesAnnotation } from '@w5-ui/svelte';
   let tab = 'active';
   let criticalDismissed = false;
   let notifOpen = false;

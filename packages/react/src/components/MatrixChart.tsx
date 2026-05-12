@@ -1,25 +1,25 @@
 export interface MatrixChartProps {
-  rows: string[];
-  cols: string[];
-  values: number[][];
-  unit?: string;
-  height?: number;
-  ariaLabel?: string;
+  rows: string[]
+  cols: string[]
+  values: number[][]
+  unit?: string
+  height?: number
+  ariaLabel?: string
 }
 
-const LEFT = 80;
-const TOP = 60;
-const CELL = 38;
-const FONT = 'inherit';
+const LEFT = 80
+const TOP = 60
+const CELL = 38
+const FONT = 'inherit'
 
 function cellColor(t: number): string {
-  const alpha = 0.07 + t * 0.88;
-  return `rgba(0,111,255,${alpha.toFixed(2)})`;
+  const alpha = 0.07 + t * 0.88
+  return `rgba(0,111,255,${alpha.toFixed(2)})`
 }
 
 function fmt(n: number): string {
-  if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
-  return String(n);
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}k`
+  return String(n)
 }
 
 export function MatrixChart({
@@ -29,10 +29,10 @@ export function MatrixChart({
   unit = '',
   ariaLabel = 'Matrix chart',
 }: MatrixChartProps) {
-  const allVals = values.flat();
-  const max = Math.max(...allVals, 1);
-  const W = LEFT + cols.length * CELL;
-  const H = TOP + rows.length * CELL;
+  const allVals = values.flat()
+  const max = Math.max(...allVals, 1)
+  const W = LEFT + cols.length * CELL
+  const H = TOP + rows.length * CELL
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -43,7 +43,7 @@ export function MatrixChart({
         focusable="false"
       >
         {cols.map((col, ci) => {
-          const cx = LEFT + ci * CELL + CELL / 2;
+          const cx = LEFT + ci * CELL + CELL / 2
           return (
             <text
               key={ci}
@@ -57,11 +57,11 @@ export function MatrixChart({
             >
               {col}
             </text>
-          );
+          )
         })}
 
         {rows.map((row, ri) => {
-          const cy = TOP + ri * CELL + CELL / 2;
+          const cy = TOP + ri * CELL + CELL / 2
           return (
             <text
               key={ri}
@@ -74,17 +74,17 @@ export function MatrixChart({
             >
               {row}
             </text>
-          );
+          )
         })}
 
         {rows.map((_, ri) =>
           cols.map((_, ci) => {
-            const v = values[ri]?.[ci] ?? 0;
-            const t = v / max;
-            const x = LEFT + ci * CELL;
-            const y = TOP + ri * CELL;
-            const cx = x + CELL / 2;
-            const cy = y + CELL / 2;
+            const v = values[ri]?.[ci] ?? 0
+            const t = v / max
+            const x = LEFT + ci * CELL
+            const y = TOP + ri * CELL
+            const cx = x + CELL / 2
+            const cy = y + CELL / 2
             return (
               <g key={`${ri}-${ci}`}>
                 <rect
@@ -104,14 +104,15 @@ export function MatrixChart({
                     textAnchor="middle"
                     fontFamily={FONT}
                   >
-                    {fmt(v)}{unit}
+                    {fmt(v)}
+                    {unit}
                   </text>
                 )}
               </g>
-            );
+            )
           }),
         )}
       </svg>
     </div>
-  );
+  )
 }

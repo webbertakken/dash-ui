@@ -1,19 +1,29 @@
-import type { HTMLAttributes, ReactNode } from 'react';
-import { Card } from './Card.js';
+import type { HTMLAttributes, ReactNode } from 'react'
+import { Card } from './Card.js'
 
 export interface StatProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'> {
-  label: string;
-  value: ReactNode;
-  unit?: string;
-  sub?: string;
-  delta?: string;
-  deltaDir?: 'up' | 'down' | 'neutral';
-  span?: number;
-  color?: string;
+  label: string
+  value: ReactNode
+  unit?: string
+  sub?: string
+  delta?: string
+  deltaDir?: 'up' | 'down' | 'neutral'
+  span?: number
+  color?: string
 }
 
-export function Stat({ label, value, unit, sub, delta, deltaDir = 'neutral', span, color, ...rest }: StatProps) {
-  const deltaClass = deltaDir === 'up' ? 'delta-up' : deltaDir === 'down' ? 'delta-down' : '';
+export function Stat({
+  label,
+  value,
+  unit,
+  sub,
+  delta,
+  deltaDir = 'neutral',
+  span,
+  color,
+  ...rest
+}: StatProps) {
+  const deltaClass = deltaDir === 'up' ? 'delta-up' : deltaDir === 'down' ? 'delta-down' : ''
   return (
     <Card span={span} {...rest}>
       <h3>{label}</h3>
@@ -34,5 +44,5 @@ export function Stat({ label, value, unit, sub, delta, deltaDir = 'neutral', spa
         </div>
       )}
     </Card>
-  );
+  )
 }

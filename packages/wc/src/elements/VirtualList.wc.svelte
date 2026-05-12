@@ -1,6 +1,6 @@
 <svelte:options tag="uni-virtual-list" />
 <script>
-  import Original from '@dash-ui/svelte/components/VirtualList.svelte';
+  import Original from '@w5-ui/svelte/components/VirtualList.svelte';
   export let items = [];
   export let itemHeight = 48;
   export let height = 400;

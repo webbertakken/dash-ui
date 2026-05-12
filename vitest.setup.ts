@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom/vitest';
+import '@testing-library/jest-dom/vitest'
 
 // jsdom does not implement matchMedia; supply a benign stub
 if (typeof window !== 'undefined' && !window.matchMedia) {
@@ -12,7 +12,7 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
       addEventListener: () => {},
       removeEventListener: () => {},
       dispatchEvent: () => false,
-    }) as unknown as MediaQueryList;
+    }) as unknown as MediaQueryList
 }
 
 // jsdom lacks ResizeObserver; many chart components rely on it
@@ -23,7 +23,7 @@ if (typeof globalThis.ResizeObserver === 'undefined') {
     disconnect() {}
   }
   // @ts-expect-error stub
-  globalThis.ResizeObserver = ResizeObserverStub;
+  globalThis.ResizeObserver = ResizeObserverStub
 }
 
 // jsdom lacks IntersectionObserver
@@ -33,17 +33,17 @@ if (typeof globalThis.IntersectionObserver === 'undefined') {
     unobserve() {}
     disconnect() {}
     takeRecords() {
-      return [];
+      return []
     }
-    root = null;
-    rootMargin = '';
-    thresholds = [];
+    root = null
+    rootMargin = ''
+    thresholds = []
   }
   // @ts-expect-error stub
-  globalThis.IntersectionObserver = IntersectionObserverStub;
+  globalThis.IntersectionObserver = IntersectionObserverStub
 }
 
 // jsdom lacks scrollIntoView on Element
 if (typeof Element !== 'undefined' && !Element.prototype.scrollIntoView) {
-  Element.prototype.scrollIntoView = function scrollIntoView() {};
+  Element.prototype.scrollIntoView = function scrollIntoView() {}
 }

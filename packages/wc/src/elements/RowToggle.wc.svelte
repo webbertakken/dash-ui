@@ -1,6 +1,6 @@
 <svelte:options tag="uni-row-toggle" />
 <script>
-  import Original from '@dash-ui/svelte/components/RowToggle.svelte';
+  import Original from '@w5-ui/svelte/components/RowToggle.svelte';
   // no public props
 </script>
 

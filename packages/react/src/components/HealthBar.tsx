@@ -1,14 +1,14 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties } from 'react'
 
 export interface HealthBarProps {
-  value: number;
-  fillStyle?: CSSProperties;
-  label?: string;
-  valueText?: string;
+  value: number
+  fillStyle?: CSSProperties
+  label?: string
+  valueText?: string
 }
 
 export function HealthBar({ value, fillStyle, label, valueText }: HealthBarProps) {
-  const clamped = Math.max(0, Math.min(100, value));
+  const clamped = Math.max(0, Math.min(100, value))
   return (
     <div
       className="hb"
@@ -19,10 +19,7 @@ export function HealthBar({ value, fillStyle, label, valueText }: HealthBarProps
       aria-label={label}
       aria-valuetext={valueText}
     >
-      <div
-        className="hb-fill"
-        style={{ width: `${clamped}%`, ...fillStyle }}
-      />
+      <div className="hb-fill" style={{ width: `${clamped}%`, ...fillStyle }} />
     </div>
-  );
+  )
 }

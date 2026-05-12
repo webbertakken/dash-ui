@@ -1,7 +1,7 @@
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
-import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import path from 'node:path';
+import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import react from '@vitejs/plugin-react'
+import path from 'node:path'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [
@@ -15,19 +15,17 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@dash-ui/tokens': path.resolve(__dirname, 'packages/tokens/src/tokens.ts'),
-      '@dash-ui/assets': path.resolve(__dirname, 'packages/assets/src/index.ts'),
-      '@dash-ui/react': path.resolve(__dirname, 'packages/react/src/index.ts'),
-      '@dash-ui/svelte': path.resolve(__dirname, 'packages/svelte/src/lib/index.ts'),
+      '@w5-ui/tokens': path.resolve(__dirname, 'packages/tokens/src/tokens.ts'),
+      '@w5-ui/assets': path.resolve(__dirname, 'packages/assets/src/index.ts'),
+      '@w5-ui/react': path.resolve(__dirname, 'packages/react/src/index.ts'),
+      '@w5-ui/svelte': path.resolve(__dirname, 'packages/svelte/src/lib/index.ts'),
     },
   },
   test: {
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
-    include: [
-      'packages/**/*.test.{ts,tsx}',
-    ],
+    include: ['packages/**/*.test.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'json-summary'],
@@ -57,4 +55,4 @@ export default defineConfig({
       modules: { classNameStrategy: 'non-scoped' },
     },
   },
-});
+})

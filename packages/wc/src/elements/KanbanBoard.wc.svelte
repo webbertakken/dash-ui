@@ -1,6 +1,6 @@
 <svelte:options tag="uni-kanban-board" />
 <script>
-  import Original from '@dash-ui/svelte/components/KanbanBoard.svelte';
+  import Original from '@w5-ui/svelte/components/KanbanBoard.svelte';
   export let columns = undefined;
   export let onCardMove = undefined;
   export let ariaLabel = 'Kanban board';

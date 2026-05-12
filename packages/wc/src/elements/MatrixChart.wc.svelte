@@ -1,6 +1,6 @@
 <svelte:options tag="uni-matrix-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/MatrixChart.svelte';
+  import Original from '@w5-ui/svelte/components/MatrixChart.svelte';
   export let rows = [];
   export let cols = [];
   export let values = [];

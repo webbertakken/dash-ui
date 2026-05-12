@@ -1,6 +1,6 @@
 {
   "name": "design-system-monorepo",
-  "description": "Webber's design systems - a multi-framework dashboard design system shipped as @dash-ui/* packages (tokens, assets, React, Svelte, Web Components) plus reference dashboards and Storybooks.",
+  "description": "Webber's design systems - a multi-framework dashboard design system shipped as @w5-ui/* packages (tokens, assets, React, Svelte, Web Components) plus reference dashboards and Storybooks.",
   "author": "Webber Takken (https://github.com/webbertakken)",
   "license": "MIT",
   "homepage": "https://github.com/webbertakken/dash-ui#readme",
@@ -23,7 +23,7 @@
     "dev:storybook": "yarn workspace storybook-react dev",
     "build:react": "yarn workspace dashboard-react build",
     "build:svelte": "yarn workspace dashboard-svelte build",
-    "build:wc": "yarn workspace @dash-ui/wc build",
+    "build:wc": "yarn workspace @w5-ui/wc build",
     "build:storybook": "yarn workspace storybook-react build && yarn workspace storybook-svelte build && yarn workspace storybook-wc build",
     "build:site": "yarn build:wc && yarn build:storybook && yarn workspace storybook-site build",
     "serve:site": "yarn workspace storybook-site serve",
@@ -31,13 +31,30 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "typecheck": "yarn workspaces foreach -A --include 'packages/*' --include 'dashboard-*' run typecheck",
-    "lint": "echo 'no linter configured'"
+    "typecheck": "yarn workspaces foreach -A --include '@w5-ui/*' run typecheck",
+    "typecheck:apps": "yarn workspaces foreach -A --include 'dashboard-*' run typecheck",
+    "lint": "oxlint --report-unused-disable-directives",
+    "lint:strict": "oxlint --deny-warnings --report-unused-disable-directives",
+    "format": "oxfmt --write",
+    "format:check": "oxfmt --check",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "yarn build && changeset publish",
+    "prepare": "tsx scripts/dev/ensure-husky.ts"
+  },
+  "lint-staged": {
+    "*.{json,jsonc,md,yaml,yml,css,html}": "oxfmt --write",
+    "*.{ts,tsx,js,jsx,mjs,cjs}": [
+      "oxfmt --write",
+      "oxlint --fix --deny-warnings --report-unused-disable-directives"
+    ]
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.10",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
@@ -46,9 +63,14 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260511.1",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-v8": "^2.1.8",
+    "husky": "^9.1.7",
     "jsdom": "^25.0.1",
+    "lint-staged": "^15.2.10",
+    "oxfmt": "^0.47.0",
+    "oxlint": "^1.63.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "svelte": "^4.2.19",

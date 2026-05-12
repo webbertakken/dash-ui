@@ -1,6 +1,6 @@
 <svelte:options tag="uni-error-band-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/ErrorBandChart.svelte';
+  import Original from '@w5-ui/svelte/components/ErrorBandChart.svelte';
   export let series = [];
   export let xLabels = [];
   export let yRange = undefined;

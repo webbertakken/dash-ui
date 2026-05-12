@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "webbertakken/dash-ui" }],
+  "commit": false,
+  "fixed": [],
+  "linked": [
+    ["@w5-ui/react", "@w5-ui/svelte", "@w5-ui/wc", "@w5-ui/tokens", "@w5-ui/assets"]
+  ],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "dashboard-react",
+    "dashboard-svelte",
+    "storybook-react",
+    "storybook-svelte",
+    "storybook-wc",
+    "storybook-site"
+  ]
+}

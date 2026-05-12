@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, Pill, SegmentedControl, RangeSlider, HeatMap, BubbleChart, RadarChart, BoxPlot, DotPlot, Histogram, ViolinPlot, ParallelCoordinates, CandlestickChart, BeeswarmChart, HexbinChart, ContourPlot } from '@dash-ui/svelte';
-  import type { SegmentOption, BubblePoint, RadarSeries, BoxSeries, DotPlotItem, HistogramBin, ViolinSeries, ParallelAxis, ParallelSeries, CandlestickBar, BeeswarmSeries, HexbinPoint, ContourPoint } from '@dash-ui/svelte';
+  import { Card, Pill, SegmentedControl, RangeSlider, HeatMap, BubbleChart, RadarChart, BoxPlot, DotPlot, Histogram, ViolinPlot, ParallelCoordinates, CandlestickChart, BeeswarmChart, HexbinChart, ContourPlot } from '@w5-ui/svelte';
+  import type { SegmentOption, BubblePoint, RadarSeries, BoxSeries, DotPlotItem, HistogramBin, ViolinSeries, ParallelAxis, ParallelSeries, CandlestickBar, BeeswarmSeries, HexbinPoint, ContourPoint } from '@w5-ui/svelte';
 
   function rng(s0: number) {
     let s = s0;

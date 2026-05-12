@@ -1,6 +1,6 @@
 <svelte:options tag="uni-menubar" />
 <script>
-  import Original from '@dash-ui/svelte/components/Menubar.svelte';
+  import Original from '@w5-ui/svelte/components/Menubar.svelte';
   // no public props
 </script>
 

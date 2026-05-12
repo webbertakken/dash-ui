@@ -1,14 +1,14 @@
 export interface ProgressBarProps {
-  value: number;
-  label?: string;
-  valueText?: string;
-  color?: string;
+  value: number
+  label?: string
+  valueText?: string
+  color?: string
 }
 
 export function ProgressBar({ value, label, valueText, color = '#006FFF' }: ProgressBarProps) {
-  const clamped = Math.max(0, Math.min(100, value));
-  const displayed = valueText ?? `${Math.round(clamped)}%`;
-  const hasHeader = label !== undefined || valueText !== undefined;
+  const clamped = Math.max(0, Math.min(100, value))
+  const displayed = valueText ?? `${Math.round(clamped)}%`
+  const hasHeader = label !== undefined || valueText !== undefined
   return (
     <div className="pb">
       {hasHeader && (
@@ -29,5 +29,5 @@ export function ProgressBar({ value, label, valueText, color = '#006FFF' }: Prog
         <div className="pb-fill" style={{ width: `${clamped}%`, background: color }} />
       </div>
     </div>
-  );
+  )
 }

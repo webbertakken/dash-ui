@@ -1,6 +1,6 @@
 <svelte:options tag="uni-star-rating" />
 <script>
-  import Original from '@dash-ui/svelte/components/StarRating.svelte';
+  import Original from '@w5-ui/svelte/components/StarRating.svelte';
   // no public props
 </script>
 

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-json-viewer-node" />
 <script>
-  import Original from '@dash-ui/svelte/components/JsonViewerNode.svelte';
+  import Original from '@w5-ui/svelte/components/JsonViewerNode.svelte';
   export let v = undefined;
   export let k = undefined;
   export let depth = 0;

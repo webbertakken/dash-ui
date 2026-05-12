@@ -12,43 +12,43 @@
 // We expect each Storybook to have already been built. The build script in
 // the workspace root takes care of that order.
 
-import { cp, mkdir, rm, stat, writeFile, readFile } from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { cp, mkdir, rm, stat, writeFile, readFile } from 'node:fs/promises'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const HERE = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(HERE, '..', '..', '..');
-const DIST = path.join(REPO_ROOT, 'apps/storybook-site/dist');
+const HERE = path.dirname(fileURLToPath(import.meta.url))
+const REPO_ROOT = path.resolve(HERE, '..', '..', '..')
+const DIST = path.join(REPO_ROOT, 'apps/storybook-site/dist')
 
 const SOURCES = [
   { from: 'apps/storybook-react/storybook-static', to: 'react' },
   { from: 'apps/storybook-svelte/storybook-static', to: 'svelte' },
   { from: 'apps/storybook-wc/storybook-static', to: 'wc' },
-] as const;
+] as const
 
 async function exists(p: string) {
   try {
-    await stat(p);
-    return true;
+    await stat(p)
+    return true
   } catch {
-    return false;
+    return false
   }
 }
 
-await rm(DIST, { recursive: true, force: true });
-await mkdir(DIST, { recursive: true });
+await rm(DIST, { recursive: true, force: true })
+await mkdir(DIST, { recursive: true })
 
 for (const { from, to } of SOURCES) {
-  const src = path.join(REPO_ROOT, from);
+  const src = path.join(REPO_ROOT, from)
   if (!(await exists(src))) {
-    console.warn(`SKIP: ${from} not found - did you build it?`);
-    continue;
+    console.warn(`SKIP: ${from} not found - did you build it?`)
+    continue
   }
-  await cp(src, path.join(DIST, to), { recursive: true });
-  console.log(`Copied ${from} -> dist/${to}/`);
+  await cp(src, path.join(DIST, to), { recursive: true })
+  console.log(`Copied ${from} -> dist/${to}/`)
 }
 
-const tokensCss = await readFile(path.join(REPO_ROOT, 'packages/tokens/src/tokens.css'), 'utf8');
+const tokensCss = await readFile(path.join(REPO_ROOT, 'packages/tokens/src/tokens.css'), 'utf8')
 
 // Landing page is fully self-contained: inlines the tokens CSS so motif
 // variables work without any extra requests, and uses no JS frameworks.
@@ -144,19 +144,19 @@ const indexHtml = `<!doctype html>
     <div class="pickers">
       <a class="card" href="./react/">
         <span class="badge">React</span>
-        <h2>@dash-ui/react</h2>
+        <h2>@w5-ui/react</h2>
         <p class="desc">168 React 18 components. Render via JSX, full TS types, server-rendering tested.</p>
         <p class="meta">storybook \u2192 ./react/</p>
       </a>
       <a class="card" href="./svelte/">
         <span class="badge">Svelte</span>
-        <h2>@dash-ui/svelte</h2>
+        <h2>@w5-ui/svelte</h2>
         <p class="desc">168 Svelte 4 components mirroring the React API. SvelteKit ready.</p>
         <p class="meta">storybook \u2192 ./svelte/</p>
       </a>
       <a class="card" href="./wc/">
         <span class="badge">Web Components</span>
-        <h2>@dash-ui/wc</h2>
+        <h2>@w5-ui/wc</h2>
         <p class="desc">166 framework-agnostic custom elements compiled from the Svelte source.</p>
         <p class="meta">storybook \u2192 ./wc/</p>
       </a>
@@ -184,8 +184,8 @@ const indexHtml = `<!doctype html>
   </script>
 </body>
 </html>
-`;
+`
 
-await writeFile(path.join(DIST, 'index.html'), indexHtml);
-console.log('Wrote dist/index.html');
-console.log(`\nTotal site at: ${DIST}`);
+await writeFile(path.join(DIST, 'index.html'), indexHtml)
+console.log('Wrote dist/index.html')
+console.log(`\nTotal site at: ${DIST}`)

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-pareto-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/ParetoChart.svelte';
+  import Original from '@w5-ui/svelte/components/ParetoChart.svelte';
   export let items = [];
   export let height = 160;
   export let ariaLabel = 'Pareto chart';

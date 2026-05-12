@@ -1,7 +1,7 @@
 {
-  "name": "@dash-ui/svelte",
+  "name": "@w5-ui/svelte",
   "version": "0.1.0",
-  "description": "Svelte 4 components for the Dash UI design system - mirrors the @dash-ui/react API 1:1. Part of Webber's design systems.",
+  "description": "Svelte 4 components for the Dash UI design system - mirrors the @w5-ui/react API 1:1. Part of Webber's design systems.",
   "keywords": [
     "svelte",
     "components",
@@ -20,6 +20,14 @@
   },
   "bugs": "https://github.com/webbertakken/dash-ui/issues",
   "type": "module",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.svelte"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "svelte": "./src/lib/index.ts",
   "main": "./src/lib/index.ts",
   "types": "./src/lib/index.ts",
@@ -36,14 +44,14 @@
     "svelte": ">=4"
   },
   "dependencies": {
-    "@dash-ui/assets": "workspace:*",
-    "@dash-ui/tokens": "workspace:*"
+    "@w5-ui/assets": "workspace:*",
+    "@w5-ui/tokens": "workspace:*"
   },
   "devDependencies": {
     "svelte": "^4.2.19",
     "typescript": "^5.5.0"
   },
   "files": [
-    "src"
+    "src/lib/**"
   ]
 }

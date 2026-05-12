@@ -1,6 +1,6 @@
 <svelte:options tag="uni-tag-input" />
 <script>
-  import Original from '@dash-ui/svelte/components/TagInput.svelte';
+  import Original from '@w5-ui/svelte/components/TagInput.svelte';
   // no public props
 </script>
 

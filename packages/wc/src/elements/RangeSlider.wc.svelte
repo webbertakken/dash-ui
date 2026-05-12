@@ -1,6 +1,6 @@
 <svelte:options tag="uni-range-slider" />
 <script>
-  import Original from '@dash-ui/svelte/components/RangeSlider.svelte';
+  import Original from '@w5-ui/svelte/components/RangeSlider.svelte';
   export let label = undefined;
   export let min = 0;
   export let max = 100;

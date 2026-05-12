@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useId } from 'react';
-import type { KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, useId } from 'react'
+import type { KeyboardEvent } from 'react'
 
 const PRESETS = [
   { id: '1h', label: 'Last 1 hour', short: 'Last 1 h' },
@@ -7,63 +7,78 @@ const PRESETS = [
   { id: '24h', label: 'Last 24 hours', short: 'Last 24 h' },
   { id: '7d', label: 'Last 7 days', short: 'Last 7 d' },
   { id: '30d', label: 'Last 30 days', short: 'Last 30 d' },
-] as const;
+] as const
 
-export type TimeRangeId = (typeof PRESETS)[number]['id'];
+export type TimeRangeId = (typeof PRESETS)[number]['id']
 
 export interface TimeRangeProps {
-  value?: TimeRangeId;
-  onChange?: (value: TimeRangeId) => void;
+  value?: TimeRangeId
+  onChange?: (value: TimeRangeId) => void
 }
 
 export function TimeRange({ value = '1h', onChange }: TimeRangeProps) {
-  const uid = useId();
-  const listId = `${uid}-list`;
-  const [open, setOpen] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const uid = useId()
+  const listId = `${uid}-list`
+  const [open, setOpen] = useState(false)
+  const [activeIdx, setActiveIdx] = useState(0)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
-  const selected = PRESETS.find((p) => p.id === value) ?? PRESETS[0];
+  const selected = PRESETS.find((p) => p.id === value) ?? PRESETS[0]
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) return
     function handler(e: MouseEvent) {
-      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false);
+      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false)
     }
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [open]);
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
 
   function toggle() {
     setOpen((prev) => {
-      if (!prev) setActiveIdx(PRESETS.findIndex((p) => p.id === value));
-      return !prev;
-    });
+      if (!prev) setActiveIdx(PRESETS.findIndex((p) => p.id === value))
+      return !prev
+    })
   }
 
   function select(id: TimeRangeId) {
-    onChange?.(id);
-    setOpen(false);
-    triggerRef.current?.focus();
+    onChange?.(id)
+    setOpen(false)
+    triggerRef.current?.focus()
   }
 
   function onKeyDown(e: KeyboardEvent) {
     if (!open) {
       if (['ArrowDown', 'Enter', ' '].includes(e.key)) {
-        e.preventDefault();
-        setActiveIdx(PRESETS.findIndex((p) => p.id === value));
-        setOpen(true);
+        e.preventDefault()
+        setActiveIdx(PRESETS.findIndex((p) => p.id === value))
+        setOpen(true)
       }
-      return;
+      return
     }
-    if (e.key === 'Escape') { e.preventDefault(); setOpen(false); triggerRef.current?.focus(); }
-    else if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, PRESETS.length - 1)); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, 0)); }
-    else if (e.key === 'Home') { e.preventDefault(); setActiveIdx(0); }
-    else if (e.key === 'End') { e.preventDefault(); setActiveIdx(PRESETS.length - 1); }
-    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(PRESETS[activeIdx].id); }
-    else if (e.key === 'Tab') { setOpen(false); }
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      setOpen(false)
+      triggerRef.current?.focus()
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setActiveIdx((i) => Math.min(i + 1, PRESETS.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setActiveIdx((i) => Math.max(i - 1, 0))
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      setActiveIdx(0)
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      setActiveIdx(PRESETS.length - 1)
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      select(PRESETS[activeIdx].id)
+    } else if (e.key === 'Tab') {
+      setOpen(false)
+    }
   }
 
   return (
@@ -79,7 +94,19 @@ export function TimeRange({ value = '1h', onChange }: TimeRangeProps) {
         onKeyDown={onKeyDown}
       >
         {selected.short}
-        <svg className="time-range-chevron" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          className="time-range-chevron"
+          width="10"
+          height="6"
+          viewBox="0 0 10 6"
+          aria-hidden="true"
+          focusable="false"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M1 1l4 4 4-4" />
         </svg>
       </button>
@@ -94,11 +121,25 @@ export function TimeRange({ value = '1h', onChange }: TimeRangeProps) {
               data-active={idx === activeIdx ? 'true' : undefined}
               className="time-range-option"
               onMouseEnter={() => setActiveIdx(idx)}
-              onMouseDown={(e) => { e.preventDefault(); select(p.id); }}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                select(p.id)
+              }}
             >
               {p.label}
               {p.id === value && (
-                <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  aria-hidden="true"
+                  focusable="false"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M2 6l3 3 5-5" />
                 </svg>
               )}
@@ -107,5 +148,5 @@ export function TimeRange({ value = '1h', onChange }: TimeRangeProps) {
         </ul>
       )}
     </div>
-  );
+  )
 }

@@ -1,69 +1,81 @@
-import { useState, useRef, useEffect, useId } from 'react';
-import type { KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, useId } from 'react'
+import type { KeyboardEvent } from 'react'
 
 export interface ActionMenuItem {
-  id: string;
-  label: string;
-  danger?: boolean;
-  disabled?: boolean;
+  id: string
+  label: string
+  danger?: boolean
+  disabled?: boolean
 }
 
 export interface ActionMenuProps {
-  items: ActionMenuItem[];
-  onAction: (id: string) => void;
-  label?: string;
+  items: ActionMenuItem[]
+  onAction: (id: string) => void
+  label?: string
 }
 
 export function ActionMenu({ items, onAction, label = 'Actions' }: ActionMenuProps) {
-  const uid = useId();
-  const menuId = `${uid}-menu`;
-  const [open, setOpen] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const uid = useId()
+  const menuId = `${uid}-menu`
+  const [open, setOpen] = useState(false)
+  const [activeIdx, setActiveIdx] = useState(0)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) return
     function handler(e: MouseEvent) {
-      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false);
+      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false)
     }
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [open]);
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
 
   function toggle() {
     setOpen((prev) => {
-      if (!prev) setActiveIdx(0);
-      return !prev;
-    });
+      if (!prev) setActiveIdx(0)
+      return !prev
+    })
   }
 
   function activate(id: string) {
-    onAction(id);
-    setOpen(false);
-    triggerRef.current?.focus();
+    onAction(id)
+    setOpen(false)
+    triggerRef.current?.focus()
   }
 
   function onKeyDown(e: KeyboardEvent) {
     if (!open) {
       if (['ArrowDown', 'Enter', ' '].includes(e.key)) {
-        e.preventDefault();
-        setActiveIdx(0);
-        setOpen(true);
+        e.preventDefault()
+        setActiveIdx(0)
+        setOpen(true)
       }
-      return;
+      return
     }
-    if (e.key === 'Escape') { e.preventDefault(); setOpen(false); triggerRef.current?.focus(); }
-    else if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, items.length - 1)); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, 0)); }
-    else if (e.key === 'Home') { e.preventDefault(); setActiveIdx(0); }
-    else if (e.key === 'End') { e.preventDefault(); setActiveIdx(items.length - 1); }
-    else if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      const item = items[activeIdx];
-      if (item && !item.disabled) activate(item.id);
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      setOpen(false)
+      triggerRef.current?.focus()
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setActiveIdx((i) => Math.min(i + 1, items.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setActiveIdx((i) => Math.max(i - 1, 0))
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      setActiveIdx(0)
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      setActiveIdx(items.length - 1)
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      const item = items[activeIdx]
+      if (item && !item.disabled) activate(item.id)
+    } else if (e.key === 'Tab') {
+      setOpen(false)
     }
-    else if (e.key === 'Tab') { setOpen(false); }
   }
 
   return (
@@ -79,7 +91,14 @@ export function ActionMenu({ items, onAction, label = 'Actions' }: ActionMenuPro
         onClick={toggle}
         onKeyDown={onKeyDown}
       >
-        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false" fill="currentColor">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          aria-hidden="true"
+          focusable="false"
+          fill="currentColor"
+        >
           <circle cx="7" cy="2.5" r="1.2" />
           <circle cx="7" cy="7" r="1.2" />
           <circle cx="7" cy="11.5" r="1.2" />
@@ -98,8 +117,8 @@ export function ActionMenu({ items, onAction, label = 'Actions' }: ActionMenuPro
               className="action-menu-item"
               onMouseEnter={() => setActiveIdx(idx)}
               onMouseDown={(e) => {
-                e.preventDefault();
-                if (!item.disabled) activate(item.id);
+                e.preventDefault()
+                if (!item.disabled) activate(item.id)
               }}
             >
               {item.label}
@@ -108,5 +127,5 @@ export function ActionMenu({ items, onAction, label = 'Actions' }: ActionMenuPro
         </ul>
       )}
     </div>
-  );
+  )
 }

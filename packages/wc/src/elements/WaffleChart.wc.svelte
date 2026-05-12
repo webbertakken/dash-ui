@@ -1,6 +1,6 @@
 <svelte:options tag="uni-waffle-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/WaffleChart.svelte';
+  import Original from '@w5-ui/svelte/components/WaffleChart.svelte';
   export let segments = [];
   export let total = undefined;
   export let cols = 10;

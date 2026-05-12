@@ -1,6 +1,6 @@
 <svelte:options tag="uni-kvtable" />
 <script>
-  import Original from '@dash-ui/svelte/components/KVTable.svelte';
+  import Original from '@w5-ui/svelte/components/KVTable.svelte';
   export let rows = [];
   export let caption = undefined;
 </script>

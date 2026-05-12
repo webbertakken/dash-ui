@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { SearchBox, Tabs, Signal, Checkbox, CopyButton, MultiSelect, BumpChart, Card, MarimekkoChart, CirclePacking, VennDiagram, VirtualList, SelectionToolbar } from '@dash-ui/svelte';
-  import type { MultiSelectOption, BumpSeries, MarimekkoColumn, CirclePackItem, VennSet, VennIntersection, SelectionToolbarAction } from '@dash-ui/svelte';
+  import { SearchBox, Tabs, Signal, Checkbox, CopyButton, MultiSelect, BumpChart, Card, MarimekkoChart, CirclePacking, VennDiagram, VirtualList, SelectionToolbar } from '@w5-ui/svelte';
+  import type { MultiSelectOption, BumpSeries, MarimekkoColumn, CirclePackItem, VennSet, VennIntersection, SelectionToolbarAction } from '@w5-ui/svelte';
   import { CLIENTS } from '../data';
 
   type LeaseRow = { name: string; ip: string; network: string; signal: 'strong' | 'weak' | null };

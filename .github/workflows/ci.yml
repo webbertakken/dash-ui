@@ -18,7 +18,9 @@ jobs:
 
       - name: Read Node version from mise.toml
         id: node
-        run: echo "version=$(grep -E '^node\s*=' mise.toml | sed -E 's/.*"([^"]+)".*/\1/')" >> "$GITHUB_OUTPUT"
+        run:
+          echo "version=$(grep -E '^node\s*=' mise.toml | sed -E 's/.*"([^"]+)".*/\1/')" >>
+          "$GITHUB_OUTPUT"
 
       - name: Install package manager (from package.json)
         run: |
@@ -42,7 +44,9 @@ jobs:
             node_modules
             ${{ steps.yarn-config.outputs.cacheFolder }}
             .yarn/install-state.gz
-          key: yarn-${{ runner.os }}-node${{ steps.node.outputs.version }}-${{ hashFiles('yarn.lock') }}
+          key:
+            yarn-${{ runner.os }}-node${{ steps.node.outputs.version }}-${{ hashFiles('yarn.lock')
+            }}
           restore-keys: |
             yarn-${{ runner.os }}-node${{ steps.node.outputs.version }}-
 
@@ -53,8 +57,17 @@ jobs:
           case "$(yarn --version)" in 1.*) echo 'expected up-to-date yarn version'; exit 1 ;; esac
           yarn install --immutable
 
+      - name: Lint
+        run: yarn lint
+
+      - name: Format check
+        run: yarn format:check
+
+      - name: Typecheck (shipped packages)
+        run: yarn typecheck
+
       - name: Build packages
-        # Must run before tests because the @dash-ui/wc registration test
+        # Must run before tests because the @w5-ui/wc registration test
         # imports the built bundle at packages/wc/dist/index.js.
         run: yarn build
 

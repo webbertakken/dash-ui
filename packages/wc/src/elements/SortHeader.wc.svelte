@@ -1,6 +1,6 @@
 <svelte:options tag="uni-sort-header" />
 <script>
-  import Original from '@dash-ui/svelte/components/SortHeader.svelte';
+  import Original from '@w5-ui/svelte/components/SortHeader.svelte';
   export let sortKey = undefined;
   export let activeKey = null;
   export let dir = 'asc';

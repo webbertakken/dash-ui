@@ -1,29 +1,26 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react'
 
 export interface CarouselSlide {
-  id: string;
-  title: string;
-  description?: string;
-  color?: string;
+  id: string
+  title: string
+  description?: string
+  color?: string
 }
 
 export interface CarouselProps {
-  slides: CarouselSlide[];
-  label: string;
-  className?: string;
+  slides: CarouselSlide[]
+  label: string
+  className?: string
 }
 
 export function Carousel({ slides, label, className }: CarouselProps) {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0)
 
   const prev = useCallback(
     () => setIndex((i) => (i - 1 + slides.length) % slides.length),
     [slides.length],
-  );
-  const next = useCallback(
-    () => setIndex((i) => (i + 1) % slides.length),
-    [slides.length],
-  );
+  )
+  const next = useCallback(() => setIndex((i) => (i + 1) % slides.length), [slides.length])
 
   return (
     <section
@@ -50,27 +47,16 @@ export function Carousel({ slides, label, className }: CarouselProps) {
             )}
             <div className="carousel-slide-body">
               <div className="carousel-slide-title">{slide.title}</div>
-              {slide.description && (
-                <div className="carousel-slide-desc">{slide.description}</div>
-              )}
+              {slide.description && <div className="carousel-slide-desc">{slide.description}</div>}
             </div>
           </div>
         ))}
       </div>
       <div className="carousel-controls">
-        <button
-          type="button"
-          className="carousel-btn"
-          aria-label="Previous slide"
-          onClick={prev}
-        >
+        <button type="button" className="carousel-btn" aria-label="Previous slide" onClick={prev}>
           &#8249;
         </button>
-        <div
-          role="tablist"
-          aria-label="Choose slide to display"
-          className="carousel-indicators"
-        >
+        <div role="tablist" aria-label="Choose slide to display" className="carousel-indicators">
           {slides.map((slide, i) => (
             <button
               key={slide.id}
@@ -83,15 +69,10 @@ export function Carousel({ slides, label, className }: CarouselProps) {
             />
           ))}
         </div>
-        <button
-          type="button"
-          className="carousel-btn"
-          aria-label="Next slide"
-          onClick={next}
-        >
+        <button type="button" className="carousel-btn" aria-label="Next slide" onClick={next}>
           &#8250;
         </button>
       </div>
     </section>
-  );
+  )
 }

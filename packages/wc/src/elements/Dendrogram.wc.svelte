@@ -1,6 +1,6 @@
 <svelte:options tag="uni-dendrogram" />
 <script>
-  import Original from '@dash-ui/svelte/components/Dendrogram.svelte';
+  import Original from '@w5-ui/svelte/components/Dendrogram.svelte';
   export let root = undefined;
   export let colWidth = 130;
   export let rowHeight = 28;

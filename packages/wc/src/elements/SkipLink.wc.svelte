@@ -1,6 +1,6 @@
 <svelte:options tag="uni-skip-link" />
 <script>
-  import Original from '@dash-ui/svelte/components/SkipLink.svelte';
+  import Original from '@w5-ui/svelte/components/SkipLink.svelte';
   export let href = '#main-content';
 </script>
 

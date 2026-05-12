@@ -1,20 +1,21 @@
-import { Meta } from '@storybook/blocks';
+import { Meta } from '@storybook/blocks'
 
 <Meta title="Foundations/Overview" />
 
 # Dash UI
 
-A multi-framework dashboard design system, exposed as **React**, **Svelte**, and **Web Component** packages.
+A multi-framework dashboard design system, exposed as **React**, **Svelte**, and **Web Component**
+packages.
 
 ## Packages
 
-| Package | Description |
-|---|---|
-| `@dash-ui/tokens` | CSS variables (light + dark motifs) + JS token map |
-| `@dash-ui/assets` | Brand SVG logos + product marks |
-| `@dash-ui/react` | 168 React components |
-| `@dash-ui/svelte` | 168 Svelte components (mirrored API) |
-| `@dash-ui/wc` | Web Components compiled from the Svelte source |
+| Package         | Description                                        |
+| --------------- | -------------------------------------------------- |
+| `@w5-ui/tokens` | CSS variables (light + dark motifs) + JS token map |
+| `@w5-ui/assets` | Brand SVG logos + product marks                    |
+| `@w5-ui/react`  | 168 React components                               |
+| `@w5-ui/svelte` | 168 Svelte components (mirrored API)               |
+| `@w5-ui/wc`     | Web Components compiled from the Svelte source     |
 
 ## Visual identity
 
@@ -26,10 +27,13 @@ A multi-framework dashboard design system, exposed as **React**, **Svelte**, and
 Two motifs ship in `tokens.css`:
 
 ```html
-<html data-motif="dark">  <!-- the default -->
-<html data-motif="light">
+<html data-motif="dark">
+  <!-- the default -->
+  <html data-motif="light"></html>
+</html>
 ```
 
 ## Sidebar layout
 
-Components are grouped into 12 categories (max), the same set as the Svelte and Web Components Storybooks at `/svelte/` and `/wc/`.
+Components are grouped into 12 categories (max), the same set as the Svelte and Web Components
+Storybooks at `/svelte/` and `/wc/`.

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-polar-heatmap" />
 <script>
-  import Original from '@dash-ui/svelte/components/PolarHeatmap.svelte';
+  import Original from '@w5-ui/svelte/components/PolarHeatmap.svelte';
   export let data = [];
   export let rows = 7;
   export let cols = 24;

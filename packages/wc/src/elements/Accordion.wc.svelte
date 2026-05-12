@@ -1,6 +1,6 @@
 <svelte:options tag="uni-accordion" />
 <script>
-  import Original from '@dash-ui/svelte/components/Accordion.svelte';
+  import Original from '@w5-ui/svelte/components/Accordion.svelte';
   // no public props
 </script>
 

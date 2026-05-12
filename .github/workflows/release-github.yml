@@ -1,0 +1,53 @@
+name: GitHub Release (major versions)
+
+# Listens to package tags pushed by Changesets publish, and creates a GitHub
+# Release only when the version is X.0.0 (a major release). Minor and patch
+# tags are intentionally NOT promoted to Releases, so npm publishes can happen
+# rapidly without spamming repo followers.
+#
+# Per-package tags shaped like `@w5-ui/react@1.0.0` trigger this; one Release
+# is created per major-version tag. When several linked packages bump majors
+# together, the action runs once per tag in the push batch.
+
+on:
+  push:
+    tags:
+      - '**@*.0.0'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Promote major tag to GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify tag is a real major (X.0.0, X >= 1)
+        id: verify
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [[ "$TAG" =~ @([0-9]+)\.0\.0$ ]]; then
+            major="${BASH_REMATCH[1]}"
+            if (( major >= 1 )); then
+              echo "promote=true" >> "$GITHUB_OUTPUT"
+              echo "Tag $TAG is a major release (v$major.0.0); creating GitHub Release."
+              exit 0
+            fi
+          fi
+          echo "promote=false" >> "$GITHUB_OUTPUT"
+          echo "Tag $TAG is not a >=1.0.0 major release; skipping."
+
+      - uses: actions/checkout@v4
+        if: steps.verify.outputs.promote == 'true'
+        with:
+          fetch-depth: 0
+
+      - name: Create GitHub Release
+        if: steps.verify.outputs.promote == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          make_latest: true

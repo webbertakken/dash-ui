@@ -1,31 +1,31 @@
 export interface DotPlotItem {
-  label: string;
-  value: number;
-  compare?: number;
-  color?: string;
+  label: string
+  value: number
+  compare?: number
+  color?: string
 }
 
 export interface DotPlotProps {
-  items: DotPlotItem[];
-  min?: number;
-  max?: number;
-  unit?: string;
-  valueLegend?: string;
-  compareLegend?: string;
-  ariaLabel?: string;
+  items: DotPlotItem[]
+  min?: number
+  max?: number
+  unit?: string
+  valueLegend?: string
+  compareLegend?: string
+  ariaLabel?: string
 }
 
-const VW = 380;
-const LABEL_W = 132;
-const VALUE_W = 32;
-const PAD_R = 6;
-const TRACK_W = VW - LABEL_W - VALUE_W - PAD_R;
-const DOT_R = 5;
-const ROW_H = 28;
-const PAD_T = 8;
-const AXIS_H = 18;
-const LEG_H = 18;
-const TICKS = 5;
+const VW = 380
+const LABEL_W = 132
+const VALUE_W = 32
+const PAD_R = 6
+const TRACK_W = VW - LABEL_W - VALUE_W - PAD_R
+const DOT_R = 5
+const ROW_H = 28
+const PAD_T = 8
+const AXIS_H = 18
+const LEG_H = 18
+const TICKS = 5
 
 export function DotPlot({
   items,
@@ -36,24 +36,20 @@ export function DotPlot({
   compareLegend,
   ariaLabel = 'Dot plot',
 }: DotPlotProps) {
-  const hasCompare = items.some((it) => it.compare !== undefined);
-  const maxVal =
-    max ??
-    Math.max(...items.map((it) => Math.max(it.value, it.compare ?? 0)));
-  const range = Math.max(maxVal - min, 1);
+  const hasCompare = items.some((it) => it.compare !== undefined)
+  const maxVal = max ?? Math.max(...items.map((it) => Math.max(it.value, it.compare ?? 0)))
+  const range = Math.max(maxVal - min, 1)
   const svgH =
     PAD_T +
     items.length * ROW_H +
     AXIS_H +
-    (hasCompare && (valueLegend || compareLegend) ? LEG_H + 4 : 0);
+    (hasCompare && (valueLegend || compareLegend) ? LEG_H + 4 : 0)
 
-  const tx = (v: number) => LABEL_W + ((v - min) / range) * TRACK_W;
+  const tx = (v: number) => LABEL_W + ((v - min) / range) * TRACK_W
 
-  const ticks = Array.from({ length: TICKS }, (_, i) =>
-    min + (i / (TICKS - 1)) * range,
-  );
+  const ticks = Array.from({ length: TICKS }, (_, i) => min + (i / (TICKS - 1)) * range)
 
-  const legY = PAD_T + items.length * ROW_H + AXIS_H + 4;
+  const legY = PAD_T + items.length * ROW_H + AXIS_H + 4
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -88,11 +84,10 @@ export function DotPlot({
         ))}
 
         {items.map((item, i) => {
-          const cy = PAD_T + i * ROW_H + ROW_H / 2;
-          const cx = tx(item.value);
-          const ccx =
-            item.compare !== undefined ? tx(item.compare) : null;
-          const color = item.color ?? '#006FFF';
+          const cy = PAD_T + i * ROW_H + ROW_H / 2
+          const cx = tx(item.value)
+          const ccx = item.compare !== undefined ? tx(item.compare) : null
+          const color = item.color ?? '#006FFF'
 
           return (
             <g key={i}>
@@ -152,7 +147,7 @@ export function DotPlot({
                 {unit}
               </text>
             </g>
-          );
+          )
         })}
 
         {hasCompare && (valueLegend || compareLegend) && (
@@ -196,5 +191,5 @@ export function DotPlot({
         )}
       </svg>
     </div>
-  );
+  )
 }

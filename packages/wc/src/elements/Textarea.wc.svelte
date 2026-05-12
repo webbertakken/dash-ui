@@ -1,6 +1,6 @@
 <svelte:options tag="uni-textarea" />
 <script>
-  import Original from '@dash-ui/svelte/components/Textarea.svelte';
+  import Original from '@w5-ui/svelte/components/Textarea.svelte';
   // no public props
 </script>
 

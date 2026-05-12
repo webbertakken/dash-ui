@@ -1,6 +1,6 @@
 <svelte:options tag="uni-combobox" />
 <script>
-  import Original from '@dash-ui/svelte/components/Combobox.svelte';
+  import Original from '@w5-ui/svelte/components/Combobox.svelte';
   // no public props
 </script>
 

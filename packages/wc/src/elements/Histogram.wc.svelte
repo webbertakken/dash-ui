@@ -1,6 +1,6 @@
 <svelte:options tag="uni-histogram" />
 <script>
-  import Original from '@dash-ui/svelte/components/Histogram.svelte';
+  import Original from '@w5-ui/svelte/components/Histogram.svelte';
   export let bins = [];
   export let height = 160;
   export let color = '#006FFF';

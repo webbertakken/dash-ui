@@ -1,6 +1,6 @@
 <svelte:options tag="uni-log-viewer" />
 <script>
-  import Original from '@dash-ui/svelte/components/LogViewer.svelte';
+  import Original from '@w5-ui/svelte/components/LogViewer.svelte';
   export let entries = [];
   export let height = 360;
   export let defaultFollow = true;

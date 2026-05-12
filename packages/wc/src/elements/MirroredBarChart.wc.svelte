@@ -1,6 +1,6 @@
 <svelte:options tag="uni-mirrored-bar-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/MirroredBarChart.svelte';
+  import Original from '@w5-ui/svelte/components/MirroredBarChart.svelte';
   export let items = [];
   export let leftLabel = 'Download';
   export let rightLabel = 'Upload';

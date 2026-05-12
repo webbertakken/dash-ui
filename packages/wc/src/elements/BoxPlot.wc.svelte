@@ -1,6 +1,6 @@
 <svelte:options tag="uni-box-plot" />
 <script>
-  import Original from '@dash-ui/svelte/components/BoxPlot.svelte';
+  import Original from '@w5-ui/svelte/components/BoxPlot.svelte';
   export let series = [];
   export let yRange = undefined;
   export let height = 160;

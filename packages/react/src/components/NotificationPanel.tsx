@@ -1,43 +1,43 @@
-import { useEffect, useId, useRef, useState } from 'react';
-import { IconButton } from './Button.js';
-import { CloseIcon } from '../icons.js';
+import { useEffect, useId, useRef, useState } from 'react'
+import { CloseIcon } from '../icons.js'
+import { IconButton } from './Button.js'
 
-export type NotifType = 'alarm' | 'system' | 'update';
-export type NotifSeverity = 'danger' | 'warn' | 'info' | 'success';
+export type NotifType = 'alarm' | 'system' | 'update'
+export type NotifSeverity = 'danger' | 'warn' | 'info' | 'success'
 
 export interface Notification {
-  id: string;
-  type: NotifType;
-  severity?: NotifSeverity;
-  title: string;
-  description?: string;
-  time: string;
-  read: boolean;
+  id: string
+  type: NotifType
+  severity?: NotifSeverity
+  title: string
+  description?: string
+  time: string
+  read: boolean
 }
 
 export interface NotificationPanelProps {
-  open: boolean;
-  onClose: () => void;
-  notifications: Notification[];
-  onMarkRead?: (id: string) => void;
-  onMarkAllRead?: () => void;
+  open: boolean
+  onClose: () => void
+  notifications: Notification[]
+  onMarkRead?: (id: string) => void
+  onMarkAllRead?: () => void
 }
 
 const FOCUSABLE =
-  'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
 
 const SEV_COLOR: Record<string, string> = {
   danger: '#F03A3A',
   warn: '#F5A623',
   info: '#006FFF',
   success: '#00B070',
-};
+}
 
 const TYPE_LABEL: Record<NotifType, string> = {
   alarm: 'Alarm',
   system: 'System',
   update: 'Update',
-};
+}
 
 export function NotificationPanel({
   open,
@@ -46,34 +46,49 @@ export function NotificationPanel({
   onMarkRead,
   onMarkAllRead,
 }: NotificationPanelProps) {
-  const titleId = useId();
-  const panelRef = useRef<HTMLDivElement>(null);
-  const [filter, setFilter] = useState<'all' | NotifType>('all');
+  const titleId = useId()
+  const panelRef = useRef<HTMLDivElement>(null)
+  const [filter, setFilter] = useState<'all' | NotifType>('all')
 
-  const unread = notifications.filter((n) => !n.read).length;
-  const filtered = filter === 'all' ? notifications : notifications.filter((n) => n.type === filter);
+  const unread = notifications.filter((n) => !n.read).length
+  const filtered = filter === 'all' ? notifications : notifications.filter((n) => n.type === filter)
 
   useEffect(() => {
-    if (!open) return;
-    const prev = document.activeElement as HTMLElement | null;
-    const panel = panelRef.current;
-    const first = panel?.querySelector<HTMLElement>(FOCUSABLE);
-    (first ?? panel)?.focus();
+    if (!open) return
+    const prev = document.activeElement as HTMLElement | null
+    const panel = panelRef.current
+    const first = panel?.querySelector<HTMLElement>(FOCUSABLE)
+    ;(first ?? panel)?.focus()
 
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') { onClose(); return; }
-      if (e.key !== 'Tab' || !panel) return;
-      const items = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE));
-      if (!items.length) { e.preventDefault(); return; }
-      const f = items[0]!, l = items[items.length - 1]!;
-      const active = document.activeElement;
-      if (e.shiftKey && active === f) { e.preventDefault(); l.focus(); }
-      else if (!e.shiftKey && active === l) { e.preventDefault(); f.focus(); }
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+      if (e.key !== 'Tab' || !panel) return
+      const items = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE))
+      if (!items.length) {
+        e.preventDefault()
+        return
+      }
+      const f = items[0]!,
+        l = items[items.length - 1]!
+      const active = document.activeElement
+      if (e.shiftKey && active === f) {
+        e.preventDefault()
+        l.focus()
+      } else if (!e.shiftKey && active === l) {
+        e.preventDefault()
+        f.focus()
+      }
     }
 
-    window.addEventListener('keydown', onKey);
-    return () => { window.removeEventListener('keydown', onKey); prev?.focus?.(); };
-  }, [open, onClose]);
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      prev?.focus?.()
+    }
+  }, [open, onClose])
 
   return (
     <>
@@ -168,5 +183,5 @@ export function NotificationPanel({
         </div>
       </div>
     </>
-  );
+  )
 }

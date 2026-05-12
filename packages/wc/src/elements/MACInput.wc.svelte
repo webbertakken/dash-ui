@@ -1,6 +1,6 @@
 <svelte:options tag="uni-macinput" />
 <script>
-  import Original from '@dash-ui/svelte/components/MACInput.svelte';
+  import Original from '@w5-ui/svelte/components/MACInput.svelte';
   // no public props
 </script>
 

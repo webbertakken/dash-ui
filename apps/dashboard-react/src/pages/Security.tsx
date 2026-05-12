@@ -1,23 +1,83 @@
-import { useState } from 'react';
-import { Card, Button, Pill, Tabs, Sparkline, Toggle, TreeMap, CalendarHeatmap, ChordDiagram, ParetoChart, LollipopChart, SlopeChart, IcicleChart, ForceGraph, PolarHeatmap, StripeChart, WordCloud, PieChart, Spoiler } from '@dash-ui/react';
-import type { LollipopItem, SlopeItem, IcicleNode, FDNode, FDLink, PolarCell, StripeItem, WordCloudItem, PieSlice } from '@dash-ui/react';
+import {
+  Card,
+  Button,
+  Pill,
+  Tabs,
+  Sparkline,
+  Toggle,
+  TreeMap,
+  CalendarHeatmap,
+  ChordDiagram,
+  ParetoChart,
+  LollipopChart,
+  SlopeChart,
+  IcicleChart,
+  ForceGraph,
+  PolarHeatmap,
+  StripeChart,
+  WordCloud,
+  PieChart,
+  Spoiler,
+} from '@w5-ui/react'
+import type {
+  LollipopItem,
+  SlopeItem,
+  IcicleNode,
+  FDNode,
+  FDLink,
+  PolarCell,
+  StripeItem,
+  WordCloudItem,
+  PieSlice,
+} from '@w5-ui/react'
+import { useState } from 'react'
 
 const THREAT_SEVERITY: PieSlice[] = [
-  { label: 'Critical', value: 23,  color: '#FF3B30' },
-  { label: 'High',     value: 89,  color: '#F5A623' },
-  { label: 'Medium',   value: 234, color: '#FFD60A' },
-  { label: 'Low',      value: 312, color: '#006FFF' },
-  { label: 'Info',     value: 127, color: '#6E7079' },
-];
+  { label: 'Critical', value: 23, color: '#FF3B30' },
+  { label: 'High', value: 89, color: '#F5A623' },
+  { label: 'Medium', value: 234, color: '#FFD60A' },
+  { label: 'Low', value: 312, color: '#006FFF' },
+  { label: 'Info', value: 127, color: '#6E7079' },
+]
 
 const PROTECTIONS: { title: string; description: string; defaultOn: boolean }[] = [
-  { title: 'Suspicious activity detection', description: 'Continuously monitors traffic patterns for scanners, brute-force login attempts, and lateral movement between network segments. Detected events are logged and optionally blocked automatically based on the configured IPS sensitivity level. Signatures update hourly from the Dash threat intelligence feed.', defaultOn: true },
-  { title: 'Honeypot', description: 'Deploys decoy TCP/UDP listeners on unused ports across all network segments. Any connection attempt to a honeypot port triggers an alert and is treated as high-confidence hostile activity, since legitimate devices should never connect to these ports. Zero false-positive rate by design.', defaultOn: true },
-  { title: 'Restrict access to Tor', description: 'Maintains an automatically updated blocklist of known Tor exit nodes, entry guards, and relay servers sourced from the Tor Project and third-party threat intelligence feeds. Updates are applied without requiring a restart or interrupting existing sessions.', defaultOn: true },
-  { title: 'Restrict access to malicious sites', description: 'Intercepts DNS queries and compares them against a continuously updated threat intelligence feed. Domains associated with malware distribution, phishing, botnet command-and-control, and other threats are blocked at the resolver level before any network connection is established.', defaultOn: true },
-  { title: 'Country restrictions', description: 'Uses MaxMind GeoIP2 database to classify source and destination IP addresses by country. You can configure separate inbound and outbound block lists. Rules apply to all traffic routed through this gateway and are evaluated before firewall rules.', defaultOn: false },
-  { title: 'Internet threat protection', description: 'Scores all inbound and outbound flows using a locally run machine learning model updated weekly. Packets are classified in real time with sub-millisecond overhead. Flows above the configured risk threshold trigger configurable responses: log, alert, block, or quarantine.', defaultOn: true },
-];
+  {
+    title: 'Suspicious activity detection',
+    description:
+      'Continuously monitors traffic patterns for scanners, brute-force login attempts, and lateral movement between network segments. Detected events are logged and optionally blocked automatically based on the configured IPS sensitivity level. Signatures update hourly from the Dash threat intelligence feed.',
+    defaultOn: true,
+  },
+  {
+    title: 'Honeypot',
+    description:
+      'Deploys decoy TCP/UDP listeners on unused ports across all network segments. Any connection attempt to a honeypot port triggers an alert and is treated as high-confidence hostile activity, since legitimate devices should never connect to these ports. Zero false-positive rate by design.',
+    defaultOn: true,
+  },
+  {
+    title: 'Restrict access to Tor',
+    description:
+      'Maintains an automatically updated blocklist of known Tor exit nodes, entry guards, and relay servers sourced from the Tor Project and third-party threat intelligence feeds. Updates are applied without requiring a restart or interrupting existing sessions.',
+    defaultOn: true,
+  },
+  {
+    title: 'Restrict access to malicious sites',
+    description:
+      'Intercepts DNS queries and compares them against a continuously updated threat intelligence feed. Domains associated with malware distribution, phishing, botnet command-and-control, and other threats are blocked at the resolver level before any network connection is established.',
+    defaultOn: true,
+  },
+  {
+    title: 'Country restrictions',
+    description:
+      'Uses MaxMind GeoIP2 database to classify source and destination IP addresses by country. You can configure separate inbound and outbound block lists. Rules apply to all traffic routed through this gateway and are evaluated before firewall rules.',
+    defaultOn: false,
+  },
+  {
+    title: 'Internet threat protection',
+    description:
+      'Scores all inbound and outbound flows using a locally run machine learning model updated weekly. Packets are classified in real time with sub-millisecond overhead. Flows above the configured risk threshold trigger configurable responses: log, alert, block, or quarantine.',
+    defaultOn: true,
+  },
+]
 
 const THREAT_DISTRIBUTION = [
   { label: 'Malware', value: 412 },
@@ -27,50 +87,50 @@ const THREAT_DISTRIBUTION = [
   { label: 'Phishing', value: 89 },
   { label: 'SQLi/XSS', value: 64 },
   { label: 'DDoS', value: 43 },
-];
+]
 
 const ATTACK_CALENDAR = (() => {
-  const days: { date: string; value: number }[] = [];
-  const today = new Date(2026, 4, 10);
+  const days: { date: string; value: number }[] = []
+  const today = new Date(2026, 4, 10)
   for (let i = 364; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const dow = d.getDay();
-    const dom = d.getDate();
-    const mon = d.getMonth();
-    const base = dow === 0 || dow === 6 ? 8 : 38;
-    const noise = (dom * 7 + mon * 13) % 48;
-    const spike = (dom + mon * 4) % 21 === 0 ? 110 : 0;
+    const d = new Date(today)
+    d.setDate(today.getDate() - i)
+    const dow = d.getDay()
+    const dom = d.getDate()
+    const mon = d.getMonth()
+    const base = dow === 0 || dow === 6 ? 8 : 38
+    const noise = (dom * 7 + mon * 13) % 48
+    const spike = (dom + mon * 4) % 21 === 0 ? 110 : 0
     days.push({
       date: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
       value: base + noise + spike,
-    });
+    })
   }
-  return days;
-})();
+  return days
+})()
 
 const VLAN_NODES = [
   { label: 'LAN', color: '#006FFF' },
   { label: 'IoT', color: '#00C875' },
   { label: 'WAN', color: '#F5A623' },
   { label: 'VPN', color: '#A78BFA' },
-];
+]
 const VLAN_MATRIX = [
-  [0,   12,  842, 187],
-  [12,   0,  124,   4],
-  [842, 124,   0,  23],
-  [187,   4,  23,   0],
-];
+  [0, 12, 842, 187],
+  [12, 0, 124, 4],
+  [842, 124, 0, 23],
+  [187, 4, 23, 0],
+]
 
 const THREAT_TREND: SlopeItem[] = [
-  { label: 'Malware',     before: 487, after: 412 },
-  { label: 'Port Scans',  before: 321, after: 298 },
+  { label: 'Malware', before: 487, after: 412 },
+  { label: 'Port Scans', before: 321, after: 298 },
   { label: 'Brute Force', before: 158, after: 127 },
-  { label: 'Botnet C2',   before: 112, after: 137 },
-  { label: 'Phishing',    before: 102, after: 89  },
-  { label: 'SQLi/XSS',    before: 78,  after: 64  },
-  { label: 'DDoS',        before: 31,  after: 43  },
-];
+  { label: 'Botnet C2', before: 112, after: 137 },
+  { label: 'Phishing', before: 102, after: 89 },
+  { label: 'SQLi/XSS', before: 78, after: 64 },
+  { label: 'DDoS', before: 31, after: 43 },
+]
 
 const BLOCKED_COUNTRIES: LollipopItem[] = [
   { label: 'China', value: 1842, color: '#FF7B7B' },
@@ -80,110 +140,166 @@ const BLOCKED_COUNTRIES: LollipopItem[] = [
   { label: 'Germany', value: 389, color: '#A4A7B5' },
   { label: 'Brazil', value: 247, color: '#A4A7B5' },
   { label: 'India', value: 198, color: '#A4A7B5' },
-];
+]
 
 const THREAT_TAXONOMY: IcicleNode = {
   label: 'All Threats',
   children: [
-    { label: 'Malware', color: '#FF7B7B', children: [
-      { label: 'Ransomware', value: 187 },
-      { label: 'Trojan', value: 143 },
-      { label: 'Spyware', value: 82 },
-    ]},
-    { label: 'Network', color: '#F5A623', children: [
-      { label: 'Port Scans', value: 298 },
-      { label: 'DDoS', value: 43 },
-    ]},
-    { label: 'Botnet', color: '#A78BFA', children: [
-      { label: 'C2 Callout', value: 137 },
-    ]},
-    { label: 'Auth', color: '#34D399', children: [
-      { label: 'Brute Force', value: 127 },
-    ]},
-    { label: 'Web App', color: '#006FFF', children: [
-      { label: 'Phishing', value: 89 },
-      { label: 'SQLi/XSS', value: 64 },
-    ]},
+    {
+      label: 'Malware',
+      color: '#FF7B7B',
+      children: [
+        { label: 'Ransomware', value: 187 },
+        { label: 'Trojan', value: 143 },
+        { label: 'Spyware', value: 82 },
+      ],
+    },
+    {
+      label: 'Network',
+      color: '#F5A623',
+      children: [
+        { label: 'Port Scans', value: 298 },
+        { label: 'DDoS', value: 43 },
+      ],
+    },
+    { label: 'Botnet', color: '#A78BFA', children: [{ label: 'C2 Callout', value: 137 }] },
+    { label: 'Auth', color: '#34D399', children: [{ label: 'Brute Force', value: 127 }] },
+    {
+      label: 'Web App',
+      color: '#006FFF',
+      children: [
+        { label: 'Phishing', value: 89 },
+        { label: 'SQLi/XSS', value: 64 },
+      ],
+    },
   ],
-};
+}
 
 const ATTACK_NODES: FDNode[] = [
-  { id: 'internet',  label: 'Internet',   color: '#FF7B7B', r: 14 },
-  { id: 'firewall',  label: 'Firewall',   color: '#F5A623', r: 12 },
-  { id: 'dmz',       label: 'DMZ',        color: '#F5C26B', r: 10 },
-  { id: 'corp',      label: 'Corp VLAN',  color: '#006FFF', r: 10 },
-  { id: 'iot',       label: 'IoT VLAN',   color: '#34D399', r: 10 },
-  { id: 'web',       label: 'Web',        color: '#A78BFA', r: 8  },
-  { id: 'mail',      label: 'Mail',       color: '#A78BFA', r: 8  },
-  { id: 'api',       label: 'API',        color: '#A78BFA', r: 8  },
-  { id: 'dns',       label: 'DNS',        color: '#00C875', r: 8  },
-  { id: 'iothub',    label: 'IoT Hub',    color: '#34D399', r: 8  },
-];
+  { id: 'internet', label: 'Internet', color: '#FF7B7B', r: 14 },
+  { id: 'firewall', label: 'Firewall', color: '#F5A623', r: 12 },
+  { id: 'dmz', label: 'DMZ', color: '#F5C26B', r: 10 },
+  { id: 'corp', label: 'Corp VLAN', color: '#006FFF', r: 10 },
+  { id: 'iot', label: 'IoT VLAN', color: '#34D399', r: 10 },
+  { id: 'web', label: 'Web', color: '#A78BFA', r: 8 },
+  { id: 'mail', label: 'Mail', color: '#A78BFA', r: 8 },
+  { id: 'api', label: 'API', color: '#A78BFA', r: 8 },
+  { id: 'dns', label: 'DNS', color: '#00C875', r: 8 },
+  { id: 'iothub', label: 'IoT Hub', color: '#34D399', r: 8 },
+]
 const ATTACK_LINKS: FDLink[] = [
   { source: 'internet', target: 'firewall' },
   { source: 'firewall', target: 'dmz' },
   { source: 'firewall', target: 'corp' },
   { source: 'firewall', target: 'iot' },
-  { source: 'dmz',      target: 'web' },
-  { source: 'dmz',      target: 'mail' },
-  { source: 'dmz',      target: 'api' },
-  { source: 'corp',     target: 'dns' },
-  { source: 'corp',     target: 'api' },
-  { source: 'iot',      target: 'iothub' },
-];
+  { source: 'dmz', target: 'web' },
+  { source: 'dmz', target: 'mail' },
+  { source: 'dmz', target: 'api' },
+  { source: 'corp', target: 'dns' },
+  { source: 'corp', target: 'api' },
+  { source: 'iot', target: 'iothub' },
+]
 
 const THREATS: [string, string, string, string, string, string][] = [
-  ['danger', 'Mirai botnet C2 callout', 'c8:69:cd:11:23:11 · 192.168.30.18', '185.220.101.42:8443', 'Blocked', '2 min'],
-  ['warn', 'SMB null-session probe', '203.0.113.118:48211', '198.51.100.42:445', 'Blocked', '11 min'],
-  ['warn', 'SQL injection · UNION SELECT', '45.142.215.92:54312', '198.51.100.42:443', 'Blocked', '22 min'],
-  ['danger', 'Cobalt Strike beacon', 'c8:69:cd:11:23:91 · 192.168.20.84', '203.0.113.55:443', 'Blocked', '38 min'],
-];
+  [
+    'danger',
+    'Mirai botnet C2 callout',
+    'c8:69:cd:11:23:11 · 192.168.30.18',
+    '185.220.101.42:8443',
+    'Blocked',
+    '2 min',
+  ],
+  [
+    'warn',
+    'SMB null-session probe',
+    '203.0.113.118:48211',
+    '198.51.100.42:445',
+    'Blocked',
+    '11 min',
+  ],
+  [
+    'warn',
+    'SQL injection · UNION SELECT',
+    '45.142.215.92:54312',
+    '198.51.100.42:443',
+    'Blocked',
+    '22 min',
+  ],
+  [
+    'danger',
+    'Cobalt Strike beacon',
+    'c8:69:cd:11:23:91 · 192.168.20.84',
+    '203.0.113.55:443',
+    'Blocked',
+    '38 min',
+  ],
+]
 
 const THREAT_HEATMAP: PolarCell[] = (() => {
-  const cells: PolarCell[] = [];
+  const cells: PolarCell[] = []
   for (let d = 0; d < 7; d++) {
     for (let h = 0; h < 24; h++) {
-      const isWeekend = d >= 5;
-      const nightPeak = h >= 2 && h <= 5 ? 2.1 : 1.0;
-      const noonPeak = h >= 12 && h <= 14 ? 1.3 : 1.0;
-      const base = isWeekend ? 10 : 22;
-      const noise = ((d * 7 + h * 13) % 19) / 19;
-      cells.push({ row: d, col: h, value: Math.round(base * nightPeak * noonPeak * (0.6 + 0.4 * noise)) });
+      const isWeekend = d >= 5
+      const nightPeak = h >= 2 && h <= 5 ? 2.1 : 1.0
+      const noonPeak = h >= 12 && h <= 14 ? 1.3 : 1.0
+      const base = isWeekend ? 10 : 22
+      const noise = ((d * 7 + h * 13) % 19) / 19
+      cells.push({
+        row: d,
+        col: h,
+        value: Math.round(base * nightPeak * noonPeak * (0.6 + 0.4 * noise)),
+      })
     }
   }
-  return cells;
-})();
+  return cells
+})()
 
-const HOUR_LABELS = Array.from({ length: 24 }, (_, i) => `${i}`);
+const HOUR_LABELS = Array.from({ length: 24 }, (_, i) => `${i}`)
 
 const MONTHLY_THREATS: StripeItem[] = [
-  { label: 'Jan 2025', value: 1842 }, { label: 'Feb 2025', value: 1620 },
-  { label: 'Mar 2025', value: 1980 }, { label: 'Apr 2025', value: 2140 },
-  { label: 'May 2025', value: 1750 }, { label: 'Jun 2025', value: 1530 },
-  { label: 'Jul 2025', value: 1690 }, { label: 'Aug 2025', value: 2310 },
-  { label: 'Sep 2025', value: 2580 }, { label: 'Oct 2025', value: 2960 },
-  { label: 'Nov 2025', value: 3120 }, { label: 'Dec 2025', value: 2870 },
-  { label: 'Jan 2026', value: 3240 }, { label: 'Feb 2026', value: 2910 },
-  { label: 'Mar 2026', value: 3050 }, { label: 'Apr 2026', value: 3480 },
+  { label: 'Jan 2025', value: 1842 },
+  { label: 'Feb 2025', value: 1620 },
+  { label: 'Mar 2025', value: 1980 },
+  { label: 'Apr 2025', value: 2140 },
+  { label: 'May 2025', value: 1750 },
+  { label: 'Jun 2025', value: 1530 },
+  { label: 'Jul 2025', value: 1690 },
+  { label: 'Aug 2025', value: 2310 },
+  { label: 'Sep 2025', value: 2580 },
+  { label: 'Oct 2025', value: 2960 },
+  { label: 'Nov 2025', value: 3120 },
+  { label: 'Dec 2025', value: 2870 },
+  { label: 'Jan 2026', value: 3240 },
+  { label: 'Feb 2026', value: 2910 },
+  { label: 'Mar 2026', value: 3050 },
+  { label: 'Apr 2026', value: 3480 },
   { label: 'May 2026', value: 4120 },
-];
+]
 
 const THREAT_KEYWORDS: WordCloudItem[] = [
-  { word: 'Malware', weight: 412 }, { word: 'Port Scan', weight: 298 },
-  { word: 'Botnet', weight: 137 }, { word: 'Brute Force', weight: 127 },
-  { word: 'Phishing', weight: 89 }, { word: 'SQLi', weight: 64 },
-  { word: 'DDoS', weight: 43 }, { word: 'Ransomware', weight: 187 },
-  { word: 'Trojan', weight: 143 }, { word: 'Spyware', weight: 82 },
-  { word: 'Cobalt Strike', weight: 38 }, { word: 'Mirai', weight: 31 },
-  { word: 'C2 Callout', weight: 55 }, { word: 'XSS', weight: 29 },
-  { word: 'UNION SELECT', weight: 22 }, { word: 'Null Session', weight: 47 },
-];
+  { word: 'Malware', weight: 412 },
+  { word: 'Port Scan', weight: 298 },
+  { word: 'Botnet', weight: 137 },
+  { word: 'Brute Force', weight: 127 },
+  { word: 'Phishing', weight: 89 },
+  { word: 'SQLi', weight: 64 },
+  { word: 'DDoS', weight: 43 },
+  { word: 'Ransomware', weight: 187 },
+  { word: 'Trojan', weight: 143 },
+  { word: 'Spyware', weight: 82 },
+  { word: 'Cobalt Strike', weight: 38 },
+  { word: 'Mirai', weight: 31 },
+  { word: 'C2 Callout', weight: 55 },
+  { word: 'XSS', weight: 29 },
+  { word: 'UNION SELECT', weight: 22 },
+  { word: 'Null Session', weight: 47 },
+]
 
 export function Security() {
-  const [tab, setTab] = useState('threat');
+  const [tab, setTab] = useState('threat')
   const [state, setState] = useState<Record<string, boolean>>(
     Object.fromEntries(PROTECTIONS.map((p) => [p.title, p.defaultOn])),
-  );
+  )
   return (
     <>
       <div className="ph-bar">
@@ -214,15 +330,41 @@ export function Security() {
           </div>
           <div className="submeta">Signatures · v9.4.21 · updated 14 min ago</div>
           <Sparkline active />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginTop: 6, fontSize: 11 }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              gap: 8,
+              marginTop: 6,
+              fontSize: 11,
+            }}
+          >
             {[
               ['Malware', '412'],
               ['Scans', '298'],
               ['Botnet C2', '137'],
             ].map(([k, v]) => (
-              <div key={k} style={{ background: '#0A0A0B', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 6, padding: 8 }}>
+              <div
+                key={k}
+                style={{
+                  background: '#0A0A0B',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  borderRadius: 6,
+                  padding: 8,
+                }}
+              >
                 <div style={{ color: '#6E7079' }}>{k}</div>
-                <div style={{ fontSize: 18, color: '#fff', fontVariantNumeric: 'tabular-nums', fontWeight: 600, marginTop: 2 }}>{v}</div>
+                <div
+                  style={{
+                    fontSize: 18,
+                    color: '#fff',
+                    fontVariantNumeric: 'tabular-nums',
+                    fontWeight: 600,
+                    marginTop: 2,
+                  }}
+                >
+                  {v}
+                </div>
               </div>
             ))}
           </div>
@@ -233,22 +375,40 @@ export function Security() {
           {PROTECTIONS.map((p) => (
             <div
               key={p.title}
-              style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 14,
+                padding: '10px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.04)',
+              }}
             >
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 13, color: '#fff', fontWeight: 500, marginBottom: 4 }}>{p.title}</div>
+                <div style={{ fontSize: 13, color: '#fff', fontWeight: 500, marginBottom: 4 }}>
+                  {p.title}
+                </div>
                 <Spoiler maxHeight={36} showLabel="More" hideLabel="Less">
-                  <div style={{ fontSize: 11, color: '#6E7079', lineHeight: 1.5 }}>{p.description}</div>
+                  <div style={{ fontSize: 11, color: '#6E7079', lineHeight: 1.5 }}>
+                    {p.description}
+                  </div>
                 </Spoiler>
               </div>
-              <Toggle on={!!state[p.title]} onToggle={() => setState((s) => ({ ...s, [p.title]: !s[p.title] }))} ariaLabel={p.title} />
+              <Toggle
+                on={!!state[p.title]}
+                onToggle={() => setState((s) => ({ ...s, [p.title]: !s[p.title] }))}
+                ariaLabel={p.title}
+              />
             </div>
           ))}
         </Card>
 
         <Card span={6}>
           <h3>Threat type distribution · 24 h</h3>
-          <TreeMap nodes={THREAT_DISTRIBUTION} height={140} ariaLabel="Threat type distribution treemap" />
+          <TreeMap
+            nodes={THREAT_DISTRIBUTION}
+            height={140}
+            ariaLabel="Threat type distribution treemap"
+          />
         </Card>
 
         <Card span={6}>
@@ -261,7 +421,9 @@ export function Security() {
         </Card>
 
         <Card span={12}>
-          <h3>Pareto analysis <span className="unit">Top threats · 80% threshold</span></h3>
+          <h3>
+            Pareto analysis <span className="unit">Top threats · 80% threshold</span>
+          </h3>
           <ParetoChart
             items={THREAT_DISTRIBUTION}
             height={140}
@@ -270,7 +432,9 @@ export function Security() {
         </Card>
 
         <Card span={12}>
-          <h3>Threat taxonomy <span className="unit">Category breakdown · 24 h</span></h3>
+          <h3>
+            Threat taxonomy <span className="unit">Category breakdown · 24 h</span>
+          </h3>
           <IcicleChart
             root={THREAT_TAXONOMY}
             height={160}
@@ -279,22 +443,45 @@ export function Security() {
         </Card>
 
         <Card span={12}>
-          <h3>Threat Activity <span className="unit">Past 12 months</span></h3>
+          <h3>
+            Threat Activity <span className="unit">Past 12 months</span>
+          </h3>
           <CalendarHeatmap
             data={ATTACK_CALENDAR}
             ariaLabel="Threat activity calendar: daily attack counts over the past 12 months"
           />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 8, fontSize: 11, color: '#6E7079' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 5,
+              marginTop: 8,
+              fontSize: 11,
+              color: '#6E7079',
+            }}
+          >
             <span>Less</span>
             {['rgba(255,255,255,0.06)', '#0d2a5e', '#1a4da6', '#2979ff', '#5ba4ff'].map((c, i) => (
-              <span key={i} style={{ width: 10, height: 10, background: c, borderRadius: 2, display: 'inline-block' }} aria-hidden="true" />
+              <span
+                key={i}
+                style={{
+                  width: 10,
+                  height: 10,
+                  background: c,
+                  borderRadius: 2,
+                  display: 'inline-block',
+                }}
+                aria-hidden="true"
+              />
             ))}
             <span>More</span>
           </div>
         </Card>
 
         <Card span={12}>
-          <h3>Monthly threat volume <span className="unit">Jan 2025 – May 2026</span></h3>
+          <h3>
+            Monthly threat volume <span className="unit">Jan 2025 – May 2026</span>
+          </h3>
           <StripeChart
             data={MONTHLY_THREATS}
             height={56}
@@ -302,8 +489,17 @@ export function Security() {
             colorHigh="#FF4040"
             ariaLabel="Monthly threat volume stripe chart: Jan 2025 1842 threats (low, dark blue) rising to May 2026 4120 threats (high, red)"
           />
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, fontSize: 11, color: '#6E7079' }}>
-            <span>Jan 2025</span><span>May 2026</span>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginTop: 4,
+              fontSize: 11,
+              color: '#6E7079',
+            }}
+          >
+            <span>Jan 2025</span>
+            <span>May 2026</span>
           </div>
         </Card>
 
@@ -317,7 +513,9 @@ export function Security() {
         </Card>
 
         <Card span={6}>
-          <h3>Top blocked source countries <span className="unit">24 h</span></h3>
+          <h3>
+            Top blocked source countries <span className="unit">24 h</span>
+          </h3>
           <LollipopChart
             items={BLOCKED_COUNTRIES}
             ariaLabel="Top blocked source countries: China 1842, Russia 1204, United States 687, Netherlands 512, Germany 389, Brazil 247, India 198"
@@ -325,7 +523,9 @@ export function Security() {
         </Card>
 
         <Card span={6}>
-          <h3>Threat category trend <span className="unit">Apr vs May</span></h3>
+          <h3>
+            Threat category trend <span className="unit">Apr vs May</span>
+          </h3>
           <SlopeChart
             items={THREAT_TREND}
             labelBefore="Apr"
@@ -335,7 +535,9 @@ export function Security() {
         </Card>
 
         <Card span={12}>
-          <h3>Attack surface topology <span className="unit">Network segment relationships</span></h3>
+          <h3>
+            Attack surface topology <span className="unit">Network segment relationships</span>
+          </h3>
           <ForceGraph
             nodes={ATTACK_NODES}
             links={ATTACK_LINKS}
@@ -345,7 +547,9 @@ export function Security() {
         </Card>
 
         <Card span={12}>
-          <h3>Threat activity <span className="unit">Day × hour · 7-day pattern</span></h3>
+          <h3>
+            Threat activity <span className="unit">Day × hour · 7-day pattern</span>
+          </h3>
           <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
             <div style={{ flex: '0 0 auto', width: 260 }}>
               <PolarHeatmap
@@ -358,9 +562,14 @@ export function Security() {
               />
             </div>
             <div style={{ fontSize: 11, color: '#6E7079' }}>
-              <div style={{ fontWeight: 600, color: '#A4A7B5', marginBottom: 8 }}>Ring (inner to outer)</div>
+              <div style={{ fontWeight: 600, color: '#A4A7B5', marginBottom: 8 }}>
+                Ring (inner to outer)
+              </div>
               {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => (
-                <div key={day} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                <div
+                  key={day}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}
+                >
                   <span
                     style={{
                       display: 'inline-block',
@@ -379,7 +588,9 @@ export function Security() {
         </Card>
 
         <Card span={12}>
-          <h3>Threat signature keywords <span className="unit">frequency · 24 h</span></h3>
+          <h3>
+            Threat signature keywords <span className="unit">frequency · 24 h</span>
+          </h3>
           <WordCloud
             items={THREAT_KEYWORDS}
             height={140}
@@ -388,7 +599,14 @@ export function Security() {
         </Card>
 
         <Card span={12} style={{ padding: 0 }}>
-          <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between' }}>
+          <div
+            style={{
+              padding: '14px 16px',
+              borderBottom: '1px solid rgba(255,255,255,0.06)',
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
             <h3 style={{ margin: 0, color: '#fff' }}>Recent Blocked Threats</h3>
             <Button>View all</Button>
           </div>
@@ -401,7 +619,9 @@ export function Security() {
                 <th scope="col">Source</th>
                 <th scope="col">Destination</th>
                 <th scope="col">Action</th>
-                <th scope="col" style={{ textAlign: 'right' }}>When</th>
+                <th scope="col" style={{ textAlign: 'right' }}>
+                  When
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -424,5 +644,5 @@ export function Security() {
         </Card>
       </div>
     </>
-  );
+  )
 }

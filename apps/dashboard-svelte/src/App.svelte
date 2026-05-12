@@ -25,7 +25,7 @@
     InfraIcon,
     IntegrationsIcon,
     type SidebarSectionDef,
-  } from '@dash-ui/svelte';
+  } from '@w5-ui/svelte';
 
   import Dashboard from './pages/Dashboard.svelte';
   import Topology from './pages/Topology.svelte';

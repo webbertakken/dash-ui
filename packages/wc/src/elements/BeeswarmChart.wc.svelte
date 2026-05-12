@@ -1,6 +1,6 @@
 <svelte:options tag="uni-beeswarm-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/BeeswarmChart.svelte';
+  import Original from '@w5-ui/svelte/components/BeeswarmChart.svelte';
   export let series = [];
   export let yRange = undefined;
   export let height = 200;

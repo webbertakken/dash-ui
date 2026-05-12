@@ -1,12 +1,12 @@
-import type { ReactNode } from 'react';
-import { CloseIcon } from '../icons.js';
+import type { ReactNode } from 'react'
+import { CloseIcon } from '../icons.js'
 
-export type AlertVariant = 'success' | 'warn' | 'danger' | 'info';
+export type AlertVariant = 'success' | 'warn' | 'danger' | 'info'
 
 export interface AlertProps {
-  variant?: AlertVariant;
-  children: ReactNode;
-  onDismiss?: () => void;
+  variant?: AlertVariant
+  children: ReactNode
+  onDismiss?: () => void
 }
 
 export function Alert({ variant = 'info', children, onDismiss }: AlertProps) {
@@ -19,10 +19,15 @@ export function Alert({ variant = 'info', children, onDismiss }: AlertProps) {
     >
       <span className="alert-body">{children}</span>
       {onDismiss && (
-        <button type="button" className="alert-dismiss icon-btn" onClick={onDismiss} aria-label="Dismiss alert">
+        <button
+          type="button"
+          className="alert-dismiss icon-btn"
+          onClick={onDismiss}
+          aria-label="Dismiss alert"
+        >
           <CloseIcon aria-hidden="true" />
         </button>
       )}
     </div>
-  );
+  )
 }

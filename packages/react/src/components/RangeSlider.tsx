@@ -1,19 +1,19 @@
-import { useState, useId } from 'react';
-import type { ChangeEvent, CSSProperties } from 'react';
+import { useState, useId } from 'react'
+import type { ChangeEvent, CSSProperties } from 'react'
 
 export interface RangeSliderProps {
-  label?: string;
-  min?: number;
-  max?: number;
-  step?: number;
-  defaultLow?: number;
-  defaultHigh?: number;
-  low?: number;
-  high?: number;
-  suffix?: string;
-  disabled?: boolean;
-  onChange?: (range: [number, number]) => void;
-  className?: string;
+  label?: string
+  min?: number
+  max?: number
+  step?: number
+  defaultLow?: number
+  defaultHigh?: number
+  low?: number
+  high?: number
+  suffix?: string
+  disabled?: boolean
+  onChange?: (range: [number, number]) => void
+  className?: string
 }
 
 export function RangeSlider({
@@ -30,45 +30,49 @@ export function RangeSlider({
   onChange,
   className = '',
 }: RangeSliderProps) {
-  const uid = useId();
-  const labelId = `${uid}-label`;
-  const [internalLow, setInternalLow] = useState(defaultLow ?? min);
-  const [internalHigh, setInternalHigh] = useState(defaultHigh ?? max);
-  const low = lowProp !== undefined ? lowProp : internalLow;
-  const high = highProp !== undefined ? highProp : internalHigh;
+  const uid = useId()
+  const labelId = `${uid}-label`
+  const [internalLow, setInternalLow] = useState(defaultLow ?? min)
+  const [internalHigh, setInternalHigh] = useState(defaultHigh ?? max)
+  const low = lowProp !== undefined ? lowProp : internalLow
+  const high = highProp !== undefined ? highProp : internalHigh
 
   function toPercent(v: number) {
-    return max === min ? 0 : ((v - min) / (max - min)) * 100;
+    return max === min ? 0 : ((v - min) / (max - min)) * 100
   }
 
-  const lowPct = toPercent(low);
-  const highPct = toPercent(high);
-  const lowOnTop = low >= max - step;
+  const lowPct = toPercent(low)
+  const highPct = toPercent(high)
+  const lowOnTop = low >= max - step
 
   const fillStyle: CSSProperties = {
     '--rs-low': `${lowPct}%`,
     '--rs-high': `${highPct}%`,
-  } as CSSProperties;
+  } as CSSProperties
 
   function handleLowChange(e: ChangeEvent<HTMLInputElement>) {
-    const next = Math.min(Number(e.target.value), high - step);
-    if (lowProp === undefined) setInternalLow(next);
-    onChange?.([next, high]);
+    const next = Math.min(Number(e.target.value), high - step)
+    if (lowProp === undefined) setInternalLow(next)
+    onChange?.([next, high])
   }
 
   function handleHighChange(e: ChangeEvent<HTMLInputElement>) {
-    const next = Math.max(Number(e.target.value), low + step);
-    if (highProp === undefined) setInternalHigh(next);
-    onChange?.([low, next]);
+    const next = Math.max(Number(e.target.value), low + step)
+    if (highProp === undefined) setInternalHigh(next)
+    onChange?.([low, next])
   }
 
   return (
     <div className={`range-slider ${className}`.trim()}>
       {label && (
         <div className="range-slider__header">
-          <span className="range-slider__label" id={labelId}>{label}</span>
+          <span className="range-slider__label" id={labelId}>
+            {label}
+          </span>
           <span className="range-slider__value" aria-live="polite">
-            {low}{suffix} &ndash; {high}{suffix}
+            {low}
+            {suffix} &ndash; {high}
+            {suffix}
           </span>
         </div>
       )}
@@ -108,5 +112,5 @@ export function RangeSlider({
         />
       </div>
     </div>
-  );
+  )
 }

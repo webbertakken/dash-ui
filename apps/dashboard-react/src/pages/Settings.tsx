@@ -1,9 +1,54 @@
-import { useState, type ReactNode } from 'react';
-import { Card, Button, Pill, Field, Input, Toggle, RowToggle, RadioGroup, NumberInput, Textarea, Slider, Accordion, AccordionItem, Breadcrumb, Stepper, FileUpload, Combobox, SplitButton, IPInput, CodeBlock, TimePicker, PasswordInput, OTPInput, ColorPicker, COLOR_SWATCHES, MACInput, DurationInput, CIDRInput, Callout, InputGroup, Menubar, TagInput, ContextualHelp, toast } from '@dash-ui/react';
-import type { ComboboxOption } from '@dash-ui/react';
+import {
+  Card,
+  Button,
+  Pill,
+  Field,
+  Input,
+  Toggle,
+  RowToggle,
+  RadioGroup,
+  NumberInput,
+  Textarea,
+  Slider,
+  Accordion,
+  AccordionItem,
+  Breadcrumb,
+  Stepper,
+  FileUpload,
+  Combobox,
+  SplitButton,
+  IPInput,
+  CodeBlock,
+  TimePicker,
+  PasswordInput,
+  OTPInput,
+  ColorPicker,
+  COLOR_SWATCHES,
+  MACInput,
+  DurationInput,
+  CIDRInput,
+  Callout,
+  InputGroup,
+  Menubar,
+  TagInput,
+  ContextualHelp,
+  toast,
+} from '@w5-ui/react'
+import type { ComboboxOption } from '@w5-ui/react'
+import { useState, type ReactNode } from 'react'
 
-const TAB_NAMES = ['System', 'Console', 'Network', 'Internet', 'WiFi', 'VLANs', 'Routing', 'Profiles', 'Advanced'] as const;
-type SettingsTab = (typeof TAB_NAMES)[number];
+const TAB_NAMES = [
+  'System',
+  'Console',
+  'Network',
+  'Internet',
+  'WiFi',
+  'VLANs',
+  'Routing',
+  'Profiles',
+  'Advanced',
+] as const
+type SettingsTab = (typeof TAB_NAMES)[number]
 
 const COUNTRY_OPTIONS: ComboboxOption[] = [
   { value: 'au', label: 'Australia' },
@@ -18,7 +63,7 @@ const COUNTRY_OPTIONS: ComboboxOption[] = [
   { value: 'sg', label: 'Singapore' },
   { value: 'us', label: 'United States' },
   { value: 'gb', label: 'United Kingdom' },
-];
+]
 
 const TIMEZONE_OPTIONS: ComboboxOption[] = [
   { value: 'America/New_York', label: 'America/New_York (GMT-4)' },
@@ -35,30 +80,42 @@ const TIMEZONE_OPTIONS: ComboboxOption[] = [
   { value: 'Asia/Singapore', label: 'Asia/Singapore (GMT+8)' },
   { value: 'Australia/Sydney', label: 'Australia/Sydney (GMT+10)' },
   { value: 'UTC', label: 'UTC (GMT+0)' },
-];
+]
 
 const SETTINGS_MENUS = [
-  { id: 'file', label: 'File', items: [
-    { id: 'save', label: 'Save' },
-    { id: 'save-apply', label: 'Save & apply now' },
-    { id: 'sep1', label: '', separator: true },
-    { id: 'export', label: 'Export config…' },
-    { id: 'import', label: 'Import config…' },
-  ]},
-  { id: 'edit', label: 'Edit', items: [
-    { id: 'reset', label: 'Reset to defaults' },
-    { id: 'duplicate', label: 'Duplicate profile' },
-    { id: 'sep2', label: '', separator: true },
-    { id: 'revert', label: 'Revert changes' },
-  ]},
-  { id: 'view', label: 'View', items: [
-    { id: 'compact', label: 'Compact view' },
-    { id: 'advanced', label: 'Show advanced settings' },
-  ]},
-];
+  {
+    id: 'file',
+    label: 'File',
+    items: [
+      { id: 'save', label: 'Save' },
+      { id: 'save-apply', label: 'Save & apply now' },
+      { id: 'sep1', label: '', separator: true },
+      { id: 'export', label: 'Export config…' },
+      { id: 'import', label: 'Import config…' },
+    ],
+  },
+  {
+    id: 'edit',
+    label: 'Edit',
+    items: [
+      { id: 'reset', label: 'Reset to defaults' },
+      { id: 'duplicate', label: 'Duplicate profile' },
+      { id: 'sep2', label: '', separator: true },
+      { id: 'revert', label: 'Revert changes' },
+    ],
+  },
+  {
+    id: 'view',
+    label: 'View',
+    items: [
+      { id: 'compact', label: 'Compact view' },
+      { id: 'advanced', label: 'Show advanced settings' },
+    ],
+  },
+]
 
 export function Settings() {
-  const [tab, setTab] = useState<SettingsTab>('System');
+  const [tab, setTab] = useState<SettingsTab>('System')
   return (
     <>
       <div className="ph-bar">
@@ -74,8 +131,8 @@ export function Settings() {
               { id: 'export', label: 'Export config…' },
             ]}
             onAction={(id) => {
-              if (id === 'save-apply') toast.success('Saved & applying…');
-              else toast.info('Config exported');
+              if (id === 'save-apply') toast.success('Saved & applying…')
+              else toast.info('Config exported')
             }}
           />
         </div>
@@ -85,16 +142,23 @@ export function Settings() {
           label="Settings toolbar"
           menus={SETTINGS_MENUS}
           onAction={(menuId, itemId) => {
-            if (itemId === 'save' || itemId === 'save-apply') toast.success('Settings saved');
-            else if (itemId === 'export') toast.info('Config exported');
-            else if (itemId === 'import') toast.info('Import config…');
-            else if (itemId === 'reset') toast.warn('Reset to defaults');
-            else if (itemId === 'revert') toast.warn('Changes reverted');
-            else toast.info(`${menuId} › ${itemId}`);
+            if (itemId === 'save' || itemId === 'save-apply') toast.success('Settings saved')
+            else if (itemId === 'export') toast.info('Config exported')
+            else if (itemId === 'import') toast.info('Import config…')
+            else if (itemId === 'reset') toast.warn('Reset to defaults')
+            else if (itemId === 'revert') toast.warn('Changes reverted')
+            else toast.info(`${menuId} › ${itemId}`)
           }}
         />
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24, padding: '16px 24px 24px' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '200px 1fr',
+          gap: 24,
+          padding: '16px 24px 24px',
+        }}
+      >
         <aside style={{ display: 'flex', flexDirection: 'column', gap: 1, fontSize: 13 }}>
           {TAB_NAMES.map((s) => (
             <button
@@ -115,21 +179,26 @@ export function Settings() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
 function SystemCard() {
-  const [country, setCountry] = useState('gb');
-  const [timezone, setTimezone] = useState('Europe/London');
-  const [maintStart, setMaintStart] = useState('03:00');
-  const [maintEnd, setMaintEnd] = useState('05:00');
+  const [country, setCountry] = useState('gb')
+  const [timezone, setTimezone] = useState('Europe/London')
+  const [maintStart, setMaintStart] = useState('03:00')
+  const [maintEnd, setMaintEnd] = useState('05:00')
   return (
     <Card>
       <h3 style={{ color: '#fff', fontSize: 14 }}>System</h3>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 6 }}>
         <Field label="Site name" defaultValue="Edge Gateway (Gateway)" />
         <div className="field">
-          <label htmlFor="sys-country" style={{ fontSize: 12, color: '#A4A7B5', display: 'block', marginBottom: 4 }}>Country / Region</label>
+          <label
+            htmlFor="sys-country"
+            style={{ fontSize: 12, color: '#A4A7B5', display: 'block', marginBottom: 4 }}
+          >
+            Country / Region
+          </label>
           <Combobox
             id="sys-country"
             options={COUNTRY_OPTIONS}
@@ -139,7 +208,12 @@ function SystemCard() {
           />
         </div>
         <div className="field">
-          <label htmlFor="sys-tz" style={{ fontSize: 12, color: '#A4A7B5', display: 'block', marginBottom: 4 }}>Timezone</label>
+          <label
+            htmlFor="sys-tz"
+            style={{ fontSize: 12, color: '#A4A7B5', display: 'block', marginBottom: 4 }}
+          >
+            Timezone
+          </label>
           <Combobox
             id="sys-tz"
             options={TIMEZONE_OPTIONS}
@@ -149,7 +223,9 @@ function SystemCard() {
           />
         </div>
         <div className="field">
-          <span style={{ fontSize: 12, color: '#A4A7B5', display: 'block', marginBottom: 6 }}>Maintenance window (Sundays)</span>
+          <span style={{ fontSize: 12, color: '#A4A7B5', display: 'block', marginBottom: 6 }}>
+            Maintenance window (Sundays)
+          </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <TimePicker label="Start" value={maintStart} onChange={setMaintStart} />
             <span style={{ color: '#6E7079', fontSize: 13, marginTop: 18 }}>–</span>
@@ -158,7 +234,7 @@ function SystemCard() {
         </div>
       </div>
     </Card>
-  );
+  )
 }
 
 function SettingsBody({ tab }: { tab: SettingsTab }) {
@@ -169,7 +245,11 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
           <SystemCard />
           <Card>
             <h3 style={{ color: '#fff', fontSize: 14 }}>Backup</h3>
-            <RowToggle title="Auto-backup to Dash Cloud" description="Daily · last successful 04:00 today" on />
+            <RowToggle
+              title="Auto-backup to Dash Cloud"
+              description="Daily · last successful 04:00 today"
+              on
+            />
             <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
               <Button>Download backup</Button>
             </div>
@@ -182,7 +262,7 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             </div>
           </Card>
         </>
-      );
+      )
     case 'Console':
       return (
         <>
@@ -195,7 +275,12 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
               ['UI Beta channel', 'Receive early-access Dash releases', false],
               ['Remote access', 'Connect via Site Manager', true],
             ].map(([t, d, on]) => (
-              <ToggleRowState key={t as string} title={t as string} description={d as string} initial={on as boolean} />
+              <ToggleRowState
+                key={t as string}
+                title={t as string}
+                description={d as string}
+                initial={on as boolean}
+              />
             ))}
           </Card>
           <Card>
@@ -204,7 +289,8 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
               Authorized keys bypass password auth. Only add keys from devices you own and trust.
             </Callout>
             <p style={{ fontSize: 12, color: '#6E7079', margin: '10px 0 10px' }}>
-              Paste one public key per line. Accepted formats: ssh-rsa, ssh-ed25519, ecdsa-sha2-nistp256.
+              Paste one public key per line. Accepted formats: ssh-rsa, ssh-ed25519,
+              ecdsa-sha2-nistp256.
             </p>
             <Field label="Authorized keys" id="settings-ssh-keys">
               <Textarea
@@ -222,8 +308,16 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <CodeBlock language="sh" label="Show system info command" code="dashctl sysinfo" />
-              <CodeBlock language="sh" label="Show interface status command" code="ip -br addr show" />
-              <CodeBlock language="sh" label="Show active sessions command" code="cat /proc/net/nf_conntrack_count 2>/dev/null || conntrack -L -o extended | wc -l" />
+              <CodeBlock
+                language="sh"
+                label="Show interface status command"
+                code="ip -br addr show"
+              />
+              <CodeBlock
+                language="sh"
+                label="Show active sessions command"
+                code="cat /proc/net/nf_conntrack_count 2>/dev/null || conntrack -L -o extended | wc -l"
+              />
             </div>
           </Card>
           <Card>
@@ -236,12 +330,13 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             </div>
           </Card>
         </>
-      );
+      )
     case 'Network':
       return (
         <>
           <Callout variant="info" title="DHCP changes take effect immediately">
-            Existing leases are not revoked. Clients will receive new settings on the next renewal cycle (typically within the lease time).
+            Existing leases are not revoked. Clients will receive new settings on the next renewal
+            cycle (typically within the lease time).
           </Callout>
           <Card>
             <h3 style={{ color: '#fff', fontSize: 14 }}>Default network</h3>
@@ -251,8 +346,16 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
               <Field label="DHCP range" defaultValue="192.168.1.6 – 192.168.1.254" />
               <DurationInput label="Lease time (HH:MM:SS)" defaultValue={86400} maxHours={168} />
             </div>
-            <ToggleRowState title="IGMP snooping" description="Optimize multicast on this network" initial />
-            <ToggleRowState title="Multicast DNS" description="Forward mDNS across VLANs" initial={false} />
+            <ToggleRowState
+              title="IGMP snooping"
+              description="Optimize multicast on this network"
+              initial
+            />
+            <ToggleRowState
+              title="Multicast DNS"
+              description="Forward mDNS across VLANs"
+              initial={false}
+            />
           </Card>
           <Card>
             <h3 style={{ color: '#fff', fontSize: 14 }}>Networks</h3>
@@ -277,8 +380,24 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
                 ].map((r) => (
                   <tr key={r[0]}>
                     <td style={{ color: '#fff' }}>{r[0]}</td>
-                    <td style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: '#A4A7B5' }}>{r[1]}</td>
-                    <td style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: '#A4A7B5' }}>{r[2]}</td>
+                    <td
+                      style={{
+                        fontFamily: '"JetBrains Mono", monospace',
+                        fontSize: 12,
+                        color: '#A4A7B5',
+                      }}
+                    >
+                      {r[1]}
+                    </td>
+                    <td
+                      style={{
+                        fontFamily: '"JetBrains Mono", monospace',
+                        fontSize: 12,
+                        color: '#A4A7B5',
+                      }}
+                    >
+                      {r[2]}
+                    </td>
                     <td>{r[3]}</td>
                     <td style={{ textAlign: 'right', color: '#6E7079' }}>›</td>
                   </tr>
@@ -287,7 +406,7 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             </table>
           </Card>
         </>
-      );
+      )
     case 'Internet':
       return (
         <>
@@ -319,7 +438,11 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 6 }}>
               <IPInput label="Public IP" defaultValue="185.42.118.214" />
               <IPInput label="Gateway" defaultValue="185.42.118.1" />
-              <TagInput label="DNS servers" defaultValue={['1.1.1.1', '1.0.0.1']} placeholder="Add IP…" />
+              <TagInput
+                label="DNS servers"
+                defaultValue={['1.1.1.1', '1.0.0.1']}
+                placeholder="Add IP…"
+              />
               <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6 }}>
                 <NumberInput label="MTU" defaultValue={1500} min={576} max={9000} />
                 <ContextualHelp
@@ -334,7 +457,10 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
           <Card>
             <h3 style={{ color: '#fff', fontSize: 14 }}>
               WAN2 (Failover){' '}
-              <span className="pill" style={{ color: '#A4A7B5', background: 'rgba(255,255,255,0.06)' }}>
+              <span
+                className="pill"
+                style={{ color: '#A4A7B5', background: 'rgba(255,255,255,0.06)' }}
+              >
                 Standby
               </span>
             </h3>
@@ -344,15 +470,19 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
               <Field label="Signal" defaultValue="-71 dBm · Excellent" />
               <Field label="Failover threshold" defaultValue="3 consecutive failures" />
             </div>
-            <ToggleRowState title="Smart Queues (QoS)" description="Prioritize realtime traffic" initial />
+            <ToggleRowState
+              title="Smart Queues (QoS)"
+              description="Prioritize realtime traffic"
+              initial
+            />
             <ToggleRowState title="IPv6 prefix delegation" description="/56 from ISP" initial />
           </Card>
         </>
-      );
+      )
     case 'WiFi':
-      return <WifiSettings />;
+      return <WifiSettings />
     case 'VLANs':
-      return <VLANCard />;
+      return <VLANCard />
     case 'Routing':
       return (
         <>
@@ -375,14 +505,33 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
                   ['203.0.113.0/24', '185.42.118.1', '15', 'Inactive'],
                 ].map((r) => (
                   <tr key={r[0]}>
-                    <td style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: '#fff' }}>{r[0]}</td>
-                    <td style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: '#A4A7B5' }}>{r[1]}</td>
+                    <td
+                      style={{
+                        fontFamily: '"JetBrains Mono", monospace',
+                        fontSize: 12,
+                        color: '#fff',
+                      }}
+                    >
+                      {r[0]}
+                    </td>
+                    <td
+                      style={{
+                        fontFamily: '"JetBrains Mono", monospace',
+                        fontSize: 12,
+                        color: '#A4A7B5',
+                      }}
+                    >
+                      {r[1]}
+                    </td>
                     <td>{r[2]}</td>
                     <td>
                       {r[3] === 'Active' ? (
                         <Pill variant="success">{r[3]}</Pill>
                       ) : (
-                        <span className="pill" style={{ color: '#6E7079', background: 'rgba(255,255,255,0.06)' }}>
+                        <span
+                          className="pill"
+                          style={{ color: '#6E7079', background: 'rgba(255,255,255,0.06)' }}
+                        >
                           <span className="dot" />
                           {r[3]}
                         </span>
@@ -400,7 +549,7 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             <ToggleRowState title="Multicast routing" description="PIM-SM" initial={false} />
           </Card>
         </>
-      );
+      )
     case 'Profiles':
       return (
         <>
@@ -423,7 +572,15 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
                 ].map((r) => (
                   <tr key={r[0]}>
                     <td style={{ color: '#fff' }}>{r[0]}</td>
-                    <td style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: '#A4A7B5' }}>{r[1]}</td>
+                    <td
+                      style={{
+                        fontFamily: '"JetBrains Mono", monospace',
+                        fontSize: 12,
+                        color: '#A4A7B5',
+                      }}
+                    >
+                      {r[1]}
+                    </td>
                     <td>{r[2]}</td>
                   </tr>
                 ))}
@@ -475,26 +632,54 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
                   <tr key={r[0]}>
                     <td style={{ color: '#fff' }}>{r[0]}</td>
                     <td>{r[1]}</td>
-                    <td style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: '#A4A7B5' }}>{r[2]}</td>
+                    <td
+                      style={{
+                        fontFamily: '"JetBrains Mono", monospace',
+                        fontSize: 12,
+                        color: '#A4A7B5',
+                      }}
+                    >
+                      {r[2]}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </Card>
         </>
-      );
+      )
     case 'Advanced':
       return (
         <Card>
           <Accordion>
             <AccordionItem title="Performance" defaultOpen>
-              <ToggleRowState title="Hardware offload" description="Accelerate routing in NPU" initial />
-              <ToggleRowState title="Smart DNS" description="Cache and filter queries locally" initial />
-              <ToggleRowState title="Connectivity monitor" description="Probe gateway every 5 s" initial />
+              <ToggleRowState
+                title="Hardware offload"
+                description="Accelerate routing in NPU"
+                initial
+              />
+              <ToggleRowState
+                title="Smart DNS"
+                description="Cache and filter queries locally"
+                initial
+              />
+              <ToggleRowState
+                title="Connectivity monitor"
+                description="Probe gateway every 5 s"
+                initial
+              />
             </AccordionItem>
             <AccordionItem title="Diagnostics">
-              <ToggleRowState title="Crash reports" description="Send kernel panics to Dash" initial />
-              <ToggleRowState title="Debug logging" description="Verbose · increases write IO" initial={false} />
+              <ToggleRowState
+                title="Crash reports"
+                description="Send kernel panics to Dash"
+                initial
+              />
+              <ToggleRowState
+                title="Debug logging"
+                description="Verbose · increases write IO"
+                initial={false}
+              />
             </AccordionItem>
             <AccordionItem title="Danger zone">
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', paddingBottom: 4 }}>
@@ -505,23 +690,31 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
             </AccordionItem>
           </Accordion>
         </Card>
-      );
+      )
   }
 }
 
 function WifiSettings() {
-  const [txPower2g, setTxPower2g] = useState(80);
-  const [txPower5g, setTxPower5g] = useState(100);
-  const [rxSensitivity, setRxSensitivity] = useState(50);
+  const [txPower2g, setTxPower2g] = useState(80)
+  const [txPower5g, setTxPower5g] = useState(100)
+  const [rxSensitivity, setRxSensitivity] = useState(50)
   return (
     <>
       <Card>
         <h3 style={{ color: '#fff', fontSize: 14 }}>SSIDs</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 6 }}>
           <Field label="SSID name" defaultValue="Office-Net" />
-          <PasswordInput label="WPA2 passphrase" defaultValue="s3cur3passw0rd" autocomplete="new-password" />
+          <PasswordInput
+            label="WPA2 passphrase"
+            defaultValue="s3cur3passw0rd"
+            autocomplete="new-password"
+          />
           <Field label="SSID name (guest)" defaultValue="Guest-Net" />
-          <PasswordInput label="WPA2 passphrase (guest)" placeholder="Enter passphrase…" autocomplete="new-password" />
+          <PasswordInput
+            label="WPA2 passphrase (guest)"
+            placeholder="Enter passphrase…"
+            autocomplete="new-password"
+          />
         </div>
       </Card>
       <Card>
@@ -534,39 +727,125 @@ function WifiSettings() {
       <Card>
         <h3 style={{ color: '#fff', fontSize: 14 }}>2.4 GHz radio</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 6 }}>
-          <Slider label="Transmit power" value={txPower2g} min={0} max={100} step={10} suffix="%" onChange={setTxPower2g} />
-          <Slider label="RX sensitivity" value={rxSensitivity} min={0} max={100} step={5} suffix="%" onChange={setRxSensitivity} />
+          <Slider
+            label="Transmit power"
+            value={txPower2g}
+            min={0}
+            max={100}
+            step={10}
+            suffix="%"
+            onChange={setTxPower2g}
+          />
+          <Slider
+            label="RX sensitivity"
+            value={rxSensitivity}
+            min={0}
+            max={100}
+            step={5}
+            suffix="%"
+            onChange={setRxSensitivity}
+          />
         </div>
-        <ToggleRowState title="Auto channel" description="Select least congested channel automatically" initial />
-        <ToggleRowState title="Band steering" description="Prefer 5 GHz for capable clients" initial />
+        <ToggleRowState
+          title="Auto channel"
+          description="Select least congested channel automatically"
+          initial
+        />
+        <ToggleRowState
+          title="Band steering"
+          description="Prefer 5 GHz for capable clients"
+          initial
+        />
       </Card>
       <Card>
         <h3 style={{ color: '#fff', fontSize: 14 }}>5 GHz radio</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 6 }}>
-          <Slider label="Transmit power" value={txPower5g} min={0} max={100} step={10} suffix="%" onChange={setTxPower5g} />
+          <Slider
+            label="Transmit power"
+            value={txPower5g}
+            min={0}
+            max={100}
+            step={10}
+            suffix="%"
+            onChange={setTxPower5g}
+          />
         </div>
-        <ToggleRowState title="Auto channel" description="Select least congested channel automatically" initial />
-        <ToggleRowState title="DFS channels" description="Enable radar-protected DFS channels" initial={false} />
-        <ToggleRowState title="802.11k/v/r" description="Fast BSS transition and neighbour reports" initial />
+        <ToggleRowState
+          title="Auto channel"
+          description="Select least congested channel automatically"
+          initial
+        />
+        <ToggleRowState
+          title="DFS channels"
+          description="Enable radar-protected DFS channels"
+          initial={false}
+        />
+        <ToggleRowState
+          title="802.11k/v/r"
+          description="Fast BSS transition and neighbour reports"
+          initial
+        />
       </Card>
     </>
-  );
+  )
 }
 
 const VLAN_ROWS = [
-  { name: 'Default', id: '1', purpose: 'Corporate LAN', isolation: '—', dhcp: 'Yes', color: 'blue' },
-  { name: 'IoT', id: '20', purpose: 'Smart home', isolation: 'Isolated', dhcp: 'Yes', color: 'amber' },
-  { name: 'Guest', id: '30', purpose: 'Captive portal', isolation: 'Isolated', dhcp: 'Yes', color: 'green' },
-  { name: 'Cameras', id: '40', purpose: 'Camera Service', isolation: 'Isolated from LAN', dhcp: 'Yes', color: 'purple' },
-  { name: 'Servers', id: '50', purpose: 'Rack / NAS', isolation: '—', dhcp: 'Static', color: 'teal' },
-  { name: 'Mgmt', id: '99', purpose: 'Switch/AP mgmt', isolation: 'Isolated', dhcp: 'Yes', color: 'slate' },
-] as const;
+  {
+    name: 'Default',
+    id: '1',
+    purpose: 'Corporate LAN',
+    isolation: '—',
+    dhcp: 'Yes',
+    color: 'blue',
+  },
+  {
+    name: 'IoT',
+    id: '20',
+    purpose: 'Smart home',
+    isolation: 'Isolated',
+    dhcp: 'Yes',
+    color: 'amber',
+  },
+  {
+    name: 'Guest',
+    id: '30',
+    purpose: 'Captive portal',
+    isolation: 'Isolated',
+    dhcp: 'Yes',
+    color: 'green',
+  },
+  {
+    name: 'Cameras',
+    id: '40',
+    purpose: 'Camera Service',
+    isolation: 'Isolated from LAN',
+    dhcp: 'Yes',
+    color: 'purple',
+  },
+  {
+    name: 'Servers',
+    id: '50',
+    purpose: 'Rack / NAS',
+    isolation: '—',
+    dhcp: 'Static',
+    color: 'teal',
+  },
+  {
+    name: 'Mgmt',
+    id: '99',
+    purpose: 'Switch/AP mgmt',
+    isolation: 'Isolated',
+    dhcp: 'Yes',
+    color: 'slate',
+  },
+] as const
 
 function VLANCard() {
   const [colors, setColors] = useState<Record<string, string>>(
     Object.fromEntries(VLAN_ROWS.map((r) => [r.name, r.color])),
-  );
-  const [selected, setSelected] = useState<string>(VLAN_ROWS[0].name);
+  )
+  const [selected, setSelected] = useState<string>(VLAN_ROWS[0].name)
 
   return (
     <Card>
@@ -588,16 +867,26 @@ function VLANCard() {
         </thead>
         <tbody>
           {VLAN_ROWS.map((r) => {
-            const swatch = COLOR_SWATCHES.find((s) => s.value === colors[r.name]);
+            const swatch = COLOR_SWATCHES.find((s) => s.value === colors[r.name])
             return (
               <tr
                 key={r.name}
                 onClick={() => setSelected(r.name)}
-                style={{ cursor: 'pointer', background: selected === r.name ? 'rgba(255,255,255,0.03)' : undefined }}
+                style={{
+                  cursor: 'pointer',
+                  background: selected === r.name ? 'rgba(255,255,255,0.03)' : undefined,
+                }}
               >
                 <td>
                   <span
-                    style={{ display: 'inline-block', width: 12, height: 12, borderRadius: '50%', background: swatch?.color ?? '#6E7079', verticalAlign: 'middle' }}
+                    style={{
+                      display: 'inline-block',
+                      width: 12,
+                      height: 12,
+                      borderRadius: '50%',
+                      background: swatch?.color ?? '#6E7079',
+                      verticalAlign: 'middle',
+                    }}
                     aria-hidden="true"
                   />
                 </td>
@@ -607,7 +896,7 @@ function VLANCard() {
                 <td style={{ color: '#A4A7B5' }}>{r.isolation}</td>
                 <td style={{ color: '#A4A7B5' }}>{r.dhcp}</td>
               </tr>
-            );
+            )
           })}
         </tbody>
       </table>
@@ -619,11 +908,11 @@ function VLANCard() {
         />
       </div>
     </Card>
-  );
+  )
 }
 
 function TwoFactorCard() {
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState('')
   return (
     <Card>
       <h3 style={{ color: '#fff', fontSize: 14 }}>Two-factor authentication</h3>
@@ -633,19 +922,31 @@ function TwoFactorCard() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         <OTPInput label="Verification code" value={otp} onChange={setOtp} />
         <div style={{ display: 'flex', gap: 8 }}>
-          <Button variant="primary" disabled={otp.length < 6}>Verify</Button>
+          <Button variant="primary" disabled={otp.length < 6}>
+            Verify
+          </Button>
           <Button onClick={() => setOtp('')}>Reset</Button>
         </div>
       </div>
     </Card>
-  );
+  )
 }
 
-function ToggleRowState({ title, description, initial }: { title: string; description: string; initial: boolean }) {
-  const [on, setOn] = useState(initial);
-  return <RowToggle title={title} description={description} on={on} onToggle={() => setOn((v) => !v)} />;
+function ToggleRowState({
+  title,
+  description,
+  initial,
+}: {
+  title: string
+  description: string
+  initial: boolean
+}) {
+  const [on, setOn] = useState(initial)
+  return (
+    <RowToggle title={title} description={description} on={on} onToggle={() => setOn((v) => !v)} />
+  )
 }
 
-void Input;
-void Toggle;
-void (null as ReactNode);
+void Input
+void Toggle
+void (null as ReactNode)

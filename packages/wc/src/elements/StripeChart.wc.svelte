@@ -1,6 +1,6 @@
 <svelte:options tag="uni-stripe-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/StripeChart.svelte';
+  import Original from '@w5-ui/svelte/components/StripeChart.svelte';
   export let data = [];
   export let height = 48;
   export let colorLow = '#0A2840';

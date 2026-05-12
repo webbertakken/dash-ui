@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, Button, Pill, Field, Input, RowToggle, RadioGroup, NumberInput, Textarea, Slider, Accordion, AccordionItem, Breadcrumb, Stepper, FileUpload, Combobox, SplitButton, IPInput, CodeBlock, TimePicker, PasswordInput, OTPInput, ColorPicker, COLOR_SWATCHES, MACInput, DurationInput, CIDRInput, Callout, InputGroup, Menubar, TagInput, ContextualHelp, toast } from '@dash-ui/svelte';
-  import type { ComboboxOption } from '@dash-ui/svelte';
+  import { Card, Button, Pill, Field, Input, RowToggle, RadioGroup, NumberInput, Textarea, Slider, Accordion, AccordionItem, Breadcrumb, Stepper, FileUpload, Combobox, SplitButton, IPInput, CodeBlock, TimePicker, PasswordInput, OTPInput, ColorPicker, COLOR_SWATCHES, MACInput, DurationInput, CIDRInput, Callout, InputGroup, Menubar, TagInput, ContextualHelp, toast } from '@w5-ui/svelte';
+  import type { ComboboxOption } from '@w5-ui/svelte';
   const TAB_NAMES = ['System', 'Console', 'Network', 'Internet', 'WiFi', 'VLANs', 'Routing', 'Profiles', 'Advanced'] as const;
   type SettingsTab = (typeof TAB_NAMES)[number];
   let tab: SettingsTab = 'System';

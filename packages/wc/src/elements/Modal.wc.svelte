@@ -1,6 +1,6 @@
 <svelte:options tag="uni-modal" />
 <script>
-  import Original from '@dash-ui/svelte/components/Modal.svelte';
+  import Original from '@w5-ui/svelte/components/Modal.svelte';
   export let open = false;
   export let title = undefined;
 </script>

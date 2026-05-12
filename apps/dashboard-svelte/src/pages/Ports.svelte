@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, Button, Pill, Tabs, SunburstChart, RadialBarChart, MatrixChart, StackedBarChart, SwitchPortGrid, TransferList } from '@dash-ui/svelte';
-  import type { SunburstNode, RadialBarItem, StackedBarSeries, SwitchPort, TransferListItem } from '@dash-ui/svelte';
+  import { Card, Button, Pill, Tabs, SunburstChart, RadialBarChart, MatrixChart, StackedBarChart, SwitchPortGrid, TransferList } from '@w5-ui/svelte';
+  import type { SunburstNode, RadialBarItem, StackedBarSeries, SwitchPort, TransferListItem } from '@w5-ui/svelte';
   import { PORT_STATES } from '../data';
   let tab = 'main';
 

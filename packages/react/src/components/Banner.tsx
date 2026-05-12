@@ -1,23 +1,23 @@
-import { type ReactNode } from 'react';
-import { CloseIcon } from '../icons.js';
+import { type ReactNode } from 'react'
+import { CloseIcon } from '../icons.js'
 
-export type BannerVariant = 'info' | 'success' | 'warn' | 'danger';
+export type BannerVariant = 'info' | 'success' | 'warn' | 'danger'
 
 export interface BannerAction {
-  label: string;
-  onClick: () => void;
+  label: string
+  onClick: () => void
 }
 
 export interface BannerProps {
-  variant?: BannerVariant;
-  title?: string;
-  children: ReactNode;
-  action?: BannerAction;
-  onDismiss?: () => void;
+  variant?: BannerVariant
+  title?: string
+  children: ReactNode
+  action?: BannerAction
+  onDismiss?: () => void
 }
 
 export function Banner({ variant = 'info', title, children, action, onDismiss }: BannerProps) {
-  const isUrgent = variant === 'danger' || variant === 'warn';
+  const isUrgent = variant === 'danger' || variant === 'warn'
   return (
     <div
       className={`banner banner--${variant}`}
@@ -35,10 +35,15 @@ export function Banner({ variant = 'info', title, children, action, onDismiss }:
         </button>
       )}
       {onDismiss && (
-        <button type="button" className="banner__dismiss icon-btn" onClick={onDismiss} aria-label="Dismiss banner">
+        <button
+          type="button"
+          className="banner__dismiss icon-btn"
+          onClick={onDismiss}
+          aria-label="Dismiss banner"
+        >
           <CloseIcon aria-hidden="true" />
         </button>
       )}
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import type { StorybookConfig } from '@storybook/svelte-vite';
-import remarkGfm from 'remark-gfm';
+import type { StorybookConfig } from '@storybook/svelte-vite'
+import remarkGfm from 'remark-gfm'
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|svelte)'],
@@ -22,6 +22,6 @@ const config: StorybookConfig = {
   framework: { name: '@storybook/svelte-vite', options: {} },
   docs: {},
   staticDirs: ['../public'],
-};
+}
 
-export default config;
+export default config

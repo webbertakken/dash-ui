@@ -1,36 +1,32 @@
 export interface GanttTask {
-  label: string;
-  start: number;
-  end: number;
-  color?: string;
+  label: string
+  start: number
+  end: number
+  color?: string
 }
 
 export interface GanttChartProps {
-  tasks: GanttTask[];
-  xLabels?: string[];
-  ariaLabel?: string;
+  tasks: GanttTask[]
+  xLabels?: string[]
+  ariaLabel?: string
 }
 
-const VW = 340;
-const LABEL_W = 100;
-const PAD_R = 8;
-const TRACK_W = VW - LABEL_W - PAD_R;
-const ROW_H = 28;
-const BAR_H = 14;
-const PAD_T = 6;
-const AXIS_H = 18;
+const VW = 340
+const LABEL_W = 100
+const PAD_R = 8
+const TRACK_W = VW - LABEL_W - PAD_R
+const ROW_H = 28
+const BAR_H = 14
+const PAD_T = 6
+const AXIS_H = 18
 
-export function GanttChart({
-  tasks,
-  xLabels = [],
-  ariaLabel = 'Gantt chart',
-}: GanttChartProps) {
-  const svgH = PAD_T + tasks.length * ROW_H + AXIS_H;
+export function GanttChart({ tasks, xLabels = [], ariaLabel = 'Gantt chart' }: GanttChartProps) {
+  const svgH = PAD_T + tasks.length * ROW_H + AXIS_H
   const ticks = xLabels.length
     ? xLabels.map((lbl, i) => ({ x: LABEL_W + (i / (xLabels.length - 1 || 1)) * TRACK_W, lbl }))
-    : [];
+    : []
 
-  const tx = (v: number) => LABEL_W + v * TRACK_W;
+  const tx = (v: number) => LABEL_W + v * TRACK_W
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -64,11 +60,11 @@ export function GanttChart({
         ))}
 
         {tasks.map((task, i) => {
-          const cy = PAD_T + i * ROW_H + ROW_H / 2;
-          const x1 = tx(task.start);
-          const x2 = tx(task.end);
-          const barW = Math.max(x2 - x1, 4);
-          const color = task.color ?? '#006FFF';
+          const cy = PAD_T + i * ROW_H + ROW_H / 2
+          const x1 = tx(task.start)
+          const x2 = tx(task.end)
+          const barW = Math.max(x2 - x1, 4)
+          const color = task.color ?? '#006FFF'
 
           return (
             <g key={i}>
@@ -92,9 +88,9 @@ export function GanttChart({
                 opacity={0.85}
               />
             </g>
-          );
+          )
         })}
       </svg>
     </div>
-  );
+  )
 }

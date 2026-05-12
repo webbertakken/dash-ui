@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect, useId } from 'react';
+import { useState, useRef, useCallback, useEffect, useId } from 'react'
 
 const ColumnsIcon = () => (
   <svg viewBox="0 0 14 14" width="14" height="14" fill="none" aria-hidden="true" focusable={false}>
@@ -6,55 +6,56 @@ const ColumnsIcon = () => (
     <rect x="5.5" y="2" width="3" height="10" rx="1" stroke="currentColor" strokeWidth="1.3" />
     <rect x="10" y="2" width="3" height="10" rx="1" stroke="currentColor" strokeWidth="1.3" />
   </svg>
-);
+)
 
 export interface ColumnDef {
-  key: string;
-  label: string;
-  required?: boolean;
+  key: string
+  label: string
+  required?: boolean
 }
 
 export interface ColumnToggleProps {
-  columns: ColumnDef[];
-  visible: Set<string>;
-  onChange: (visible: Set<string>) => void;
+  columns: ColumnDef[]
+  visible: Set<string>
+  onChange: (visible: Set<string>) => void
 }
 
 export function ColumnToggle({ columns, visible, onChange }: ColumnToggleProps) {
-  const [open, setOpen] = useState(false);
-  const btnRef = useRef<HTMLButtonElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const panelId = useId();
+  const [open, setOpen] = useState(false)
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const panelId = useId()
 
   const close = useCallback(() => {
-    setOpen(false);
-    btnRef.current?.focus();
-  }, []);
+    setOpen(false)
+    btnRef.current?.focus()
+  }, [])
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) return
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') close();
+      if (e.key === 'Escape') close()
     }
     function onDown(e: MouseEvent) {
       if (
         !panelRef.current?.contains(e.target as Node) &&
         !btnRef.current?.contains(e.target as Node)
-      ) close();
+      )
+        close()
     }
-    document.addEventListener('keydown', onKey);
-    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('mousedown', onDown)
     return () => {
-      document.removeEventListener('keydown', onKey);
-      document.removeEventListener('mousedown', onDown);
-    };
-  }, [open, close]);
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('mousedown', onDown)
+    }
+  }, [open, close])
 
   function toggle(key: string) {
-    const next = new Set(visible);
-    if (next.has(key)) next.delete(key);
-    else next.add(key);
-    onChange(next);
+    const next = new Set(visible)
+    if (next.has(key)) next.delete(key)
+    else next.add(key)
+    onChange(next)
   }
 
   return (
@@ -80,7 +81,7 @@ export function ColumnToggle({ columns, visible, onChange }: ColumnToggleProps) 
           aria-label="Toggle columns"
         >
           <div className="col-toggle__header">Columns</div>
-          <ul className="col-toggle__list" role="list">
+          <ul className="col-toggle__list">
             {columns.map((col) => (
               <li key={col.key} className="col-toggle__item">
                 <label className="col-toggle__label">
@@ -89,7 +90,9 @@ export function ColumnToggle({ columns, visible, onChange }: ColumnToggleProps) 
                     className="col-toggle__check"
                     checked={visible.has(col.key)}
                     disabled={col.required}
-                    onChange={() => { if (!col.required) toggle(col.key); }}
+                    onChange={() => {
+                      if (!col.required) toggle(col.key)
+                    }}
                   />
                   <span>{col.label}</span>
                 </label>
@@ -99,5 +102,5 @@ export function ColumnToggle({ columns, visible, onChange }: ColumnToggleProps) 
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -1,0 +1,27 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "semi": false,
+  "proseWrap": "always",
+  "sortPackageJson": false,
+  "sortImports": {
+    "newlinesBetween": false,
+    "groups": [
+      ["type-import", "value-builtin", "value-external"],
+      ["type-internal", "value-internal"],
+      ["type-parent", "value-parent", "type-sibling", "value-sibling", "type-index", "value-index"],
+      "unknown"
+    ]
+  },
+  "ignorePatterns": [
+    "**/.yarn/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/storybook-static/**",
+    "**/.changeset/**",
+    "yarn.lock"
+  ]
+}

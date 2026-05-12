@@ -1,6 +1,6 @@
 <svelte:options tag="uni-bar-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/BarChart.svelte';
+  import Original from '@w5-ui/svelte/components/BarChart.svelte';
   export let series = [];
   export let labels = [];
   export let height = 160;

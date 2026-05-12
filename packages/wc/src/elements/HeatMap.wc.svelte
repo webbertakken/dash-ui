@@ -1,6 +1,6 @@
 <svelte:options tag="uni-heat-map" />
 <script>
-  import Original from '@dash-ui/svelte/components/HeatMap.svelte';
+  import Original from '@w5-ui/svelte/components/HeatMap.svelte';
   export let data = [];
   export let colors = ['#1B2D5A', '#3F7BC4', '#7FB6FF', '#F5C26B', '#F5A623', '#FF7B7B'];
   export let xLabels = [];

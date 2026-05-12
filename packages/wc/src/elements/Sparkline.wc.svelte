@@ -1,6 +1,6 @@
 <svelte:options tag="uni-sparkline" />
 <script>
-  import Original from '@dash-ui/svelte/components/Sparkline.svelte';
+  import Original from '@w5-ui/svelte/components/Sparkline.svelte';
   export let bars = 36;
   export let active = false;
   export let seed = 1;

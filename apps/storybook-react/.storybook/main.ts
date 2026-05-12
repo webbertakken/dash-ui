@@ -1,5 +1,5 @@
-import type { StorybookConfig } from '@storybook/react-vite';
-import remarkGfm from 'remark-gfm';
+import type { StorybookConfig } from '@storybook/react-vite'
+import remarkGfm from 'remark-gfm'
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|tsx)'],
@@ -23,6 +23,6 @@ const config: StorybookConfig = {
   docs: {},
   typescript: { check: false, reactDocgen: false },
   staticDirs: ['../public'],
-};
+}
 
-export default config;
+export default config

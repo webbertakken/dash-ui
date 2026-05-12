@@ -1,15 +1,15 @@
 export interface PunchCardProps {
-  data: number[][];
-  rowLabels?: string[];
-  colLabels?: string[];
-  color?: string;
-  height?: number;
-  ariaLabel?: string;
+  data: number[][]
+  rowLabels?: string[]
+  colLabels?: string[]
+  color?: string
+  height?: number
+  ariaLabel?: string
 }
 
-const VW = 400;
-const PAD = { t: 16, r: 8, b: 28, l: 28 };
-const DEFAULT_ROWS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const VW = 400
+const PAD = { t: 16, r: 8, b: 28, l: 28 }
+const DEFAULT_ROWS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 export function PunchCard({
   data,
@@ -19,21 +19,21 @@ export function PunchCard({
   height = 180,
   ariaLabel = 'Punch card chart',
 }: PunchCardProps) {
-  if (!data.length || !data[0]?.length) return null;
+  if (!data.length || !data[0]?.length) return null
 
-  const rows = data.length;
-  const cols = data[0].length;
-  const chartW = VW - PAD.l - PAD.r;
-  const chartH = height - PAD.t - PAD.b;
-  const cellW = chartW / cols;
-  const cellH = chartH / rows;
-  const maxR = Math.min(cellW, cellH) / 2 * 0.85;
-  const maxVal = Math.max(...data.flat(), 1);
+  const rows = data.length
+  const cols = data[0].length
+  const chartW = VW - PAD.l - PAD.r
+  const chartH = height - PAD.t - PAD.b
+  const cellW = chartW / cols
+  const cellH = chartH / rows
+  const maxR = (Math.min(cellW, cellH) / 2) * 0.85
+  const maxVal = Math.max(...data.flat(), 1)
 
-  const rLabels = rowLabels ?? DEFAULT_ROWS.slice(0, rows);
-  const cLabels = colLabels ?? Array.from({ length: cols }, (_, i) =>
-    i % 6 === 0 ? String(i).padStart(2, '0') : ''
-  );
+  const rLabels = rowLabels ?? DEFAULT_ROWS.slice(0, rows)
+  const cLabels =
+    colLabels ??
+    Array.from({ length: cols }, (_, i) => (i % 6 === 0 ? String(i).padStart(2, '0') : ''))
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -69,12 +69,12 @@ export function PunchCard({
             >
               {lbl}
             </text>
-          ) : null
+          ) : null,
         )}
         {data.flatMap((row, ri) =>
           row.map((val, ci) => {
-            const r = Math.sqrt(val / maxVal) * maxR;
-            if (r < 0.4) return null;
+            const r = Math.sqrt(val / maxVal) * maxR
+            if (r < 0.4) return null
             return (
               <circle
                 key={`${ri}-${ci}`}
@@ -84,10 +84,10 @@ export function PunchCard({
                 fill={color}
                 fillOpacity={0.72}
               />
-            );
-          })
+            )
+          }),
         )}
       </svg>
     </div>
-  );
+  )
 }

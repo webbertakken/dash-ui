@@ -4,83 +4,105 @@
 //
 // We import the BUNDLES registry (props-only, no JSX) and emit Storybook 8
 // CSF files keyed on those bundles. The Svelte component itself is fetched
-// dynamically from @dash-ui/svelte by name. Slot content is rendered via a
+// dynamically from @w5-ui/svelte by name. Slot content is rendered via a
 // thin template wrapper for stories that supplied a `slot` field.
 
-import { mkdir, rm, writeFile } from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { categoryFor } from '../packages/storybook-meta/src/categories.js';
-import { BUNDLES, COMPONENT_NAMES } from '../packages/svelte/test-fixtures/props.js';
+import { mkdir, rm, writeFile } from 'node:fs/promises'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { categoryFor } from '../packages/storybook-meta/src/categories.js'
+import { BUNDLES, COMPONENT_NAMES } from '../packages/svelte/test-fixtures/props.js'
 
-const HERE = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(HERE, '..');
-const OUT_DIR = path.join(REPO_ROOT, 'apps/storybook-svelte/src/components');
+const HERE = path.dirname(fileURLToPath(import.meta.url))
+const REPO_ROOT = path.resolve(HERE, '..')
+const OUT_DIR = path.join(REPO_ROOT, 'apps/storybook-svelte/src/components')
 
 const ICON_NAMES = new Set([
-  'SearchIcon', 'PlusIcon', 'DownloadIcon', 'CaretIcon', 'CloseIcon', 'BellIcon',
-  'HelpIcon', 'UpdatesIcon', 'DashboardIcon', 'DevicesIcon', 'ClientsIcon',
-  'TopologyIcon', 'AlarmIcon', 'LogsIcon', 'WifiIcon', 'PortsIcon', 'VpnIcon',
-  'SecurityIcon', 'SettingsIcon', 'WirelessIcon', 'InfraIcon', 'IntegrationsIcon',
-]);
+  'SearchIcon',
+  'PlusIcon',
+  'DownloadIcon',
+  'CaretIcon',
+  'CloseIcon',
+  'BellIcon',
+  'HelpIcon',
+  'UpdatesIcon',
+  'DashboardIcon',
+  'DevicesIcon',
+  'ClientsIcon',
+  'TopologyIcon',
+  'AlarmIcon',
+  'LogsIcon',
+  'WifiIcon',
+  'PortsIcon',
+  'VpnIcon',
+  'SecurityIcon',
+  'SettingsIcon',
+  'WirelessIcon',
+  'InfraIcon',
+  'IntegrationsIcon',
+])
 
 // Toaster in Svelte vs Toast in fixtures
-const ALIAS_FROM_FIXTURE: Record<string, string> = { Toast: 'Toaster' };
+const ALIAS_FROM_FIXTURE: Record<string, string> = { Toast: 'Toaster' }
 
-// Read what @dash-ui/svelte actually exports so we skip fixtures whose
+// Read what @w5-ui/svelte actually exports so we skip fixtures whose
 // component is React-only (e.g. RowToggleList, JsonViewerNode-as-direct-export).
-import { readFile } from 'node:fs/promises';
-const SVELTE_INDEX = await readFile(path.join(REPO_ROOT, 'packages/svelte/src/lib/index.ts'), 'utf8');
-const exportedNames = new Set<string>();
-for (const m of SVELTE_INDEX.matchAll(/export\s+\{\s*default\s+as\s+(\w+)/g)) exportedNames.add(m[1]!);
+import { readFile } from 'node:fs/promises'
+const SVELTE_INDEX = await readFile(
+  path.join(REPO_ROOT, 'packages/svelte/src/lib/index.ts'),
+  'utf8',
+)
+const exportedNames = new Set<string>()
+for (const m of SVELTE_INDEX.matchAll(/export\s+\{\s*default\s+as\s+(\w+)/g))
+  exportedNames.add(m[1]!)
 
-await rm(OUT_DIR, { recursive: true, force: true });
-await mkdir(OUT_DIR, { recursive: true });
+await rm(OUT_DIR, { recursive: true, force: true })
+await mkdir(OUT_DIR, { recursive: true })
 
-let written = 0;
-let skipped = 0;
+let written = 0
+let skipped = 0
 for (const fixtureName of COMPONENT_NAMES) {
-  const exportName = ALIAS_FROM_FIXTURE[fixtureName] ?? fixtureName;
+  const exportName = ALIAS_FROM_FIXTURE[fixtureName] ?? fixtureName
   if (!exportedNames.has(exportName)) {
-    skipped++;
-    continue;
+    skipped++
+    continue
   }
-  const isIcon = ICON_NAMES.has(fixtureName);
-  const titleCategory = isIcon ? 'Foundations/Icons' : categoryFor(fixtureName);
-  const variants = BUNDLES[fixtureName]!;
+  const isIcon = ICON_NAMES.has(fixtureName)
+  const titleCategory = isIcon ? 'Foundations/Icons' : categoryFor(fixtureName)
+  const variants = BUNDLES[fixtureName]!
 
   // Inline the props as a JS literal. JSON.stringify drops Date instances and
   // throws on Set / functions; we handle each so the generated file is valid TS.
   function serialise(value: unknown): string {
-    if (value === null) return 'null';
-    if (value === undefined) return 'undefined';
-    if (value instanceof Date) return `new Date(${JSON.stringify(value.toISOString())})`;
-    if (value instanceof Set) return `new Set(${JSON.stringify(Array.from(value))})`;
-    if (typeof value === 'function') return '() => {}';
-    if (Array.isArray(value)) return `[${value.map(serialise).join(', ')}]`;
+    if (value === null) return 'null'
+    if (value === undefined) return 'undefined'
+    if (value instanceof Date) return `new Date(${JSON.stringify(value.toISOString())})`
+    if (value instanceof Set) return `new Set(${JSON.stringify(Array.from(value))})`
+    if (typeof value === 'function') return '() => {}'
+    if (Array.isArray(value)) return `[${value.map(serialise).join(', ')}]`
     if (typeof value === 'object') {
       const entries = Object.entries(value as Record<string, unknown>).map(
         ([k, v]) => `${JSON.stringify(k)}: ${serialise(v)}`,
-      );
-      return `{ ${entries.join(', ')} }`;
+      )
+      return `{ ${entries.join(', ')} }`
     }
-    return JSON.stringify(value);
+    return JSON.stringify(value)
   }
 
   const variantLines = variants
     .map((v, i) => {
-      const safeName = `Variant${i}`;
-      const propsExpr = serialise(v.props ?? {});
+      const safeName = `Variant${i}`
+      const propsExpr = serialise(v.props ?? {})
       return `export const ${safeName}: Story = {
   name: ${JSON.stringify(v.name)},
   args: ${propsExpr},
-};`;
+};`
     })
-    .join('\n\n');
+    .join('\n\n')
 
   const file = `// AUTO-GENERATED by scripts/generate-stories-svelte.ts. Do not edit by hand.
 import type { Meta, StoryObj } from '@storybook/svelte';
-import { ${exportName} } from '@dash-ui/svelte';
+import { ${exportName} } from '@w5-ui/svelte';
 
 const meta: Meta = {
   title: '${titleCategory}/${fixtureName}',
@@ -92,9 +114,9 @@ export default meta;
 type Story = StoryObj;
 
 ${variantLines}
-`;
-  await writeFile(path.join(OUT_DIR, `${fixtureName}.stories.ts`), file);
-  written++;
+`
+  await writeFile(path.join(OUT_DIR, `${fixtureName}.stories.ts`), file)
+  written++
 }
 
-console.log(`Wrote ${written} Svelte stories to ${OUT_DIR} (skipped ${skipped} React-only)`);
+console.log(`Wrote ${written} Svelte stories to ${OUT_DIR} (skipped ${skipped} React-only)`)

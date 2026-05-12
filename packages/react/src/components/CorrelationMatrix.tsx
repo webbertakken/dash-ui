@@ -1,29 +1,29 @@
 export interface CorrelationMatrixProps {
-  labels: string[];
-  data: number[][];
-  cellSize?: number;
-  ariaLabel?: string;
+  labels: string[]
+  data: number[][]
+  cellSize?: number
+  ariaLabel?: string
 }
 
-const LABEL_W = 68;
-const LABEL_H = 26;
-const DARK = [26, 29, 43] as const;
-const BLUE = [0, 111, 255] as const;
-const RED  = [255, 59, 48] as const;
+const LABEL_W = 68
+const LABEL_H = 26
+const DARK = [26, 29, 43] as const
+const BLUE = [0, 111, 255] as const
+const RED = [255, 59, 48] as const
 
 function lerp(a: number, b: number, t: number): number {
-  return Math.round(a + (b - a) * t);
+  return Math.round(a + (b - a) * t)
 }
 
 function cellColor(v: number): string {
-  const t = Math.max(0, Math.min(1, Math.abs(v)));
-  const [r0, g0, b0] = DARK;
+  const t = Math.max(0, Math.min(1, Math.abs(v)))
+  const [r0, g0, b0] = DARK
   if (v >= 0) {
-    const [r1, g1, b1] = BLUE;
-    return `rgb(${lerp(r0, r1, t)},${lerp(g0, g1, t)},${lerp(b0, b1, t)})`;
+    const [r1, g1, b1] = BLUE
+    return `rgb(${lerp(r0, r1, t)},${lerp(g0, g1, t)},${lerp(b0, b1, t)})`
   }
-  const [r1, g1, b1] = RED;
-  return `rgb(${lerp(r0, r1, t)},${lerp(g0, g1, t)},${lerp(b0, b1, t)})`;
+  const [r1, g1, b1] = RED
+  return `rgb(${lerp(r0, r1, t)},${lerp(g0, g1, t)},${lerp(b0, b1, t)})`
 }
 
 export function CorrelationMatrix({
@@ -32,9 +32,9 @@ export function CorrelationMatrix({
   cellSize = 52,
   ariaLabel = 'Correlation matrix',
 }: CorrelationMatrixProps) {
-  const n = labels.length;
-  const svgW = LABEL_W + n * cellSize;
-  const svgH = LABEL_H + n * cellSize;
+  const n = labels.length
+  const svgW = LABEL_W + n * cellSize
+  const svgH = LABEL_H + n * cellSize
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -73,8 +73,8 @@ export function CorrelationMatrix({
         ))}
         {data.map((row, i) =>
           row.map((v, j) => {
-            const x = LABEL_W + j * cellSize;
-            const y = LABEL_H + i * cellSize;
+            const x = LABEL_W + j * cellSize
+            const y = LABEL_H + i * cellSize
             return (
               <g key={`${i}-${j}`}>
                 <rect
@@ -98,10 +98,10 @@ export function CorrelationMatrix({
                   {v.toFixed(2)}
                 </text>
               </g>
-            );
-          })
+            )
+          }),
         )}
       </svg>
     </div>
-  );
+  )
 }

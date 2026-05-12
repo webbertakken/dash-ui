@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, Button, Pill, SearchBox, Tabs, Carousel, StarRating, PlusIcon } from '@dash-ui/svelte';
+  import { Card, Button, Pill, SearchBox, Tabs, Carousel, StarRating, PlusIcon } from '@w5-ui/svelte';
   let tab = 'all';
   const FEATURED = [
     { id: 'entra', title: 'New: Microsoft Entra ID', description: 'Sync up to 10,000 users via SAML & SCIM — now generally available.', color: '#0078D4' },

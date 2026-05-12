@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import { appLogos, type AppLogoKey as AppLogo } from '@dash-ui/assets';
+  import { appLogos, type AppLogoKey as AppLogo } from '@w5-ui/assets';
   import IconButton from './IconButton.svelte';
   import Avatar from './Avatar.svelte';
   import CaretIcon from '../icons/CaretIcon.svelte';

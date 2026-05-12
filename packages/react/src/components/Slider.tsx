@@ -1,18 +1,18 @@
-import { useState, useId } from 'react';
-import type { ChangeEvent, CSSProperties } from 'react';
+import { useState, useId } from 'react'
+import type { ChangeEvent, CSSProperties } from 'react'
 
 export interface SliderProps {
-  label?: string;
-  value?: number;
-  defaultValue?: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  suffix?: string;
-  disabled?: boolean;
-  onChange?: (value: number) => void;
-  id?: string;
-  className?: string;
+  label?: string
+  value?: number
+  defaultValue?: number
+  min?: number
+  max?: number
+  step?: number
+  suffix?: string
+  disabled?: boolean
+  onChange?: (value: number) => void
+  id?: string
+  className?: string
 }
 
 export function Slider({
@@ -28,18 +28,18 @@ export function Slider({
   id,
   className = '',
 }: SliderProps) {
-  const generatedId = useId();
-  const inputId = id ?? generatedId;
-  const [internalValue, setInternalValue] = useState(defaultValue);
-  const value = valueProp !== undefined ? valueProp : internalValue;
+  const generatedId = useId()
+  const inputId = id ?? generatedId
+  const [internalValue, setInternalValue] = useState(defaultValue)
+  const value = valueProp !== undefined ? valueProp : internalValue
 
-  const pct = max === min ? 0 : ((value - min) / (max - min)) * 100;
-  const fillStyle: CSSProperties = { '--slider-fill': `${pct}%` } as CSSProperties;
+  const pct = max === min ? 0 : ((value - min) / (max - min)) * 100
+  const fillStyle: CSSProperties = { '--slider-fill': `${pct}%` } as CSSProperties
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const next = Number(e.target.value);
-    if (valueProp === undefined) setInternalValue(next);
-    onChange?.(next);
+    const next = Number(e.target.value)
+    if (valueProp === undefined) setInternalValue(next)
+    onChange?.(next)
   }
 
   return (
@@ -70,5 +70,5 @@ export function Slider({
         aria-valuetext={suffix ? `${value} ${suffix}` : undefined}
       />
     </div>
-  );
+  )
 }

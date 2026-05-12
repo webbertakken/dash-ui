@@ -1,13 +1,13 @@
-import { useState, useCallback, type ReactNode } from 'react';
+import { useState, useCallback, type ReactNode } from 'react'
 
 export interface VirtualListProps<T> {
-  items: T[];
-  itemHeight: number;
-  height: number;
-  renderItem: (item: T, index: number) => ReactNode;
-  overscan?: number;
-  label?: string;
-  className?: string;
+  items: T[]
+  itemHeight: number
+  height: number
+  renderItem: (item: T, index: number) => ReactNode
+  overscan?: number
+  label?: string
+  className?: string
 }
 
 export function VirtualList<T>({
@@ -19,16 +19,19 @@ export function VirtualList<T>({
   label,
   className,
 }: VirtualListProps<T>) {
-  const [scrollTop, setScrollTop] = useState(0);
+  const [scrollTop, setScrollTop] = useState(0)
 
-  const totalHeight = items.length * itemHeight;
-  const firstVisible = Math.floor(scrollTop / itemHeight);
-  const startIndex = Math.max(0, firstVisible - overscan);
-  const endIndex = Math.min(items.length, firstVisible + Math.ceil(height / itemHeight) + overscan + 1);
+  const totalHeight = items.length * itemHeight
+  const firstVisible = Math.floor(scrollTop / itemHeight)
+  const startIndex = Math.max(0, firstVisible - overscan)
+  const endIndex = Math.min(
+    items.length,
+    firstVisible + Math.ceil(height / itemHeight) + overscan + 1,
+  )
 
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    setScrollTop(e.currentTarget.scrollTop);
-  }, []);
+    setScrollTop(e.currentTarget.scrollTop)
+  }, [])
 
   return (
     <div
@@ -52,5 +55,5 @@ export function VirtualList<T>({
         </div>
       </div>
     </div>
-  );
+  )
 }

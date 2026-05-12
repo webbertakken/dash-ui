@@ -1,6 +1,6 @@
 <svelte:options tag="uni-area-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/AreaChart.svelte';
+  import Original from '@w5-ui/svelte/components/AreaChart.svelte';
   export let series = [];
   export let labels = [];
   export let height = 160;

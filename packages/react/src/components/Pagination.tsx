@@ -1,28 +1,35 @@
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes } from 'react'
 
 export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, 'onChange'> {
-  page: number;
-  pageSize: number;
-  total: number;
-  onChange: (page: number) => void;
+  page: number
+  pageSize: number
+  total: number
+  onChange: (page: number) => void
 }
 
 function pageNumbers(page: number, totalPages: number): (number | '...')[] {
-  if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
-  const items: (number | '...')[] = [1];
-  const lo = Math.max(2, page - 1);
-  const hi = Math.min(totalPages - 1, page + 1);
-  if (lo > 2) items.push('...');
-  for (let i = lo; i <= hi; i++) items.push(i);
-  if (hi < totalPages - 1) items.push('...');
-  items.push(totalPages);
-  return items;
+  if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1)
+  const items: (number | '...')[] = [1]
+  const lo = Math.max(2, page - 1)
+  const hi = Math.min(totalPages - 1, page + 1)
+  if (lo > 2) items.push('...')
+  for (let i = lo; i <= hi; i++) items.push(i)
+  if (hi < totalPages - 1) items.push('...')
+  items.push(totalPages)
+  return items
 }
 
-export function Pagination({ page, pageSize, total, onChange, className = '', ...rest }: PaginationProps) {
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  if (totalPages <= 1) return null;
-  const pages = pageNumbers(page, totalPages);
+export function Pagination({
+  page,
+  pageSize,
+  total,
+  onChange,
+  className = '',
+  ...rest
+}: PaginationProps) {
+  const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  if (totalPages <= 1) return null
+  const pages = pageNumbers(page, totalPages)
   return (
     <nav className={`pagination ${className}`.trim()} aria-label="Pagination" {...rest}>
       <button
@@ -36,7 +43,9 @@ export function Pagination({ page, pageSize, total, onChange, className = '', ..
       </button>
       {pages.map((p, i) =>
         p === '...' ? (
-          <span key={`e${i}`} className="pagination-ellipsis" aria-hidden="true">…</span>
+          <span key={`e${i}`} className="pagination-ellipsis" aria-hidden="true">
+            …
+          </span>
         ) : (
           <button
             key={p}
@@ -48,7 +57,7 @@ export function Pagination({ page, pageSize, total, onChange, className = '', ..
           >
             {p}
           </button>
-        )
+        ),
       )}
       <button
         type="button"
@@ -60,5 +69,5 @@ export function Pagination({ page, pageSize, total, onChange, className = '', ..
         ›
       </button>
     </nav>
-  );
+  )
 }

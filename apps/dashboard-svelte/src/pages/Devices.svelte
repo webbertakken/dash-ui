@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button, SearchBox, Tabs, Signal, StatusIndicator, Pagination, Select, SortHeader, ActionMenu, Popover, Drawer, HoverCard, ConfirmDialog, JsonViewer, KVTable, KanbanBoard, ColumnToggle } from '@dash-ui/svelte';
-  import type { ActionMenuItem, KanbanColumn, ColumnToggleDef } from '@dash-ui/svelte';
+  import { Button, SearchBox, Tabs, Signal, StatusIndicator, Pagination, Select, SortHeader, ActionMenu, Popover, Drawer, HoverCard, ConfirmDialog, JsonViewer, KVTable, KanbanBoard, ColumnToggle } from '@w5-ui/svelte';
+  import type { ActionMenuItem, KanbanColumn, ColumnToggleDef } from '@w5-ui/svelte';
   import { DEVICES, type DeviceRow } from '../data';
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher<{ adopt: void }>();
