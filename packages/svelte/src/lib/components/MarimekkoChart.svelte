@@ -1,14 +1,17 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface MarimekkoSegment {
     label: string;
     value: number;
     color?: string;
   }
-
   export interface MarimekkoColumn {
     label: string;
     segments: MarimekkoSegment[];
   }
+</script>
+
+<script lang="ts">
+
 
   export let columns: MarimekkoColumn[];
   export let height = 160;

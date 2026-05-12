@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'off',
   render: () => {
     const props: Record<string, unknown> = { on: false, ariaLabel: 't' }
-    const el = document.createElement('uni-toggle')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-toggle') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'on',
   render: () => {
     const props: Record<string, unknown> = { on: true, onToggle: () => {}, ariaDescribedBy: 'd' }
-    const el = document.createElement('uni-toggle')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-toggle') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

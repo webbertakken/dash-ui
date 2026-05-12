@@ -14,5 +14,5 @@ type Story = StoryObj
 
 export const Variant0: Story = {
   name: variants[0]!.name,
-  render: () => variants[0]!.node as any,
+  render: () => variants[0]!.node,
 }

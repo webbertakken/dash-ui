@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { CorrelationMatrix } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: distribution/CorrelationMatrix',
-  component: CorrelationMatrix as any,
+  component: CorrelationMatrix,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof CorrelationMatrix>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

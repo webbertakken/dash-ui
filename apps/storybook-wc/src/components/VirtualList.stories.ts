@@ -21,8 +21,8 @@ export const Variant0: Story = {
       height: 100,
       label: 'L',
     }
-    const el = document.createElement('uni-virtual-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-virtual-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -37,8 +37,8 @@ export const Variant1: Story = {
       height: 50,
       overscan: 5,
     }
-    const el = document.createElement('uni-virtual-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-virtual-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

@@ -1,4 +1,4 @@
-<svelte:options tag="uni-range-slider" />
+<svelte:options customElement="uni-range-slider" />
 <script>
   import Original from '@w5-ui/svelte/components/RangeSlider.svelte';
   export let label = undefined;

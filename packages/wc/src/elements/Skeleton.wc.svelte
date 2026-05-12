@@ -1,4 +1,4 @@
-<svelte:options tag="uni-skeleton" />
+<svelte:options customElement="uni-skeleton" />
 <script>
   import Original from '@w5-ui/svelte/components/Skeleton.svelte';
   export let variant = 'text';

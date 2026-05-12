@@ -1,9 +1,6 @@
-<script lang="ts">
-  import { onDestroy } from 'svelte';
-
+<script context="module" lang="ts">
   export type NotifType = 'alarm' | 'system' | 'update';
   export type NotifSeverity = 'danger' | 'warn' | 'info' | 'success';
-
   export interface Notification {
     id: string;
     type: NotifType;
@@ -13,6 +10,12 @@
     time: string;
     read: boolean;
   }
+</script>
+
+<script lang="ts">
+  import { onDestroy } from 'svelte';
+
+
 
   export let open: boolean = false;
   export let notifications: Notification[] = [];

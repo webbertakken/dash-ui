@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ProgressBar } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/ProgressBar',
-  component: ProgressBar as any,
+  component: ProgressBar,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ProgressBar>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

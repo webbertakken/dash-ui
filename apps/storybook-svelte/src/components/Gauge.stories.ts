@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Gauge } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/Gauge',
-  component: Gauge as any,
+  component: Gauge,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Gauge>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

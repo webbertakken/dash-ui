@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { InlineEdit } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/InlineEdit',
-  component: InlineEdit as any,
+  component: InlineEdit,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof InlineEdit>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

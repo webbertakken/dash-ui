@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface StackedBarSeries {
     label: string;
     color: string;
     values: number[];
   }
+</script>
+
+<script lang="ts">
 
   export let series: StackedBarSeries[] = [];
   export let labels: string[] = [];

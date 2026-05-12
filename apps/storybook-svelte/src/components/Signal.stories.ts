@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Signal } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/Signal',
-  component: Signal as any,
+  component: Signal,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Signal>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

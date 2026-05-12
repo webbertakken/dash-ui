@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = { page: 1, pageSize: 10, total: 50, onChange: () => {} }
-    const el = document.createElement('uni-pagination')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pagination') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'last',
   render: () => {
     const props: Record<string, unknown> = { page: 5, pageSize: 10, total: 50, onChange: () => {} }
-    const el = document.createElement('uni-pagination')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pagination') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -35,8 +35,8 @@ export const Variant2: Story = {
   name: 'empty',
   render: () => {
     const props: Record<string, unknown> = { page: 1, pageSize: 10, total: 0, onChange: () => {} }
-    const el = document.createElement('uni-pagination')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pagination') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

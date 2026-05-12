@@ -18,8 +18,8 @@ export const Variant0: Story = {
       dir: 'asc',
       onSort: () => {},
     }
-    const el = document.createElement('uni-sort-header')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-sort-header') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'A'
     return el
   },
@@ -34,8 +34,8 @@ export const Variant1: Story = {
       dir: 'desc',
       onSort: () => {},
     }
-    const el = document.createElement('uni-sort-header')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-sort-header') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'A'
     return el
   },
@@ -50,8 +50,8 @@ export const Variant2: Story = {
       dir: 'asc',
       onSort: () => {},
     }
-    const el = document.createElement('uni-sort-header')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-sort-header') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'A'
     return el
   },

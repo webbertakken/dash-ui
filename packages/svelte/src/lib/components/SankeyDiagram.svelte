@@ -1,6 +1,9 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface SankeyLink { source: string; target: string; value: number; }
   export interface SankeyNode { id: string; label: string; color?: string; }
+</script>
+
+<script lang="ts">
 
   export let nodes: SankeyNode[] = [];
   export let links: SankeyLink[] = [];

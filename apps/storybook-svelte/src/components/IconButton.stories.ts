@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { IconButton } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/IconButton',
-  component: IconButton as any,
+  component: IconButton,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof IconButton>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

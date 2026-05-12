@@ -17,8 +17,9 @@ export const Variant0: Story = {
       line: { label: 'l', color: '#0f0', values: [5, 18, 22, 17] },
       labels: ['Mon', 'Tue', 'Wed', 'Thu'],
     }
-    const el = document.createElement('uni-dual-axis-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-dual-axis-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

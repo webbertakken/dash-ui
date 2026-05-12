@@ -19,8 +19,9 @@ export const Variant0: Story = {
       ],
       labels: ['Mon', 'Tue', 'Wed', 'Thu'],
     }
-    const el = document.createElement('uni-stacked-bar-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-stacked-bar-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -37,8 +38,9 @@ export const Variant1: Story = {
       labels: ['Mon', 'Tue', 'Wed', 'Thu'],
       normalized: true,
     }
-    const el = document.createElement('uni-stacked-bar-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-stacked-bar-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

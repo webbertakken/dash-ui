@@ -33,6 +33,7 @@
   style:overflow-y="auto"
 >
   {#each items as item, i (item.id)}
+    <!-- svelte-ignore a11y-no-noninteractive-tabindex - navigable feed item for keyboard users -->
     <article
       class="af-item af-item--{item.severity ?? 'neutral'}"
       aria-labelledby="af-title-{item.id}"

@@ -23,8 +23,9 @@ export const Variant0: Story = {
       onMarkRead: () => {},
       onMarkAllRead: () => {},
     }
-    const el = document.createElement('uni-notification-panel')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-notification-panel') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -34,8 +35,9 @@ export const Variant1: Story = {
   name: 'closed',
   render: () => {
     const props: Record<string, unknown> = { open: false, onClose: () => {}, notifications: [] }
-    const el = document.createElement('uni-notification-panel')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-notification-panel') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

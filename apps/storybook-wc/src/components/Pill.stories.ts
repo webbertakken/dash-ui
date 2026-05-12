@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'success',
   render: () => {
     const props: Record<string, unknown> = { variant: 'success' }
-    const el = document.createElement('uni-pill')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pill') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'ok'
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'warn',
   render: () => {
     const props: Record<string, unknown> = { variant: 'warn' }
-    const el = document.createElement('uni-pill')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pill') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'w'
     return el
   },
@@ -35,8 +35,8 @@ export const Variant2: Story = {
   name: 'danger',
   render: () => {
     const props: Record<string, unknown> = { variant: 'danger' }
-    const el = document.createElement('uni-pill')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pill') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'd'
     return el
   },
@@ -46,8 +46,8 @@ export const Variant3: Story = {
   name: 'info',
   render: () => {
     const props: Record<string, unknown> = { variant: 'info' }
-    const el = document.createElement('uni-pill')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pill') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'i'
     return el
   },
@@ -57,8 +57,8 @@ export const Variant4: Story = {
   name: 'neutral',
   render: () => {
     const props: Record<string, unknown> = {}
-    const el = document.createElement('uni-pill')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pill') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'n'
     return el
   },
@@ -68,8 +68,8 @@ export const Variant5: Story = {
   name: 'no dot',
   render: () => {
     const props: Record<string, unknown> = { showDot: false }
-    const el = document.createElement('uni-pill')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-pill') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'n'
     return el
   },

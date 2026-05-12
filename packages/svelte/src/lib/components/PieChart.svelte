@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface PieSlice {
     label: string;
     value: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let slices: PieSlice[] = [];
   export let size: number = 140;

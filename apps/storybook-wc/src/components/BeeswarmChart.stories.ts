@@ -19,8 +19,8 @@ export const Variant0: Story = {
       ],
       unit: 'ms',
     }
-    const el = document.createElement('uni-beeswarm-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-beeswarm-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -33,8 +33,8 @@ export const Variant1: Story = {
       series: [{ label: 'A', points: [1, 2] }],
       yRange: [0, 10],
     }
-    const el = document.createElement('uni-beeswarm-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-beeswarm-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

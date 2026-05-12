@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { HealthBar } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/HealthBar',
-  component: HealthBar as any,
+  component: HealthBar,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof HealthBar>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

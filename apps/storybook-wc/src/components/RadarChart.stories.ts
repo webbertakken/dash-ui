@@ -16,8 +16,8 @@ export const Variant0: Story = {
       series: [{ label: 'a', color: '#006FFF', values: [0.2, 0.5, 0.8, 0.3] }],
       axes: ['a', 'b', 'c', 'd'],
     }
-    const el = document.createElement('uni-radar-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-radar-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

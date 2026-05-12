@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = { value: 0.5, label: 'cpu' }
-    const el = document.createElement('uni-gauge')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-gauge') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'all',
   render: () => {
     const props: Record<string, unknown> = { value: 0.8, label: 'mem', color: '#0f0', size: 80 }
-    const el = document.createElement('uni-gauge')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-gauge') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -35,8 +35,8 @@ export const Variant2: Story = {
   name: 'high',
   render: () => {
     const props: Record<string, unknown> = { value: 1.5, label: 'hot' }
-    const el = document.createElement('uni-gauge')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-gauge') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = { items: [{ id: '1', title: 'Joined', time: 'now' }] }
-    const el = document.createElement('uni-activity-feed')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-activity-feed') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -28,8 +28,8 @@ export const Variant1: Story = {
       busy: true,
       autoScroll: true,
     }
-    const el = document.createElement('uni-activity-feed')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-activity-feed') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -39,8 +39,8 @@ export const Variant2: Story = {
   name: 'empty',
   render: () => {
     const props: Record<string, unknown> = { items: [] }
-    const el = document.createElement('uni-activity-feed')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-activity-feed') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

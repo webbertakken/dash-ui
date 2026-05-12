@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ScatterPlot } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: distribution/ScatterPlot',
-  component: ScatterPlot as any,
+  component: ScatterPlot,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ScatterPlot>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

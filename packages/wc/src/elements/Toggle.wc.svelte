@@ -1,4 +1,4 @@
-<svelte:options tag="uni-toggle" />
+<svelte:options customElement="uni-toggle" />
 <script>
   import Original from '@w5-ui/svelte/components/Toggle.svelte';
   export let on = false;

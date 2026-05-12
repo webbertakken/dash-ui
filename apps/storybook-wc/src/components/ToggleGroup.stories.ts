@@ -21,8 +21,8 @@ export const Variant0: Story = {
       onChange: () => {},
       ariaLabel: 't',
     }
-    const el = document.createElement('uni-toggle-group')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-toggle-group') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -38,8 +38,8 @@ export const Variant1: Story = {
       ariaLabel: 't',
       size: 'sm',
     }
-    const el = document.createElement('uni-toggle-group')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-toggle-group') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

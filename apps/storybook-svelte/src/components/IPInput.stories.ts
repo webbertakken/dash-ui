@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { IPInput } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/IPInput',
-  component: IPInput as any,
+  component: IPInput,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof IPInput>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

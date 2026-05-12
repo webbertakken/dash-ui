@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { RowToggle } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Specialised/RowToggle',
-  component: RowToggle as any,
+  component: RowToggle,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof RowToggle>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ThresholdAreaChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: time-series/ThresholdAreaChart',
-  component: ThresholdAreaChart as any,
+  component: ThresholdAreaChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ThresholdAreaChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

@@ -86,8 +86,8 @@ for (const { name, tag } of manifest) {
   name: ${JSON.stringify(v.name)},
   render: () => {
     const props: Record<string, unknown> = ${propsExpr};
-    const el = document.createElement('${tag}');
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v;
+    const el = document.createElement('${tag}') as HTMLElement & Record<string, unknown>;
+    for (const [k, v] of Object.entries(props)) el[k] = v;
     ${v.slot ? `el.textContent = ${JSON.stringify(v.slot)};` : ''}
     return el;
   },

@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'ghost',
   render: () => {
     const props: Record<string, unknown> = {}
-    const el = document.createElement('uni-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'Click'
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'primary',
   render: () => {
     const props: Record<string, unknown> = { variant: 'primary' }
-    const el = document.createElement('uni-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'Save'
     return el
   },
@@ -35,8 +35,8 @@ export const Variant2: Story = {
   name: 'danger',
   render: () => {
     const props: Record<string, unknown> = { variant: 'danger' }
-    const el = document.createElement('uni-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'Delete'
     return el
   },
@@ -46,8 +46,8 @@ export const Variant3: Story = {
   name: 'iconOnly',
   render: () => {
     const props: Record<string, unknown> = { iconOnly: true, title: 'x' }
-    const el = document.createElement('uni-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'x'
     return el
   },
@@ -57,8 +57,8 @@ export const Variant4: Story = {
   name: 'loading',
   render: () => {
     const props: Record<string, unknown> = { loading: true }
-    const el = document.createElement('uni-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'Loading'
     return el
   },
@@ -68,8 +68,8 @@ export const Variant5: Story = {
   name: 'disabled',
   render: () => {
     const props: Record<string, unknown> = { disabled: true }
-    const el = document.createElement('uni-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'd'
     return el
   },

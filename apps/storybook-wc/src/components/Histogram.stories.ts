@@ -19,8 +19,8 @@ export const Variant0: Story = {
       ],
       xUnit: 'ms',
     }
-    const el = document.createElement('uni-histogram')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-histogram') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

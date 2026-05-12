@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Toggle } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/Toggle',
-  component: Toggle as any,
+  component: Toggle,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Toggle>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'off',

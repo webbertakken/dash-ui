@@ -17,8 +17,9 @@ export const Variant0: Story = {
       labels: ['M', 'T', 'W', 'T', 'F', 'S'],
       annotations: [{ index: 2, label: 's' }],
     }
-    const el = document.createElement('uni-annotated-time-series')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-annotated-time-series') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -28,8 +29,9 @@ export const Variant1: Story = {
   name: 'no annotations',
   render: () => {
     const props: Record<string, unknown> = { data: [1, 4, 2, 7, 5, 9] }
-    const el = document.createElement('uni-annotated-time-series')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-annotated-time-series') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

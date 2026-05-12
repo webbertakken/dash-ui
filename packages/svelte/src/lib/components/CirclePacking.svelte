@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface CirclePackItem {
     id: string;
     label: string;
     value: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: CirclePackItem[];
   export let height = 200;

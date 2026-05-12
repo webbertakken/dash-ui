@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { SwitchPortGrid } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/SwitchPortGrid',
-  component: SwitchPortGrid as any,
+  component: SwitchPortGrid,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof SwitchPortGrid>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Field } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Specialised/Field',
-  component: Field as any,
+  component: Field,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Field>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

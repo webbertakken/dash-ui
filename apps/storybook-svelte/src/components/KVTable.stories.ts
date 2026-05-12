@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { KVTable } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/KVTable',
-  component: KVTable as any,
+  component: KVTable,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof KVTable>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

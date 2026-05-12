@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface DendrogramNode {
     id: string;
     label: string;
     children?: DendrogramNode[];
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   interface PlacedNode {
     id: string;

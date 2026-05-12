@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { DatePicker } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/DatePicker',
-  component: DatePicker as any,
+  component: DatePicker,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof DatePicker>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

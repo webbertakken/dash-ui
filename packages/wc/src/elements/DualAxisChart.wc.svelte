@@ -1,13 +1,9 @@
-<svelte:options tag="uni-dual-axis-chart" />
+<svelte:options customElement="uni-dual-axis-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/DualAxisChart.svelte';
-  export let bars = undefined;
-  export let line = undefined;
-  export let labels = [];
-  export let height = 160;
-  export let ariaLabel = 'Dual axis chart';
+  // no public props
 </script>
 
-<Original {bars} {line} {labels} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

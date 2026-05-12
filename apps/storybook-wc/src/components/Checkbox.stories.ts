@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = { label: 'agree' }
-    const el = document.createElement('uni-checkbox')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-checkbox') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'indeterminate',
   render: () => {
     const props: Record<string, unknown> = { label: 'agree', indeterminate: true }
-    const el = document.createElement('uni-checkbox')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-checkbox') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -35,8 +35,8 @@ export const Variant2: Story = {
   name: 'no label',
   render: () => {
     const props: Record<string, unknown> = {}
-    const el = document.createElement('uni-checkbox')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-checkbox') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

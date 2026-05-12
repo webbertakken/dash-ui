@@ -1,11 +1,9 @@
-<svelte:options tag="uni-tree-map" />
+<svelte:options customElement="uni-tree-map" />
 <script>
   import Original from '@w5-ui/svelte/components/TreeMap.svelte';
-  export let nodes = [];
-  export let height = 160;
-  export let ariaLabel = 'Treemap chart';
+  // no public props
 </script>
 
-<Original {nodes} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

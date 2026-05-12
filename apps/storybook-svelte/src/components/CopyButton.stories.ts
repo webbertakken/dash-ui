@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { CopyButton } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/CopyButton',
-  component: CopyButton as any,
+  component: CopyButton,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof CopyButton>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

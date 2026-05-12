@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface RankedItem {
     label: string;
     value: number;
     sublabel?: string;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: RankedItem[];
   export let unit: string | undefined = undefined;

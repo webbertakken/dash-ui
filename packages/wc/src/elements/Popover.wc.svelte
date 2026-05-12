@@ -1,4 +1,4 @@
-<svelte:options tag="uni-popover" />
+<svelte:options customElement="uni-popover" />
 <script>
   import Original from '@w5-ui/svelte/components/Popover.svelte';
   // no public props

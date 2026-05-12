@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = { label: 'C' }
-    const el = document.createElement('uni-cidrinput')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-cidrinput') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'controlled',
   render: () => {
     const props: Record<string, unknown> = { label: 'C', value: '10.0.0.0/8', onChange: () => {} }
-    const el = document.createElement('uni-cidrinput')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-cidrinput') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -35,8 +35,8 @@ export const Variant2: Story = {
   name: 'disabled',
   render: () => {
     const props: Record<string, unknown> = { label: 'C', disabled: true }
-    const el = document.createElement('uni-cidrinput')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-cidrinput') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

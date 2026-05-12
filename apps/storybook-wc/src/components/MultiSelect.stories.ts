@@ -20,8 +20,8 @@ export const Variant0: Story = {
       value: ['a'],
       onChange: () => {},
     }
-    const el = document.createElement('uni-multi-select')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-multi-select') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -31,8 +31,8 @@ export const Variant1: Story = {
   name: 'no value',
   render: () => {
     const props: Record<string, unknown> = { options: [{ value: 'a', label: 'A' }], label: 'lab' }
-    const el = document.createElement('uni-multi-select')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-multi-select') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -42,8 +42,8 @@ export const Variant2: Story = {
   name: 'disabled',
   render: () => {
     const props: Record<string, unknown> = { options: [{ value: 'a', label: 'A' }], disabled: true }
-    const el = document.createElement('uni-multi-select')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-multi-select') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

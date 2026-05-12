@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface CdfSeries {
     label: string;
     color: string;
     values: number[];
   }
+</script>
+
+<script lang="ts">
 
   export let series: CdfSeries[] = [];
   export let guides: number[] = [50, 95];

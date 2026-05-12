@@ -1,4 +1,4 @@
-<svelte:options tag="uni-pagination" />
+<svelte:options customElement="uni-pagination" />
 <script>
   import Original from '@w5-ui/svelte/components/Pagination.svelte';
   export let page = 1;

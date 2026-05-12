@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { NumberInput } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/NumberInput',
-  component: NumberInput as any,
+  component: NumberInput,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof NumberInput>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

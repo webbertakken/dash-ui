@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { KanbanBoard } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/KanbanBoard',
-  component: KanbanBoard as any,
+  component: KanbanBoard,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof KanbanBoard>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

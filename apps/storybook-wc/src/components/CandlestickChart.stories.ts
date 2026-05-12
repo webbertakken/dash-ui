@@ -18,8 +18,9 @@ export const Variant0: Story = {
         { open: 12, close: 11, high: 13, low: 10 },
       ],
     }
-    const el = document.createElement('uni-candlestick-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-candlestick-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -33,8 +34,9 @@ export const Variant1: Story = {
       yRange: [0, 5],
       unit: '$',
     }
-    const el = document.createElement('uni-candlestick-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-candlestick-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

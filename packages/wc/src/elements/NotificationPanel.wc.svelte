@@ -1,13 +1,9 @@
-<svelte:options tag="uni-notification-panel" />
+<svelte:options customElement="uni-notification-panel" />
 <script>
   import Original from '@w5-ui/svelte/components/NotificationPanel.svelte';
-  export let open = false;
-  export let notifications = [];
-  export let onClose = () => {};
-  export let onMarkRead = undefined;
-  export let onMarkAllRead = undefined;
+  // no public props
 </script>
 
-<Original {open} {notifications} {onClose} {onMarkRead} {onMarkAllRead}>
+<Original >
   <slot />
 </Original>

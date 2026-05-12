@@ -11,6 +11,7 @@
   export let id: string | undefined = undefined;
   let className = '';
   export { className as class };
+  export let style: string = '';
 
   const uid = `dash-ui-ta-${++counter}`;
   $: inputId = id ?? uid;
@@ -19,6 +20,7 @@
 <textarea
   id={inputId}
   class="input textarea {className}"
+  {style}
   {rows}
   {placeholder}
   {disabled}

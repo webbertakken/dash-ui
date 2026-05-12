@@ -23,8 +23,8 @@ export const Variant0: Story = {
         { id: 'done', title: 'Done', cards: [] },
       ],
     }
-    const el = document.createElement('uni-kanban-board')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-kanban-board') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -36,8 +36,8 @@ export const Variant1: Story = {
     const props: Record<string, unknown> = {
       columns: [{ id: 'a', title: 'A', cards: [{ id: '1', title: 't' }] }],
     }
-    const el = document.createElement('uni-kanban-board')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-kanban-board') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

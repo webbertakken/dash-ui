@@ -1,11 +1,9 @@
-<svelte:options tag="uni-waterfall-chart" />
+<svelte:options customElement="uni-waterfall-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/WaterfallChart.svelte';
-  export let bars = [];
-  export let height = 160;
-  export let ariaLabel = 'Waterfall chart';
+  // no public props
 </script>
 
-<Original {bars} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

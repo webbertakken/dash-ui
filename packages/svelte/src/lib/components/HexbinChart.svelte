@@ -1,8 +1,11 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface HexbinPoint {
     x: number;
     y: number;
   }
+</script>
+
+<script lang="ts">
 
   export let points: HexbinPoint[] = [];
   export let xRange: [number, number] | undefined = undefined;

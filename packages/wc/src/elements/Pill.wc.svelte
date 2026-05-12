@@ -1,4 +1,4 @@
-<svelte:options tag="uni-pill" />
+<svelte:options customElement="uni-pill" />
 <script>
   import Original from '@w5-ui/svelte/components/Pill.svelte';
   export let variant = 'neutral';

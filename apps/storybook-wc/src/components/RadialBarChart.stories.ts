@@ -18,8 +18,9 @@ export const Variant0: Story = {
         { label: 'B', value: 80, max: 100, color: '#0f0', unit: '%' },
       ],
     }
-    const el = document.createElement('uni-radial-bar-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-radial-bar-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -29,8 +30,9 @@ export const Variant1: Story = {
   name: 'over',
   render: () => {
     const props: Record<string, unknown> = { items: [{ label: 'A', value: 200, max: 100 }] }
-    const el = document.createElement('uni-radial-bar-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-radial-bar-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

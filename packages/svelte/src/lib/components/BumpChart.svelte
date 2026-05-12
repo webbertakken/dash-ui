@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface BumpSeries {
     label: string;
     ranks: number[];
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let labels: string[] = [];
   export let series: BumpSeries[] = [];

@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { CodeBlock } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/CodeBlock',
-  component: CodeBlock as any,
+  component: CodeBlock,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof CodeBlock>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

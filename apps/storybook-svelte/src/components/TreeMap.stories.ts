@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { TreeMap } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: hierarchy & flow/TreeMap',
-  component: TreeMap as any,
+  component: TreeMap,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof TreeMap>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

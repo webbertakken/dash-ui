@@ -1,12 +1,9 @@
-<svelte:options tag="uni-ridgeline-plot" />
+<svelte:options customElement="uni-ridgeline-plot" />
 <script>
   import Original from '@w5-ui/svelte/components/RidgelinePlot.svelte';
-  export let series = [];
-  export let xRange = undefined;
-  export let height = 180;
-  export let ariaLabel = 'Ridgeline plot';
+  // no public props
 </script>
 
-<Original {series} {xRange} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

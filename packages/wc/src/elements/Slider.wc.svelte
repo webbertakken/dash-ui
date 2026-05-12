@@ -1,4 +1,4 @@
-<svelte:options tag="uni-slider" />
+<svelte:options customElement="uni-slider" />
 <script>
   import Original from '@w5-ui/svelte/components/Slider.svelte';
   export let label = undefined;

@@ -1,6 +1,4 @@
-<script lang="ts">
-  import { afterUpdate } from 'svelte';
-
+<script context="module" lang="ts">
   export interface LogEntry {
     id?: string;
     timestamp: string;
@@ -10,6 +8,11 @@
     subject?: string;
     detail?: string;
   }
+</script>
+
+<script lang="ts">
+  import { afterUpdate } from 'svelte';
+
 
   export let entries: LogEntry[] = [];
   export let height: number = 360;

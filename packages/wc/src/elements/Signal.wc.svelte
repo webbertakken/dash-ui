@@ -1,4 +1,4 @@
-<svelte:options tag="uni-signal" />
+<svelte:options customElement="uni-signal" />
 <script>
   import Original from '@w5-ui/svelte/components/Signal.svelte';
   export let weak = false;

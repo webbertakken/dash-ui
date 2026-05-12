@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { HorizonChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: time-series/HorizonChart',
-  component: HorizonChart as any,
+  component: HorizonChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof HorizonChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

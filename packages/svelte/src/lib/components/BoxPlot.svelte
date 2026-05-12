@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface BoxSeries {
     label: string;
     q0: number;
@@ -8,6 +8,9 @@
     q4: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let series: BoxSeries[] = [];
   export let yRange: [number, number] | undefined = undefined;

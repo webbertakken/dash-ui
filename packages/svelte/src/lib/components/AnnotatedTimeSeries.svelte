@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface TimeSeriesAnnotation {
     index: number;
     label: string;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let data: number[] = [];
   export let labels: string[] = [];

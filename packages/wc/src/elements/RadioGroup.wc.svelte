@@ -1,4 +1,4 @@
-<svelte:options tag="uni-radio-group" />
+<svelte:options customElement="uni-radio-group" />
 <script>
   import Original from '@w5-ui/svelte/components/RadioGroup.svelte';
   // no public props

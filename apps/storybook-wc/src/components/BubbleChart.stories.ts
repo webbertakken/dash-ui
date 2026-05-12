@@ -18,8 +18,8 @@ export const Variant0: Story = {
         { x: 4, y: 7, r: 10, color: '#0f0' },
       ],
     }
-    const el = document.createElement('uni-bubble-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-bubble-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -33,8 +33,8 @@ export const Variant1: Story = {
       xRange: [0, 10],
       yRange: [0, 10],
     }
-    const el = document.createElement('uni-bubble-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-bubble-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

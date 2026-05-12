@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface QuadrantPoint {
     x: number;
     y: number;
     label?: string;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let points: QuadrantPoint[] = [];
   export let xThreshold: number;

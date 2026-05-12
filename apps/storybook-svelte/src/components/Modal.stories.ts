@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Modal } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Layout/Modal',
-  component: Modal as any,
+  component: Modal,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Modal>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'open',

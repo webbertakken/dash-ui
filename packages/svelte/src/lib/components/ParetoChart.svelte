@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface ParetoItem {
     label: string;
     value: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: ParetoItem[] = [];
   export let height: number = 160;

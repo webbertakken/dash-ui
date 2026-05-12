@@ -22,8 +22,8 @@ export const Variant0: Story = {
       onSelect: () => {},
       label: 'L',
     }
-    const el = document.createElement('uni-tree-view')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-tree-view') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -33,8 +33,8 @@ export const Variant1: Story = {
   name: 'flat',
   render: () => {
     const props: Record<string, unknown> = { nodes: [{ id: 'a', label: 'A' }] }
-    const el = document.createElement('uni-tree-view')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-tree-view') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

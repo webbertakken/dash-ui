@@ -1,8 +1,11 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface CalendarDay {
     date: string;
     value: number;
   }
+</script>
+
+<script lang="ts">
 
   export let data: CalendarDay[] = [];
   export let maxValue: number | undefined = undefined;

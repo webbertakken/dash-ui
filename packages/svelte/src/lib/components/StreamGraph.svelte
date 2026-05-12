@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface StreamSeries {
     label: string;
     values: number[];
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let labels: string[] = [];
   export let series: StreamSeries[] = [];

@@ -76,8 +76,9 @@ export const Variant0: Story = {
         { date: '2025-01-30', value: 4 },
       ],
     }
-    const el = document.createElement('uni-calendar-heatmap')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-calendar-heatmap') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -90,8 +91,9 @@ export const Variant1: Story = {
       data: [{ date: '2025-01-01', value: 1 }],
       maxValue: 10,
     }
-    const el = document.createElement('uni-calendar-heatmap')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-calendar-heatmap') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

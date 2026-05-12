@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface ScatterPoint {
     x: number;
     y: number;
@@ -6,6 +6,9 @@
     r?: number;
     key?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let points: ScatterPoint[] = [];
   export let xRange: [number, number] | undefined = undefined;

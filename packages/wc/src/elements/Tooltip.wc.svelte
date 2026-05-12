@@ -1,4 +1,4 @@
-<svelte:options tag="uni-tooltip" />
+<svelte:options customElement="uni-tooltip" />
 <script>
   import Original from '@w5-ui/svelte/components/Tooltip.svelte';
   // no public props

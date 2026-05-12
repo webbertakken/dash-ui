@@ -1,3 +1,4 @@
+import type { PillVariant } from '@w5-ui/react'
 import {
   Card,
   Button,
@@ -628,7 +629,9 @@ export function Security() {
               {THREATS.map((t, i) => (
                 <tr key={i}>
                   <td>
-                    <Pill variant={t[0] as any}>{t[0] === 'danger' ? 'Critical' : 'Medium'}</Pill>
+                    <Pill variant={t[0] as PillVariant}>
+                      {t[0] === 'danger' ? 'Critical' : 'Medium'}
+                    </Pill>
                   </td>
                   <td style={{ color: '#fff' }}>{t[1]}</td>
                   <td className="mac">{t[2]}</td>

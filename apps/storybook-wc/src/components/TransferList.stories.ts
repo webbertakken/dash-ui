@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = {}
-    const el = document.createElement('uni-transfer-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-transfer-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -30,8 +30,8 @@ export const Variant1: Story = {
       defaultTarget: [{ id: '2', label: 'B' }],
       onChange: () => {},
     }
-    const el = document.createElement('uni-transfer-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-transfer-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -44,8 +44,8 @@ export const Variant2: Story = {
       source: [{ id: '1', label: 'A' }],
       target: [{ id: '2', label: 'B' }],
     }
-    const el = document.createElement('uni-transfer-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-transfer-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

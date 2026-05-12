@@ -41,8 +41,8 @@ export const Variant0: Story = {
         { word: 'w24', weight: 5 },
       ],
     }
-    const el = document.createElement('uni-word-cloud')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-word-cloud') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -57,8 +57,8 @@ export const Variant1: Story = {
         { word: 'b', weight: 5 },
       ],
     }
-    const el = document.createElement('uni-word-cloud')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-word-cloud') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

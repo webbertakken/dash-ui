@@ -19,8 +19,9 @@ export const Variant0: Story = {
         { value: 'b', label: 'B', disabled: true },
       ],
     }
-    const el = document.createElement('uni-segmented-control')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-segmented-control') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -38,8 +39,9 @@ export const Variant1: Story = {
       value: 'b',
       onChange: () => {},
     }
-    const el = document.createElement('uni-segmented-control')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-segmented-control') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -53,8 +55,9 @@ export const Variant2: Story = {
       options: [{ value: 'a', label: 'A' }],
       defaultValue: 'a',
     }
-    const el = document.createElement('uni-segmented-control')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-segmented-control') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

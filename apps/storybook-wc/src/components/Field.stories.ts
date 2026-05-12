@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = { label: 'Name' }
-    const el = document.createElement('uni-field')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-field') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'hint',
   render: () => {
     const props: Record<string, unknown> = { label: 'Name', hint: 'hint', required: true }
-    const el = document.createElement('uni-field')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-field') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -35,8 +35,8 @@ export const Variant2: Story = {
   name: 'error',
   render: () => {
     const props: Record<string, unknown> = { label: 'Name', error: 'bad' }
-    const el = document.createElement('uni-field')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-field') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -46,8 +46,8 @@ export const Variant3: Story = {
   name: 'value',
   render: () => {
     const props: Record<string, unknown> = { label: 'Name', value: 'v' }
-    const el = document.createElement('uni-field')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-field') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

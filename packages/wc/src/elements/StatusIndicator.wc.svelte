@@ -1,4 +1,4 @@
-<svelte:options tag="uni-status-indicator" />
+<svelte:options customElement="uni-status-indicator" />
 <script>
   import Original from '@w5-ui/svelte/components/StatusIndicator.svelte';
   export let color = undefined;

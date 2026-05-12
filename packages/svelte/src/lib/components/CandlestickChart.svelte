@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface CandlestickBar {
     label: string;
     open: number;
@@ -6,6 +6,9 @@
     high: number;
     low: number;
   }
+</script>
+
+<script lang="ts">
 
   export let bars: CandlestickBar[] = [];
   export let yRange: [number, number] | undefined = undefined;

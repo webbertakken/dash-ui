@@ -1,4 +1,4 @@
-<svelte:options tag="uni-callout" />
+<svelte:options customElement="uni-callout" />
 <script>
   import Original from '@w5-ui/svelte/components/Callout.svelte';
   // no public props

@@ -22,8 +22,8 @@ export const Variant0: Story = {
       xThreshold: 5,
       yThreshold: 5,
     }
-    const el = document.createElement('uni-quadrant-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-quadrant-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -41,8 +41,8 @@ export const Variant1: Story = {
       xLabel: 'cost',
       yLabel: 'value',
     }
-    const el = document.createElement('uni-quadrant-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-quadrant-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

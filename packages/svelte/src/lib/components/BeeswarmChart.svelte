@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface BeeswarmSeries {
     label: string;
     points: number[];
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let series: BeeswarmSeries[] = [];
   export let yRange: [number, number] | undefined = undefined;

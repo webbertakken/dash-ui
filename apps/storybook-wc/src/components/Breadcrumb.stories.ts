@@ -16,8 +16,8 @@ export const Variant0: Story = {
       items: [{ label: 'Home', href: '/' }, { label: 'Now' }],
       onNavigate: () => {},
     }
-    const el = document.createElement('uni-breadcrumb')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-breadcrumb') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { NightingaleChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: comparison/NightingaleChart',
-  component: NightingaleChart as any,
+  component: NightingaleChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof NightingaleChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

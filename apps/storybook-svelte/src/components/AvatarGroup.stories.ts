@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { AvatarGroup } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/AvatarGroup',
-  component: AvatarGroup as any,
+  component: AvatarGroup,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof AvatarGroup>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

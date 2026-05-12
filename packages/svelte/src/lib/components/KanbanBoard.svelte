@@ -1,17 +1,20 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface KanbanCard {
     id: string;
     title: string;
     subtitle?: string;
     meta?: string;
   }
-
   export interface KanbanColumn {
     id: string;
     title: string;
     color?: string;
     cards: KanbanCard[];
   }
+</script>
+
+<script lang="ts">
+
 
   export let columns: KanbanColumn[];
   export let onCardMove: ((cardId: string, fromColId: string, toColId: string) => void) | undefined = undefined;

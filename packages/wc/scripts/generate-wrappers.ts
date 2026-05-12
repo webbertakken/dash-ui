@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 // Reads every Svelte 4 component in @w5-ui/svelte and emits a thin custom
 // element wrapper into packages/wc/src/elements/. Each wrapper:
-//   - declares <svelte:options tag="uni-<kebab-name>" />
+//   - declares <svelte:options customElement="uni-<kebab-name>" />
 //   - re-exports the original component's `export let` props
 //   - forwards the default slot
 //
@@ -146,7 +146,7 @@ for (const file of files) {
   // Defaults are inlined verbatim from the source, which usually keeps them
   // valid JavaScript. Components whose defaults reference TS-only constructs
   // should be added to SKIP above.
-  const wrapper = `<svelte:options tag="${tag}" />
+  const wrapper = `<svelte:options customElement="${tag}" />
 <script>
   import Original from '@w5-ui/svelte/components/${name}.svelte';
 ${propDeclarations || '  // no public props'}

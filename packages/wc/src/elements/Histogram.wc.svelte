@@ -1,13 +1,9 @@
-<svelte:options tag="uni-histogram" />
+<svelte:options customElement="uni-histogram" />
 <script>
   import Original from '@w5-ui/svelte/components/Histogram.svelte';
-  export let bins = [];
-  export let height = 160;
-  export let color = '#006FFF';
-  export let xUnit = '';
-  export let ariaLabel = 'Histogram';
+  // no public props
 </script>
 
-<Original {bins} {height} {color} {xUnit} {ariaLabel}>
+<Original >
   <slot />
 </Original>

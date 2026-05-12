@@ -19,8 +19,8 @@ export const Variant0: Story = {
       ],
       unit: 'ms',
     }
-    const el = document.createElement('uni-ranked-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-ranked-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -30,8 +30,8 @@ export const Variant1: Story = {
   name: 'fixed',
   render: () => {
     const props: Record<string, unknown> = { items: [{ label: 'A', value: 50 }], max: 100 }
-    const el = document.createElement('uni-ranked-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-ranked-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

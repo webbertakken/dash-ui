@@ -18,8 +18,8 @@ export const Variant0: Story = {
       values: [[0.1, 0.5]],
       unit: 'x',
     }
-    const el = document.createElement('uni-matrix-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-matrix-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

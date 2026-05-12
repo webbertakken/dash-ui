@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface StackedProgressSegment {
     label: string;
     value: number;
     color: string;
   }
+</script>
+
+<script lang="ts">
   export let segments: StackedProgressSegment[];
   export let total: number | undefined = undefined;
   export let ariaLabel: string | undefined = undefined;

@@ -18,8 +18,9 @@ export const Variant0: Story = {
         { label: 'B', value: 9, color: '#0f0' },
       ],
     }
-    const el = document.createElement('uni-nightingale-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-nightingale-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

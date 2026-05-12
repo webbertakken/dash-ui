@@ -1,4 +1,4 @@
-<svelte:options tag="uni-gauge" />
+<svelte:options customElement="uni-gauge" />
 <script>
   import Original from '@w5-ui/svelte/components/Gauge.svelte';
   export let value = 0;

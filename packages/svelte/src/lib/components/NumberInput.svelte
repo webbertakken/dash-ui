@@ -64,6 +64,7 @@
       disabled={!canDecrement}
       on:click={() => commit(value - step)}
     >−</button>
+    <!-- svelte-ignore a11y-no-redundant-roles - role kept explicit for screen reader compat -->
     <input
       id={inputId}
       type="number"

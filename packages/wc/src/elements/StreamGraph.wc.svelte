@@ -1,11 +1,9 @@
-<svelte:options tag="uni-stream-graph" />
+<svelte:options customElement="uni-stream-graph" />
 <script>
   import Original from '@w5-ui/svelte/components/StreamGraph.svelte';
-  export let labels = [];
-  export let series = [];
-  export let ariaLabel = 'Stream graph';
+  // no public props
 </script>
 
-<Original {labels} {series} {ariaLabel}>
+<Original >
   <slot />
 </Original>

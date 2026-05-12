@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { StackedBarChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: comparison/StackedBarChart',
-  component: StackedBarChart as any,
+  component: StackedBarChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof StackedBarChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

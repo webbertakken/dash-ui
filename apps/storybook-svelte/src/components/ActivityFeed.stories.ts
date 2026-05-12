@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ActivityFeed } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/ActivityFeed',
-  component: ActivityFeed as any,
+  component: ActivityFeed,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ActivityFeed>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

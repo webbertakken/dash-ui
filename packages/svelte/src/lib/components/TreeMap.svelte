@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface TreeMapNode {
     label: string;
     value: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let nodes: TreeMapNode[] = [];
   export let height: number = 160;

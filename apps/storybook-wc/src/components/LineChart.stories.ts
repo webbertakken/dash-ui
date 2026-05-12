@@ -19,8 +19,8 @@ export const Variant0: Story = {
       ],
       labels: ['Mon', 'Tue', 'Wed', 'Thu'],
     }
-    const el = document.createElement('uni-line-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-line-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

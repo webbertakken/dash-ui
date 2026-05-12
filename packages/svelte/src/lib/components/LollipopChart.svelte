@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface LollipopItem {
     label: string;
     value: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: LollipopItem[] = [];
   export let unit: string = '';

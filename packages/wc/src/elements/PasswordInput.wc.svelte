@@ -1,4 +1,4 @@
-<svelte:options tag="uni-password-input" />
+<svelte:options customElement="uni-password-input" />
 <script>
   import Original from '@w5-ui/svelte/components/PasswordInput.svelte';
   // no public props

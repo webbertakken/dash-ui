@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface LineChartSeries {
     label: string;
     color: string;
     values: number[];
   }
+</script>
+
+<script lang="ts">
 
   export let series: LineChartSeries[] = [];
   export let labels: string[] = [];

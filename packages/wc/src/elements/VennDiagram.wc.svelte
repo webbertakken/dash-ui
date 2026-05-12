@@ -1,12 +1,9 @@
-<svelte:options tag="uni-venn-diagram" />
+<svelte:options customElement="uni-venn-diagram" />
 <script>
   import Original from '@w5-ui/svelte/components/VennDiagram.svelte';
-  export let sets = [];
-  export let intersections = [];
-  export let height = 240;
-  export let ariaLabel = 'Venn diagram';
+  // no public props
 </script>
 
-<Original {sets} {intersections} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'open',
   render: () => {
     const props: Record<string, unknown> = { open: true, title: 'D', onClose: () => {} }
-    const el = document.createElement('uni-drawer')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-drawer') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'hi'
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'closed',
   render: () => {
     const props: Record<string, unknown> = { open: false, title: 'D', onClose: () => {} }
-    const el = document.createElement('uni-drawer')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-drawer') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

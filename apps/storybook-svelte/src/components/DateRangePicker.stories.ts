@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { DateRangePicker } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/DateRangePicker',
-  component: DateRangePicker as any,
+  component: DateRangePicker,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof DateRangePicker>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

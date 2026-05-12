@@ -1,4 +1,4 @@
-<svelte:options tag="uni-checkbox" />
+<svelte:options customElement="uni-checkbox" />
 <script>
   import Original from '@w5-ui/svelte/components/Checkbox.svelte';
   // no public props

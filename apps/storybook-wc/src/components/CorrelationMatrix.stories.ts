@@ -19,8 +19,9 @@ export const Variant0: Story = {
         [0.4, 1],
       ],
     }
-    const el = document.createElement('uni-correlation-matrix')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-correlation-matrix') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

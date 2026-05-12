@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Pagination } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Navigation/Pagination',
-  component: Pagination as any,
+  component: Pagination,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Pagination>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

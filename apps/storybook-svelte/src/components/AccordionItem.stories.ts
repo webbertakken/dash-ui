@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { AccordionItem } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Specialised/AccordionItem',
-  component: AccordionItem as any,
+  component: AccordionItem,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof AccordionItem>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'closed',

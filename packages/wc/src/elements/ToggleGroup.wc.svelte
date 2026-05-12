@@ -1,4 +1,4 @@
-<svelte:options tag="uni-toggle-group" />
+<svelte:options customElement="uni-toggle-group" />
 <script>
   import Original from '@w5-ui/svelte/components/ToggleGroup.svelte';
   export let options = [];

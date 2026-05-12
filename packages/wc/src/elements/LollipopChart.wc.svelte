@@ -1,12 +1,9 @@
-<svelte:options tag="uni-lollipop-chart" />
+<svelte:options customElement="uni-lollipop-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/LollipopChart.svelte';
-  export let items = [];
-  export let unit = '';
-  export let color = '#006FFF';
-  export let ariaLabel = 'Lollipop chart';
+  // no public props
 </script>
 
-<Original {items} {unit} {color} {ariaLabel}>
+<Original >
   <slot />
 </Original>

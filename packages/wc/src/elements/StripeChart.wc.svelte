@@ -1,4 +1,4 @@
-<svelte:options tag="uni-stripe-chart" />
+<svelte:options customElement="uni-stripe-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/StripeChart.svelte';
   export let data = [];

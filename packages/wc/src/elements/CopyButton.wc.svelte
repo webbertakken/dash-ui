@@ -1,4 +1,4 @@
-<svelte:options tag="uni-copy-button" />
+<svelte:options customElement="uni-copy-button" />
 <script>
   import Original from '@w5-ui/svelte/components/CopyButton.svelte';
   export let text = undefined;

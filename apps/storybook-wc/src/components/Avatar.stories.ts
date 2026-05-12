@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'initials',
   render: () => {
     const props: Record<string, unknown> = { initials: 'WB' }
-    const el = document.createElement('uni-avatar')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-avatar') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -29,8 +29,8 @@ export const Variant1: Story = {
       size: 'lg',
       status: 'online',
     }
-    const el = document.createElement('uni-avatar')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-avatar') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -40,8 +40,8 @@ export const Variant2: Story = {
   name: 'away',
   render: () => {
     const props: Record<string, unknown> = { status: 'away' }
-    const el = document.createElement('uni-avatar')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-avatar') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -51,8 +51,8 @@ export const Variant3: Story = {
   name: 'sm',
   render: () => {
     const props: Record<string, unknown> = { size: 'sm' }
-    const el = document.createElement('uni-avatar')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-avatar') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

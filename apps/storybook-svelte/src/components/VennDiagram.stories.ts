@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { VennDiagram } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: hierarchy & flow/VennDiagram',
-  component: VennDiagram as any,
+  component: VennDiagram,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof VennDiagram>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'two sets',

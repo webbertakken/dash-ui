@@ -19,8 +19,8 @@ export const Variant0: Story = {
       ],
       onChange: () => {},
     }
-    const el = document.createElement('uni-sortable-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-sortable-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -34,8 +34,8 @@ export const Variant1: Story = {
       onChange: () => {},
       ariaLabel: 'x',
     }
-    const el = document.createElement('uni-sortable-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-sortable-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

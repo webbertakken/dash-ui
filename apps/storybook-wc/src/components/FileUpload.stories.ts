@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = {}
-    const el = document.createElement('uni-file-upload')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-file-upload') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -30,8 +30,8 @@ export const Variant1: Story = {
       multiple: true,
       onFiles: () => {},
     }
-    const el = document.createElement('uni-file-upload')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-file-upload') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -41,8 +41,8 @@ export const Variant2: Story = {
   name: 'disabled',
   render: () => {
     const props: Record<string, unknown> = { disabled: true }
-    const el = document.createElement('uni-file-upload')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-file-upload') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface VennSet {
     id: string;
     label: string;
@@ -9,6 +9,9 @@
     sets: string[];
     value: number;
   }
+</script>
+
+<script lang="ts">
 
   export let sets: VennSet[] = [];
   export let intersections: VennIntersection[] = [];

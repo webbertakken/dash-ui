@@ -1,4 +1,4 @@
-<svelte:options tag="uni-tag" />
+<svelte:options customElement="uni-tag" />
 <script>
   import Original from '@w5-ui/svelte/components/Tag.svelte';
   export let label = undefined;

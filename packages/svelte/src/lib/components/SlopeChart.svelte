@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface SlopeItem {
     label: string;
     before: number;
     after: number;
   }
+</script>
+
+<script lang="ts">
 
   export let items: SlopeItem[] = [];
   export let labelBefore: string = 'Before';
@@ -82,9 +85,9 @@
         <circle cx={COL_L} cy={it.ly} r={DOT_R} fill={it.c} />
         <circle cx={COL_R} cy={it.ry} r={DOT_R} fill={it.c} />
         <text x={COL_L - 10} y={it.lly + 4} fill="#A4A7B5" font-size="9" text-anchor="end" font-family="inherit">{it.label}</text>
-        <text x={COL_L - 10} y={it.lly + 15} fill="#6E7079" font-size="9" text-anchor="end" font-family="inherit" font-variant-numeric="tabular-nums">{it.before}{unit}</text>
-        <text x={COL_R + 10} y={it.rly + 4} fill="#A4A7B5" font-size="9" text-anchor="start" font-family="inherit" font-variant-numeric="tabular-nums">{it.after}{unit}</text>
-        <text x={COL_R + 10} y={it.rly + 15} fill={it.c} font-size="9" text-anchor="start" font-family="inherit" font-variant-numeric="tabular-nums">{it.delta > 0 ? '+' : ''}{it.delta}{unit}</text>
+        <text x={COL_L - 10} y={it.lly + 15} fill="#6E7079" font-size="9" text-anchor="end" font-family="inherit" style="font-variant-numeric: tabular-nums">{it.before}{unit}</text>
+        <text x={COL_R + 10} y={it.rly + 4} fill="#A4A7B5" font-size="9" text-anchor="start" font-family="inherit" style="font-variant-numeric: tabular-nums">{it.after}{unit}</text>
+        <text x={COL_R + 10} y={it.rly + 15} fill={it.c} font-size="9" text-anchor="start" font-family="inherit" style="font-variant-numeric: tabular-nums">{it.delta > 0 ? '+' : ''}{it.delta}{unit}</text>
       {/each}
     </svg>
   </div>

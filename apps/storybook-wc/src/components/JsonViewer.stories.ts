@@ -15,8 +15,8 @@ export const Variant0: Story = {
     const props: Record<string, unknown> = {
       data: { a: 1, b: [1, 2], c: { d: true, e: null, f: 'x' } },
     }
-    const el = document.createElement('uni-json-viewer')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-json-viewer') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -30,8 +30,8 @@ export const Variant1: Story = {
       defaultExpanded: false,
       maxDepth: 1,
     }
-    const el = document.createElement('uni-json-viewer')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-json-viewer') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -41,8 +41,8 @@ export const Variant2: Story = {
   name: 'array',
   render: () => {
     const props: Record<string, unknown> = { data: [1, 2, 3] }
-    const el = document.createElement('uni-json-viewer')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-json-viewer') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -52,8 +52,8 @@ export const Variant3: Story = {
   name: 'primitive',
   render: () => {
     const props: Record<string, unknown> = { data: 'hi' }
-    const el = document.createElement('uni-json-viewer')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-json-viewer') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

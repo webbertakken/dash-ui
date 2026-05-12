@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { RadialBarChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: comparison/RadialBarChart',
-  component: RadialBarChart as any,
+  component: RadialBarChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof RadialBarChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

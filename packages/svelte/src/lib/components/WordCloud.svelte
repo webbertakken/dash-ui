@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface WordCloudItem {
     word: string;
     weight: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: WordCloudItem[] = [];
   export let height: number = 160;

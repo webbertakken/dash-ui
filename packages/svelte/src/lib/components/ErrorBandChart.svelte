@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface ErrorBandSeries {
     label: string;
     color: string;
@@ -6,6 +6,9 @@
     lower: number[];
     upper: number[];
   }
+</script>
+
+<script lang="ts">
 
   export let series: ErrorBandSeries[] = [];
   export let xLabels: string[] = [];

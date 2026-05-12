@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'count',
   render: () => {
     const props: Record<string, unknown> = { count: 3 }
-    const el = document.createElement('uni-badge')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-badge') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'x'
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'overflow',
   render: () => {
     const props: Record<string, unknown> = { count: 200, max: 99 }
-    const el = document.createElement('uni-badge')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-badge') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'x'
     return el
   },
@@ -35,8 +35,8 @@ export const Variant2: Story = {
   name: 'showZero',
   render: () => {
     const props: Record<string, unknown> = { count: 0, showZero: true, color: 'info' }
-    const el = document.createElement('uni-badge')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-badge') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'x'
     return el
   },
@@ -46,8 +46,8 @@ export const Variant3: Story = {
   name: 'dot',
   render: () => {
     const props: Record<string, unknown> = { dot: true, color: 'success' }
-    const el = document.createElement('uni-badge')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-badge') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'x'
     return el
   },

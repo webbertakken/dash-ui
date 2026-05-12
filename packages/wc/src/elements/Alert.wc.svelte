@@ -1,4 +1,4 @@
-<svelte:options tag="uni-alert" />
+<svelte:options customElement="uni-alert" />
 <script>
   import Original from '@w5-ui/svelte/components/Alert.svelte';
   export let variant = 'info';

@@ -104,14 +104,14 @@ for (const fixtureName of COMPONENT_NAMES) {
 import type { Meta, StoryObj } from '@storybook/svelte';
 import { ${exportName} } from '@w5-ui/svelte';
 
-const meta: Meta = {
+const meta = {
   title: '${titleCategory}/${fixtureName}',
-  component: ${exportName} as any,
+  component: ${exportName},
   parameters: { layout: 'padded' },
-};
+} satisfies Meta<typeof ${exportName}>;
 export default meta;
 
-type Story = StoryObj;
+type Story = StoryObj<typeof meta>;
 
 ${variantLines}
 `

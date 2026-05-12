@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface WaffleSegment {
     label: string;
     value: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let segments: WaffleSegment[] = [];
   export let total: number | undefined = undefined;

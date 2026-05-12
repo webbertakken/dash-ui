@@ -1,4 +1,4 @@
-<svelte:options tag="uni-combobox" />
+<svelte:options customElement="uni-combobox" />
 <script>
   import Original from '@w5-ui/svelte/components/Combobox.svelte';
   // no public props

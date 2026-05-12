@@ -1,16 +1,19 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export type UptimeStatus = 'up' | 'degraded' | 'down';
-
   export interface UptimeSegment {
     from: number;
     to: number;
     status: UptimeStatus;
   }
-
   export interface UptimeSeries {
     label: string;
     segments: UptimeSegment[];
   }
+</script>
+
+<script lang="ts">
+
+
 
   export let series: UptimeSeries[] = [];
   export let xLabels: string[] = [];

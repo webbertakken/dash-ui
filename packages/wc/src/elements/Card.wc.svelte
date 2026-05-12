@@ -1,4 +1,4 @@
-<svelte:options tag="uni-card" />
+<svelte:options customElement="uni-card" />
 <script>
   import Original from '@w5-ui/svelte/components/Card.svelte';
   export let span = undefined;

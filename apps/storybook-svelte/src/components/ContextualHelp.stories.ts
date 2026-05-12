@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ContextualHelp } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Selection & menus/ContextualHelp',
-  component: ContextualHelp as any,
+  component: ContextualHelp,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ContextualHelp>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'top',

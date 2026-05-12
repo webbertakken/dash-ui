@@ -1,11 +1,9 @@
-<svelte:options tag="uni-tabs" />
+<svelte:options customElement="uni-tabs" />
 <script>
   import Original from '@w5-ui/svelte/components/Tabs.svelte';
-  export let items = [];
-  export let active = undefined;
-  export let ariaLabel = undefined;
+  // no public props
 </script>
 
-<Original {items} {active} {ariaLabel}>
+<Original >
   <slot />
 </Original>

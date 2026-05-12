@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface NightingaleSegment {
     label: string;
     value: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let segments: NightingaleSegment[] = [];
   export let color: string = '#006FFF';

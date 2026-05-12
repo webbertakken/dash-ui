@@ -1,4 +1,4 @@
-<svelte:options tag="uni-inline-edit" />
+<svelte:options customElement="uni-inline-edit" />
 <script>
   import Original from '@w5-ui/svelte/components/InlineEdit.svelte';
   export let value = undefined;

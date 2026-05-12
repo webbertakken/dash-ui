@@ -1,4 +1,4 @@
-<svelte:options tag="uni-carousel" />
+<svelte:options customElement="uni-carousel" />
 <script>
   import Original from '@w5-ui/svelte/components/Carousel.svelte';
   export let slides = [];
