@@ -8,19 +8,21 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, tick } from 'svelte';
+  import { tick } from 'svelte';
   import Kbd from './Kbd.svelte';
 
   interface Props {
     open?: boolean;
     items?: CommandItem[];
     placeholder?: string;
+    onselect?: (payload: string) => void;
+    onclose?: () => void;
   }
 
-  let { open = false, items = [], placeholder = 'Search pages and actions…' }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ select: string; close: void }>();
-
+  let { open = false, items = [], placeholder = 'Search pages and actions…',
+    onselect,
+    onclose,
+  }: Props = $props();
   let query = $state('');
   let activeIdx = $state(0);
   let inputEl: HTMLInputElement = $state();
@@ -67,18 +69,18 @@
       if (item) commit(item.id);
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      dispatch('close');
+      onclose?.();
     }
   }
 
   function commit(id: string) {
-    dispatch('select', id);
-    dispatch('close');
+    onselect?.(id);
+    onclose?.();
     query = '';
   }
 
   function handleBackdrop(e: MouseEvent) {
-    if (e.target === e.currentTarget) dispatch('close');
+    if (e.target === e.currentTarget) onclose?.();
   }
 </script>
 

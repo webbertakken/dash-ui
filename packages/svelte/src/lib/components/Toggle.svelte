@@ -1,16 +1,18 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
   interface Props {
     on?: boolean;
     ariaLabel?: string | undefined;
     ariaDescribedBy?: string | undefined;
+    ontoggle?: (payload: boolean) => void;
   }
 
-  let { on = $bindable(false), ariaLabel = undefined, ariaDescribedBy = undefined }: Props = $props();
-  const dispatch = createEventDispatcher<{ toggle: boolean }>();
+  let { on = $bindable(false), ariaLabel = undefined, ariaDescribedBy = undefined,
+    ontoggle,
+  }: Props = $props();
   function flip() {
     on = !on;
-    dispatch('toggle', on);
+    ontoggle?.(on);
   }
 </script>
 

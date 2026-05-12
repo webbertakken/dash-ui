@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string;
@@ -7,6 +7,7 @@
     accept?: string | undefined;
     multiple?: boolean;
     disabled?: boolean;
+    onfiles?: (payload: File[]) => void;
   }
 
   let {
@@ -14,11 +15,9 @@
     hint = undefined,
     accept = undefined,
     multiple = false,
-    disabled = false
+    disabled = false,
+    onfiles,
   }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ files: File[] }>();
-
   let drag = $state(false);
   let done: string | null = $state(null);
   let inputEl: HTMLInputElement = $state();
@@ -27,7 +26,7 @@
     if (!files || files.length === 0) return;
     const arr = Array.from(files);
     done = arr.length === 1 ? arr[0].name : `${arr.length} files selected`;
-    dispatch('files', arr);
+    onfiles?.(arr);
   }
 
   function onChange(e: Event) {

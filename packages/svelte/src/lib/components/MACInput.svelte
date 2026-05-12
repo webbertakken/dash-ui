@@ -3,24 +3,23 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
     value?: string;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string) => void;
   }
 
   let {
     label = undefined,
     value = $bindable('00:00:00:00:00:00'),
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-mac-${++counter}`;
 
   const HEX_RE = /^[0-9a-fA-F]{0,2}$/;
@@ -47,7 +46,7 @@
     pairs[i] = raw.toUpperCase();
     pairs = pairs as [string, string, string, string, string, string];
     value = pairs.join(':');
-    dispatch('change', value);
+    onchange?.(value);
     if (raw.length === 2 && i < 5) setTimeout(() => focusAt(i + 1), 0);
   }
 
@@ -72,7 +71,7 @@
       const normalized = text.replace(/-/g, ':').replace(/:/g, '').match(/.{1,2}/g)?.join(':') ?? text;
       pairs = normalized.split(':').map((p) => p.toUpperCase()) as [string, string, string, string, string, string];
       value = pairs.join(':');
-      dispatch('change', value);
+      onchange?.(value);
       setTimeout(() => focusAt(5), 0);
     }
   }

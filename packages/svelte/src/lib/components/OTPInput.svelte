@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
@@ -11,6 +11,7 @@
     value?: string;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string) => void;
   }
 
   let {
@@ -18,11 +19,9 @@
     length = 6,
     value = $bindable(''),
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-otp-${++counter}`;
 
   let digits: string[] = $state(Array.from({ length }, (_, i) => value[i] ?? ''));
@@ -38,7 +37,7 @@
   function commit(next: string[]) {
     digits = next;
     value = next.join('');
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleInput(i: number, raw: string) {

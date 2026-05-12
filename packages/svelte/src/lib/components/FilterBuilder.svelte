@@ -26,29 +26,28 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-
   interface Props {
     fields?: FilterField[];
     value?: FilterRule[];
     conjunction?: 'and' | 'or';
     ariaLabel?: string;
+    onchange?: (payload: { rules: FilterRule[]; conjunction: 'and' | 'or' }) => void;
   }
 
   let {
     fields = [],
     value = [],
     conjunction = 'and',
-    ariaLabel = 'Filter builder'
+    ariaLabel = 'Filter builder',
+    onchange,
   }: Props = $props();
 
   const uid = `dash-ui-fb-${++counter}`;
-  const dispatch = createEventDispatcher<{ change: { rules: FilterRule[]; conjunction: 'and' | 'or' } }>();
 
   const CONJUNCTIONS = ['and', 'or'] as const;
 
   function emit(rules: FilterRule[], conj: 'and' | 'or' = conjunction) {
-    dispatch('change', { rules, conjunction: conj });
+    onchange?.({ rules, conjunction: conj });
   }
 
   function addRule() {

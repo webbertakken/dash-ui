@@ -3,24 +3,23 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
     value?: string;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string) => void;
   }
 
   let {
     label = undefined,
     value = $bindable('0.0.0.0'),
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-ip-${++counter}`;
 
   function clampOctet(s: string): string {
@@ -48,7 +47,7 @@
     octets[i] = clampOctet(raw);
     octets = octets as [string, string, string, string];
     value = octets.join('.');
-    dispatch('change', value);
+    onchange?.(value);
     if (raw.length === 3 && i < 3) setTimeout(() => focusAt(i + 1), 0);
   }
 
@@ -72,7 +71,7 @@
       e.preventDefault();
       octets = text.split('.').map(clampOctet) as [string, string, string, string];
       value = octets.join('.');
-      dispatch('change', value);
+      onchange?.(value);
       setTimeout(() => focusAt(3), 0);
     }
   }

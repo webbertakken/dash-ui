@@ -4,7 +4,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   interface Props {
     options?: SelectOption[];
@@ -14,6 +14,7 @@
     id?: string | undefined;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string) => void;
   }
 
   let {
@@ -23,16 +24,14 @@
     placeholder = 'Select…',
     id = undefined,
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
   
 
   const uid = `dash-ui-sel-${++counter}`;
   let triggerId = $derived(id ?? uid);
   let listboxId = $derived(`${triggerId}-lb`);
-
-  const dispatch = createEventDispatcher<{ change: string }>();
-
   let open = $state(false);
   let activeIdx = $state(-1);
   let triggerEl: HTMLButtonElement = $state();
@@ -51,7 +50,7 @@
   }
 
   function pick(val: string) {
-    dispatch('change', val);
+    onchange?.(val);
     open = false;
     triggerEl?.focus();
   }

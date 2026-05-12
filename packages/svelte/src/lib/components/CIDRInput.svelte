@@ -3,24 +3,23 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
     value?: string;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string) => void;
   }
 
   let {
     label = undefined,
     value = $bindable('0.0.0.0/0'),
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-cidr-${++counter}`;
 
   function clampOctet(s: string): string {
@@ -53,7 +52,7 @@
 
   function commitFields() {
     value = `${fields.slice(0, 4).join('.')}/${fields[4]}`;
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function commitOctet(i: number, raw: string) {

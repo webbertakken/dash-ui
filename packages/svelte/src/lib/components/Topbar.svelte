@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
   import { appLogos, type AppLogoKey as AppLogo } from '@w5-ui/assets';
   import IconButton from './IconButton.svelte';
   import Avatar from './Avatar.svelte';
@@ -25,6 +25,7 @@
     apps?: AppDef[];
     initials?: string;
     notificationCount?: number;
+    onappchange?: (payload: string) => void;
   }
 
   let {
@@ -32,9 +33,9 @@
     activeApp = $bindable(),
     apps = DEFAULT_APPS,
     initials = 'MS',
-    notificationCount = 1
+    notificationCount = 1,
+    onappchange,
   }: Props = $props();
-  const dispatch = createEventDispatcher<{ appchange: string }>();
 </script>
 
 <header class="topbar">
@@ -49,7 +50,7 @@
         type="button"
         class="app-tab {a.id === activeApp ? 'active' : ''}"
         aria-current={a.id === activeApp ? 'page' : undefined}
-        onclick={() => { activeApp = a.id; dispatch('appchange', a.id); }}
+        onclick={() => { activeApp = a.id; onappchange?.(a.id); }}
       >
         <img src={appLogos[a.logo]} alt="" width="24" height="24" />
         <span class="label">{a.label}</span>

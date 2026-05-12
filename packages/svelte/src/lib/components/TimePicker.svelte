@@ -3,24 +3,23 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
     value?: string;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string) => void;
   }
 
   let {
     label = undefined,
     value = $bindable('00:00'),
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-tp-${++counter}`;
 
   function pad(n: number): string {
@@ -41,7 +40,7 @@
 
   function commit(h: number, m: number) {
     value = `${pad(h)}:${pad(m)}`;
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleKey(field: 0 | 1, e: KeyboardEvent) {

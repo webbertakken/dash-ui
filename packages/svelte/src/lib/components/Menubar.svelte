@@ -5,18 +5,21 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   interface Props {
     menus?: MenubarMenu[];
     label?: string;
     class?: string;
+    onaction?: (payload: { menuId: string; itemId: string }) => void;
   }
 
-  let { menus = [], label = 'Menu', class: klass = '' }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ action: { menuId: string; itemId: string } }>();
+  let {
+    menus = [],
+    label = 'Menu',
+    class: klass = '',
+    onaction,
+  }: Props = $props();
   const uid = `dash-ui-mb-${++counter}`;
 
   let openIdx: number | null = $state(null);
@@ -37,7 +40,7 @@
   function closeMenu() { openIdx = null; }
 
   function activate(menuId: string, itemId: string) {
-    dispatch('action', { menuId, itemId });
+    onaction?.({ menuId, itemId });
     openIdx = null;
   }
 

@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
@@ -15,6 +15,7 @@
     disabled?: boolean;
     id?: string | undefined;
     class?: string;
+    onchange?: (payload: number) => void;
   }
 
   let {
@@ -26,15 +27,13 @@
     suffix = undefined,
     disabled = false,
     id = undefined,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
   
 
   const uid = `dash-ui-ni-${++counter}`;
   let inputId = $derived(id ?? uid);
-
-  const dispatch = createEventDispatcher<{ change: number }>();
-
   function clamp(n: number): number {
     let v = n;
     if (min !== undefined) v = Math.max(min, v);
@@ -44,7 +43,7 @@
 
   function commit(next: number) {
     value = clamp(next);
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleKey(e: KeyboardEvent) {

@@ -36,17 +36,18 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy, tick } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
 
   interface Props {
     value?: Date | null;
     placeholder?: string;
     disabled?: boolean;
+    onchange?: (payload: Date) => void;
   }
 
-  let { value = null, placeholder = 'Pick a date', disabled = false }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ change: Date }>();
+  let { value = null, placeholder = 'Pick a date', disabled = false,
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-dp-${++counter}`;
   const calId = `${uid}-cal`;
   const today = new Date();
@@ -78,7 +79,7 @@
   }
 
   function select(d: Date) {
-    dispatch('change', d);
+    onchange?.(d);
     closeCal();
   }
 

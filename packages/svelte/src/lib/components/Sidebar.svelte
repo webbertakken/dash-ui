@@ -14,14 +14,16 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
   interface Props {
     sections?: SidebarSectionDef[];
     activeId: string;
+    onchange?: (payload: string) => void;
   }
 
-  let { sections = [], activeId = $bindable() }: Props = $props();
-  const dispatch = createEventDispatcher<{ change: string }>();
+  let { sections = [], activeId = $bindable(),
+    onchange,
+  }: Props = $props();
 </script>
 
 <nav class="sidebar" aria-label="Primary">
@@ -34,7 +36,7 @@
             type="button"
             class="sb-item {it.id === activeId ? 'active' : ''}"
             aria-current={it.id === activeId ? 'page' : undefined}
-            onclick={() => { activeId = it.id; dispatch('change', it.id); }}
+            onclick={() => { activeId = it.id; onchange?.(it.id); }}
           >
             <span class="sb-ico"><it.icon /></span>
             {it.label}

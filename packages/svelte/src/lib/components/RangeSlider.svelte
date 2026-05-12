@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
@@ -10,6 +10,7 @@
     high?: number;
     suffix?: string | undefined;
     disabled?: boolean;
+    onchange?: (payload: [number, number]) => void;
   }
 
   let {
@@ -20,23 +21,21 @@
     low = $bindable(0),
     high = $bindable(100),
     suffix = undefined,
-    disabled = false
+    disabled = false,
+    onchange,
   }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ change: [number, number] }>();
-
   let lowPct = $derived(max === min ? 0 : ((low - min) / (max - min)) * 100);
   let highPct = $derived(max === min ? 0 : ((high - min) / (max - min)) * 100);
   let lowOnTop = $derived(low >= max - step);
 
   function handleLow(e: Event) {
     low = Math.min(Number((e.target as HTMLInputElement).value), high - step);
-    dispatch('change', [low, high]);
+    onchange?.([low, high]);
   }
 
   function handleHigh(e: Event) {
     high = Math.max(Number((e.target as HTMLInputElement).value), low + step);
-    dispatch('change', [low, high]);
+    onchange?.([low, high]);
   }
 </script>
 

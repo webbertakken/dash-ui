@@ -11,15 +11,16 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   interface Props {
     value?: TimeRangeId;
+    onchange?: (payload: TimeRangeId) => void;
   }
 
-  let { value = '1h' }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ change: TimeRangeId }>();
+  let { value = '1h',
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-tr-${++counter}`;
   const listId = `${uid}-list`;
 
@@ -36,7 +37,7 @@
   }
 
   function select(id: TimeRangeId) {
-    dispatch('change', id);
+    onchange?.(id);
     open = false;
     triggerEl?.focus();
   }

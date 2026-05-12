@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-  import { onDestroy, tick, createEventDispatcher } from 'svelte';
+  import { onDestroy, tick } from 'svelte';
 
   interface Props {
     items?: ContextMenuEntry[];
@@ -17,6 +17,8 @@
     y?: number;
     open?: boolean;
     label?: string;
+    onclose?: () => void;
+    onaction?: (payload: string) => void;
   }
 
   let {
@@ -24,11 +26,10 @@
     x = 0,
     y = 0,
     open = false,
-    label = 'Context menu'
+    label = 'Context menu',
+    onclose,
+    onaction,
   }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ close: void; action: string }>();
-
   let menuEl: HTMLUListElement = $state();
   let activeIdx = $state(0);
 
@@ -43,12 +44,12 @@
   let cy = $derived(Math.min(y, (typeof window !== 'undefined' ? window.innerHeight : 800) - menuH - 8));
 
   function activate(id: string) {
-    dispatch('action', id);
-    dispatch('close');
+    onaction?.(id);
+    onclose?.();
   }
 
   function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === 'Escape') { e.preventDefault(); dispatch('close'); }
+    if (e.key === 'Escape') { e.preventDefault(); onclose?.(); }
     else if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx + 1, actionItems.length - 1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx - 1, 0); }
     else if (e.key === 'Home') { e.preventDefault(); activeIdx = 0; }
@@ -58,11 +59,11 @@
       const item = actionItems[activeIdx];
       if (item && !item.disabled) activate(item.id);
     }
-    else if (e.key === 'Tab') { dispatch('close'); }
+    else if (e.key === 'Tab') { onclose?.(); }
   }
 
   function handleOutside(e: MouseEvent) {
-    if (!menuEl?.contains(e.target as Node)) dispatch('close');
+    if (!menuEl?.contains(e.target as Node)) onclose?.();
   }
 
   $effect(() => {

@@ -41,17 +41,18 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   interface Props {
     value?: DateRange;
     placeholder?: string;
     disabled?: boolean;
+    onchange?: (payload: DateRange) => void;
   }
 
-  let { value = { start: null, end: null }, placeholder = 'Select date range', disabled = false }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ change: DateRange }>();
+  let { value = { start: null, end: null }, placeholder = 'Select date range', disabled = false,
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-drp-${++counter}`;
   const dlgId = `${uid}-dlg`;
   const today = new Date();
@@ -82,12 +83,12 @@
   function handleDayClick(day: Date) {
     if (!picking) {
       picking = day;
-      dispatch('change', { start: day, end: null });
+      onchange?.({ start: day, end: null });
     } else {
       const [s, e] = day < picking ? [day, picking] : [picking, day];
       picking = null;
       hoverDate = null;
-      dispatch('change', { start: s, end: e });
+      onchange?.({ start: s, end: e });
       open = false;
       triggerEl?.focus();
     }

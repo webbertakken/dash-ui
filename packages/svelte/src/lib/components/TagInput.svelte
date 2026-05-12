@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
@@ -11,6 +11,7 @@
     placeholder?: string;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string[]) => void;
   }
 
   let {
@@ -18,11 +19,9 @@
     value = $bindable([]),
     placeholder = 'Type and press Enter…',
     disabled = false,
-    class: klass = ''
+    class: klass = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: string[] }>();
   const uid = `dash-ui-tag-input-${++counter}`;
 
   let draft = $state('');
@@ -33,12 +32,12 @@
     if (!trimmed || value.includes(trimmed)) return;
     value = [...value, trimmed];
     draft = '';
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function removeTag(index: number) {
     value = value.filter((_, i) => i !== index);
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleKeyDown(e: KeyboardEvent) {

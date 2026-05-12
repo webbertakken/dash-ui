@@ -4,7 +4,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   interface Props {
     options?: ComboboxOption[];
@@ -14,6 +14,7 @@
     id?: string | undefined;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string) => void;
   }
 
   let {
@@ -23,16 +24,14 @@
     placeholder = 'Search…',
     id = undefined,
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
   
 
   const uid = `dash-ui-cb-${++counter}`;
   let inputId = $derived(id ?? uid);
   let listboxId = $derived(`${inputId}-lb`);
-
-  const dispatch = createEventDispatcher<{ change: string }>();
-
   let open = $state(false);
   let query = $state('');
   let activeIdx = $state(-1);
@@ -59,7 +58,7 @@
   }
 
   function pick(opt: ComboboxOption) {
-    dispatch('change', opt.value);
+    onchange?.(opt.value);
     open = false;
     query = '';
     inputEl?.focus();

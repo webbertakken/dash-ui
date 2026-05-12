@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
@@ -10,6 +10,7 @@
     suffix?: string | undefined;
     disabled?: boolean;
     id?: string | undefined;
+    onchange?: (payload: number) => void;
   }
 
   let {
@@ -20,18 +21,17 @@
     step = 1,
     suffix = undefined,
     disabled = false,
-    id = undefined
+    id = undefined,
+    onchange,
   }: Props = $props();
 
   let counter = 0;
   const inputId = id ?? `slider-${counter++}`;
-  const dispatch = createEventDispatcher<{ change: number }>();
-
   let pct = $derived(max === min ? 0 : ((value - min) / (max - min)) * 100);
 
   function handleChange(e: Event) {
     value = Number((e.target as HTMLInputElement).value);
-    dispatch('change', value);
+    onchange?.(value);
   }
 </script>
 

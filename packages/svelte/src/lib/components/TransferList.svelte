@@ -7,14 +7,13 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-
   interface Props {
     sourceLabel?: string;
     targetLabel?: string;
     source?: TransferListItem[];
     target?: TransferListItem[];
     class?: string;
+    onchange?: (payload: { source: TransferListItem[]; target: TransferListItem[] }) => void;
   }
 
   let {
@@ -22,11 +21,9 @@
     targetLabel = 'Selected',
     source = $bindable([]),
     target = $bindable([]),
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: { source: TransferListItem[]; target: TransferListItem[] } }>();
 
   let selSrc = $state(new Set<string>());
   let selTgt = $state(new Set<string>());
@@ -36,7 +33,7 @@
   let tgtEls: (HTMLLIElement | null)[] = $state([]);
 
   function commit() {
-    dispatch('change', { source, target });
+    onchange?.({ source, target });
   }
 
   function moveRight(ids: Set<string>) {

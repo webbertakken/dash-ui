@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
@@ -12,6 +12,7 @@
     disabled?: boolean;
     autocomplete?: 'current-password' | 'new-password' | 'off';
     class?: string;
+    onchange?: (payload: string) => void;
   }
 
   let {
@@ -20,18 +21,16 @@
     placeholder = undefined,
     disabled = false,
     autocomplete = 'current-password',
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-pwd-${++counter}`;
 
   let shown = $state(false);
 
   function handleInput(e: Event) {
     value = (e.target as HTMLInputElement).value;
-    dispatch('change', value);
+    onchange?.(value);
   }
 </script>
 

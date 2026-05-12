@@ -1,17 +1,16 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     page?: number;
     pageSize?: number;
     total?: number;
+    onchange?: (payload: number) => void;
   }
 
-  let { page = 1, pageSize = 10, total = 0 }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ change: number }>();
-
-
+  let { page = 1, pageSize = 10, total = 0,
+    onchange,
+  }: Props = $props();
   function getPageNumbers(p: number, tp: number): (number | '...')[] {
     if (tp <= 7) return Array.from({ length: tp }, (_, i) => i + 1);
     const items: (number | '...')[] = [1];
@@ -24,7 +23,7 @@
     return items;
   }
 
-  function go(p: number) { dispatch('change', p); }
+  function go(p: number) { onchange?.(p); }
   let totalPages = $derived(Math.max(1, Math.ceil(total / pageSize)));
   let pages = $derived(getPageNumbers(page, totalPages));
 </script>

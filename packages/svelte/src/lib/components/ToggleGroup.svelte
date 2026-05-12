@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     options?: { value: string; label: string; disabled?: boolean }[];
@@ -7,6 +7,7 @@
     ariaLabel?: string;
     size?: 'sm' | 'md';
     class?: string;
+    onchange?: (payload: string[]) => void;
   }
 
   let {
@@ -14,16 +15,13 @@
     value = $bindable([]),
     ariaLabel = '',
     size = 'md',
-    class: klass = ''
+    class: klass = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: string[] }>();
-
   function toggle(v: string) {
     const next = value.includes(v) ? value.filter((x) => x !== v) : [...value, v];
     value = next;
-    dispatch('change', next);
+    onchange?.(next);
   }
 </script>
 

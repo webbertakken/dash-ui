@@ -4,23 +4,25 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   interface Props {
     label: string;
     variant?: 'primary' | 'ghost' | 'danger';
     disabled?: boolean;
     items?: SplitButtonItem[];
+    onprimary?: () => void;
+    onaction?: (payload: string) => void;
   }
 
   let {
     label,
     variant = 'ghost',
     disabled = false,
-    items = []
+    items = [],
+    onprimary,
+    onaction,
   }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ primary: void; action: string }>();
   const uid = `dash-ui-spbtn-${++counter}`;
   const menuId = `${uid}-menu`;
 
@@ -35,7 +37,7 @@
   }
 
   function activate(id: string) {
-    dispatch('action', id);
+    onaction?.(id);
     open = false;
     caretEl?.focus();
   }
@@ -75,7 +77,7 @@
     type="button"
     class="btn btn-{variant} split-btn-primary"
     {disabled}
-    onclick={() => dispatch('primary')}
+    onclick={() => onprimary?.()}
   >{label}</button>
   <button
     bind:this={caretEl}

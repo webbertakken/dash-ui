@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
   interface Props {
     label?: string | undefined;
@@ -11,6 +11,7 @@
     maxHours?: number;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: number) => void;
   }
 
   let {
@@ -18,11 +19,9 @@
     value = $bindable(0),
     maxHours = 99,
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
-  
-
-  const dispatch = createEventDispatcher<{ change: number }>();
   const uid = `dash-ui-dur-${++counter}`;
 
   function toHMS(secs: number): [number, number, number] {
@@ -49,7 +48,7 @@
 
   function commit(h: number, m: number, s: number) {
     value = fromHMS(Math.min(maxHours, h), m, s);
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleKey(field: number, e: KeyboardEvent) {

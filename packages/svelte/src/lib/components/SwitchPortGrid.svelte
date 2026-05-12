@@ -13,15 +13,17 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
   interface Props {
     ports?: SwitchPort[];
     columns?: number;
     ariaLabel?: string;
+    onportclick?: (payload: number) => void;
   }
 
-  let { ports = [], columns = 12, ariaLabel = 'Switch port panel' }: Props = $props();
-  const dispatch = createEventDispatcher<{ portclick: number }>();
+  let { ports = [], columns = 12, ariaLabel = 'Switch port panel',
+    onportclick,
+  }: Props = $props();
 </script>
 
 <ul class="spg" role="list" aria-label={ariaLabel} style="grid-template-columns: repeat({columns}, 1fr);">
@@ -34,7 +36,7 @@
         class="spg__btn"
         data-status={port.status}
         aria-label={desc}
-        onclick={() => dispatch('portclick', i)}
+        onclick={() => onportclick?.(i)}
       >
         <span class="spg__num">{n}</span>
         {#if port.speed}

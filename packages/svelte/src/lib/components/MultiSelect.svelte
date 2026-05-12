@@ -4,7 +4,7 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   interface Props {
     options?: MultiSelectOption[];
@@ -14,6 +14,7 @@
     id?: string | undefined;
     disabled?: boolean;
     class?: string;
+    onchange?: (payload: string[]) => void;
   }
 
   let {
@@ -23,16 +24,14 @@
     placeholder = 'Select…',
     id = undefined,
     disabled = false,
-    class: className = ''
+    class: className = '',
+    onchange,
   }: Props = $props();
   
 
   const uid = `dash-ui-ms-${++counter}`;
   let inputId = $derived(id ?? uid);
   let listboxId = $derived(`${inputId}-lb`);
-
-  const dispatch = createEventDispatcher<{ change: string[] }>();
-
   let open = $state(false);
   let query = $state('');
   let activeIdx = $state(-1);
@@ -53,14 +52,14 @@
     const next = new Set(selectedSet);
     if (next.has(optValue)) next.delete(optValue);
     else next.add(optValue);
-    dispatch('change', Array.from(next));
+    onchange?.(Array.from(next));
   }
 
   function onKeyDown(e: KeyboardEvent) {
     if (disabled) return;
     if (e.key === 'Escape') { open = false; query = ''; return; }
     if (e.key === 'Backspace' && query === '' && value.length > 0) {
-      dispatch('change', value.slice(0, -1));
+      onchange?.(value.slice(0, -1));
       return;
     }
     if (!open) {
