@@ -15,7 +15,7 @@
     ariaLabel = undefined
   }: Props = $props();
 
-  
+  const sw = 10;
   let cx = $derived(size / 2);
   let cy = $derived(size / 2);
   let r = $derived(cx - sw / 2 - 2);

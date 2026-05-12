@@ -20,6 +20,10 @@ export default defineConfig({
       '@w5-ui/react': path.resolve(__dirname, 'packages/react/src/index.ts'),
       '@w5-ui/svelte': path.resolve(__dirname, 'packages/svelte/src/lib/index.ts'),
     },
+    // Svelte 5 ships separate server/client builds; tests run in jsdom
+    // which is browser-like, so resolve to the browser/client build.
+    // Without 'browser' first, `mount(...)` throws lifecycle_function_unavailable.
+    conditions: ['browser', 'development', 'module', 'default'],
   },
   test: {
     environment: 'jsdom',

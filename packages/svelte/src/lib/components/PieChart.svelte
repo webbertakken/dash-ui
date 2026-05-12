@@ -19,6 +19,7 @@
   const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#A878F5', '#FF6B6B', '#00C875', '#7FB6FF', '#6E7079'];
   const TAU = 2 * Math.PI;
   const START = -Math.PI / 2;
+  const LEGEND_ROW = 18;
 
   function arcPath(cx: number, cy: number, r: number, a0: number, a1: number): string {
     const x0 = cx + r * Math.cos(a0);
