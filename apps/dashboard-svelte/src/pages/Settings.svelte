@@ -3,11 +3,11 @@
   import type { ComboboxOption } from '@w5-ui/svelte';
   const TAB_NAMES = ['System', 'Console', 'Network', 'Internet', 'WiFi', 'VLANs', 'Routing', 'Profiles', 'Advanced'] as const;
   type SettingsTab = (typeof TAB_NAMES)[number];
-  let tab: SettingsTab = 'System';
-  let country = 'gb';
-  let timezone = 'Europe/London';
-  let maintStart = '03:00';
-  let maintEnd = '05:00';
+  let tab: SettingsTab = $state('System');
+  let country = $state('gb');
+  let timezone = $state('Europe/London');
+  let maintStart = $state('03:00');
+  let maintEnd = $state('05:00');
 
   const VLAN_ROWS = [
     { name: 'Default', id: '1', purpose: 'Corporate LAN', isolation: '—', dhcp: 'Yes', color: 'blue' },
@@ -17,9 +17,9 @@
     { name: 'Servers', id: '50', purpose: 'Rack / NAS', isolation: '—', dhcp: 'Static', color: 'teal' },
     { name: 'Mgmt', id: '99', purpose: 'Switch/AP mgmt', isolation: 'Isolated', dhcp: 'Yes', color: 'slate' },
   ];
-  let vlanColors: Record<string, string> = Object.fromEntries(VLAN_ROWS.map((r) => [r.name, r.color]));
-  let selectedVlan = VLAN_ROWS[0].name;
-  $: selectedVlanColor = vlanColors[selectedVlan] ?? 'blue';
+  let vlanColors: Record<string, string> = $state(Object.fromEntries(VLAN_ROWS.map((r) => [r.name, r.color])));
+  let selectedVlan = $state(VLAN_ROWS[0].name);
+  let selectedVlanColor = $derived(vlanColors[selectedVlan] ?? 'blue');
 
   const COUNTRY_OPTIONS: ComboboxOption[] = [
     { value: 'au', label: 'Australia' },
@@ -52,11 +52,11 @@
     { value: 'Australia/Sydney', label: 'Australia/Sydney (GMT+10)' },
     { value: 'UTC', label: 'UTC (GMT+0)' },
   ];
-  let txPower2g = 80;
-  let txPower5g = 100;
-  let rxSensitivity = 50;
+  let txPower2g = $state(80);
+  let txPower5g = $state(100);
+  let rxSensitivity = $state(50);
 
-  let otpValue = '';
+  let otpValue = $state('');
   const SETTINGS_MENUS = [
     { id: 'file', label: 'File', items: [
       { id: 'save', label: 'Save' },
@@ -119,7 +119,7 @@
 <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;padding:16px 24px 24px;">
   <aside style="display:flex;flex-direction:column;gap:1px;font-size:13px;">
     {#each TAB_NAMES as s}
-      <button type="button" class="sb-item {tab === s ? 'active' : ''}" aria-current={tab === s ? 'page' : undefined} style="padding:8px 10px;" on:click={() => (tab = s)}>{s}</button>
+      <button type="button" class="sb-item {tab === s ? 'active' : ''}" aria-current={tab === s ? 'page' : undefined} style="padding:8px 10px;" onclick={() => (tab = s)}>{s}</button>
     {/each}
   </aside>
   <div style="display:flex;flex-direction:column;gap:12px;">
@@ -345,14 +345,14 @@
             {#each VLAN_ROWS as r}
               {@const swatch = COLOR_SWATCHES.find((s) => s.value === vlanColors[r.name])}
               <tr
-                on:click={() => (selectedVlan = r.name)}
+                onclick={() => (selectedVlan = r.name)}
                 style="cursor:pointer;{selectedVlan === r.name ? 'background:rgba(255,255,255,0.03);' : ''}"
               >
                 <td>
                   <span
                     style="display:inline-block;width:12px;height:12px;border-radius:50%;background:{swatch?.color ?? '#6E7079'};vertical-align:middle;"
                     aria-hidden="true"
-                  />
+></span>
                 </td>
                 <td style="color:#fff;">{r.name}</td>
                 <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">{r.id}</td>

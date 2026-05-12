@@ -1,9 +1,9 @@
 <script lang="ts">
   import { ActivityFeed, Alert, AnnotatedTimeSeries, Badge, BellIcon, Button, Card, EmptyState, GroupedList, NotificationPanel, Pill, Tabs, Timeline } from '@w5-ui/svelte';
   import type { ActivityItem, GroupedListGroup, NotificationItem, TimelineEvent, TimeSeriesAnnotation } from '@w5-ui/svelte';
-  let tab = 'active';
-  let criticalDismissed = false;
-  let notifOpen = false;
+  let tab = $state('active');
+  let criticalDismissed = $state(false);
+  let notifOpen = $state(false);
   const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
 
   const ALARM_DATA = [1, 1, 0, 0, 2, 2, 4, 3, 3, 5, 4, 3, 3];
@@ -68,15 +68,15 @@
     { id: 'f10', title: 'Edge Gateway X1 -- DPI signature update', description: 'Deep Packet Inspection signatures updated to v2024.05.1.', time: '18 h ago', severity: 'info' },
   ];
 
-  let notifications: NotificationItem[] = [
+  let notifications: NotificationItem[] = $state([
     { id: 'n1', type: 'alarm', severity: 'danger', title: 'PoE link failure — Cam-Bullet 5', description: 'No PoE link detected on uplink port. Device went offline.', time: '2 min ago', read: false },
     { id: 'n2', type: 'alarm', severity: 'warn', title: 'High CPU — Edge Gateway X1', description: 'CPU sustained at 84% for 3 minutes.', time: '8 min ago', read: false },
     { id: 'n3', type: 'alarm', severity: 'warn', title: 'DHCP pool near full — VLAN 20', description: 'Pool 92% exhausted (234/254 leases).', time: '14 min ago', read: false },
     { id: 'n4', type: 'update', severity: 'success', title: 'Firmware updated — ES-48-Pro', description: 'Updated from 6.6.55 to 6.6.61 successfully.', time: '2 h ago', read: true },
     { id: 'n5', type: 'system', severity: 'info', title: 'WAN failover recovered', description: 'WAN1 recovered. Traffic failed back from LTE within 4 s.', time: '6 h ago', read: true },
-  ];
+  ]);
 
-  $: unread = notifications.filter((n) => !n.read).length;
+  let unread = $derived(notifications.filter((n) => !n.read).length);
 
   function markRead(id: string) {
     notifications = notifications.map((n) => n.id === id ? { ...n, read: true } : n);

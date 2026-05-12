@@ -4,7 +4,7 @@
   import { DASHBOARD_DEVICES, DASHBOARD_ALARMS } from '../data';
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher<{ adopt: void }>();
-  let showBanner = true;
+  let showBanner = $state(true);
   const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
   function thumb(model: string) {
     if (model.includes('EG')) return 'EG';
@@ -272,7 +272,7 @@
     <div style="display:flex;gap:12px;margin-top:8px;font-size:12px;flex-wrap:wrap;">
       {#each streamSeries as s (s.label)}
         <span style="display:flex;align-items:center;gap:5px;">
-          <span style="width:10px;height:10px;background:{s.color};border-radius:2px;display:inline-block;" aria-hidden="true" />
+          <span style="width:10px;height:10px;background:{s.color};border-radius:2px;display:inline-block;" aria-hidden="true"></span>
           <span style="color:#A4A7B5;">{s.label}</span>
         </span>
       {/each}

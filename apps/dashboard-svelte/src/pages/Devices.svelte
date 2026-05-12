@@ -4,14 +4,14 @@
   import { DEVICES, type DeviceRow } from '../data';
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher<{ adopt: void }>();
-  let tab = 'all';
-  let page = 1;
-  let pageSize = 5;
-  let sortKey: string | null = null;
-  let sortDir: 'asc' | 'desc' = 'asc';
-  let drawerDevice: DeviceRow | null = null;
-  let drawerOpen = false;
-  let forgetDevice: DeviceRow | null = null;
+  let tab = $state('all');
+  let page = $state(1);
+  let pageSize = $state(5);
+  let sortKey: string | null = $state(null);
+  let sortDir: 'asc' | 'desc' = $state('asc');
+  let drawerDevice: DeviceRow | null = $state(null);
+  let drawerOpen = $state(false);
+  let forgetDevice: DeviceRow | null = $state(null);
 
   function onSort(key: string) {
     if (sortKey === key) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
@@ -19,7 +19,7 @@
     page = 1;
   }
 
-  $: sorted = sortKey
+  let sorted = $derived(sortKey
     ? [...DEVICES].sort((a, b) => {
         if (sortKey === 'name') {
           const cmp = a[0].localeCompare(b[0]);
@@ -32,9 +32,9 @@
         }
         return 0;
       })
-    : DEVICES;
+    : DEVICES);
 
-  $: rows = sorted.slice((page - 1) * pageSize, page * pageSize);
+  let rows = $derived(sorted.slice((page - 1) * pageSize, page * pageSize));
 
   const BOARD_DEFS = [
     { id: 'connected', title: 'Connected', color: '#00B070', match: (r: DeviceRow) => r[7].startsWith('Connected') },
@@ -43,12 +43,12 @@
     { id: 'offline', title: 'Offline', color: '#F03A3A', match: (r: DeviceRow) => r[7].startsWith('Offline') },
   ];
 
-  let boardCols: KanbanColumn[] = BOARD_DEFS.map(col => ({
+  let boardCols: KanbanColumn[] = $state(BOARD_DEFS.map(col => ({
     id: col.id,
     title: col.title,
     color: col.color,
     cards: DEVICES.filter(col.match).map(r => ({ id: r[2], title: r[0], subtitle: r[1], meta: r[7] })),
-  }));
+  })));
 
   function handleCardMove(cardId: string, fromColId: string, toColId: string) {
     const fromCol = boardCols.find(c => c.id === fromColId);
@@ -76,7 +76,7 @@
     { key: 'signal', label: 'Signal' },
     { key: 'status', label: 'Status' },
   ];
-  let visibleCols = new Set(deviceColumns.map(c => c.key));
+  let visibleCols = $state(new Set(deviceColumns.map(c => c.key)));
   const perPageOptions = [
     { value: '5', label: '5 per page' },
     { value: '10', label: '10 per page' },
@@ -150,23 +150,27 @@
         <tr>
           <td>
             <HoverCard placement="bottom">
-              <svelte:fragment slot="trigger">
-                <div class="name-cell">
-                  <span class="nc-thumb">{r[9]}</span>
-                  <div>
-                    <div style="font-size:13px;color:#fff;">{r[0]}</div>
-                    <div class="mac" style="font-size:10px;">{r[1]}</div>
+              {#snippet trigger()}
+                              
+                  <div class="name-cell">
+                    <span class="nc-thumb">{r[9]}</span>
+                    <div>
+                      <div style="font-size:13px;color:#fff;">{r[0]}</div>
+                      <div class="mac" style="font-size:10px;">{r[1]}</div>
+                    </div>
                   </div>
-                </div>
-              </svelte:fragment>
-              <svelte:fragment slot="content">
-                <p class="hovercard-title">{r[0]}</p>
-                <div class="hovercard-row"><span class="hc-key">Model</span><span class="hc-val">{r[1]}</span></div>
-                <div class="hovercard-row"><span class="hc-key">MAC</span><span class="hc-val mac">{r[2]}</span></div>
-                <div class="hovercard-row"><span class="hc-key">IP</span><span class="hc-val mac">{r[3]}</span></div>
-                <div class="hovercard-row"><span class="hc-key">Uptime</span><span class="hc-val">{r[4]}</span></div>
-                <div class="hovercard-row"><span class="hc-key">Status</span><span class="hc-val" style="color:{r[8]};">{r[7]}</span></div>
-              </svelte:fragment>
+                
+                              {/snippet}
+              {#snippet content()}
+                              
+                  <p class="hovercard-title">{r[0]}</p>
+                  <div class="hovercard-row"><span class="hc-key">Model</span><span class="hc-val">{r[1]}</span></div>
+                  <div class="hovercard-row"><span class="hc-key">MAC</span><span class="hc-val mac">{r[2]}</span></div>
+                  <div class="hovercard-row"><span class="hc-key">IP</span><span class="hc-val mac">{r[3]}</span></div>
+                  <div class="hovercard-row"><span class="hc-key">Uptime</span><span class="hc-val">{r[4]}</span></div>
+                  <div class="hovercard-row"><span class="hc-key">Status</span><span class="hc-val" style="color:{r[8]};">{r[7]}</span></div>
+                
+                              {/snippet}
             </HoverCard>
           </td>
           {#if visibleCols.has('mac')}

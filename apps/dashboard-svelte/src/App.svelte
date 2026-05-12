@@ -44,10 +44,10 @@
 
   import { onMount, onDestroy } from 'svelte';
 
-  let activeApp = 'system';
-  let page = 'topology';
-  let adoptOpen = false;
-  let cmdOpen = false;
+  let activeApp = $state('system');
+  let page = $state('topology');
+  let adoptOpen = $state(false);
+  let cmdOpen = $state(false);
 
   const SECTIONS: SidebarSectionDef[] = [
     {
@@ -85,7 +85,7 @@
     SECTIONS.flatMap((s) => s.items).map((i) => [i.id, i.label]),
   );
 
-  $: pageLabel = PAGE_LABELS[page] ?? page;
+  let pageLabel = $derived(PAGE_LABELS[page] ?? page);
 
   const SHORTCUTS: Record<string, string> = {
     dashboard: 'G+D',
@@ -161,9 +161,11 @@
     </div>
     <Field label="Device name" value="AP Pro · Warehouse" />
     <Field label="Site" value="Demo cluster" />
-    <svelte:fragment slot="footer">
-      <Button on:click={() => (adoptOpen = false)}>Cancel</Button>
-      <Button variant="primary" on:click={() => (adoptOpen = false)}>Adopt</Button>
-    </svelte:fragment>
+    {#snippet footer()}
+      
+        <Button on:click={() => (adoptOpen = false)}>Cancel</Button>
+        <Button variant="primary" on:click={() => (adoptOpen = false)}>Adopt</Button>
+      
+      {/snippet}
   </Modal>
 </div>

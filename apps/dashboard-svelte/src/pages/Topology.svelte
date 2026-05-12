@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run, preventDefault } from 'svelte/legacy';
+
   import { onMount, onDestroy } from 'svelte';
   import { Button, IconButton, Pill, SearchBox, HealthBar, DownloadIcon, Tooltip, TreeView, ContextMenu, Dendrogram } from '@w5-ui/svelte';
   import type { TreeNode, ContextMenuEntry, DendrogramNode } from '@w5-ui/svelte';
@@ -20,11 +22,11 @@
     cam: '#A878F5',
   };
 
-  let selected = 'gw';
-  let view: 'map' | 'list' | 'tree' = 'map';
-  let ctxMenu: { x: number; y: number } | null = null;
-  let canvas: HTMLDivElement;
-  let svg: SVGSVGElement;
+  let selected = $state('gw');
+  let view: 'map' | 'list' | 'tree' = $state('map');
+  let ctxMenu: { x: number; y: number } | null = $state(null);
+  let canvas: HTMLDivElement = $state();
+  let svg: SVGSVGElement = $state();
 
   function buildTree(nodes: typeof NODES, links: typeof LINKS): TreeNode[] {
     const children = new Map<string, string[]>();
@@ -95,9 +97,11 @@
     }).join('');
   }
 
-  $: if (view === 'map') {
-    if (canvas && svg) draw();
-  }
+  run(() => {
+    if (view === 'map') {
+      if (canvas && svg) draw();
+    }
+  });
 
   onMount(() => {
     draw();
@@ -107,7 +111,7 @@
     window.removeEventListener('resize', draw);
   });
 
-  $: sel = NODES.find((n) => n.id === selected) ?? NODES[1];
+  let sel = $derived(NODES.find((n) => n.id === selected) ?? NODES[1]);
   function toLabel(n: TopologyNode) {
     return NODE_LABEL[n.type] ?? '';
   }
@@ -203,9 +207,9 @@
         <div
           class="node {selected === n.id ? 'selected' : ''}"
           style="left:{n.x * 100}%;top:{n.y * 100}%;transform:translate(-50%,-50%);"
-          on:click={() => (selected = n.id)}
-          on:contextmenu|preventDefault={(e) => { selected = n.id; ctxMenu = { x: e.clientX, y: e.clientY }; }}
-          on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selected = n.id; } }}
+          onclick={() => (selected = n.id)}
+          oncontextmenu={preventDefault((e) => { selected = n.id; ctxMenu = { x: e.clientX, y: e.clientY }; })}
+          onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selected = n.id; } }}
           role="button"
           tabindex="0"
           aria-label={`${n.name}, ${n.status === 'good' ? 'online' : n.status === 'warn' ? 'warning' : 'offline'}`}

@@ -17,7 +17,7 @@
     { label: 'SQLi/XSS', value: 64 },
     { label: 'DDoS', value: 43 },
   ];
-  let tab = 'threat';
+  let tab = $state('threat');
   const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
   const PROTECTIONS: { title: string; description: string; defaultOn: boolean }[] = [
     { title: 'Suspicious activity detection', description: 'Continuously monitors traffic patterns for scanners, brute-force login attempts, and lateral movement between network segments. Detected events are logged and optionally blocked automatically based on the configured IPS sensitivity level. Signatures update hourly from the Dash threat intelligence feed.', defaultOn: true },
@@ -136,7 +136,9 @@
     ['warn', 'SQL injection · UNION SELECT', '45.142.215.92:54312', '198.51.100.42:443', 'Blocked', '22 min'],
     ['danger', 'Cobalt Strike beacon', 'c8:69:cd:11:23:91 · 192.168.20.84', '203.0.113.55:443', 'Blocked', '38 min'],
   ];
-  let state: Record<string, boolean> = Object.fromEntries(PROTECTIONS.map((p) => [p.title, p.defaultOn]));
+  let protectionState: Record<string, boolean> = $state(
+    Object.fromEntries(PROTECTIONS.map((p) => [p.title, p.defaultOn])),
+  );
 
   const THREAT_HEATMAP: PolarCell[] = (() => {
     const cells: PolarCell[] = [];
@@ -223,7 +225,7 @@
             <div style="font-size:11px;color:#6E7079;line-height:1.5;">{p.description}</div>
           </Spoiler>
         </div>
-        <Toggle bind:on={state[p.title]} ariaLabel={p.title} />
+        <Toggle bind:on={protectionState[p.title]} ariaLabel={p.title} />
       </div>
     {/each}
   </Card>

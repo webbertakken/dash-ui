@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Card, Button, Pill, Tabs, PlusIcon, FunnelChart, UptimeTimeline, DumbbellChart, ErrorBandChart, ArcDiagram, CumulativeDistribution, ExpandableRow } from '@w5-ui/svelte';
   import type { FunnelSegment, UptimeSeries, DumbbellItem, ErrorBandSeries, ArcNode, ArcLink, CdfSeries } from '@w5-ui/svelte';
-  let tab = 's2s';
+  let tab = $state('s2s');
 
   const VPN_UPTIME: UptimeSeries[] = [
     {
@@ -271,29 +271,33 @@
       {#each SERVERS as s (s[0])}
         {@const det = SERVER_DETAIL[s[0]]}
         <ExpandableRow colSpan={6}>
-          <svelte:fragment slot="row">
-            <td style="color:#fff;">{s[0]}</td>
-            <td><Pill variant="info">{s[1]}</Pill></td>
-            <td class="mac">{s[2]}</td>
-            <td class="mac" style="color:#A4A7B5;">{s[3]}</td>
-            <td style="text-align:right;font-variant-numeric:tabular-nums;color:#A4A7B5;">{s[4]}</td>
-            <td>
-              <span style="display:inline-flex;align-items:center;gap:6px;color:{s[7]};font-size:12px;">
-                <span style="width:6px;height:6px;border-radius:50%;background:{s[5]};"></span>{s[6]}
-              </span>
-            </td>
-          </svelte:fragment>
-          <svelte:fragment slot="detail">
-            <div style="display:grid;grid-template-columns:repeat(5,max-content);column-gap:24px;row-gap:4px;font-size:12px;">
-              <span style="color:#6E7079;">Cipher</span><span style="color:#C8C9D0;">{det.cipher}</span>
-              <span></span>
-              <span style="color:#6E7079;">RX</span><span style="color:#C8C9D0;">{det.rx}</span>
-              <span style="color:#6E7079;">Handshake</span><span style="color:#C8C9D0;">{det.handshake}</span>
-              <span></span>
-              <span style="color:#6E7079;">TX</span><span style="color:#C8C9D0;">{det.tx}</span>
-              <span style="color:#6E7079;">Uptime</span><span style="color:#C8C9D0;">{det.uptime}</span>
-            </div>
-          </svelte:fragment>
+          {#snippet row()}
+                  
+              <td style="color:#fff;">{s[0]}</td>
+              <td><Pill variant="info">{s[1]}</Pill></td>
+              <td class="mac">{s[2]}</td>
+              <td class="mac" style="color:#A4A7B5;">{s[3]}</td>
+              <td style="text-align:right;font-variant-numeric:tabular-nums;color:#A4A7B5;">{s[4]}</td>
+              <td>
+                <span style="display:inline-flex;align-items:center;gap:6px;color:{s[7]};font-size:12px;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:{s[5]};"></span>{s[6]}
+                </span>
+              </td>
+            
+                  {/snippet}
+          {#snippet detail()}
+                  
+              <div style="display:grid;grid-template-columns:repeat(5,max-content);column-gap:24px;row-gap:4px;font-size:12px;">
+                <span style="color:#6E7079;">Cipher</span><span style="color:#C8C9D0;">{det.cipher}</span>
+                <span></span>
+                <span style="color:#6E7079;">RX</span><span style="color:#C8C9D0;">{det.rx}</span>
+                <span style="color:#6E7079;">Handshake</span><span style="color:#C8C9D0;">{det.handshake}</span>
+                <span></span>
+                <span style="color:#6E7079;">TX</span><span style="color:#C8C9D0;">{det.tx}</span>
+                <span style="color:#6E7079;">Uptime</span><span style="color:#C8C9D0;">{det.uptime}</span>
+              </div>
+            
+                  {/snippet}
         </ExpandableRow>
       {/each}
     </table>

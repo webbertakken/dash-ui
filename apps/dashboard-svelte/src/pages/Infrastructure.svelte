@@ -53,9 +53,9 @@
   ];
 
   const IFACE_OPTIONS = ALL_IFACE_THROUGHPUT.map((r) => ({ value: r.label, label: r.label }));
-  let visibleIfaces: string[] = ALL_IFACE_THROUGHPUT.map((r) => r.label);
+  let visibleIfaces: string[] = $state(ALL_IFACE_THROUGHPUT.map((r) => r.label));
 
-  $: visibleIfaceRows = ALL_IFACE_THROUGHPUT.filter((r) => visibleIfaces.includes(r.label));
+  let visibleIfaceRows = $derived(ALL_IFACE_THROUGHPUT.filter((r) => visibleIfaces.includes(r.label)));
 
   const CPU_LOAD = [38, 35, 45, 61, 85, 82, 68, 78, 86, 76, 61, 47];
   const CPU_LABELS = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
@@ -118,7 +118,7 @@
     ['Cam-Pro 4', 'CAM-Pro4', '78:8A:20:1F:33:18', '192.168.40.71', '4.78.92', 'Up to date'],
   ];
 
-  let adopting: string | null = null;
+  let adopting: string | null = $state(null);
 
   function handleAdopt(name: string) {
     adopting = name;
@@ -135,10 +135,18 @@
   </div>
 </div>
 <div class="grid">
-  <Stat label="Devices" unit="online · 2 offline" span={3}><CountUp slot="value" to={38} /></Stat>
-  <Stat label="Clients" unit="42 wired · 100 wireless" span={3}><CountUp slot="value" to={142} /></Stat>
-  <Stat label="PoE budget" unit="of 600 W" span={3}><CountUp slot="value" to={312} suffix=" W" /></Stat>
-  <Stat label="Storage" unit="1.64 / 4.0 TB" span={3}><CountUp slot="value" to={41} suffix="%" /></Stat>
+  <Stat label="Devices" unit="online · 2 offline" span={3}>{#snippet value()}
+        <CountUp  to={38} />
+      {/snippet}</Stat>
+  <Stat label="Clients" unit="42 wired · 100 wireless" span={3}>{#snippet value()}
+        <CountUp  to={142} />
+      {/snippet}</Stat>
+  <Stat label="PoE budget" unit="of 600 W" span={3}>{#snippet value()}
+        <CountUp  to={312} suffix=" W" />
+      {/snippet}</Stat>
+  <Stat label="Storage" unit="1.64 / 4.0 TB" span={3}>{#snippet value()}
+        <CountUp  to={41} suffix="%" />
+      {/snippet}</Stat>
 
   <Card span={6}>
     <h3>Console health</h3>
@@ -249,30 +257,34 @@
       label="Resize device load and metric correlations panels"
       style="height:280px"
     >
-      <div slot="first" style="padding:0 12px 0 0;height:100%;overflow:auto;">
-        <h3>Device load quadrant <span class="unit">CPU % vs Memory %</span></h3>
-        <div style="font-size:11px;color:#6E7079;margin-bottom:8px;">x = CPU · y = Memory · threshold 60%</div>
-        <QuadrantChart
-          points={DEVICE_LOAD}
-          xThreshold={60}
-          yThreshold={60}
-          xRange={[0, 100]}
-          yRange={[0, 100]}
-          quadrantLabels={['Mem-bound', 'Critical', 'Healthy', 'CPU-bound']}
-          xLabel="CPU %"
-          yLabel="Mem %"
-          height={200}
-          ariaLabel="Device load quadrant: CPU percent vs Memory percent with 60% thresholds. Edge Gateway 41/38 healthy; Core SW 72/55 CPU-bound; AP-Wide 85/78 critical"
-        />
-      </div>
-      <div slot="second" style="padding:0 0 0 12px;height:100%;overflow:auto;">
-        <h3>Metric correlations <span class="unit">CPU · Mem · NPU · Temp</span></h3>
-        <CorrelationMatrix
-          labels={METRIC_LABELS}
-          data={METRIC_CORR}
-          ariaLabel="Correlation matrix for CPU, Memory, NPU and Temperature metrics. CPU-Temperature 0.88 strongest; Memory-NPU 0.31 weakest."
-        />
-      </div>
+      {#snippet first()}
+            <div  style="padding:0 12px 0 0;height:100%;overflow:auto;">
+          <h3>Device load quadrant <span class="unit">CPU % vs Memory %</span></h3>
+          <div style="font-size:11px;color:#6E7079;margin-bottom:8px;">x = CPU · y = Memory · threshold 60%</div>
+          <QuadrantChart
+            points={DEVICE_LOAD}
+            xThreshold={60}
+            yThreshold={60}
+            xRange={[0, 100]}
+            yRange={[0, 100]}
+            quadrantLabels={['Mem-bound', 'Critical', 'Healthy', 'CPU-bound']}
+            xLabel="CPU %"
+            yLabel="Mem %"
+            height={200}
+            ariaLabel="Device load quadrant: CPU percent vs Memory percent with 60% thresholds. Edge Gateway 41/38 healthy; Core SW 72/55 CPU-bound; AP-Wide 85/78 critical"
+          />
+        </div>
+          {/snippet}
+      {#snippet second()}
+            <div  style="padding:0 0 0 12px;height:100%;overflow:auto;">
+          <h3>Metric correlations <span class="unit">CPU · Mem · NPU · Temp</span></h3>
+          <CorrelationMatrix
+            labels={METRIC_LABELS}
+            data={METRIC_CORR}
+            ariaLabel="Correlation matrix for CPU, Memory, NPU and Temperature metrics. CPU-Temperature 0.88 strongest; Memory-NPU 0.31 weakest."
+          />
+        </div>
+          {/snippet}
     </ResizablePanel>
   </Card>
 
