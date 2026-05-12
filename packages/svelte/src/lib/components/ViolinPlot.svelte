@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface ViolinSeries {
     label: string;
     values: number[];
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let series: ViolinSeries[] = [];
   export let yRange: [number, number] | undefined = undefined;

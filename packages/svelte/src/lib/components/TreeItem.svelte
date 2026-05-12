@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface TreeNode {
     id: string;
     label: string;
     meta?: string;
     children?: TreeNode[];
   }
+</script>
+
+<script lang="ts">
 
   export let node: TreeNode;
   export let expanded: Set<string>;
@@ -46,7 +49,7 @@
     <span class="tree__label">{node.label}</span>
     {#if node.meta}<span class="tree__meta">{node.meta}</span>{/if}
   </div>
-  {#if hasChildren && isExpanded}
+  {#if hasChildren && isExpanded && node.children}
     <ul role="group" class="tree__group">
       {#each node.children as child (child.id)}
         <svelte:self

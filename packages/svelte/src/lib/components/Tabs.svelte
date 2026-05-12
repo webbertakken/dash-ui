@@ -1,6 +1,9 @@
+<script context="module" lang="ts">
+  export interface TabItem { id: string; label: string; badge?: string | number }
+</script>
+
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  export interface TabItem { id: string; label: string; badge?: string | number }
   export let items: TabItem[] = [];
   export let active: string;
   export let ariaLabel: string | undefined = undefined;

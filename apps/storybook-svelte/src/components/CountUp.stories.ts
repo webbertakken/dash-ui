@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { CountUp } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/CountUp',
-  component: CountUp as any,
+  component: CountUp,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof CountUp>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

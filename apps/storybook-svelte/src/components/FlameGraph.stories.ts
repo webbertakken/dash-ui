@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { FlameGraph } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: hierarchy & flow/FlameGraph',
-  component: FlameGraph as any,
+  component: FlameGraph,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof FlameGraph>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

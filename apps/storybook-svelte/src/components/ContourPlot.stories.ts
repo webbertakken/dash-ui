@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ContourPlot } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: distribution/ContourPlot',
-  component: ContourPlot as any,
+  component: ContourPlot,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ContourPlot>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

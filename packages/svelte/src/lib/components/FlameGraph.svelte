@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface FlameNode {
     label: string;
     value?: number;
     color?: string;
     children?: FlameNode[];
   }
+</script>
+
+<script lang="ts">
 
   export let root: FlameNode;
   export let height = 160;

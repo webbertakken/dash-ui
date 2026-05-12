@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { TabPanel } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Specialised/TabPanel',
-  component: TabPanel as any,
+  component: TabPanel,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof TabPanel>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'active',

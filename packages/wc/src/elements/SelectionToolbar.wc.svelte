@@ -1,12 +1,9 @@
-<svelte:options tag="uni-selection-toolbar" />
+<svelte:options customElement="uni-selection-toolbar" />
 <script>
   import Original from '@w5-ui/svelte/components/SelectionToolbar.svelte';
-  export let count = undefined;
-  export let actions = [];
-  export let onClear = undefined;
-  export let ariaLabel = 'Selection actions';
+  // no public props
 </script>
 
-<Original {count} {actions} {onClear} {ariaLabel}>
+<Original >
   <slot />
 </Original>

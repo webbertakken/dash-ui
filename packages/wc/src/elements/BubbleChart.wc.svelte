@@ -1,14 +1,9 @@
-<svelte:options tag="uni-bubble-chart" />
+<svelte:options customElement="uni-bubble-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/BubbleChart.svelte';
-  export let points = [];
-  export let xRange = undefined;
-  export let yRange = undefined;
-  export let rRange = [4, 20];
-  export let height = 160;
-  export let ariaLabel = 'Bubble chart';
+  // no public props
 </script>
 
-<Original {points} {xRange} {yRange} {rRange} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

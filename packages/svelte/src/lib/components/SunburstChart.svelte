@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface SunburstNode {
     label: string;
     value?: number;
     color?: string;
     children?: SunburstNode[];
   }
+</script>
+
+<script lang="ts">
 
   export let root: SunburstNode;
   export let ariaLabel: string = 'Sunburst chart';

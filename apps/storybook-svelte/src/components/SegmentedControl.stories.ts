@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { SegmentedControl } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/SegmentedControl',
-  component: SegmentedControl as any,
+  component: SegmentedControl,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof SegmentedControl>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

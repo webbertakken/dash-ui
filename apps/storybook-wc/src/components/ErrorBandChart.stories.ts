@@ -25,8 +25,9 @@ export const Variant0: Story = {
       xLabels: ['a', 'b', 'c'],
       unit: 'ms',
     }
-    const el = document.createElement('uni-error-band-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-error-band-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -39,8 +40,9 @@ export const Variant1: Story = {
       series: [{ label: 'a', color: '#006FFF', mean: [1], lower: [0], upper: [2] }],
       yRange: [0, 5],
     }
-    const el = document.createElement('uni-error-band-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-error-band-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

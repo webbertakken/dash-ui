@@ -20,8 +20,9 @@ export const Variant0: Story = {
         { label: 'd', value: 12, kind: 'end' },
       ],
     }
-    const el = document.createElement('uni-waterfall-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-waterfall-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

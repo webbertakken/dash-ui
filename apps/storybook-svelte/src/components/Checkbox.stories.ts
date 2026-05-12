@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Checkbox } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/Checkbox',
-  component: Checkbox as any,
+  component: Checkbox,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Checkbox>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

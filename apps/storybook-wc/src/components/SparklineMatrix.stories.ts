@@ -26,8 +26,9 @@ export const Variant0: Story = {
         { label: 'c', values: [1, 1], delta: '-1', deltaDir: 'down' },
       ],
     }
-    const el = document.createElement('uni-sparkline-matrix')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-sparkline-matrix') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = { label: 'rate' }
-    const el = document.createElement('uni-star-rating')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-star-rating') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -30,8 +30,8 @@ export const Variant1: Story = {
       max: 6,
       size: 'sm',
     }
-    const el = document.createElement('uni-star-rating')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-star-rating') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -41,8 +41,8 @@ export const Variant2: Story = {
   name: 'readonly',
   render: () => {
     const props: Record<string, unknown> = { label: 'rate', value: 4, readOnly: true }
-    const el = document.createElement('uni-star-rating')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-star-rating') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -52,8 +52,8 @@ export const Variant3: Story = {
   name: 'default value',
   render: () => {
     const props: Record<string, unknown> = { label: 'rate', defaultValue: 2 }
-    const el = document.createElement('uni-star-rating')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-star-rating') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

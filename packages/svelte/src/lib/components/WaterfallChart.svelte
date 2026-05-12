@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface WaterfallBar {
     label: string;
     value: number;
     type?: 'start' | 'delta' | 'total';
   }
+</script>
+
+<script lang="ts">
 
   export let bars: WaterfallBar[] = [];
   export let height: number = 160;

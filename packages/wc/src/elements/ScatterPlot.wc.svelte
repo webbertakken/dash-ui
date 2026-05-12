@@ -1,13 +1,9 @@
-<svelte:options tag="uni-scatter-plot" />
+<svelte:options customElement="uni-scatter-plot" />
 <script>
   import Original from '@w5-ui/svelte/components/ScatterPlot.svelte';
-  export let points = [];
-  export let xRange = undefined;
-  export let yRange = undefined;
-  export let height = 160;
-  export let ariaLabel = 'Scatter plot';
+  // no public props
 </script>
 
-<Original {points} {xRange} {yRange} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

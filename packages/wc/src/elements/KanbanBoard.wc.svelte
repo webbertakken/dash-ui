@@ -1,11 +1,9 @@
-<svelte:options tag="uni-kanban-board" />
+<svelte:options customElement="uni-kanban-board" />
 <script>
   import Original from '@w5-ui/svelte/components/KanbanBoard.svelte';
-  export let columns = undefined;
-  export let onCardMove = undefined;
-  export let ariaLabel = 'Kanban board';
+  // no public props
 </script>
 
-<Original {columns} {onCardMove} {ariaLabel}>
+<Original >
   <slot />
 </Original>

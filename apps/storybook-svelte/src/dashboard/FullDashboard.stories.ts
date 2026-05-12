@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import App from 'dashboard-svelte/App.svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Dashboard/Full app',
-  component: App as any,
+  component: App,
   parameters: {
     layout: 'fullscreen',
     docs: {
@@ -13,7 +13,7 @@ const meta: Meta = {
       },
     },
   },
-}
+} satisfies Meta<typeof App>
 export default meta
 
 type Story = StoryObj

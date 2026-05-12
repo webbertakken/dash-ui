@@ -16,8 +16,9 @@ export const Variant0: Story = {
       items: [{ label: 'A', left: 5, right: 7 }],
       unit: 'GB',
     }
-    const el = document.createElement('uni-mirrored-bar-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-mirrored-bar-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

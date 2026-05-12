@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface GanttTask {
     label: string;
     start: number;
     end: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let tasks: GanttTask[] = [];
   export let xLabels: string[] = [];

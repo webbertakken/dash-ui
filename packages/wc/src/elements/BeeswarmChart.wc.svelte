@@ -1,14 +1,9 @@
-<svelte:options tag="uni-beeswarm-chart" />
+<svelte:options customElement="uni-beeswarm-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/BeeswarmChart.svelte';
-  export let series = [];
-  export let yRange = undefined;
-  export let height = 200;
-  export let unit = '';
-  export let dotRadius = 4;
-  export let ariaLabel = 'Beeswarm chart';
+  // no public props
 </script>
 
-<Original {series} {yRange} {height} {unit} {dotRadius} {ariaLabel}>
+<Original >
   <slot />
 </Original>

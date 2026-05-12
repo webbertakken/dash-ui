@@ -1,4 +1,4 @@
-<svelte:options tag="uni-toast" />
+<svelte:options customElement="uni-toast" />
 <script>
   import Original from '@w5-ui/svelte/components/Toast.svelte';
   // no public props

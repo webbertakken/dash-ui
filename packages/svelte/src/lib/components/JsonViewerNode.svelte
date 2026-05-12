@@ -1,5 +1,8 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export type JsVal = string | number | boolean | null | JsVal[] | { [k: string]: JsVal };
+</script>
+
+<script lang="ts">
   export let v: JsVal;
   export let k: string | undefined = undefined;
   export let depth = 0;

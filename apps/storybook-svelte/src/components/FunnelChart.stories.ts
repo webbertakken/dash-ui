@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { FunnelChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: hierarchy & flow/FunnelChart',
-  component: FunnelChart as any,
+  component: FunnelChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof FunnelChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

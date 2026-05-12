@@ -1,4 +1,4 @@
-<svelte:options tag="uni-icon-button" />
+<svelte:options customElement="uni-icon-button" />
 <script>
   import Original from '@w5-ui/svelte/components/IconButton.svelte';
   export let title = undefined;

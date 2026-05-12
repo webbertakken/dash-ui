@@ -1,4 +1,4 @@
-<svelte:options tag="uni-menubar" />
+<svelte:options customElement="uni-menubar" />
 <script>
   import Original from '@w5-ui/svelte/components/Menubar.svelte';
   // no public props

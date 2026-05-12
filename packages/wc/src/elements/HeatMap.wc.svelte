@@ -1,4 +1,4 @@
-<svelte:options tag="uni-heat-map" />
+<svelte:options customElement="uni-heat-map" />
 <script>
   import Original from '@w5-ui/svelte/components/HeatMap.svelte';
   export let data = [];

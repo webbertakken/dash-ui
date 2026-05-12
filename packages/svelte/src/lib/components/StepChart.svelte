@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface StepChartSeries {
     label: string;
     color: string;
     values: number[];
   }
+</script>
+
+<script lang="ts">
 
   export let series: StepChartSeries[] = [];
   export let labels: string[] = [];

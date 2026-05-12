@@ -13,8 +13,9 @@ export const Variant0: Story = {
   name: 'top',
   render: () => {
     const props: Record<string, unknown> = { title: 't', body: 'b' }
-    const el = document.createElement('uni-contextual-help')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-contextual-help') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -24,8 +25,9 @@ export const Variant1: Story = {
   name: 'bottom',
   render: () => {
     const props: Record<string, unknown> = { title: 't', body: 'b', placement: 'bottom' }
-    const el = document.createElement('uni-contextual-help')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-contextual-help') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

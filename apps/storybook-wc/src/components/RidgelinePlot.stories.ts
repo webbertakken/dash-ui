@@ -18,8 +18,8 @@ export const Variant0: Story = {
         { label: 'b', values: [1, 4, 2, 7, 5, 9], color: '#0f0' },
       ],
     }
-    const el = document.createElement('uni-ridgeline-plot')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-ridgeline-plot') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -32,8 +32,8 @@ export const Variant1: Story = {
       series: [{ label: 'a', values: [1, 4, 2, 7, 5, 9] }],
       xRange: [0, 10],
     }
-    const el = document.createElement('uni-ridgeline-plot')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-ridgeline-plot') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

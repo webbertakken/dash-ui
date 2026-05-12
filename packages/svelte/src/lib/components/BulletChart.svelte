@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface BulletItem {
     label: string;
     value: number;
@@ -7,6 +7,9 @@
     unit?: string;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: BulletItem[] = [];
   export let max: number = 100;
@@ -62,7 +65,7 @@
       {#if row.targetX != null}
         <rect x={LABEL_W + row.targetX - 1.5} y={row.rangeY} width="3" height={RANGE_H} fill="rgba(255,255,255,0.85)" rx="1" />
       {/if}
-      <text x={LABEL_W + trackW + 6} y={row.midY + 4} fill="#fff" font-size="11" font-family="inherit" font-variant-numeric="tabular-nums">
+      <text x={LABEL_W + trackW + 6} y={row.midY + 4} fill="#fff" font-size="11" font-family="inherit" style="font-variant-numeric: tabular-nums">
         {row.value}{row.unit}
       </text>
     {/each}

@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface IcicleNode {
     label: string;
     value?: number;
     color?: string;
     children?: IcicleNode[];
   }
+</script>
+
+<script lang="ts">
 
   export let root: IcicleNode;
   export let height = 160;

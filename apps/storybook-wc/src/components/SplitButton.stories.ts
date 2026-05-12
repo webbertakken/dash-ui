@@ -21,8 +21,8 @@ export const Variant0: Story = {
       onPrimaryClick: () => {},
       onAction: () => {},
     }
-    const el = document.createElement('uni-split-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-split-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -37,8 +37,8 @@ export const Variant1: Story = {
       disabled: true,
       items: [{ id: 'a', label: 'A' }],
     }
-    const el = document.createElement('uni-split-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-split-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -52,8 +52,8 @@ export const Variant2: Story = {
       variant: 'danger',
       items: [{ id: 'a', label: 'A' }],
     }
-    const el = document.createElement('uni-split-button')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-split-button') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

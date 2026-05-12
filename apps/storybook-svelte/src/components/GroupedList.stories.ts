@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { GroupedList } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/GroupedList',
-  component: GroupedList as any,
+  component: GroupedList,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof GroupedList>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

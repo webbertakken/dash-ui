@@ -1,11 +1,14 @@
-<script lang="ts">
-  import { onMount } from 'svelte';
-
+<script context="module" lang="ts">
   export interface ColumnDef {
     key: string;
     label: string;
     required?: boolean;
   }
+</script>
+
+<script lang="ts">
+  import { onMount } from 'svelte';
+
 
   export let columns: ColumnDef[] = [];
   export let visible: Set<string> = new Set();

@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { SelectionToolbar } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/SelectionToolbar',
-  component: SelectionToolbar as any,
+  component: SelectionToolbar,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof SelectionToolbar>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

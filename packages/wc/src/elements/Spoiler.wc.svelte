@@ -1,4 +1,4 @@
-<svelte:options tag="uni-spoiler" />
+<svelte:options customElement="uni-spoiler" />
 <script>
   import Original from '@w5-ui/svelte/components/Spoiler.svelte';
   export let maxHeight = 80;

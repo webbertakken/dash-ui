@@ -36,6 +36,8 @@
   const uid = `dash-ui-fb-${++counter}`;
   const dispatch = createEventDispatcher<{ change: { rules: FilterRule[]; conjunction: 'and' | 'or' } }>();
 
+  const CONJUNCTIONS = ['and', 'or'] as const;
+
   function emit(rules: FilterRule[], conj: 'and' | 'or' = conjunction) {
     dispatch('change', { rules, conjunction: conj });
   }
@@ -69,7 +71,7 @@
     {#if value.length > 0}
       <span class="fb-conj-label">Match</span>
       <div class="fb-conj" role="group" aria-label="Conjunction">
-        {#each ['and', 'or'] as c}
+        {#each CONJUNCTIONS as c}
           <button
             type="button"
             class="fb-conj-btn{conjunction === c ? ' is-active' : ''}"

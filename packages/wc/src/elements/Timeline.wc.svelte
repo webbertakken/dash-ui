@@ -1,4 +1,4 @@
-<svelte:options tag="uni-timeline" />
+<svelte:options customElement="uni-timeline" />
 <script>
   import Original from '@w5-ui/svelte/components/Timeline.svelte';
   // no public props

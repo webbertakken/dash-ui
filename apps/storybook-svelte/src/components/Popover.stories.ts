@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Popover } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Selection & menus/Popover',
-  component: Popover as any,
+  component: Popover,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Popover>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

@@ -1,11 +1,9 @@
-<svelte:options tag="uni-bullet-chart" />
+<svelte:options customElement="uni-bullet-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/BulletChart.svelte';
-  export let items = [];
-  export let max = 100;
-  export let ariaLabel = 'Bullet chart';
+  // no public props
 </script>
 
-<Original {items} {max} {ariaLabel}>
+<Original >
   <slot />
 </Original>

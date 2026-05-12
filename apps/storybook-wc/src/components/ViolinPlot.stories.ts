@@ -18,8 +18,8 @@ export const Variant0: Story = {
         { label: 'B', values: [2, 3, 3, 4, 5], color: '#0f0' },
       ],
     }
-    const el = document.createElement('uni-violin-plot')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-violin-plot') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -32,8 +32,8 @@ export const Variant1: Story = {
       series: [{ label: 'A', values: [1, 2, 3] }],
       yRange: [0, 10],
     }
-    const el = document.createElement('uni-violin-plot')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-violin-plot') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

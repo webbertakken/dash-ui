@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { FilterBuilder } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Selection & menus/FilterBuilder',
-  component: FilterBuilder as any,
+  component: FilterBuilder,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof FilterBuilder>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

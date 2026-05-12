@@ -18,6 +18,7 @@
     { label: 'DDoS', value: 43 },
   ];
   let tab = 'threat';
+  const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
   const PROTECTIONS: { title: string; description: string; defaultOn: boolean }[] = [
     { title: 'Suspicious activity detection', description: 'Continuously monitors traffic patterns for scanners, brute-force login attempts, and lateral movement between network segments. Detected events are logged and optionally blocked automatically based on the configured IPS sensitivity level. Signatures update hourly from the Dash threat intelligence feed.', defaultOn: true },
     { title: 'Honeypot', description: 'Deploys decoy TCP/UDP listeners on unused ports across all network segments. Any connection attempt to a honeypot port triggers an alert and is treated as high-confidence hostile activity, since legitimate devices should never connect to these ports. Zero false-positive rate by design.', defaultOn: true },
@@ -377,7 +378,7 @@
       <tbody>
         {#each THREATS as t}
           <tr>
-            <td><Pill variant={t[0]}>{t[0] === 'danger' ? 'Critical' : 'Medium'}</Pill></td>
+            <td><Pill variant={pillVariant(t[0])}>{t[0] === 'danger' ? 'Critical' : 'Medium'}</Pill></td>
             <td style="color:#fff;">{t[1]}</td>
             <td class="mac">{t[2]}</td>
             <td class="mac">{t[3]}</td>

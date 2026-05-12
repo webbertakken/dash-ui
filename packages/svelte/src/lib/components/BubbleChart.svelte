@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface BubblePoint {
     x: number;
     y: number;
@@ -7,6 +7,9 @@
     label?: string;
     key?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let points: BubblePoint[] = [];
   export let xRange: [number, number] | undefined = undefined;

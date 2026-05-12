@@ -21,8 +21,8 @@ export const Variant0: Story = {
       rowLabels: ['r1', 'r2', 'r3'],
       colLabels: ['c1', 'c2', 'c3', 'c4', 'c5'],
     }
-    const el = document.createElement('uni-punch-card')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-punch-card') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -37,8 +37,8 @@ export const Variant1: Story = {
         [3, 4],
       ],
     }
-    const el = document.createElement('uni-punch-card')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-punch-card') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

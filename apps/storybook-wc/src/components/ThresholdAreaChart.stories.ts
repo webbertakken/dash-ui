@@ -18,8 +18,9 @@ export const Variant0: Story = {
       threshold: 5,
       thresholdLabel: 'warn',
     }
-    const el = document.createElement('uni-threshold-area-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-threshold-area-chart') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

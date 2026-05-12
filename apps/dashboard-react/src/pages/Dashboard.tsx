@@ -1,3 +1,4 @@
+import type { PillVariant } from '@w5-ui/react'
 import {
   Card,
   Pill,
@@ -482,7 +483,7 @@ export function Dashboard({ onAdopt }: DashboardProps) {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Pill variant={sev as any} className="pill-small">
+                  <Pill variant={sev as PillVariant} className="pill-small">
                     {sev === 'danger' ? 'Critical' : 'Warning'}
                   </Pill>
                   <span style={{ fontSize: 13, color: '#fff', fontWeight: 500 }}>{t}</span>

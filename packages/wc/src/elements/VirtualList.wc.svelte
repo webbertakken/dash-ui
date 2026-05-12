@@ -1,4 +1,4 @@
-<svelte:options tag="uni-virtual-list" />
+<svelte:options customElement="uni-virtual-list" />
 <script>
   import Original from '@w5-ui/svelte/components/VirtualList.svelte';
   export let items = [];

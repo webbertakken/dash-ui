@@ -4,6 +4,7 @@
   let tab = 'active';
   let criticalDismissed = false;
   let notifOpen = false;
+  const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
 
   const ALARM_DATA = [1, 1, 0, 0, 2, 2, 4, 3, 3, 5, 4, 3, 3];
   const ALARM_LABELS = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', 'Now'];
@@ -94,7 +95,7 @@
       style="display:inline-flex;align-items:center;gap:6px;"
     >
       <Badge count={unread} color="danger">
-        <BellIcon aria-hidden="true" />
+        <BellIcon />
       </Badge>
       Notifications
     </Button>
@@ -171,7 +172,7 @@
       <tbody>
         {#each ROWS as r (r.source[1])}
           <tr>
-            <td><Pill variant={r.sev}>{r.sev === 'danger' ? 'Critical' : 'Warning'}</Pill></td>
+            <td><Pill variant={pillVariant(r.sev)}>{r.sev === 'danger' ? 'Critical' : 'Warning'}</Pill></td>
             <td>
               <div class="name-cell">
                 <span class="nc-thumb">{r.source[0]}</span>

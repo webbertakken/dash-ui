@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Combobox } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/Combobox',
-  component: Combobox as any,
+  component: Combobox,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Combobox>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

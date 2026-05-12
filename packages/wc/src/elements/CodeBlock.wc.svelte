@@ -1,4 +1,4 @@
-<svelte:options tag="uni-code-block" />
+<svelte:options customElement="uni-code-block" />
 <script>
   import Original from '@w5-ui/svelte/components/CodeBlock.svelte';
   export let code = '';

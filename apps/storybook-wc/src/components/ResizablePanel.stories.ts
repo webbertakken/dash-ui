@@ -13,8 +13,9 @@ export const Variant0: Story = {
   name: 'vertical',
   render: () => {
     const props: Record<string, unknown> = {}
-    const el = document.createElement('uni-resizable-panel')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-resizable-panel') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -29,8 +30,9 @@ export const Variant1: Story = {
       min: 10,
       max: 90,
     }
-    const el = document.createElement('uni-resizable-panel')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-resizable-panel') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

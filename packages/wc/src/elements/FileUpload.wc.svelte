@@ -1,4 +1,4 @@
-<svelte:options tag="uni-file-upload" />
+<svelte:options customElement="uni-file-upload" />
 <script>
   import Original from '@w5-ui/svelte/components/FileUpload.svelte';
   export let label = 'Upload file';

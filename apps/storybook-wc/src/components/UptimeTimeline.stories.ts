@@ -25,8 +25,9 @@ export const Variant0: Story = {
       ],
       xLabels: ['0', '5', '10'],
     }
-    const el = document.createElement('uni-uptime-timeline')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-uptime-timeline') as HTMLElement &
+      Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

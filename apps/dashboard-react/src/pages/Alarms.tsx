@@ -1,3 +1,4 @@
+import type { PillVariant } from '@w5-ui/react'
 import {
   Alert,
   Badge,
@@ -417,7 +418,7 @@ export function Alarms() {
               {ROWS.map((r) => (
                 <tr key={r.source[1]}>
                   <td>
-                    <Pill variant={r.sev as any}>
+                    <Pill variant={r.sev as PillVariant}>
                       {r.sev === 'danger' ? 'Critical' : 'Warning'}
                     </Pill>
                   </td>

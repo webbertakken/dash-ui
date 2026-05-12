@@ -1,11 +1,14 @@
-<script lang="ts">
-  import CloseIcon from '../icons/CloseIcon.svelte';
-
+<script context="module" lang="ts">
   export interface SelectionToolbarAction {
     label: string;
     onClick: () => void;
     variant?: 'default' | 'danger';
   }
+</script>
+
+<script lang="ts">
+  import CloseIcon from '../icons/CloseIcon.svelte';
+
 
   export let count: number;
   export let actions: SelectionToolbarAction[] = [];
@@ -36,7 +39,7 @@
       on:click={onClear}
       aria-label="Clear selection"
     >
-      <CloseIcon aria-hidden="true" />
+      <CloseIcon />
     </button>
   </div>
 {/if}

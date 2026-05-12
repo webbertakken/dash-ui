@@ -1,4 +1,4 @@
-<svelte:options tag="uni-sort-header" />
+<svelte:options customElement="uni-sort-header" />
 <script>
   import Original from '@w5-ui/svelte/components/SortHeader.svelte';
   export let sortKey = undefined;

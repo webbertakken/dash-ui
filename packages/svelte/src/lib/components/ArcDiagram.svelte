@@ -1,16 +1,19 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface ArcNode {
     id: string;
     label: string;
     color?: string;
   }
-
   export interface ArcLink {
     source: string;
     target: string;
     value?: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
+
 
   export let nodes: ArcNode[];
   export let links: ArcLink[];

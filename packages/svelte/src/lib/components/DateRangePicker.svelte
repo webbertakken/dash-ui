@@ -33,15 +33,15 @@
     }
     return grid;
   }
-</script>
-
-<script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
   export interface DateRange {
     start: Date | null;
     end: Date | null;
   }
+</script>
+
+<script lang="ts">
+  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
   export let value: DateRange = { start: null, end: null };
   export let placeholder: string = 'Select date range';
@@ -144,6 +144,7 @@
   </button>
 
   {#if open}
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions - dialog uses keyboard listener for Escape -->
     <div
       id={dlgId}
       bind:this={dlgEl}

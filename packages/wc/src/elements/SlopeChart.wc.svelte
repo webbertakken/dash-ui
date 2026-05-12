@@ -1,14 +1,9 @@
-<svelte:options tag="uni-slope-chart" />
+<svelte:options customElement="uni-slope-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/SlopeChart.svelte';
-  export let items = [];
-  export let labelBefore = 'Before';
-  export let labelAfter = 'After';
-  export let unit = '';
-  export let ariaLabel = 'Slope chart';
-  export let positiveIsGood = false;
+  // no public props
 </script>
 
-<Original {items} {labelBefore} {labelAfter} {unit} {ariaLabel} {positiveIsGood}>
+<Original >
   <slot />
 </Original>

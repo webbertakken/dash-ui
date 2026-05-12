@@ -18,8 +18,8 @@ export const Variant0: Story = {
         { id: 'b', label: 'B', value: 20, color: '#0f0' },
       ],
     }
-    const el = document.createElement('uni-circle-packing')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-circle-packing') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -40,8 +40,8 @@ export const Variant1: Story = {
         { id: '7', label: 'n7', value: 44 },
       ],
     }
-    const el = document.createElement('uni-circle-packing')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-circle-packing') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -51,8 +51,8 @@ export const Variant2: Story = {
   name: 'empty',
   render: () => {
     const props: Record<string, unknown> = { items: [] }
-    const el = document.createElement('uni-circle-packing')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-circle-packing') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

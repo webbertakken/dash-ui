@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { Tooltip } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Selection & menus/Tooltip',
-  component: Tooltip as any,
+  component: Tooltip,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof Tooltip>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

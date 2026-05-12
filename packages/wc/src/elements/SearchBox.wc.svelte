@@ -1,4 +1,4 @@
-<svelte:options tag="uni-search-box" />
+<svelte:options customElement="uni-search-box" />
 <script>
   import Original from '@w5-ui/svelte/components/SearchBox.svelte';
   export let placeholder = '';

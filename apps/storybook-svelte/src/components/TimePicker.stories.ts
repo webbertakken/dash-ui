@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { TimePicker } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/TimePicker',
-  component: TimePicker as any,
+  component: TimePicker,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof TimePicker>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

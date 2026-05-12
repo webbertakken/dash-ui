@@ -4,6 +4,7 @@
   import { CLIENTS } from '../data';
 
   type LeaseRow = { name: string; ip: string; network: string; signal: 'strong' | 'weak' | null };
+  const asLease = (x: unknown): LeaseRow => x as LeaseRow;
   const NETWORKS_SV = ['Office', 'Staff', 'Guest', 'IoT VLAN'];
   const SIGNALS_SV: Array<'strong' | 'weak' | null> = ['strong', 'strong', 'weak', null];
   const ALL_LEASES: LeaseRow[] = Array.from({ length: 200 }, (_, i) => ({
@@ -238,7 +239,7 @@
     <VirtualList items={ALL_LEASES} itemHeight={40} height={320} label="DHCP lease list">
       <svelte:fragment let:item let:index>
         {#if item}
-          {@const row = item}
+          {@const row = asLease(item)}
           <div class="vl-row" style="height:40px;">
             <span class="vl-row-name">{row.name}</span>
             <span class="vl-row-ip">{row.ip}</span>

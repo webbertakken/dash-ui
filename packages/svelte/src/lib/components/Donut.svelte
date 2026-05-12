@@ -1,5 +1,8 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface DonutSegment { label: string; value: number; color: string }
+</script>
+
+<script lang="ts">
   export let size: number = 96;
   export let segments: DonutSegment[] = [];
   export let centerValue: string | number;

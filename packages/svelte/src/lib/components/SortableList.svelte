@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface SortableItem {
     id: string;
     label: string;
     meta?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: SortableItem[] = [];
   export let onChange: (items: SortableItem[]) => void = () => {};

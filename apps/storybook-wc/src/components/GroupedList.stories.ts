@@ -24,8 +24,8 @@ export const Variant0: Story = {
         },
       ],
     }
-    const el = document.createElement('uni-grouped-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-grouped-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -38,8 +38,8 @@ export const Variant1: Story = {
       groups: [{ title: 'A', items: [{ label: 'one' }] }],
       collapsible: false,
     }
-    const el = document.createElement('uni-grouped-list')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-grouped-list') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

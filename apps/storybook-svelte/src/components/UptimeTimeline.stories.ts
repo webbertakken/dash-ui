@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { UptimeTimeline } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: time-series/UptimeTimeline',
-  component: UptimeTimeline as any,
+  component: UptimeTimeline,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof UptimeTimeline>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface DualAxisSeries {
     label: string;
     color: string;
     values: number[];
   }
+</script>
+
+<script lang="ts">
 
   export let bars: DualAxisSeries;
   export let line: DualAxisSeries;

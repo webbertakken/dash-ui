@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface HistogramBin {
     x0: number;
     x1: number;
     count: number;
   }
+</script>
+
+<script lang="ts">
 
   export let bins: HistogramBin[] = [];
   export let height: number = 160;

@@ -1,4 +1,4 @@
-<svelte:options tag="uni-progress-bar" />
+<svelte:options customElement="uni-progress-bar" />
 <script>
   import Original from '@w5-ui/svelte/components/ProgressBar.svelte';
   export let value = undefined;

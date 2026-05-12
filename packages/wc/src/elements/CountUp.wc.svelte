@@ -1,4 +1,4 @@
-<svelte:options tag="uni-count-up" />
+<svelte:options customElement="uni-count-up" />
 <script>
   import Original from '@w5-ui/svelte/components/CountUp.svelte';
   export let from = 0;

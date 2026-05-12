@@ -5,6 +5,7 @@
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher<{ adopt: void }>();
   let showBanner = true;
+  const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
   function thumb(model: string) {
     if (model.includes('EG')) return 'EG';
     if (model.includes('ES')) return 'ES';
@@ -312,7 +313,7 @@
       <div style="padding:10px;background:#0A0A0B;border:1px solid rgba(255,255,255,0.06);border-radius:6px;margin-top:8px;">
         <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
           <div style="display:flex;align-items:center;gap:8px;">
-            <Pill variant={sev}>{sev === 'danger' ? 'Critical' : 'Warning'}</Pill>
+            <Pill variant={pillVariant(sev)}>{sev === 'danger' ? 'Critical' : 'Warning'}</Pill>
             <span style="font-size:13px;color:#fff;font-weight:500;">{t}</span>
           </div>
           <span style="font-size:11px;color:#6E7079;">{w}</span>

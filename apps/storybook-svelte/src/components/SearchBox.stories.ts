@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { SearchBox } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Specialised/SearchBox',
-  component: SearchBox as any,
+  component: SearchBox,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof SearchBox>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

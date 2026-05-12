@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { SankeyDiagram } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: hierarchy & flow/SankeyDiagram',
-  component: SankeyDiagram as any,
+  component: SankeyDiagram,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof SankeyDiagram>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

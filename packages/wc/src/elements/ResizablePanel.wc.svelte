@@ -1,4 +1,4 @@
-<svelte:options tag="uni-resizable-panel" />
+<svelte:options customElement="uni-resizable-panel" />
 <script>
   import Original from '@w5-ui/svelte/components/ResizablePanel.svelte';
   // no public props

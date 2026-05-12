@@ -1,4 +1,4 @@
-<svelte:options tag="uni-matrix-chart" />
+<svelte:options customElement="uni-matrix-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/MatrixChart.svelte';
   export let rows = [];

@@ -1,12 +1,9 @@
-<svelte:options tag="uni-force-graph" />
+<svelte:options customElement="uni-force-graph" />
 <script>
   import Original from '@w5-ui/svelte/components/ForceGraph.svelte';
-  export let nodes = [];
-  export let links = [];
-  export let height = 260;
-  export let ariaLabel = 'Force-directed network graph';
+  // no public props
 </script>
 
-<Original {nodes} {links} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

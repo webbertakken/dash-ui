@@ -21,8 +21,8 @@ export const Variant0: Story = {
       valueLegend: 'now',
       compareLegend: 'prev',
     }
-    const el = document.createElement('uni-dot-plot')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-dot-plot') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -32,8 +32,8 @@ export const Variant1: Story = {
   name: 'no compare',
   render: () => {
     const props: Record<string, unknown> = { items: [{ label: 'A', value: 5 }], max: 20 }
-    const el = document.createElement('uni-dot-plot')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-dot-plot') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

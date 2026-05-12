@@ -18,8 +18,8 @@ export const Variant0: Story = {
         { label: 'B', value: 5 },
       ],
     }
-    const el = document.createElement('uni-stripe-chart')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-stripe-chart') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

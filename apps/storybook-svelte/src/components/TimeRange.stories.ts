@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { TimeRange } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Navigation/TimeRange',
-  component: TimeRange as any,
+  component: TimeRange,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof TimeRange>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

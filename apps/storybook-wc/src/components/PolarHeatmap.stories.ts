@@ -21,8 +21,8 @@ export const Variant0: Story = {
       cols: 2,
       colLabels: ['c1', 'c2'],
     }
-    const el = document.createElement('uni-polar-heatmap')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-polar-heatmap') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

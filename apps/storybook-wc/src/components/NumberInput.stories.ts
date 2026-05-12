@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = { label: 'N' }
-    const el = document.createElement('uni-number-input')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-number-input') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -32,8 +32,8 @@ export const Variant1: Story = {
       step: 2,
       suffix: 'x',
     }
-    const el = document.createElement('uni-number-input')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-number-input') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -43,8 +43,8 @@ export const Variant2: Story = {
   name: 'disabled',
   render: () => {
     const props: Record<string, unknown> = { label: 'N', disabled: true }
-    const el = document.createElement('uni-number-input')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-number-input') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

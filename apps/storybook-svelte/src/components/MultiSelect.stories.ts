@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { MultiSelect } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/MultiSelect',
-  component: MultiSelect as any,
+  component: MultiSelect,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof MultiSelect>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

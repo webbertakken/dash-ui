@@ -52,6 +52,7 @@
     <label for={uid} class="tag-input__label">{label}</label>
   {/if}
   <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+  <!-- svelte-ignore a11y-no-noninteractive-element-interactions - group container focuses input on click -->
   <div
     role="group"
     aria-label={label ?? 'Tags'}

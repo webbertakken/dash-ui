@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ForceGraph } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: hierarchy & flow/ForceGraph',
-  component: ForceGraph as any,
+  component: ForceGraph,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ForceGraph>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

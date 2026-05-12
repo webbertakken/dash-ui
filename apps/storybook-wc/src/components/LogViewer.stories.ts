@@ -20,8 +20,8 @@ export const Variant0: Story = {
         { time: '00:03', level: 'debug', message: 'd' },
       ],
     }
-    const el = document.createElement('uni-log-viewer')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-log-viewer') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -31,8 +31,8 @@ export const Variant1: Story = {
   name: 'no follow',
   render: () => {
     const props: Record<string, unknown> = { entries: [], defaultFollow: false }
-    const el = document.createElement('uni-log-viewer')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-log-viewer') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

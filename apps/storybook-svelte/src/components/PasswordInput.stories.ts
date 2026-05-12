@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { PasswordInput } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/PasswordInput',
-  component: PasswordInput as any,
+  component: PasswordInput,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof PasswordInput>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { RangeSlider } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Inputs/RangeSlider',
-  component: RangeSlider as any,
+  component: RangeSlider,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof RangeSlider>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

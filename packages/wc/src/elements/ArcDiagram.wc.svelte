@@ -1,12 +1,9 @@
-<svelte:options tag="uni-arc-diagram" />
+<svelte:options customElement="uni-arc-diagram" />
 <script>
   import Original from '@w5-ui/svelte/components/ArcDiagram.svelte';
-  export let nodes = undefined;
-  export let links = undefined;
-  export let height = 180;
-  export let ariaLabel = 'Arc diagram';
+  // no public props
 </script>
 
-<Original {nodes} {links} {height} {ariaLabel}>
+<Original >
   <slot />
 </Original>

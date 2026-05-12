@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { HoverCard } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Selection & menus/HoverCard',
-  component: HoverCard as any,
+  component: HoverCard,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof HoverCard>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

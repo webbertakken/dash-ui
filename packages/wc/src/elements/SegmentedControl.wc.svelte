@@ -1,4 +1,4 @@
-<svelte:options tag="uni-segmented-control" />
+<svelte:options customElement="uni-segmented-control" />
 <script>
   import Original from '@w5-ui/svelte/components/SegmentedControl.svelte';
   // no public props

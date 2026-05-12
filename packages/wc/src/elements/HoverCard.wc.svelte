@@ -1,4 +1,4 @@
-<svelte:options tag="uni-hover-card" />
+<svelte:options customElement="uni-hover-card" />
 <script>
   import Original from '@w5-ui/svelte/components/HoverCard.svelte';
   // no public props

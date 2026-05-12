@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { TreeView } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/TreeView',
-  component: TreeView as any,
+  component: TreeView,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof TreeView>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

@@ -19,8 +19,8 @@ export const Variant0: Story = {
       ],
       links: [{ source: 'a', target: 'b' }],
     }
-    const el = document.createElement('uni-force-graph')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-force-graph') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

@@ -13,8 +13,8 @@ export const Variant0: Story = {
   name: 'default',
   render: () => {
     const props: Record<string, unknown> = {}
-    const el = document.createElement('uni-spoiler')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-spoiler') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'tall'
     return el
   },
@@ -24,8 +24,8 @@ export const Variant1: Story = {
   name: 'custom',
   render: () => {
     const props: Record<string, unknown> = { maxHeight: 20, showLabel: 'more', hideLabel: 'less' }
-    const el = document.createElement('uni-spoiler')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-spoiler') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'x'
     return el
   },

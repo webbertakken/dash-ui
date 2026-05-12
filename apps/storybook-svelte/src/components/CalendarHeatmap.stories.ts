@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { CalendarHeatmap } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: distribution/CalendarHeatmap',
-  component: CalendarHeatmap as any,
+  component: CalendarHeatmap,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof CalendarHeatmap>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

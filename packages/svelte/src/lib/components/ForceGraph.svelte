@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface FDNode {
     id: string;
     label?: string;
@@ -9,6 +9,9 @@
     source: string;
     target: string;
   }
+</script>
+
+<script lang="ts">
 
   export let nodes: FDNode[] = [];
   export let links: FDLink[] = [];

@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface PolarCell {
     row: number;
     col: number;
     value: number;
   }
+</script>
+
+<script lang="ts">
 
   export let data: PolarCell[] = [];
   export let rows: number = 7;

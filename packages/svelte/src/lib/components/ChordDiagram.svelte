@@ -1,5 +1,8 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface ChordNode { label: string; color?: string; }
+</script>
+
+<script lang="ts">
 
   export let nodes: ChordNode[];
   export let matrix: number[][];

@@ -5,7 +5,7 @@
   export let dir: 'asc' | 'desc' = 'asc';
   const dispatch = createEventDispatcher<{ sort: string }>();
   $: active = activeKey === sortKey;
-  $: ariaSort = active ? (dir === 'asc' ? 'ascending' : 'descending') : 'none';
+  $: ariaSort = (active ? (dir === 'asc' ? 'ascending' : 'descending') : 'none') as 'ascending' | 'descending' | 'none';
 </script>
 
 <th scope="col" aria-sort={ariaSort}>

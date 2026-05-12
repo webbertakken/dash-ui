@@ -9,11 +9,14 @@
   let className = '';
   export { className as class };
   export let style: string = '';
+  export let ariaLabel: string | undefined = undefined;
+  export { ariaLabel as 'aria-label' };
 </script>
 
 <button
   {type}
   {title}
+  aria-label={ariaLabel}
   on:click
   class="btn btn-{variant} {iconOnly ? 'btn-icon' : ''} {className}"
   {style}

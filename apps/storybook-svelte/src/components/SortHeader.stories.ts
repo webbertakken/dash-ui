@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { SortHeader } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Specialised/SortHeader',
-  component: SortHeader as any,
+  component: SortHeader,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof SortHeader>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'asc active',

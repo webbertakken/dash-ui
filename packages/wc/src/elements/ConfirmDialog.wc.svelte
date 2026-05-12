@@ -1,4 +1,4 @@
-<svelte:options tag="uni-confirm-dialog" />
+<svelte:options customElement="uni-confirm-dialog" />
 <script>
   import Original from '@w5-ui/svelte/components/ConfirmDialog.svelte';
   export let open = false;

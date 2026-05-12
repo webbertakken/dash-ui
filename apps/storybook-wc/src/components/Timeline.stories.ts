@@ -18,8 +18,8 @@ export const Variant0: Story = {
         { id: '2', title: 'b', time: 'later', description: 'd', icon: 'x' },
       ],
     }
-    const el = document.createElement('uni-timeline')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-timeline') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

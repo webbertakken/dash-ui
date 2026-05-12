@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ExpandableRow } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Data display/ExpandableRow',
-  component: ExpandableRow as any,
+  component: ExpandableRow,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ExpandableRow>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'closed',

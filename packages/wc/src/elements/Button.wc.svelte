@@ -1,4 +1,4 @@
-<svelte:options tag="uni-button" />
+<svelte:options customElement="uni-button" />
 <script>
   import Original from '@w5-ui/svelte/components/Button.svelte';
   export let variant = 'ghost';
@@ -8,8 +8,9 @@
   export let type = 'button';
   export let disabled = false;
   export let style = '';
+  export let ariaLabel = undefined;
 </script>
 
-<Original {variant} {iconOnly} {loading} {title} {type} {disabled} {style}>
+<Original {variant} {iconOnly} {loading} {title} {type} {disabled} {style} {ariaLabel}>
   <slot />
 </Original>

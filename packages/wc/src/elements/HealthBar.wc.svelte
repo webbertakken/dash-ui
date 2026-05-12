@@ -1,4 +1,4 @@
-<svelte:options tag="uni-health-bar" />
+<svelte:options customElement="uni-health-bar" />
 <script>
   import Original from '@w5-ui/svelte/components/HealthBar.svelte';
   export let value = undefined;

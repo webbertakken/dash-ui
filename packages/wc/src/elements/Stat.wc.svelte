@@ -1,4 +1,4 @@
-<svelte:options tag="uni-stat" />
+<svelte:options customElement="uni-stat" />
 <script>
   import Original from '@w5-ui/svelte/components/Stat.svelte';
   export let label = undefined;

@@ -1,4 +1,4 @@
-<svelte:options tag="uni-input" />
+<svelte:options customElement="uni-input" />
 <script>
   import Original from '@w5-ui/svelte/components/Input.svelte';
   export let value = '';

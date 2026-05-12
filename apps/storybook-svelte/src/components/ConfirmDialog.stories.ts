@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ConfirmDialog } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Feedback/ConfirmDialog',
-  component: ConfirmDialog as any,
+  component: ConfirmDialog,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ConfirmDialog>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'open info',

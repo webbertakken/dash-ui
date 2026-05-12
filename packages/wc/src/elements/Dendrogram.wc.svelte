@@ -1,12 +1,9 @@
-<svelte:options tag="uni-dendrogram" />
+<svelte:options customElement="uni-dendrogram" />
 <script>
   import Original from '@w5-ui/svelte/components/Dendrogram.svelte';
-  export let root = undefined;
-  export let colWidth = 130;
-  export let rowHeight = 28;
-  export let ariaLabel = 'Dendrogram';
+  // no public props
 </script>
 
-<Original {root} {colWidth} {rowHeight} {ariaLabel}>
+<Original >
   <slot />
 </Original>

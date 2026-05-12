@@ -1,4 +1,4 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface RadialBarItem {
     label: string;
     value: number;
@@ -6,6 +6,9 @@
     color?: string;
     unit?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: RadialBarItem[] = [];
   export let ariaLabel = 'Radial bar chart';

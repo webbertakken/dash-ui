@@ -1,13 +1,9 @@
-<svelte:options tag="uni-cumulative-distribution" />
+<svelte:options customElement="uni-cumulative-distribution" />
 <script>
   import Original from '@w5-ui/svelte/components/CumulativeDistribution.svelte';
-  export let series = [];
-  export let guides = [50, 95];
-  export let height = 160;
-  export let unit = '';
-  export let ariaLabel = 'Cumulative distribution chart';
+  // no public props
 </script>
 
-<Original {series} {guides} {height} {unit} {ariaLabel}>
+<Original >
   <slot />
 </Original>

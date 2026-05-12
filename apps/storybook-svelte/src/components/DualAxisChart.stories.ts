@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { DualAxisChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: time-series/DualAxisChart',
-  component: DualAxisChart as any,
+  component: DualAxisChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof DualAxisChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

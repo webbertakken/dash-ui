@@ -82,7 +82,7 @@ for (const name of all) {
     const safeName = `Variant${i}`
     return `export const ${safeName}: Story = {
   name: variants[${i}]!.name,
-  render: () => variants[${i}]!.node as any,
+  render: () => variants[${i}]!.node,
 };`
   }).join('\n\n')
 

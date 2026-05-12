@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface DotPlotItem {
     label: string;
     value: number;
     compare?: number;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let items: DotPlotItem[] = [];
   export let min: number = 0;

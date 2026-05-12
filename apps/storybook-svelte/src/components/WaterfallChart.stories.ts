@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { WaterfallChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: hierarchy & flow/WaterfallChart',
-  component: WaterfallChart as any,
+  component: WaterfallChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof WaterfallChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ParallelCoordinates } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: distribution/ParallelCoordinates',
-  component: ParallelCoordinates as any,
+  component: ParallelCoordinates,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ParallelCoordinates>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

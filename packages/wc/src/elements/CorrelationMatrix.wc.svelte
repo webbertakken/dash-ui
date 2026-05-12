@@ -1,4 +1,4 @@
-<svelte:options tag="uni-correlation-matrix" />
+<svelte:options customElement="uni-correlation-matrix" />
 <script>
   import Original from '@w5-ui/svelte/components/CorrelationMatrix.svelte';
   export let labels = [];

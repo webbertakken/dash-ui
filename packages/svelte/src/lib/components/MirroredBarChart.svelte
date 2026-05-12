@@ -1,9 +1,12 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface MirroredBarItem {
     label: string;
     left: number;
     right: number;
   }
+</script>
+
+<script lang="ts">
 
   export let items: MirroredBarItem[] = [];
   export let leftLabel: string = 'Download';

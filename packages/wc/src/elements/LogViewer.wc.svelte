@@ -1,13 +1,9 @@
-<svelte:options tag="uni-log-viewer" />
+<svelte:options customElement="uni-log-viewer" />
 <script>
   import Original from '@w5-ui/svelte/components/LogViewer.svelte';
-  export let entries = [];
-  export let height = 360;
-  export let defaultFollow = true;
-  export let ariaLabel = 'Log entries';
-  export let className = '';
+  // no public props
 </script>
 
-<Original {entries} {height} {defaultFollow} {ariaLabel} {className}>
+<Original >
   <slot />
 </Original>

@@ -1,4 +1,4 @@
-<svelte:options tag="uni-empty-state" />
+<svelte:options customElement="uni-empty-state" />
 <script>
   import Original from '@w5-ui/svelte/components/EmptyState.svelte';
   export let title = undefined;

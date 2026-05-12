@@ -14,20 +14,20 @@ type Story = StoryObj
 
 export const Variant0: Story = {
   name: variants[0]!.name,
-  render: () => variants[0]!.node as any,
+  render: () => variants[0]!.node,
 }
 
 export const Variant1: Story = {
   name: variants[1]!.name,
-  render: () => variants[1]!.node as any,
+  render: () => variants[1]!.node,
 }
 
 export const Variant2: Story = {
   name: variants[2]!.name,
-  render: () => variants[2]!.node as any,
+  render: () => variants[2]!.node,
 }
 
 export const Variant3: Story = {
   name: variants[3]!.name,
-  render: () => variants[3]!.node as any,
+  render: () => variants[3]!.node,
 }

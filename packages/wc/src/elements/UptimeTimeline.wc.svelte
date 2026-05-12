@@ -1,11 +1,9 @@
-<svelte:options tag="uni-uptime-timeline" />
+<svelte:options customElement="uni-uptime-timeline" />
 <script>
   import Original from '@w5-ui/svelte/components/UptimeTimeline.svelte';
-  export let series = [];
-  export let xLabels = [];
-  export let ariaLabel = 'Uptime timeline';
+  // no public props
 </script>
 
-<Original {series} {xLabels} {ariaLabel}>
+<Original >
   <slot />
 </Original>

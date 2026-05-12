@@ -1,12 +1,9 @@
-<svelte:options tag="uni-dumbbell-chart" />
+<svelte:options customElement="uni-dumbbell-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/DumbbellChart.svelte';
-  export let items = [];
-  export let unit = '';
-  export let color = '#006FFF';
-  export let ariaLabel = 'Dumbbell chart';
+  // no public props
 </script>
 
-<Original {items} {unit} {color} {ariaLabel}>
+<Original >
   <slot />
 </Original>

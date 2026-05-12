@@ -1,10 +1,13 @@
-<script lang="ts">
+<script context="module" lang="ts">
   export interface SparklineMatrixRow {
     label: string;
     values: number[];
     unit?: string;
     color?: string;
   }
+</script>
+
+<script lang="ts">
 
   export let rows: SparklineMatrixRow[] = [];
   export let height: number = 160;

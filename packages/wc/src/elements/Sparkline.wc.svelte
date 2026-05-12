@@ -1,4 +1,4 @@
-<svelte:options tag="uni-sparkline" />
+<svelte:options customElement="uni-sparkline" />
 <script>
   import Original from '@w5-ui/svelte/components/Sparkline.svelte';
   export let bars = 36;

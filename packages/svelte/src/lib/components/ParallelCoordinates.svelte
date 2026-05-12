@@ -1,6 +1,4 @@
-<script lang="ts">
-  const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#7FB6FF', '#A878F5', '#F56342'];
-
+<script context="module" lang="ts">
   export interface ParallelAxis {
     label: string;
     min: number;
@@ -8,12 +6,17 @@
     unit?: string;
     invert?: boolean;
   }
-
   export interface ParallelSeries {
     label: string;
     color?: string;
     values: number[];
   }
+</script>
+
+<script lang="ts">
+  const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#7FB6FF', '#A878F5', '#F56342'];
+
+
 
   export let axes: ParallelAxis[] = [];
   export let series: ParallelSeries[] = [];

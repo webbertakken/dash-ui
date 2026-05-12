@@ -18,8 +18,8 @@ export const Variant0: Story = {
         { label: 'B', q0: 0, q1: 2, q2: 4, q3: 6, q4: 8, color: '#0f0' },
       ],
     }
-    const el = document.createElement('uni-box-plot')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-box-plot') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },
@@ -32,8 +32,8 @@ export const Variant1: Story = {
       series: [{ label: 'A', q0: 0, q1: 2, q2: 4, q3: 6, q4: 8 }],
       yRange: [0, 10],
     }
-    const el = document.createElement('uni-box-plot')
-    for (const [k, v] of Object.entries(props)) (el as any)[k] = v
+    const el = document.createElement('uni-box-plot') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
 
     return el
   },

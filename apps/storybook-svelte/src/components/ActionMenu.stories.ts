@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ActionMenu } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Selection & menus/ActionMenu',
-  component: ActionMenu as any,
+  component: ActionMenu,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ActionMenu>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

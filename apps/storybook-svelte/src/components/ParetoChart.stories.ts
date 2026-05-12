@@ -2,14 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 import { ParetoChart } from '@w5-ui/svelte'
 
-const meta: Meta = {
+const meta = {
   title: 'Charts: comparison/ParetoChart',
-  component: ParetoChart as any,
+  component: ParetoChart,
   parameters: { layout: 'padded' },
-}
+} satisfies Meta<typeof ParetoChart>
 export default meta
 
-type Story = StoryObj
+type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',

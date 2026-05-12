@@ -1,3 +1,7 @@
+<script context="module" lang="ts">
+  export interface AppDef { id: string; label: string; logo: AppLogo }
+</script>
+
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { appLogos, type AppLogoKey as AppLogo } from '@w5-ui/assets';
@@ -9,7 +13,6 @@
   import BellIcon from '../icons/BellIcon.svelte';
   import HelpIcon from '../icons/HelpIcon.svelte';
 
-  export interface AppDef { id: string; label: string; logo: AppLogo }
   export const DEFAULT_APPS: AppDef[] = [
     { id: 'system', label: 'System', logo: 'system' },
     { id: 'instances', label: 'Instances', logo: 'instances' },
@@ -28,7 +31,7 @@
   <button type="button" class="site-switch" aria-label="Switch site: {siteName}" aria-haspopup="menu">
     <span class="status-ring"></span>
     <span class="site-name" aria-hidden="true">{siteName}</span>
-    <CaretIcon class="caret" aria-hidden="true" />
+    <CaretIcon class="caret" />
   </button>
   <nav class="app-tabs" aria-label="Apps">
     {#each apps as a (a.id)}
