@@ -62,8 +62,8 @@
   let hoverDate: Date | null = $state(null);
   let viewYear = $state(today.getFullYear());
   let viewMonth = $state(today.getMonth());
-  let triggerEl: HTMLButtonElement = $state();
-  let dlgEl: HTMLDivElement = $state();
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let dlgEl = $state<HTMLDivElement | undefined>(undefined);
 
   let rightMonth = $derived(viewMonth === 11 ? 0 : viewMonth + 1);
   let rightYear = $derived(viewMonth === 11 ? viewYear + 1 : viewYear);

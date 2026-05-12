@@ -25,7 +25,7 @@
   }: Props = $props();
   let query = $state('');
   let activeIdx = $state(0);
-  let inputEl: HTMLInputElement = $state();
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
   const listboxId = `cp-list-${Math.random().toString(36).slice(2)}`;
 
   let filtered =

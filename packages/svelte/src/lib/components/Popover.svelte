@@ -28,9 +28,9 @@
     'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
   let open = $state(false);
-  let rootEl: HTMLDivElement = $state();
-  let triggerEl: HTMLButtonElement = $state();
-  let panelEl: HTMLDivElement = $state();
+  let rootEl = $state<HTMLDivElement | undefined>(undefined);
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let panelEl = $state<HTMLDivElement | undefined>(undefined);
 
   async function toggle() {
     if (!open) {

@@ -26,8 +26,8 @@
 
   let open = $state(false);
   let activeIdx = $state(0);
-  let triggerEl: HTMLButtonElement = $state();
-  let wrapperEl: HTMLDivElement = $state();
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
   let selected = $derived(PRESETS.find((p) => p.id === value) ?? PRESETS[0]);
 
@@ -94,7 +94,7 @@
           data-active={idx === activeIdx ? 'true' : undefined}
           class="time-range-option"
           onmouseenter={() => { activeIdx = idx; }}
-          onmousedown={(e) => { e.preventDefault(); (() => select(p.id))(e); }}
+          onmousedown={(e) => { e.preventDefault(); (() => select(p.id))(); }}
         >
           {p.label}
           {#if p.id === value}

@@ -9,11 +9,10 @@
     type = 'button',
     disabled = false,
     class: className = '',
-    style = '',
-    ariaLabel = undefined
+    style = ''
   } = $props();
 </script>
 
-<Original {variant} {iconOnly} {loading} {title} {type} {disabled} class={className} {style} {ariaLabel}>
+<Original {variant} {iconOnly} {loading} {title} {type} {disabled} class={className} {style}>
   <slot />
 </Original>

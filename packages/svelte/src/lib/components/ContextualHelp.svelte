@@ -17,9 +17,9 @@
   const titleId = `${uid}-title`;
 
   let open = $state(false);
-  let rootEl: HTMLSpanElement = $state();
-  let triggerEl: HTMLButtonElement = $state();
-  let panelEl: HTMLDivElement = $state();
+  let rootEl = $state<HTMLSpanElement | undefined>(undefined);
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let panelEl = $state<HTMLDivElement | undefined>(undefined);
 
   async function toggle() {
     open = !open;

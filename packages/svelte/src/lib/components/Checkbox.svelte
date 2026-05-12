@@ -13,6 +13,8 @@
     [key: string]: unknown;
   }
 
+  // svelte-ignore state_referenced_locally
+  // svelte-ignore state_referenced_locally
   let {
     checked = false,
     indeterminate = false,

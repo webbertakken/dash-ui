@@ -35,8 +35,8 @@
   let open = $state(false);
   let query = $state('');
   let activeIdx = $state(-1);
-  let inputEl: HTMLInputElement = $state();
-  let wrapperEl: HTMLDivElement = $state();
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
   let selectedOption = $derived(options.find((o) => o.value === value));
 
@@ -139,7 +139,7 @@
             aria-selected={opt.value === value}
             data-active={idx === activeIdx ? 'true' : undefined}
             class="select-option"
-            onmousedown={(e) => { e.preventDefault(); (() => pick(opt))(e); }}
+            onmousedown={(e) => { e.preventDefault(); (() => pick(opt))(); }}
             onmouseenter={() => { activeIdx = idx; }}
           >{opt.label}</li>
         {/each}

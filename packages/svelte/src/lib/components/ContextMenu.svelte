@@ -30,7 +30,7 @@
     onclose,
     onaction,
   }: Props = $props();
-  let menuEl: HTMLUListElement = $state();
+  let menuEl = $state<HTMLUListElement | undefined>(undefined);
   let activeIdx = $state(0);
 
   let actionItems = $derived(items.reduce<ContextMenuItem[]>((acc, e) => {
@@ -110,7 +110,7 @@
           data-danger={entry.danger || undefined}
           class="ctx-menu-item"
           onmouseenter={() => (activeIdx = actionIndex(entry))}
-          onmousedown={(e) => { e.preventDefault(); (() => { if (!entry.disabled) activate(entry.id); })(e); }}
+          onmousedown={(e) => { e.preventDefault(); (() => { if (!entry.disabled) activate(entry.id); })(); }}
         >
           {entry.label}
         </li>

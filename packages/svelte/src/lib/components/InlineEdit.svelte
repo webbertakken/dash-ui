@@ -18,8 +18,8 @@
   let editing = $state(false);
   // svelte-ignore state_referenced_locally
   let draft = $state(value);
-  let inputEl: HTMLInputElement = $state();
-  let editBtnEl: HTMLButtonElement = $state();
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
+  let editBtnEl = $state<HTMLButtonElement | undefined>(undefined);
 
   async function startEdit() {
     draft = value;

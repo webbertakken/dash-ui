@@ -11,6 +11,8 @@
     [key: string]: unknown;
   }
 
+  // svelte-ignore state_referenced_locally
+  // svelte-ignore state_referenced_locally
   let {
     title = undefined,
     type = 'button',

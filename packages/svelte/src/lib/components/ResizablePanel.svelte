@@ -27,7 +27,7 @@
 
   // svelte-ignore state_referenced_locally
   let size = $state(defaultSize);
-  let container: HTMLDivElement = $state();
+  let container = $state<HTMLDivElement | undefined>(undefined);
 
   function clamp(v: number) { return Math.min(max, Math.max(min, v)); }
 

@@ -11,7 +11,7 @@
     disabled?: boolean;
     class?: string;
     style?: string;
-    ariaLabel?: string | undefined;
+    'aria-label'?: string | undefined;
     onclick?: (event: MouseEvent) => void;
     children?: Snippet;
   }
@@ -25,7 +25,7 @@
     disabled = false,
     class: className = '',
     style = '',
-    ariaLabel = undefined,
+    'aria-label': ariaLabel = undefined,
     onclick,
     children,
   }: Props = $props();

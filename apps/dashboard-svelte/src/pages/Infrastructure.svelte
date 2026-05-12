@@ -135,16 +135,16 @@
   </div>
 </div>
 <div class="grid">
-  <Stat label="Devices" unit="online · 2 offline" span={3}>{#snippet value()}
+  <Stat label="Devices" unit="online · 2 offline" span={3}>{#snippet valueSlot()}
         <CountUp  to={38} />
       {/snippet}</Stat>
-  <Stat label="Clients" unit="42 wired · 100 wireless" span={3}>{#snippet value()}
+  <Stat label="Clients" unit="42 wired · 100 wireless" span={3}>{#snippet valueSlot()}
         <CountUp  to={142} />
       {/snippet}</Stat>
-  <Stat label="PoE budget" unit="of 600 W" span={3}>{#snippet value()}
+  <Stat label="PoE budget" unit="of 600 W" span={3}>{#snippet valueSlot()}
         <CountUp  to={312} suffix=" W" />
       {/snippet}</Stat>
-  <Stat label="Storage" unit="1.64 / 4.0 TB" span={3}>{#snippet value()}
+  <Stat label="Storage" unit="1.64 / 4.0 TB" span={3}>{#snippet valueSlot()}
         <CountUp  to={41} suffix="%" />
       {/snippet}</Stat>
 

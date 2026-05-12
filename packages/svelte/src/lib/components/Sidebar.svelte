@@ -1,9 +1,9 @@
 <script lang="ts" module>
-  import type { ComponentType } from 'svelte';
+  import type { Component } from 'svelte';
   export interface SidebarItemDef {
     id: string;
     label: string;
-    icon: ComponentType;
+    icon: Component<Record<string, unknown>>;
     count?: number;
     pill?: number;
   }

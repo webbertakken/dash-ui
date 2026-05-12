@@ -20,7 +20,7 @@
   }: Props = $props();
   let drag = $state(false);
   let done: string | null = $state(null);
-  let inputEl: HTMLInputElement = $state();
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
 
   function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
@@ -52,13 +52,13 @@
   }
 
   function onClick() {
-    if (!disabled) inputEl.click();
+    if (!disabled) inputEl?.click();
   }
 
   function onKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (!disabled) inputEl.click();
+      if (!disabled) inputEl?.click();
     }
   }
 </script>

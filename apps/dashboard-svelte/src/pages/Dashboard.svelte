@@ -2,6 +2,12 @@
   import { Card, Pill, Button, SearchBox, Sparkline, Donut, StatusIndicator, PlusIcon, LineChart, BarChart, WaterfallChart, SankeyDiagram, WaffleChart, StreamGraph, NightingaleChart, DualAxisChart, Banner, AvatarGroup, RankedList } from '@w5-ui/svelte';
   import type { SankeyNode, SankeyLink, StreamSeries, RankedItem } from '@w5-ui/svelte';
   import { DASHBOARD_DEVICES, DASHBOARD_ALARMS } from '../data';
+
+  interface Props {
+    onadopt?: () => void;
+  }
+  let { onadopt }: Props = $props();
+
   let showBanner = $state(true);
   const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
   function thumb(model: string) {

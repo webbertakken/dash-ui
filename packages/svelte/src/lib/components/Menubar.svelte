@@ -25,7 +25,7 @@
   let openIdx: number | null = $state(null);
   let activeItemIdx = $state(0);
   let triggerEls: HTMLButtonElement[] = $state([]);
-  let rootEl: HTMLDivElement = $state();
+  let rootEl = $state<HTMLDivElement | undefined>(undefined);
 
   let currentEligible = $derived(openIdx !== null
     ? menus[openIdx].items.filter((i) => !i.separator && !i.disabled)
@@ -127,7 +127,7 @@
                 data-active={eligIdx === activeItemIdx && !item.disabled ? 'true' : undefined}
                 class="menubar-item"
                 onmouseenter={() => { if (!item.disabled) activeItemIdx = eligIdx; }}
-                onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(menu.id, item.id); })(e); }}
+                onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(menu.id, item.id); })(); }}
               >{item.label}</li>
             {/if}
           {/each}

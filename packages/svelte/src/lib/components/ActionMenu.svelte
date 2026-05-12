@@ -20,8 +20,8 @@
 
   let open = $state(false);
   let activeIdx = $state(0);
-  let triggerEl: HTMLButtonElement = $state();
-  let wrapperEl: HTMLDivElement = $state();
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
   function toggle() {
     if (!open) activeIdx = 0;
@@ -93,7 +93,7 @@
           data-danger={item.danger ? 'true' : undefined}
           class="action-menu-item"
           onmouseenter={() => { activeIdx = idx; }}
-          onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(item.id); })(e); }}
+          onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(item.id); })(); }}
         >{item.label}</li>
       {/each}
     </ul>

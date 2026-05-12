@@ -17,7 +17,7 @@
 
   let { label, options = [], value = $bindable(options[0]?.value ?? '') }: Props = $props();
 
-  let root: HTMLDivElement = $state();
+  let root = $state<HTMLDivElement | undefined>(undefined);
 
   async function handleKeyDown(e: KeyboardEvent) {
     const enabled = options.filter((o) => !o.disabled);

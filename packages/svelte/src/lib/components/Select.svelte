@@ -34,8 +34,8 @@
   let listboxId = $derived(`${triggerId}-lb`);
   let open = $state(false);
   let activeIdx = $state(-1);
-  let triggerEl: HTMLButtonElement = $state();
-  let wrapperEl: HTMLDivElement = $state();
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
   let selected = $derived(options.find((o) => o.value === value));
   let displayLabel = $derived(selected?.label ?? placeholder);
@@ -112,7 +112,7 @@
           aria-selected={opt.value === value}
           data-active={idx === activeIdx ? 'true' : undefined}
           class="select-option"
-          onmousedown={(e) => { e.preventDefault(); (() => pick(opt.value))(e); }}
+          onmousedown={(e) => { e.preventDefault(); (() => pick(opt.value))(); }}
           onmouseenter={() => { activeIdx = idx; }}
         >{opt.label}</li>
       {/each}

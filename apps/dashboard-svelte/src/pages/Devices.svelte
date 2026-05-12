@@ -2,6 +2,12 @@
   import { Button, SearchBox, Tabs, Signal, StatusIndicator, Pagination, Select, SortHeader, ActionMenu, Popover, Drawer, HoverCard, ConfirmDialog, JsonViewer, KVTable, KanbanBoard, ColumnToggle } from '@w5-ui/svelte';
   import type { ActionMenuItem, KanbanColumn, ColumnToggleDef } from '@w5-ui/svelte';
   import { DEVICES, type DeviceRow } from '../data';
+
+  interface Props {
+    onadopt?: () => void;
+  }
+  let { onadopt }: Props = $props();
+
   let tab = $state('all');
   let page = $state(1);
   let pageSize = $state(5);
@@ -187,7 +193,7 @@
           {/if}
           {#if visibleCols.has('status')}<td><StatusIndicator color={r[6]} text={r[7]} textColor={r[8]} /></td>{/if}
           <td style="text-align:right;width:32px;">
-            <ActionMenu items={deviceActions} label="Actions for {r[0]}" onaction={(e) => { if (e === 'details') { drawerDevice = r; drawerOpen = true; } if (e.detail === 'forget') { forgetDevice = r; } }} />
+            <ActionMenu items={deviceActions} label="Actions for {r[0]}" onaction={(e) => { if (e === 'details') { drawerDevice = r; drawerOpen = true; } if (e === 'forget') { forgetDevice = r; } }} />
           </td>
         </tr>
       {/each}

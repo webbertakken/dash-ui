@@ -58,8 +58,8 @@
   // svelte-ignore state_referenced_locally
   let viewMonth = $state(value?.getMonth() ?? today.getMonth());
   let focusIdx = $state(0);
-  let triggerEl: HTMLButtonElement = $state();
-  let calEl: HTMLDivElement = $state();
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let calEl = $state<HTMLDivElement | undefined>(undefined);
   let dayEls: (HTMLButtonElement | null)[] = $state(Array(42).fill(null));
 
   let grid = $derived(buildGrid(viewYear, viewMonth));

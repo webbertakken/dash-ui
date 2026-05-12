@@ -26,7 +26,7 @@
   }
 
   let {
-    open = false,
+    open = $bindable(false),
     notifications = [],
     onClose = () => {},
     onMarkRead = undefined,
@@ -34,7 +34,7 @@
   }: Props = $props();
 
   let filter: 'all' | NotifType = $state('all');
-  let panelEl: HTMLDivElement = $state();
+  let panelEl = $state<HTMLDivElement | undefined>(undefined);
   let prevFocus: HTMLElement | null = $state(null);
 
   const SEV_COLOR: Record<string, string> = {

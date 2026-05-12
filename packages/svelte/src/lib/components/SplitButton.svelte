@@ -28,8 +28,8 @@
 
   let open = $state(false);
   let activeIdx = $state(0);
-  let caretEl: HTMLButtonElement = $state();
-  let wrapperEl: HTMLDivElement = $state();
+  let caretEl = $state<HTMLButtonElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
   function toggleMenu() {
     if (!open) activeIdx = 0;
@@ -105,7 +105,7 @@
           data-active={idx === activeIdx ? 'true' : undefined}
           class="action-menu-item"
           onmouseenter={() => { activeIdx = idx; }}
-          onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(item.id); })(e); }}
+          onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(item.id); })(); }}
         >{item.label}</li>
       {/each}
     </ul>

@@ -12,7 +12,7 @@
   const titleId = `drawer-title-${Math.random().toString(36).slice(2, 9)}`;
   const FOCUSABLE =
     'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
-  let panelEl: HTMLDivElement = $state();
+  let panelEl = $state<HTMLDivElement | undefined>(undefined);
   let prev: HTMLElement | null = $state(null);
   let wasOpen = $state(false);
   $effect(() => {
@@ -59,7 +59,7 @@
 >
   <div class="drawer-h">
     <h2 id={titleId}>{title}</h2>
-    <IconButton title="Close" on:click={() => (open = false)}>
+    <IconButton title="Close" onclick={() => (open = false)}>
       <CloseIcon />
     </IconButton>
   </div>

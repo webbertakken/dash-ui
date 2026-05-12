@@ -8,9 +8,15 @@
     title: string;
     description: string;
     on?: boolean;
+    ontoggle?: (value: boolean) => void;
   }
 
-  let { title, description, on = $bindable(false) }: Props = $props();
+  let {
+    title,
+    description,
+    on = $bindable(false),
+    ontoggle,
+  }: Props = $props();
   const descId = `dash-ui-rowtoggle-${++counter}`;
 </script>
 
@@ -19,5 +25,5 @@
     <div class="t">{title}</div>
     <div class="d" id={descId}>{description}</div>
   </div>
-  <Toggle bind:on ariaLabel={title} ariaDescribedBy={descId} on:toggle />
+  <Toggle bind:on ariaLabel={title} ariaDescribedBy={descId} {ontoggle} />
 </div>

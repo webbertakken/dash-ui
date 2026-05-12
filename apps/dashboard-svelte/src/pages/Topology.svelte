@@ -23,8 +23,8 @@
   let selected = $state('gw');
   let view: 'map' | 'list' | 'tree' = $state('map');
   let ctxMenu: { x: number; y: number } | null = $state(null);
-  let canvas: HTMLDivElement = $state();
-  let svg: SVGSVGElement = $state();
+  let canvas = $state<HTMLDivElement | undefined>(undefined);
+  let svg = $state<SVGSVGElement | undefined>(undefined);
 
   function buildTree(nodes: typeof NODES, links: typeof LINKS): TreeNode[] {
     const children = new Map<string, string[]>();

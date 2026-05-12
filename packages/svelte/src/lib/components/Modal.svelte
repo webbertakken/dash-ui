@@ -18,7 +18,7 @@
   const titleId = `modal-title-${Math.random().toString(36).slice(2, 9)}`;
   const FOCUSABLE =
     'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
-  let modalEl: HTMLDivElement = $state();
+  let modalEl = $state<HTMLDivElement | undefined>(undefined);
   let previouslyFocused: HTMLElement | null = $state(null);
   let prevOverflow = $state('');
   let wasOpen = $state(false);
@@ -91,7 +91,7 @@
   >
     <div class="modal-h">
       <h2 id={titleId}>{title}</h2>
-      <IconButton title="Close" on:click={() => (open = false)}>
+      <IconButton title="Close" onclick={() => (open = false)}>
         <CloseIcon />
       </IconButton>
     </div>

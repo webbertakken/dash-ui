@@ -35,8 +35,8 @@
   let open = $state(false);
   let query = $state('');
   let activeIdx = $state(-1);
-  let inputEl: HTMLInputElement = $state();
-  let wrapperEl: HTMLDivElement = $state();
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
   let selectedSet = $derived(new Set(value));
 
@@ -104,7 +104,7 @@
             type="button"
             class="tag__remove"
             aria-label="Remove {opt.label} filter"
-            onclick={(e) => { e.stopPropagation(); (() => toggle(v))(e); }}
+            onclick={(e) => { e.stopPropagation(); (() => toggle(v))(); }}
           >
             <svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true" focusable="false">
               <path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -137,7 +137,7 @@
       tabindex="-1"
       aria-hidden="true"
       class="combobox-chevron-btn"
-      onclick={(e) => { e.stopPropagation(); (() => { if (open) { open = false; query = ''; } else { inputEl?.focus(); open = true; } })(e); }}
+      onclick={(e) => { e.stopPropagation(); (() => { if (open) { open = false; query = ''; } else { inputEl?.focus(); open = true; } })(); }}
     >
       <svg class="select-chevron{open ? ' combobox-chevron-open' : ''}" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
         <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
@@ -157,7 +157,7 @@
             aria-selected={selectedSet.has(opt.value)}
             data-active={idx === activeIdx ? 'true' : undefined}
             class="select-option multiselect-option"
-            onmousedown={(e) => { e.preventDefault(); (() => toggle(opt.value))(e); }}
+            onmousedown={(e) => { e.preventDefault(); (() => toggle(opt.value))(); }}
             onmouseenter={() => { activeIdx = idx; }}
           >
             <span class="multiselect-check" aria-hidden="true">

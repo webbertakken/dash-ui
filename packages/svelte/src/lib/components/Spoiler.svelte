@@ -20,7 +20,7 @@
 
   let expanded = $state(false);
   let clipped = $state(false);
-  let bodyEl: HTMLDivElement = $state();
+  let bodyEl = $state<HTMLDivElement | undefined>(undefined);
 
   onMount(() => {
     if (bodyEl) clipped = bodyEl.scrollHeight > maxHeight;

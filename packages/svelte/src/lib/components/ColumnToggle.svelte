@@ -19,8 +19,8 @@
   let { columns = [], visible = $bindable(new Set()), onChange = () => {} }: Props = $props();
 
   let open = $state(false);
-  let btnEl: HTMLButtonElement = $state();
-  let panelEl: HTMLDivElement = $state();
+  let btnEl = $state<HTMLButtonElement | undefined>(undefined);
+  let panelEl = $state<HTMLDivElement | undefined>(undefined);
   const panelId = `col-toggle-${Math.random().toString(36).slice(2)}`;
 
   function close() {
