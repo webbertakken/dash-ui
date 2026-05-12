@@ -1,26 +1,26 @@
 export interface DumbbellItem {
-  label: string;
-  start: number;
-  end: number;
-  color?: string;
+  label: string
+  start: number
+  end: number
+  color?: string
 }
 
 export interface DumbbellChartProps {
-  items: DumbbellItem[];
-  unit?: string;
-  color?: string;
-  ariaLabel?: string;
+  items: DumbbellItem[]
+  unit?: string
+  color?: string
+  ariaLabel?: string
 }
 
-const VW = 340;
-const LABEL_W = 110;
-const PAD_R = 8;
-const TRACK_W = VW - LABEL_W - PAD_R;
-const DOT_R = 5;
-const ROW_H = 26;
-const PAD_T = 6;
-const AXIS_H = 18;
-const TICKS = 4;
+const VW = 340
+const LABEL_W = 110
+const PAD_R = 8
+const TRACK_W = VW - LABEL_W - PAD_R
+const DOT_R = 5
+const ROW_H = 26
+const PAD_T = 6
+const AXIS_H = 18
+const TICKS = 4
 
 export function DumbbellChart({
   items,
@@ -28,17 +28,17 @@ export function DumbbellChart({
   color = '#006FFF',
   ariaLabel = 'Dumbbell chart',
 }: DumbbellChartProps) {
-  const allValues = items.flatMap((it) => [it.start, it.end]);
-  const minVal = allValues.length ? Math.min(...allValues) : 0;
-  const maxVal = allValues.length ? Math.max(...allValues) : 1;
-  const range = maxVal - minVal || 1;
-  const svgH = PAD_T + items.length * ROW_H + AXIS_H;
+  const allValues = items.flatMap((it) => [it.start, it.end])
+  const minVal = allValues.length ? Math.min(...allValues) : 0
+  const maxVal = allValues.length ? Math.max(...allValues) : 1
+  const range = maxVal - minVal || 1
+  const svgH = PAD_T + items.length * ROW_H + AXIS_H
 
-  const tx = (v: number) => LABEL_W + ((v - minVal) / range) * TRACK_W;
+  const tx = (v: number) => LABEL_W + ((v - minVal) / range) * TRACK_W
 
   const ticks = Array.from({ length: TICKS + 1 }, (_, i) =>
     Math.round(minVal + (i / TICKS) * range),
-  );
+  )
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -73,10 +73,10 @@ export function DumbbellChart({
         ))}
 
         {items.map((item, i) => {
-          const cy = PAD_T + i * ROW_H + ROW_H / 2;
-          const cx1 = tx(item.start);
-          const cx2 = tx(item.end);
-          const c = item.color ?? color;
+          const cy = PAD_T + i * ROW_H + ROW_H / 2
+          const cx1 = tx(item.start)
+          const cx2 = tx(item.end)
+          const c = item.color ?? color
 
           return (
             <g key={i}>
@@ -94,9 +94,9 @@ export function DumbbellChart({
               <circle cx={cx1} cy={cy} r={DOT_R} fill="#13131A" stroke={c} strokeWidth={1.5} />
               <circle cx={cx2} cy={cy} r={DOT_R} fill={c} />
             </g>
-          );
+          )
         })}
       </svg>
     </div>
-  );
+  )
 }

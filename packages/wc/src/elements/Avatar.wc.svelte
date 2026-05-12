@@ -1,6 +1,6 @@
 <svelte:options tag="uni-avatar" />
 <script>
-  import Original from '@dash-ui/svelte/components/Avatar.svelte';
+  import Original from '@w5-ui/svelte/components/Avatar.svelte';
   // no public props
 </script>
 

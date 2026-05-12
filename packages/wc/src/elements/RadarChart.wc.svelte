@@ -1,6 +1,6 @@
 <svelte:options tag="uni-radar-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/RadarChart.svelte';
+  import Original from '@w5-ui/svelte/components/RadarChart.svelte';
   export let series = [];
   export let axes = [];
   export let height = 200;

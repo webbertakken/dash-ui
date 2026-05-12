@@ -1,6 +1,6 @@
 <svelte:options tag="uni-scatter-plot" />
 <script>
-  import Original from '@dash-ui/svelte/components/ScatterPlot.svelte';
+  import Original from '@w5-ui/svelte/components/ScatterPlot.svelte';
   export let points = [];
   export let xRange = undefined;
   export let yRange = undefined;

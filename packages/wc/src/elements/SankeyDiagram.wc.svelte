@@ -1,6 +1,6 @@
 <svelte:options tag="uni-sankey-diagram" />
 <script>
-  import Original from '@dash-ui/svelte/components/SankeyDiagram.svelte';
+  import Original from '@w5-ui/svelte/components/SankeyDiagram.svelte';
   export let nodes = [];
   export let links = [];
   export let height = 180;

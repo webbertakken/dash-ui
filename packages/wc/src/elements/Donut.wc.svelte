@@ -1,6 +1,6 @@
 <svelte:options tag="uni-donut" />
 <script>
-  import Original from '@dash-ui/svelte/components/Donut.svelte';
+  import Original from '@w5-ui/svelte/components/Donut.svelte';
   export let size = 96;
   export let segments = [];
   export let centerValue = undefined;

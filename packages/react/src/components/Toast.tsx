@@ -1,43 +1,45 @@
-import { useState, useEffect } from 'react';
-import { CloseIcon } from '../icons.js';
+import { useState, useEffect } from 'react'
+import { CloseIcon } from '../icons.js'
 
-export type ToastVariant = 'success' | 'info' | 'warn' | 'danger';
+export type ToastVariant = 'success' | 'info' | 'warn' | 'danger'
 
 interface ToastItem {
-  id: string;
-  message: string;
-  variant: ToastVariant;
+  id: string
+  message: string
+  variant: ToastVariant
 }
 
-type Listener = (item: ToastItem) => void;
-const listeners = new Set<Listener>();
-let seq = 0;
+type Listener = (item: ToastItem) => void
+const listeners = new Set<Listener>()
+let seq = 0
 
 export const toast = {
   show(message: string, variant: ToastVariant = 'info') {
-    const item: ToastItem = { id: String(++seq), message, variant };
-    listeners.forEach((l) => l(item));
+    const item: ToastItem = { id: String(++seq), message, variant }
+    listeners.forEach((l) => l(item))
   },
   success: (msg: string) => toast.show(msg, 'success'),
   warn: (msg: string) => toast.show(msg, 'warn'),
   danger: (msg: string) => toast.show(msg, 'danger'),
   info: (msg: string) => toast.show(msg, 'info'),
-};
+}
 
 export function Toaster() {
-  const [items, setItems] = useState<ToastItem[]>([]);
+  const [items, setItems] = useState<ToastItem[]>([])
 
   useEffect(() => {
     const add = (item: ToastItem) => {
-      setItems((prev) => [...prev, item]);
-      setTimeout(() => remove(item.id), 4000);
-    };
-    listeners.add(add);
-    return () => { listeners.delete(add); };
-  }, []);
+      setItems((prev) => [...prev, item])
+      setTimeout(() => remove(item.id), 4000)
+    }
+    listeners.add(add)
+    return () => {
+      listeners.delete(add)
+    }
+  }, [])
 
   function remove(id: string) {
-    setItems((prev) => prev.filter((t) => t.id !== id));
+    setItems((prev) => prev.filter((t) => t.id !== id))
   }
 
   return (
@@ -66,5 +68,5 @@ export function Toaster() {
         </div>
       ))}
     </div>
-  );
+  )
 }

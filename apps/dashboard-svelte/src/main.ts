@@ -1,8 +1,8 @@
-import '@dash-ui/svelte/styles.css';
-import App from './App.svelte';
+import '@w5-ui/svelte/styles.css'
+import App from './App.svelte'
 
 const app = new App({
   target: document.getElementById('app')!,
-});
+})
 
-export default app;
+export default app

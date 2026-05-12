@@ -1,30 +1,30 @@
-import { Fragment, type ReactNode } from 'react';
-import { appLogos, logos } from '@dash-ui/assets';
-import { IconButton } from './Button.js';
-import { Avatar } from './Avatar.js';
-import { CaretIcon, SearchIcon, UpdatesIcon, BellIcon, HelpIcon } from '../icons.js';
+import { appLogos, logos } from '@w5-ui/assets'
+import { Fragment, type ReactNode } from 'react'
+import { CaretIcon, SearchIcon, UpdatesIcon, BellIcon, HelpIcon } from '../icons.js'
+import { Avatar } from './Avatar.js'
+import { IconButton } from './Button.js'
 
-void logos;
+void logos
 
 export interface AppDef {
-  id: string;
-  label: string;
-  logo: keyof typeof appLogos;
+  id: string
+  label: string
+  logo: keyof typeof appLogos
 }
 
 export const DEFAULT_APPS: AppDef[] = [
   { id: 'system', label: 'System', logo: 'system' },
   { id: 'instances', label: 'Instances', logo: 'instances' },
   { id: 'agents', label: 'Agents', logo: 'agents' },
-];
+]
 
 export interface TopbarProps {
-  siteName: string;
-  apps?: AppDef[];
-  activeApp: string;
-  onAppChange?: (id: string) => void;
-  initials?: string;
-  notificationCount?: number;
+  siteName: string
+  apps?: AppDef[]
+  activeApp: string
+  onAppChange?: (id: string) => void
+  initials?: string
+  notificationCount?: number
 }
 
 export function Topbar({
@@ -37,9 +37,16 @@ export function Topbar({
 }: TopbarProps) {
   return (
     <header className="topbar">
-      <button type="button" className="site-switch" aria-label={`Switch site: ${siteName}`} aria-haspopup="menu">
+      <button
+        type="button"
+        className="site-switch"
+        aria-label={`Switch site: ${siteName}`}
+        aria-haspopup="menu"
+      >
         <span className="status-ring" />
-        <span className="site-name" aria-hidden="true">{siteName}</span>
+        <span className="site-name" aria-hidden="true">
+          {siteName}
+        </span>
         <CaretIcon className="caret" aria-hidden="true" />
       </button>
       <nav className="app-tabs" aria-label="Apps">
@@ -66,9 +73,7 @@ export function Topbar({
         </IconButton>
         <IconButton
           aria-label={
-            notificationCount > 0
-              ? `Notifications, ${notificationCount} new`
-              : 'Notifications'
+            notificationCount > 0 ? `Notifications, ${notificationCount} new` : 'Notifications'
           }
           title="Notifications"
           style={{ position: 'relative' }}
@@ -96,26 +101,26 @@ export function Topbar({
         <Avatar initials={initials} size="sm" alt={`Account, ${initials}`} />
       </div>
     </header>
-  );
+  )
 }
 
 export interface SidebarSectionDef {
-  title: string;
-  items: SidebarItemDef[];
+  title: string
+  items: SidebarItemDef[]
 }
 
 export interface SidebarItemDef {
-  id: string;
-  label: string;
-  icon: ReactNode;
-  count?: number;
-  pill?: number;
+  id: string
+  label: string
+  icon: ReactNode
+  count?: number
+  pill?: number
 }
 
 export interface SidebarProps {
-  sections: SidebarSectionDef[];
-  activeId: string;
-  onChange?: (id: string) => void;
+  sections: SidebarSectionDef[]
+  activeId: string
+  onChange?: (id: string) => void
 }
 
 export function Sidebar({ sections, activeId, onChange }: SidebarProps) {
@@ -149,5 +154,5 @@ export function Sidebar({ sections, activeId, onChange }: SidebarProps) {
         </Fragment>
       ))}
     </nav>
-  );
+  )
 }

@@ -1,29 +1,29 @@
 name: Bug report
 description: Something is broken or doesn't work as expected
-title: "[bug] "
-labels: ["bug"]
+title: '[bug] '
+labels: ['bug']
 body:
   - type: dropdown
     id: package
     attributes:
       label: Package
       options:
-        - "@dash-ui/react"
-        - "@dash-ui/svelte"
-        - "@dash-ui/wc"
-        - "@dash-ui/tokens"
-        - "@dash-ui/assets"
-        - "Reference dashboard (apps/dashboard-react)"
-        - "Reference dashboard (apps/dashboard-svelte)"
-        - "Storybook site"
-        - "Other / not sure"
+        - '@w5-ui/react'
+        - '@w5-ui/svelte'
+        - '@w5-ui/wc'
+        - '@w5-ui/tokens'
+        - '@w5-ui/assets'
+        - 'Reference dashboard (apps/dashboard-react)'
+        - 'Reference dashboard (apps/dashboard-svelte)'
+        - 'Storybook site'
+        - 'Other / not sure'
     validations:
       required: true
   - type: input
     id: version
     attributes:
       label: Package version
-      placeholder: "e.g. 0.1.0"
+      placeholder: 'e.g. 0.1.0'
   - type: textarea
     id: what-happened
     attributes:

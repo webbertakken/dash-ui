@@ -1,6 +1,6 @@
 <svelte:options tag="uni-venn-diagram" />
 <script>
-  import Original from '@dash-ui/svelte/components/VennDiagram.svelte';
+  import Original from '@w5-ui/svelte/components/VennDiagram.svelte';
   export let sets = [];
   export let intersections = [];
   export let height = 240;

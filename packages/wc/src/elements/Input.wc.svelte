@@ -1,6 +1,6 @@
 <svelte:options tag="uni-input" />
 <script>
-  import Original from '@dash-ui/svelte/components/Input.svelte';
+  import Original from '@w5-ui/svelte/components/Input.svelte';
   export let value = '';
   export let placeholder = '';
   export let type = 'text';

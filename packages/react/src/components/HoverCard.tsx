@@ -1,13 +1,13 @@
-import { useId, useRef, useState, type ReactNode } from 'react';
+import { useId, useRef, useState, type ReactNode } from 'react'
 
-export type HoverCardPlacement = 'top' | 'bottom' | 'left' | 'right';
+export type HoverCardPlacement = 'top' | 'bottom' | 'left' | 'right'
 
 export interface HoverCardProps {
-  content: ReactNode;
-  children: ReactNode;
-  placement?: HoverCardPlacement;
-  delay?: number;
-  className?: string;
+  content: ReactNode
+  children: ReactNode
+  placement?: HoverCardPlacement
+  delay?: number
+  className?: string
 }
 
 export function HoverCard({
@@ -17,18 +17,18 @@ export function HoverCard({
   delay = 300,
   className = '',
 }: HoverCardProps) {
-  const id = useId();
-  const [open, setOpen] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const id = useId()
+  const [open, setOpen] = useState(false)
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   function show() {
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => setOpen(true), delay);
+    if (timer.current) clearTimeout(timer.current)
+    timer.current = setTimeout(() => setOpen(true), delay)
   }
 
   function hide() {
-    if (timer.current) clearTimeout(timer.current);
-    setOpen(false);
+    if (timer.current) clearTimeout(timer.current)
+    setOpen(false)
   }
 
   return (
@@ -48,5 +48,5 @@ export function HoverCard({
         </div>
       )}
     </div>
-  );
+  )
 }

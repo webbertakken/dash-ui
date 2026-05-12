@@ -1,6 +1,6 @@
 <svelte:options tag="uni-select" />
 <script>
-  import Original from '@dash-ui/svelte/components/Select.svelte';
+  import Original from '@w5-ui/svelte/components/Select.svelte';
   // no public props
 </script>
 

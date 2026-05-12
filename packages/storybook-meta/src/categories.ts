@@ -15,9 +15,9 @@ export const CATEGORY_ORDER = [
   'Charts: distribution',
   'Charts: hierarchy & flow',
   'Specialised',
-] as const;
+] as const
 
-export type Category = (typeof CATEGORY_ORDER)[number];
+export type Category = (typeof CATEGORY_ORDER)[number]
 
 export const COMPONENT_CATEGORY: Record<string, Category> = {
   // Layout
@@ -199,12 +199,12 @@ export const COMPONENT_CATEGORY: Record<string, Category> = {
   FlameGraph: 'Charts: hierarchy & flow',
   PieChart: 'Charts: hierarchy & flow',
   Donut: 'Charts: hierarchy & flow',
-};
+}
 
 export function categoryFor(componentName: string): Category {
-  return COMPONENT_CATEGORY[componentName] ?? 'Specialised';
+  return COMPONENT_CATEGORY[componentName] ?? 'Specialised'
 }
 
 export function storyTitle(componentName: string): string {
-  return `${categoryFor(componentName)}/${componentName}`;
+  return `${categoryFor(componentName)}/${componentName}`
 }

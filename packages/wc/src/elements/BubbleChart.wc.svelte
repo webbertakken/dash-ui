@@ -1,6 +1,6 @@
 <svelte:options tag="uni-bubble-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/BubbleChart.svelte';
+  import Original from '@w5-ui/svelte/components/BubbleChart.svelte';
   export let points = [];
   export let xRange = undefined;
   export let yRange = undefined;

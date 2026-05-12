@@ -1,6 +1,6 @@
 <svelte:options tag="uni-dual-axis-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/DualAxisChart.svelte';
+  import Original from '@w5-ui/svelte/components/DualAxisChart.svelte';
   export let bars = undefined;
   export let line = undefined;
   export let labels = [];

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-selection-toolbar" />
 <script>
-  import Original from '@dash-ui/svelte/components/SelectionToolbar.svelte';
+  import Original from '@w5-ui/svelte/components/SelectionToolbar.svelte';
   export let count = undefined;
   export let actions = [];
   export let onClear = undefined;

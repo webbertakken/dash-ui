@@ -1,72 +1,91 @@
-import { useState, useRef, useEffect, useId } from 'react';
-import type { KeyboardEvent } from 'react';
-import type { ButtonVariant } from './Button.js';
+import { useState, useRef, useEffect, useId } from 'react'
+import type { KeyboardEvent } from 'react'
+import type { ButtonVariant } from './Button.js'
 
 export interface SplitButtonItem {
-  id: string;
-  label: string;
-  disabled?: boolean;
+  id: string
+  label: string
+  disabled?: boolean
 }
 
 export interface SplitButtonProps {
-  label: string;
-  variant?: ButtonVariant;
-  disabled?: boolean;
-  items: SplitButtonItem[];
-  onPrimaryClick?: () => void;
-  onAction?: (id: string) => void;
+  label: string
+  variant?: ButtonVariant
+  disabled?: boolean
+  items: SplitButtonItem[]
+  onPrimaryClick?: () => void
+  onAction?: (id: string) => void
 }
 
-export function SplitButton({ label, variant = 'ghost', disabled, items, onPrimaryClick, onAction }: SplitButtonProps) {
-  const uid = useId();
-  const menuId = `${uid}-menu`;
-  const [open, setOpen] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const caretRef = useRef<HTMLButtonElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+export function SplitButton({
+  label,
+  variant = 'ghost',
+  disabled,
+  items,
+  onPrimaryClick,
+  onAction,
+}: SplitButtonProps) {
+  const uid = useId()
+  const menuId = `${uid}-menu`
+  const [open, setOpen] = useState(false)
+  const [activeIdx, setActiveIdx] = useState(0)
+  const caretRef = useRef<HTMLButtonElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) return
     function handler(e: MouseEvent) {
-      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false);
+      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false)
     }
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [open]);
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
 
   function toggleMenu() {
     setOpen((prev) => {
-      if (!prev) setActiveIdx(0);
-      return !prev;
-    });
+      if (!prev) setActiveIdx(0)
+      return !prev
+    })
   }
 
   function activate(id: string) {
-    onAction?.(id);
-    setOpen(false);
-    caretRef.current?.focus();
+    onAction?.(id)
+    setOpen(false)
+    caretRef.current?.focus()
   }
 
   function onKeyDown(e: KeyboardEvent) {
     if (!open) {
       if (['ArrowDown', 'Enter', ' '].includes(e.key)) {
-        e.preventDefault();
-        setActiveIdx(0);
-        setOpen(true);
+        e.preventDefault()
+        setActiveIdx(0)
+        setOpen(true)
       }
-      return;
+      return
     }
-    if (e.key === 'Escape') { e.preventDefault(); setOpen(false); caretRef.current?.focus(); }
-    else if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, items.length - 1)); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, 0)); }
-    else if (e.key === 'Home') { e.preventDefault(); setActiveIdx(0); }
-    else if (e.key === 'End') { e.preventDefault(); setActiveIdx(items.length - 1); }
-    else if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      const item = items[activeIdx];
-      if (item && !item.disabled) activate(item.id);
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      setOpen(false)
+      caretRef.current?.focus()
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setActiveIdx((i) => Math.min(i + 1, items.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setActiveIdx((i) => Math.max(i - 1, 0))
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      setActiveIdx(0)
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      setActiveIdx(items.length - 1)
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      const item = items[activeIdx]
+      if (item && !item.disabled) activate(item.id)
+    } else if (e.key === 'Tab') {
+      setOpen(false)
     }
-    else if (e.key === 'Tab') { setOpen(false); }
   }
 
   return (
@@ -91,7 +110,18 @@ export function SplitButton({ label, variant = 'ghost', disabled, items, onPrima
         onClick={toggleMenu}
         onKeyDown={onKeyDown}
       >
-        <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          aria-hidden="true"
+          focusable="false"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M1 3 L5 7 L9 3" />
         </svg>
       </button>
@@ -107,8 +137,8 @@ export function SplitButton({ label, variant = 'ghost', disabled, items, onPrima
               className="action-menu-item"
               onMouseEnter={() => setActiveIdx(idx)}
               onMouseDown={(e) => {
-                e.preventDefault();
-                if (!item.disabled) activate(item.id);
+                e.preventDefault()
+                if (!item.disabled) activate(item.id)
               }}
             >
               {item.label}
@@ -117,5 +147,5 @@ export function SplitButton({ label, variant = 'ghost', disabled, items, onPrima
         </ul>
       )}
     </div>
-  );
+  )
 }

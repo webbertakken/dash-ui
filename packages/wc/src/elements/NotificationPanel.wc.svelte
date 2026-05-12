@@ -1,6 +1,6 @@
 <svelte:options tag="uni-notification-panel" />
 <script>
-  import Original from '@dash-ui/svelte/components/NotificationPanel.svelte';
+  import Original from '@w5-ui/svelte/components/NotificationPanel.svelte';
   export let open = false;
   export let notifications = [];
   export let onClose = () => {};

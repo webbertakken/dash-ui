@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
-import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import path from 'node:path';
+import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import path from 'node:path'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -12,7 +12,7 @@ export default defineConfig({
       include: [/packages\/wc\/src\/.*\.svelte$/],
       preprocess: vitePreprocess(),
     }),
-    // 2. The underlying @dash-ui/svelte components, compiled normally so the
+    // 2. The underlying @w5-ui/svelte components, compiled normally so the
     //    wrappers can mount them inside their custom-element shadow root.
     svelte({
       compilerOptions: { customElement: false },
@@ -37,4 +37,4 @@ export default defineConfig({
     target: 'es2022',
     minify: false,
   },
-});
+})

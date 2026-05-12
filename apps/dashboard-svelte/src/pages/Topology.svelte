@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { Button, IconButton, Pill, SearchBox, HealthBar, DownloadIcon, Tooltip, TreeView, ContextMenu, Dendrogram } from '@dash-ui/svelte';
-  import type { TreeNode, ContextMenuEntry, DendrogramNode } from '@dash-ui/svelte';
+  import { Button, IconButton, Pill, SearchBox, HealthBar, DownloadIcon, Tooltip, TreeView, ContextMenu, Dendrogram } from '@w5-ui/svelte';
+  import type { TreeNode, ContextMenuEntry, DendrogramNode } from '@w5-ui/svelte';
   import { NODES, LINKS, NODE_LABEL, type TopologyNode } from '../data';
 
   const NODE_CTX_ITEMS: ContextMenuEntry[] = [

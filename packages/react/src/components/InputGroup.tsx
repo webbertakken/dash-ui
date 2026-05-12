@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 
 export interface InputGroupProps {
-  prefix?: ReactNode;
-  suffix?: ReactNode;
-  children: ReactNode;
+  prefix?: ReactNode
+  suffix?: ReactNode
+  children: ReactNode
 }
 
 export function InputGroup({ prefix, suffix, children }: InputGroupProps) {
@@ -17,5 +17,5 @@ export function InputGroup({ prefix, suffix, children }: InputGroupProps) {
         <span className="input-group-addon input-group-addon--suffix">{suffix}</span>
       )}
     </div>
-  );
+  )
 }

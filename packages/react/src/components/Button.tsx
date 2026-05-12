@@ -1,13 +1,13 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { Spinner } from './Spinner.js';
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { Spinner } from './Spinner.js'
 
-export type ButtonVariant = 'primary' | 'ghost' | 'danger';
+export type ButtonVariant = 'primary' | 'ghost' | 'danger'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  iconOnly?: boolean;
-  loading?: boolean;
-  children?: ReactNode;
+  variant?: ButtonVariant
+  iconOnly?: boolean
+  loading?: boolean
+  children?: ReactNode
 }
 
 export function Button({
@@ -20,17 +20,23 @@ export function Button({
   children,
   ...rest
 }: ButtonProps) {
-  const cls = ['btn', `btn-${variant}`, iconOnly && 'btn-icon', className].filter(Boolean).join(' ');
+  const cls = ['btn', `btn-${variant}`, iconOnly && 'btn-icon', className].filter(Boolean).join(' ')
   return (
-    <button type={type} className={cls} disabled={disabled || loading} aria-busy={loading || undefined} {...rest}>
+    <button
+      type={type}
+      className={cls}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      {...rest}
+    >
       {loading && <Spinner size="sm" />}
       {children}
     </button>
-  );
+  )
 }
 
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
 export function IconButton({
@@ -51,5 +57,5 @@ export function IconButton({
     >
       {children}
     </button>
-  );
+  )
 }

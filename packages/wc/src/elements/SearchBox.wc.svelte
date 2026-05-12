@@ -1,6 +1,6 @@
 <svelte:options tag="uni-search-box" />
 <script>
-  import Original from '@dash-ui/svelte/components/SearchBox.svelte';
+  import Original from '@w5-ui/svelte/components/SearchBox.svelte';
   export let placeholder = '';
   export let value = '';
   export let ariaLabel = '';

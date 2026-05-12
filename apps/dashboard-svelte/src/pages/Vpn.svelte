@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, Button, Pill, Tabs, PlusIcon, FunnelChart, UptimeTimeline, DumbbellChart, ErrorBandChart, ArcDiagram, CumulativeDistribution, ExpandableRow } from '@dash-ui/svelte';
-  import type { FunnelSegment, UptimeSeries, DumbbellItem, ErrorBandSeries, ArcNode, ArcLink, CdfSeries } from '@dash-ui/svelte';
+  import { Card, Button, Pill, Tabs, PlusIcon, FunnelChart, UptimeTimeline, DumbbellChart, ErrorBandChart, ArcDiagram, CumulativeDistribution, ExpandableRow } from '@w5-ui/svelte';
+  import type { FunnelSegment, UptimeSeries, DumbbellItem, ErrorBandSeries, ArcNode, ArcLink, CdfSeries } from '@w5-ui/svelte';
   let tab = 's2s';
 
   const VPN_UPTIME: UptimeSeries[] = [

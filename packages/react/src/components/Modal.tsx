@@ -1,68 +1,68 @@
-import { useEffect, useId, useRef, type ReactNode } from 'react';
-import { IconButton } from './Button.js';
-import { CloseIcon } from '../icons.js';
+import { useEffect, useId, useRef, type ReactNode } from 'react'
+import { CloseIcon } from '../icons.js'
+import { IconButton } from './Button.js'
 
 export interface ModalProps {
-  open: boolean;
-  title: string;
-  onClose: () => void;
-  children?: ReactNode;
-  footer?: ReactNode;
+  open: boolean
+  title: string
+  onClose: () => void
+  children?: ReactNode
+  footer?: ReactNode
 }
 
 const FOCUSABLE =
-  'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
 
 export function Modal({ open, title, onClose, children, footer }: ModalProps) {
-  const titleId = useId();
-  const modalRef = useRef<HTMLDivElement>(null);
-  const downOnBackdropRef = useRef(false);
+  const titleId = useId()
+  const modalRef = useRef<HTMLDivElement>(null)
+  const downOnBackdropRef = useRef(false)
   useEffect(() => {
-    if (!open) return;
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const node = modalRef.current;
-    const first = node?.querySelector<HTMLElement>(FOCUSABLE);
-    (first ?? node)?.focus();
+    if (!open) return
+    const previouslyFocused = document.activeElement as HTMLElement | null
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const node = modalRef.current
+    const first = node?.querySelector<HTMLElement>(FOCUSABLE)
+    ;(first ?? node)?.focus()
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
-        return;
+        onClose()
+        return
       }
-      if (e.key !== 'Tab' || !node) return;
-      const items = Array.from(node.querySelectorAll<HTMLElement>(FOCUSABLE));
+      if (e.key !== 'Tab' || !node) return
+      const items = Array.from(node.querySelectorAll<HTMLElement>(FOCUSABLE))
       if (items.length === 0) {
-        e.preventDefault();
-        return;
+        e.preventDefault()
+        return
       }
-      const f = items[0]!;
-      const l = items[items.length - 1]!;
-      const active = document.activeElement;
+      const f = items[0]!
+      const l = items[items.length - 1]!
+      const active = document.activeElement
       if (e.shiftKey && active === f) {
-        e.preventDefault();
-        l.focus();
+        e.preventDefault()
+        l.focus()
       } else if (!e.shiftKey && active === l) {
-        e.preventDefault();
-        f.focus();
+        e.preventDefault()
+        f.focus()
       }
-    };
-    window.addEventListener('keydown', onKey);
+    }
+    window.addEventListener('keydown', onKey)
     return () => {
-      window.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
-      previouslyFocused?.focus?.();
-    };
-  }, [open, onClose]);
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+      previouslyFocused?.focus?.()
+    }
+  }, [open, onClose])
   return (
     <div
       className={`backdrop ${open ? 'show' : ''}`}
       onMouseDown={(e) => {
-        downOnBackdropRef.current = e.target === e.currentTarget;
+        downOnBackdropRef.current = e.target === e.currentTarget
       }}
       onClick={(e) => {
-        if (downOnBackdropRef.current && e.target === e.currentTarget) onClose();
-        downOnBackdropRef.current = false;
+        if (downOnBackdropRef.current && e.target === e.currentTarget) onClose()
+        downOnBackdropRef.current = false
       }}
     >
       <div
@@ -83,5 +83,5 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
         {footer && <div className="modal-f">{footer}</div>}
       </div>
     </div>
-  );
+  )
 }

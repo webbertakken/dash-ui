@@ -1,6 +1,6 @@
 <svelte:options tag="uni-count-up" />
 <script>
-  import Original from '@dash-ui/svelte/components/CountUp.svelte';
+  import Original from '@w5-ui/svelte/components/CountUp.svelte';
   export let from = 0;
   export let to = undefined;
   export let duration = 1200;

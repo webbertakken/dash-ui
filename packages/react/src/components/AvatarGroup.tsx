@@ -1,15 +1,20 @@
-import { Avatar, type AvatarProps } from './Avatar.js';
+import { Avatar, type AvatarProps } from './Avatar.js'
 
 export interface AvatarGroupProps {
-  avatars: AvatarProps[];
-  max?: number;
-  size?: AvatarProps['size'];
-  ariaLabel?: string;
+  avatars: AvatarProps[]
+  max?: number
+  size?: AvatarProps['size']
+  ariaLabel?: string
 }
 
-export function AvatarGroup({ avatars, max = 5, size = 'md', ariaLabel = 'Avatar group' }: AvatarGroupProps) {
-  const visible = avatars.slice(0, max);
-  const overflow = avatars.length - visible.length;
+export function AvatarGroup({
+  avatars,
+  max = 5,
+  size = 'md',
+  ariaLabel = 'Avatar group',
+}: AvatarGroupProps) {
+  const visible = avatars.slice(0, max)
+  const overflow = avatars.length - visible.length
   return (
     <span className="avatar-group" role="list" aria-label={ariaLabel}>
       {visible.map((av, i) => (
@@ -27,5 +32,5 @@ export function AvatarGroup({ avatars, max = 5, size = 'md', ariaLabel = 'Avatar
         </span>
       )}
     </span>
-  );
+  )
 }

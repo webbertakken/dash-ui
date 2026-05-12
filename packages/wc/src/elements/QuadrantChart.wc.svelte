@@ -1,6 +1,6 @@
 <svelte:options tag="uni-quadrant-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/QuadrantChart.svelte';
+  import Original from '@w5-ui/svelte/components/QuadrantChart.svelte';
   export let points = [];
   export let xThreshold = undefined;
   export let yThreshold = undefined;

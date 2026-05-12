@@ -1,65 +1,80 @@
-import { useMemo } from 'react';
+import { useMemo } from 'react'
 
 export interface MarimekkoSegment {
-  label: string;
-  value: number;
-  color?: string;
+  label: string
+  value: number
+  color?: string
 }
 
 export interface MarimekkoColumn {
-  label: string;
-  segments: MarimekkoSegment[];
+  label: string
+  segments: MarimekkoSegment[]
 }
 
 export interface MarimekkoChartProps {
-  columns: MarimekkoColumn[];
-  height?: number;
-  ariaLabel?: string;
+  columns: MarimekkoColumn[]
+  height?: number
+  ariaLabel?: string
 }
 
-const PALETTE = ['#006FFF', '#00C875', '#F5A623', '#A78BFA', '#FF7B7B', '#00C8C8', '#FB923C'];
-const VW = 340;
-const LABEL_H = 22;
-const GAP = 2;
+const PALETTE = ['#006FFF', '#00C875', '#F5A623', '#A78BFA', '#FF7B7B', '#00C8C8', '#FB923C']
+const VW = 340
+const LABEL_H = 22
+const GAP = 2
 
 interface Cell {
-  x: number; y: number; w: number; h: number;
-  color: string; label: string;
+  x: number
+  y: number
+  w: number
+  h: number
+  color: string
+  label: string
 }
-interface Header { x: number; w: number; label: string; }
+interface Header {
+  x: number
+  w: number
+  label: string
+}
 
-export function MarimekkoChart({ columns, height = 160, ariaLabel = 'Marimekko chart' }: MarimekkoChartProps) {
+export function MarimekkoChart({
+  columns,
+  height = 160,
+  ariaLabel = 'Marimekko chart',
+}: MarimekkoChartProps) {
   const { cells, headers } = useMemo(() => {
-    const colTotals = columns.map(col => col.segments.reduce((s, seg) => s + seg.value, 0));
-    const grandTotal = colTotals.reduce((s, t) => s + t, 0);
-    if (grandTotal === 0) return { cells: [] as Cell[], headers: [] as Header[] };
+    const colTotals = columns.map((col) => col.segments.reduce((s, seg) => s + seg.value, 0))
+    const grandTotal = colTotals.reduce((s, t) => s + t, 0)
+    if (grandTotal === 0) return { cells: [] as Cell[], headers: [] as Header[] }
 
-    const chartH = height - LABEL_H;
-    const result: Cell[] = [];
-    const hdrs: Header[] = [];
+    const chartH = height - LABEL_H
+    const result: Cell[] = []
+    const hdrs: Header[] = []
 
-    let cx = 0;
+    let cx = 0
     columns.forEach((col, ci) => {
-      const colTotal = colTotals[ci];
-      const colW = (colTotal / grandTotal) * VW;
-      hdrs.push({ x: cx, w: colW, label: col.label });
+      const colTotal = colTotals[ci]
+      const colW = (colTotal / grandTotal) * VW
+      hdrs.push({ x: cx, w: colW, label: col.label })
 
-      let sy = LABEL_H;
+      let sy = LABEL_H
       col.segments.forEach((seg, si) => {
-        const segH = colTotal > 0 ? (seg.value / colTotal) * chartH : 0;
+        const segH = colTotal > 0 ? (seg.value / colTotal) * chartH : 0
         result.push({
-          x: cx, y: sy, w: colW, h: segH,
+          x: cx,
+          y: sy,
+          w: colW,
+          h: segH,
           color: seg.color ?? PALETTE[si % PALETTE.length],
           label: seg.label,
-        });
-        sy += segH;
-      });
-      cx += colW;
-    });
-    return { cells: result, headers: hdrs };
-  }, [columns, height]);
+        })
+        sy += segH
+      })
+      cx += colW
+    })
+    return { cells: result, headers: hdrs }
+  }, [columns, height])
 
-  if (!cells.length) return null;
+  if (!cells.length) return null
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -124,5 +139,5 @@ export function MarimekkoChart({ columns, height = 160, ariaLabel = 'Marimekko c
         ))}
       </svg>
     </div>
-  );
+  )
 }

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-lollipop-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/LollipopChart.svelte';
+  import Original from '@w5-ui/svelte/components/LollipopChart.svelte';
   export let items = [];
   export let unit = '';
   export let color = '#006FFF';

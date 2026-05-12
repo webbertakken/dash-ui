@@ -1,14 +1,14 @@
 export interface TimelineEvent {
-  id: string;
-  title: string;
-  description?: string;
-  time: string;
-  variant?: 'info' | 'warn' | 'danger' | 'success' | 'neutral';
+  id: string
+  title: string
+  description?: string
+  time: string
+  variant?: 'info' | 'warn' | 'danger' | 'success' | 'neutral'
 }
 
 export interface TimelineProps {
-  events: TimelineEvent[];
-  className?: string;
+  events: TimelineEvent[]
+  className?: string
 }
 
 export function Timeline({ events, className = '' }: TimelineProps) {
@@ -27,5 +27,5 @@ export function Timeline({ events, className = '' }: TimelineProps) {
         </li>
       ))}
     </ol>
-  );
+  )
 }

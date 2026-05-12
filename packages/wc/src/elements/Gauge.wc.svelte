@@ -1,6 +1,6 @@
 <svelte:options tag="uni-gauge" />
 <script>
-  import Original from '@dash-ui/svelte/components/Gauge.svelte';
+  import Original from '@w5-ui/svelte/components/Gauge.svelte';
   export let value = 0;
   export let label = '';
   export let color = '#006FFF';

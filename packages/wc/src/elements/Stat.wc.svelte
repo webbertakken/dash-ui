@@ -1,6 +1,6 @@
 <svelte:options tag="uni-stat" />
 <script>
-  import Original from '@dash-ui/svelte/components/Stat.svelte';
+  import Original from '@w5-ui/svelte/components/Stat.svelte';
   export let label = undefined;
   export let value = '';
   export let unit = undefined;

@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Version + publish
+    runs-on: ubuntu-latest
+    # Don't run on the auto-commit from the "Version Packages" PR if Changesets
+    # configured commit:false. We use a guard later but the action no-ops anyway
+    # when there are no pending changesets and the working tree is at the
+    # already-published version.
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write # for npm provenance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read Node version from mise.toml
+        id: node
+        run:
+          echo "version=$(grep -E '^node\s*=' mise.toml | sed -E 's/.*"([^"]+)".*/\1/')" >>
+          "$GITHUB_OUTPUT"
+
+      - name: Install package manager (from package.json)
+        run: |
+          corepack enable
+          corepack install
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.node.outputs.version }}
+
+      - name: Install deps
+        env:
+          YARN_ENABLE_HARDENED_MODE: 'false'
+        run: yarn install --immutable
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Configure npm auth (registry + provenance)
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          echo "registry=https://registry.npmjs.org" >> ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create release PR or publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: yarn version-packages
+          publish: yarn release
+          title: 'chore: version packages'
+          commit: 'chore: version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'

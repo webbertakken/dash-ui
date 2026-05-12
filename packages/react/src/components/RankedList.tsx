@@ -1,19 +1,24 @@
 export interface RankedItem {
-  label: string;
-  value: number;
-  sublabel?: string;
-  color?: string;
+  label: string
+  value: number
+  sublabel?: string
+  color?: string
 }
 
 export interface RankedListProps {
-  items: RankedItem[];
-  unit?: string;
-  max?: number;
-  ariaLabel?: string;
+  items: RankedItem[]
+  unit?: string
+  max?: number
+  ariaLabel?: string
 }
 
-export function RankedList({ items, unit, max: maxProp, ariaLabel = 'Ranked list' }: RankedListProps) {
-  const max = maxProp ?? Math.max(...items.map((i) => i.value), 1);
+export function RankedList({
+  items,
+  unit,
+  max: maxProp,
+  ariaLabel = 'Ranked list',
+}: RankedListProps) {
+  const max = maxProp ?? Math.max(...items.map((i) => i.value), 1)
   return (
     <table className="rl" aria-label={ariaLabel}>
       <caption className="sr-only">{ariaLabel}</caption>
@@ -37,7 +42,10 @@ export function RankedList({ items, unit, max: maxProp, ariaLabel = 'Ranked list
               <div className="rl-bar-track">
                 <div
                   className="rl-bar-fill"
-                  style={{ width: `${((item.value / max) * 100).toFixed(1)}%`, background: item.color ?? '#006FFF' }}
+                  style={{
+                    width: `${((item.value / max) * 100).toFixed(1)}%`,
+                    background: item.color ?? '#006FFF',
+                  }}
                 />
               </div>
             </td>
@@ -49,5 +57,5 @@ export function RankedList({ items, unit, max: maxProp, ariaLabel = 'Ranked list
         ))}
       </tbody>
     </table>
-  );
+  )
 }

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-cumulative-distribution" />
 <script>
-  import Original from '@dash-ui/svelte/components/CumulativeDistribution.svelte';
+  import Original from '@w5-ui/svelte/components/CumulativeDistribution.svelte';
   export let series = [];
   export let guides = [50, 95];
   export let height = 160;

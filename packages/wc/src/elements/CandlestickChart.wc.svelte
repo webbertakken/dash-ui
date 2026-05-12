@@ -1,6 +1,6 @@
 <svelte:options tag="uni-candlestick-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/CandlestickChart.svelte';
+  import Original from '@w5-ui/svelte/components/CandlestickChart.svelte';
   export let bars = [];
   export let yRange = undefined;
   export let height = 180;

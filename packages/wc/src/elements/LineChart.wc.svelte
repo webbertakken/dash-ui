@@ -1,6 +1,6 @@
 <svelte:options tag="uni-line-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/LineChart.svelte';
+  import Original from '@w5-ui/svelte/components/LineChart.svelte';
   export let series = [];
   export let labels = [];
   export let height = 160;

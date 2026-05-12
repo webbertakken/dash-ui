@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, Button, Pill, Tabs, Sparkline, Toggle, TreeMap, CalendarHeatmap, ChordDiagram, ParetoChart, LollipopChart, SlopeChart, IcicleChart, ForceGraph, PolarHeatmap, StripeChart, WordCloud, PieChart, Spoiler } from '@dash-ui/svelte';
-  import type { LollipopItem, SlopeItem, IcicleNode, FDNode, FDLink, PolarCell, WordCloudItem, PieSlice } from '@dash-ui/svelte';
+  import { Card, Button, Pill, Tabs, Sparkline, Toggle, TreeMap, CalendarHeatmap, ChordDiagram, ParetoChart, LollipopChart, SlopeChart, IcicleChart, ForceGraph, PolarHeatmap, StripeChart, WordCloud, PieChart, Spoiler } from '@w5-ui/svelte';
+  import type { LollipopItem, SlopeItem, IcicleNode, FDNode, FDLink, PolarCell, WordCloudItem, PieSlice } from '@w5-ui/svelte';
   const THREAT_SEVERITY: PieSlice[] = [
     { label: 'Critical', value: 23,  color: '#FF3B30' },
     { label: 'High',     value: 89,  color: '#F5A623' },

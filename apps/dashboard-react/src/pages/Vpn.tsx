@@ -1,6 +1,27 @@
-import { useState } from 'react';
-import { Card, Button, Pill, Tabs, PlusIcon, FunnelChart, UptimeTimeline, DumbbellChart, ErrorBandChart, ArcDiagram, CumulativeDistribution, ExpandableRow } from '@dash-ui/react';
-import type { FunnelSegment, UptimeSeries, DumbbellItem, ErrorBandSeries, ArcNode, ArcLink, CdfSeries } from '@dash-ui/react';
+import {
+  Card,
+  Button,
+  Pill,
+  Tabs,
+  PlusIcon,
+  FunnelChart,
+  UptimeTimeline,
+  DumbbellChart,
+  ErrorBandChart,
+  ArcDiagram,
+  CumulativeDistribution,
+  ExpandableRow,
+} from '@w5-ui/react'
+import type {
+  FunnelSegment,
+  UptimeSeries,
+  DumbbellItem,
+  ErrorBandSeries,
+  ArcNode,
+  ArcLink,
+  CdfSeries,
+} from '@w5-ui/react'
+import { useState } from 'react'
 
 const VPN_UPTIME: UptimeSeries[] = [
   {
@@ -21,62 +42,134 @@ const VPN_UPTIME: UptimeSeries[] = [
     segments: [
       { from: 0, to: 0.28, status: 'down' },
       { from: 0.28, to: 0.42, status: 'degraded' },
-      { from: 0.42, to: 0.70, status: 'up' },
-      { from: 0.70, to: 1, status: 'down' },
+      { from: 0.42, to: 0.7, status: 'up' },
+      { from: 0.7, to: 1, status: 'down' },
     ],
   },
-];
+]
 
-const VPN_X_LABELS = ['00:00', '06:00', '12:00', '18:00', '24:00'];
+const VPN_X_LABELS = ['00:00', '06:00', '12:00', '18:00', '24:00']
 
 const VPN_FUNNEL: FunnelSegment[] = [
   { label: 'Attempted', value: 158, color: '#006FFF' },
   { label: 'Auth OK', value: 142, color: '#0092FF' },
   { label: 'Tunnel', value: 138, color: '#00B4C2' },
   { label: 'Active', value: 127, color: '#00C875' },
-];
+]
 
 const SERVERS: [string, string, string, string, string, string, string, string][] = [
-  ['Office WireGuard', 'WireGuard', '203.0.113.42:51820', '10.10.0.0/24', '12', '#00B070', 'Active', '#5DDB9F'],
-  ['Legacy IPsec', 'IPsec / IKEv2', '203.0.113.42:500', '10.20.0.0/24', '3', '#00B070', 'Active', '#5DDB9F'],
-  ['L2TP Mobile', 'L2TP / IPsec', '203.0.113.42:1701', '10.30.0.0/24', '0', '#6E7079', 'Disabled', '#A4A7B5'],
-];
+  [
+    'Office WireGuard',
+    'WireGuard',
+    '203.0.113.42:51820',
+    '10.10.0.0/24',
+    '12',
+    '#00B070',
+    'Active',
+    '#5DDB9F',
+  ],
+  [
+    'Legacy IPsec',
+    'IPsec / IKEv2',
+    '203.0.113.42:500',
+    '10.20.0.0/24',
+    '3',
+    '#00B070',
+    'Active',
+    '#5DDB9F',
+  ],
+  [
+    'L2TP Mobile',
+    'L2TP / IPsec',
+    '203.0.113.42:1701',
+    '10.30.0.0/24',
+    '0',
+    '#6E7079',
+    'Disabled',
+    '#A4A7B5',
+  ],
+]
 
-const SERVER_DETAIL: Record<string, { cipher: string; handshake: string; rx: string; tx: string; uptime: string }> = {
-  'Office WireGuard': { cipher: 'ChaCha20-Poly1305', handshake: '2m 14s ago', rx: '2.4 GB', tx: '0.8 GB', uptime: '12d 04h' },
-  'Legacy IPsec':     { cipher: 'AES-256-GCM',        handshake: '8m 52s ago', rx: '320 MB', tx: '190 MB', uptime: '3d 11h' },
-  'L2TP Mobile':      { cipher: '3DES (deprecated)',   handshake: 'N/A',        rx: '0 B',    tx: '0 B',    uptime: '—' },
-};
+const SERVER_DETAIL: Record<
+  string,
+  { cipher: string; handshake: string; rx: string; tx: string; uptime: string }
+> = {
+  'Office WireGuard': {
+    cipher: 'ChaCha20-Poly1305',
+    handshake: '2m 14s ago',
+    rx: '2.4 GB',
+    tx: '0.8 GB',
+    uptime: '12d 04h',
+  },
+  'Legacy IPsec': {
+    cipher: 'AES-256-GCM',
+    handshake: '8m 52s ago',
+    rx: '320 MB',
+    tx: '190 MB',
+    uptime: '3d 11h',
+  },
+  'L2TP Mobile': {
+    cipher: '3DES (deprecated)',
+    handshake: 'N/A',
+    rx: '0 B',
+    tx: '0 B',
+    uptime: '—',
+  },
+}
 
 const VPN_LATENCY: DumbbellItem[] = [
   { label: 'WireGuard', start: 3, end: 18, color: '#006FFF' },
   { label: 'IPsec', start: 12, end: 42, color: '#00C875' },
   { label: 'L2TP', start: 28, end: 95, color: '#F5A623' },
-];
+]
 
 const LATENCY_BAND: ErrorBandSeries[] = [
   {
     label: 'WireGuard',
     color: '#006FFF',
-    mean:  [8, 9, 7, 8, 10, 12, 9, 8, 7, 9, 11, 10, 9, 8, 7, 9, 10, 8, 9, 10, 9, 8, 7, 8],
-    lower: [5, 6, 4, 5,  7,  8, 6, 5, 4, 6,  7,  7, 6, 5, 4, 6,  7, 5, 6,  7, 6, 5, 4, 5],
-    upper: [14,15,12,14, 18, 22,16,13,12,15, 18, 17,14,13,11,15, 17,13,14, 16,15,13,11,13],
+    mean: [8, 9, 7, 8, 10, 12, 9, 8, 7, 9, 11, 10, 9, 8, 7, 9, 10, 8, 9, 10, 9, 8, 7, 8],
+    lower: [5, 6, 4, 5, 7, 8, 6, 5, 4, 6, 7, 7, 6, 5, 4, 6, 7, 5, 6, 7, 6, 5, 4, 5],
+    upper: [
+      14, 15, 12, 14, 18, 22, 16, 13, 12, 15, 18, 17, 14, 13, 11, 15, 17, 13, 14, 16, 15, 13, 11,
+      13,
+    ],
   },
   {
     label: 'IPsec',
     color: '#00C875',
-    mean:  [22,24,21,23,25,28,24,22,20,24,27,25,23,22,20,24,26,22,24,26,24,22,20,22],
-    lower: [16,18,15,17,19,22,18,16,14,18,21,19,17,16,14,18,20,16,18,20,18,16,14,16],
-    upper: [30,34,29,31,35,40,32,30,28,32,36,33,31,30,28,32,34,30,32,34,32,30,28,30],
+    mean: [
+      22, 24, 21, 23, 25, 28, 24, 22, 20, 24, 27, 25, 23, 22, 20, 24, 26, 22, 24, 26, 24, 22, 20,
+      22,
+    ],
+    lower: [
+      16, 18, 15, 17, 19, 22, 18, 16, 14, 18, 21, 19, 17, 16, 14, 18, 20, 16, 18, 20, 18, 16, 14,
+      16,
+    ],
+    upper: [
+      30, 34, 29, 31, 35, 40, 32, 30, 28, 32, 36, 33, 31, 30, 28, 32, 34, 30, 32, 34, 32, 30, 28,
+      30,
+    ],
   },
-];
-const LATENCY_X = ['00:00', '06:00', '12:00', '18:00', '24:00'];
+]
+const LATENCY_X = ['00:00', '06:00', '12:00', '18:00', '24:00']
 
 const LATENCY_CDF: CdfSeries[] = [
-  { label: 'WireGuard', color: '#006FFF', values: [3,4,5,5,6,6,7,7,7,8,8,8,9,9,10,11,12,13,15,18] },
-  { label: 'IPsec',     color: '#00C875', values: [12,14,15,16,17,18,20,21,22,23,24,25,26,28,30,32,35,38,40,42] },
-  { label: 'L2TP',      color: '#F5A623', values: [28,32,35,38,40,42,45,48,50,52,55,58,62,65,68,72,78,82,88,95] },
-];
+  {
+    label: 'WireGuard',
+    color: '#006FFF',
+    values: [3, 4, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10, 11, 12, 13, 15, 18],
+  },
+  {
+    label: 'IPsec',
+    color: '#00C875',
+    values: [12, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 28, 30, 32, 35, 38, 40, 42],
+  },
+  {
+    label: 'L2TP',
+    color: '#F5A623',
+    values: [28, 32, 35, 38, 40, 42, 45, 48, 50, 52, 55, 58, 62, 65, 68, 72, 78, 82, 88, 95],
+  },
+]
 
 const VPN_ARC_NODES: ArcNode[] = [
   { id: 'hq', label: 'HQ' },
@@ -85,7 +178,7 @@ const VPN_ARC_NODES: ArcNode[] = [
   { id: 'aws-w', label: 'AWS West' },
   { id: 'azure', label: 'Azure' },
   { id: 'mobile', label: 'Mobile' },
-];
+]
 
 const VPN_ARC_LINKS: ArcLink[] = [
   { source: 'hq', target: 'aws-e', value: 28 },
@@ -95,16 +188,16 @@ const VPN_ARC_LINKS: ArcLink[] = [
   { source: 'branch', target: 'aws-e', value: 8 },
   { source: 'mobile', target: 'hq', value: 5 },
   { source: 'mobile', target: 'aws-w', value: 3 },
-];
+]
 
 const TELEPORT: [string, string, string, string][] = [
   ['Maria · MacBook Pro', '100.64.0.42', '5 ms', 'Active'],
   ['Tobias · iPhone 15', '100.64.0.61', '22 ms', 'Active'],
   ['Arjun · Pixel 8', '100.64.0.74', '38 ms', 'Active'],
-];
+]
 
 export function Vpn() {
-  const [tab, setTab] = useState('s2s');
+  const [tab, setTab] = useState('s2s')
   return (
     <>
       <div className="ph-bar">
@@ -133,34 +226,85 @@ export function Vpn() {
           </h3>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0' }}>
             <div style={{ flex: 1, textAlign: 'center' }}>
-              <div className="dr-thumb" style={{ margin: '0 auto 6px', background: 'linear-gradient(180deg,#1C1C1E,#0A0A0B)' }}>
+              <div
+                className="dr-thumb"
+                style={{
+                  margin: '0 auto 6px',
+                  background: 'linear-gradient(180deg,#1C1C1E,#0A0A0B)',
+                }}
+              >
                 EG
               </div>
-              <div style={{ fontSize: 13, color: '#fff', fontWeight: 500 }}>Edge Gateway (Front Office)</div>
-              <div style={{ fontSize: 11, color: '#6E7079', fontFamily: '"JetBrains Mono", monospace' }}>203.0.113.42</div>
+              <div style={{ fontSize: 13, color: '#fff', fontWeight: 500 }}>
+                Edge Gateway (Front Office)
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: '#6E7079',
+                  fontFamily: '"JetBrains Mono", monospace',
+                }}
+              >
+                203.0.113.42
+              </div>
             </div>
             <div style={{ flex: '0 0 auto', color: '#00B070' }}>
               <svg width="80" height="20" viewBox="0 0 80 20" fill="none">
-                <path d="M2 10h76M70 4l8 6-8 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M2 10h76M70 4l8 6-8 6"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </div>
             <div style={{ flex: 1, textAlign: 'center' }}>
-              <div className="dr-thumb" style={{ margin: '0 auto 6px', background: 'linear-gradient(180deg,#1C1C1E,#0A0A0B)' }}>
+              <div
+                className="dr-thumb"
+                style={{
+                  margin: '0 auto 6px',
+                  background: 'linear-gradient(180deg,#1C1C1E,#0A0A0B)',
+                }}
+              >
                 EG
               </div>
               <div style={{ fontSize: 13, color: '#fff', fontWeight: 500 }}>EG SE (Warehouse)</div>
-              <div style={{ fontSize: 11, color: '#6E7079', fontFamily: '"JetBrains Mono", monospace' }}>198.51.100.18</div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: '#6E7079',
+                  fontFamily: '"JetBrains Mono", monospace',
+                }}
+              >
+                198.51.100.18
+              </div>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 12, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 12 }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 8,
+              fontSize: 12,
+              borderTop: '1px solid rgba(255,255,255,0.06)',
+              paddingTop: 12,
+            }}
+          >
             <span style={{ color: '#6E7079' }}>Throughput</span>
-            <span style={{ color: '#fff', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>↓ 84 / ↑ 12 Mbps</span>
+            <span style={{ color: '#fff', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+              ↓ 84 / ↑ 12 Mbps
+            </span>
             <span style={{ color: '#6E7079' }}>Latency</span>
-            <span style={{ color: '#fff', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>14 ms</span>
+            <span style={{ color: '#fff', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+              14 ms
+            </span>
             <span style={{ color: '#6E7079' }}>Cipher</span>
             <span style={{ color: '#fff', textAlign: 'right' }}>ChaCha20-Poly1305</span>
             <span style={{ color: '#6E7079' }}>Uptime</span>
-            <span style={{ color: '#fff', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>12d 04h</span>
+            <span style={{ color: '#fff', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+              12d 04h
+            </span>
           </div>
         </Card>
 
@@ -185,17 +329,31 @@ export function Vpn() {
                 <span className="status-ring" style={{ width: 8, height: 8 }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 13, color: '#fff' }}>{t[0]}</div>
-                  <div style={{ fontSize: 11, color: '#6E7079', fontFamily: '"JetBrains Mono", monospace' }}>{t[1]}</div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      color: '#6E7079',
+                      fontFamily: '"JetBrains Mono", monospace',
+                    }}
+                  >
+                    {t[1]}
+                  </div>
                 </div>
-                <div style={{ fontSize: 11, color: '#A4A7B5', fontVariantNumeric: 'tabular-nums' }}>{t[2]}</div>
+                <div style={{ fontSize: 11, color: '#A4A7B5', fontVariantNumeric: 'tabular-nums' }}>
+                  {t[2]}
+                </div>
               </div>
             ))}
           </div>
         </Card>
 
         <Card span={6}>
-          <h3>VPN Client Connection Funnel <span className="unit">Last 24 h</span></h3>
-          <div style={{ fontSize: 11, color: '#6E7079', marginBottom: 8 }}>Attempted → authenticated → tunnelled → active</div>
+          <h3>
+            VPN Client Connection Funnel <span className="unit">Last 24 h</span>
+          </h3>
+          <div style={{ fontSize: 11, color: '#6E7079', marginBottom: 8 }}>
+            Attempted → authenticated → tunnelled → active
+          </div>
           <FunnelChart
             segments={VPN_FUNNEL}
             height={150}
@@ -208,15 +366,36 @@ export function Vpn() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 4 }}>
             {VPN_FUNNEL.map((seg, i) => (
               <div key={seg.label}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 4 }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: 12,
+                    marginBottom: 4,
+                  }}
+                >
                   <span style={{ color: '#C8C9D0' }}>{seg.label}</span>
                   <span style={{ color: seg.color, fontVariantNumeric: 'tabular-nums' }}>
                     {seg.value}
                     {i > 0 ? ` (${Math.round((seg.value / VPN_FUNNEL[0].value) * 100)}%)` : ''}
                   </span>
                 </div>
-                <div style={{ height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', background: seg.color, width: `${(seg.value / VPN_FUNNEL[0].value) * 100}%`, borderRadius: 3 }} />
+                <div
+                  style={{
+                    height: 5,
+                    background: 'rgba(255,255,255,0.06)',
+                    borderRadius: 3,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      height: '100%',
+                      background: seg.color,
+                      width: `${(seg.value / VPN_FUNNEL[0].value) * 100}%`,
+                      borderRadius: 3,
+                    }}
+                  />
                 </div>
               </div>
             ))}
@@ -224,7 +403,9 @@ export function Vpn() {
         </Card>
 
         <Card span={12}>
-          <h3>Tunnel uptime <span className="unit">Last 24 h</span></h3>
+          <h3>
+            Tunnel uptime <span className="unit">Last 24 h</span>
+          </h3>
           <UptimeTimeline
             series={VPN_UPTIME}
             xLabels={VPN_X_LABELS}
@@ -233,7 +414,9 @@ export function Vpn() {
         </Card>
 
         <Card span={6}>
-          <h3>Latency range <span className="unit">min → max · Last 24 h</span></h3>
+          <h3>
+            Latency range <span className="unit">min → max · Last 24 h</span>
+          </h3>
           <DumbbellChart
             items={VPN_LATENCY}
             unit=" ms"
@@ -242,8 +425,12 @@ export function Vpn() {
         </Card>
 
         <Card span={6}>
-          <h3>Latency over time <span className="unit">ms · shaded = jitter band</span></h3>
-          <div style={{ fontSize: 11, color: '#6E7079', marginBottom: 8 }}>Mean ± p5–p95 · WireGuard vs IPsec</div>
+          <h3>
+            Latency over time <span className="unit">ms · shaded = jitter band</span>
+          </h3>
+          <div style={{ fontSize: 11, color: '#6E7079', marginBottom: 8 }}>
+            Mean ± p5–p95 · WireGuard vs IPsec
+          </div>
           <ErrorBandChart
             series={LATENCY_BAND}
             xLabels={LATENCY_X}
@@ -255,7 +442,9 @@ export function Vpn() {
           <div style={{ display: 'flex', gap: 12, marginTop: 8, fontSize: 11, color: '#A4A7B5' }}>
             {LATENCY_BAND.map((s) => (
               <span key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ width: 20, height: 2, background: s.color, display: 'inline-block' }} />
+                <span
+                  style={{ width: 20, height: 2, background: s.color, display: 'inline-block' }}
+                />
                 {s.label}
               </span>
             ))}
@@ -263,7 +452,9 @@ export function Vpn() {
         </Card>
 
         <Card span={12}>
-          <h3>Latency distribution <span className="unit">ECDF · p50 / p95 guides</span></h3>
+          <h3>
+            Latency distribution <span className="unit">ECDF · p50 / p95 guides</span>
+          </h3>
           <CumulativeDistribution
             series={LATENCY_CDF}
             guides={[50, 95]}
@@ -274,7 +465,9 @@ export function Vpn() {
           <div style={{ display: 'flex', gap: 12, marginTop: 8, fontSize: 11, color: '#A4A7B5' }}>
             {LATENCY_CDF.map((s) => (
               <span key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ width: 20, height: 2, background: s.color, display: 'inline-block' }} />
+                <span
+                  style={{ width: 20, height: 2, background: s.color, display: 'inline-block' }}
+                />
                 {s.label}
               </span>
             ))}
@@ -294,46 +487,89 @@ export function Vpn() {
                 <th scope="col">Type</th>
                 <th scope="col">Endpoint</th>
                 <th scope="col">Network</th>
-                <th scope="col" style={{ textAlign: 'right' }}>Clients</th>
+                <th scope="col" style={{ textAlign: 'right' }}>
+                  Clients
+                </th>
                 <th scope="col">Status</th>
               </tr>
             </thead>
             {SERVERS.map((s) => {
-              const det = SERVER_DETAIL[s[0]];
+              const det = SERVER_DETAIL[s[0]]
               return (
                 <ExpandableRow
                   key={s[0]}
                   colSpan={6}
-                  row={<>
-                    <td style={{ color: '#fff' }}>{s[0]}</td>
-                    <td><Pill variant="info">{s[1]}</Pill></td>
-                    <td className="mac">{s[2]}</td>
-                    <td className="mac" style={{ color: '#A4A7B5' }}>{s[3]}</td>
-                    <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#A4A7B5' }}>{s[4]}</td>
-                    <td>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: s[7], fontSize: 12 }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: s[5] }} />
-                        {s[6]}
-                      </span>
-                    </td>
-                  </>}
-                  detail={<div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, max-content)', columnGap: 24, rowGap: 4, fontSize: 12 }}>
-                    <span style={{ color: '#6E7079' }}>Cipher</span><span style={{ color: '#C8C9D0' }}>{det.cipher}</span>
-                    <span />
-                    <span style={{ color: '#6E7079' }}>RX</span><span style={{ color: '#C8C9D0' }}>{det.rx}</span>
-                    <span style={{ color: '#6E7079' }}>Handshake</span><span style={{ color: '#C8C9D0' }}>{det.handshake}</span>
-                    <span />
-                    <span style={{ color: '#6E7079' }}>TX</span><span style={{ color: '#C8C9D0' }}>{det.tx}</span>
-                    <span style={{ color: '#6E7079' }}>Uptime</span><span style={{ color: '#C8C9D0' }}>{det.uptime}</span>
-                  </div>}
+                  row={
+                    <>
+                      <td style={{ color: '#fff' }}>{s[0]}</td>
+                      <td>
+                        <Pill variant="info">{s[1]}</Pill>
+                      </td>
+                      <td className="mac">{s[2]}</td>
+                      <td className="mac" style={{ color: '#A4A7B5' }}>
+                        {s[3]}
+                      </td>
+                      <td
+                        style={{
+                          textAlign: 'right',
+                          fontVariantNumeric: 'tabular-nums',
+                          color: '#A4A7B5',
+                        }}
+                      >
+                        {s[4]}
+                      </td>
+                      <td>
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 6,
+                            color: s[7],
+                            fontSize: 12,
+                          }}
+                        >
+                          <span
+                            style={{ width: 6, height: 6, borderRadius: '50%', background: s[5] }}
+                          />
+                          {s[6]}
+                        </span>
+                      </td>
+                    </>
+                  }
+                  detail={
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(5, max-content)',
+                        columnGap: 24,
+                        rowGap: 4,
+                        fontSize: 12,
+                      }}
+                    >
+                      <span style={{ color: '#6E7079' }}>Cipher</span>
+                      <span style={{ color: '#C8C9D0' }}>{det.cipher}</span>
+                      <span />
+                      <span style={{ color: '#6E7079' }}>RX</span>
+                      <span style={{ color: '#C8C9D0' }}>{det.rx}</span>
+                      <span style={{ color: '#6E7079' }}>Handshake</span>
+                      <span style={{ color: '#C8C9D0' }}>{det.handshake}</span>
+                      <span />
+                      <span style={{ color: '#6E7079' }}>TX</span>
+                      <span style={{ color: '#C8C9D0' }}>{det.tx}</span>
+                      <span style={{ color: '#6E7079' }}>Uptime</span>
+                      <span style={{ color: '#C8C9D0' }}>{det.uptime}</span>
+                    </div>
+                  }
                 />
-              );
+              )
             })}
           </table>
         </Card>
 
         <Card span={12}>
-          <h3>Site-to-site mesh <span className="unit">arc thickness = bandwidth · Mbps</span></h3>
+          <h3>
+            Site-to-site mesh <span className="unit">arc thickness = bandwidth · Mbps</span>
+          </h3>
           <ArcDiagram
             nodes={VPN_ARC_NODES}
             links={VPN_ARC_LINKS}
@@ -343,5 +579,5 @@ export function Vpn() {
         </Card>
       </div>
     </>
-  );
+  )
 }

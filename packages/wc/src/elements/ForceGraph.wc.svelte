@@ -1,6 +1,6 @@
 <svelte:options tag="uni-force-graph" />
 <script>
-  import Original from '@dash-ui/svelte/components/ForceGraph.svelte';
+  import Original from '@w5-ui/svelte/components/ForceGraph.svelte';
   export let nodes = [];
   export let links = [];
   export let height = 260;

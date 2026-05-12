@@ -1,6 +1,6 @@
 <svelte:options tag="uni-ridgeline-plot" />
 <script>
-  import Original from '@dash-ui/svelte/components/RidgelinePlot.svelte';
+  import Original from '@w5-ui/svelte/components/RidgelinePlot.svelte';
   export let series = [];
   export let xRange = undefined;
   export let height = 180;

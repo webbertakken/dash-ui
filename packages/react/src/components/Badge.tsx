@@ -1,15 +1,15 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 
-export type BadgeColor = 'danger' | 'warn' | 'info' | 'success' | 'neutral';
+export type BadgeColor = 'danger' | 'warn' | 'info' | 'success' | 'neutral'
 
 export interface BadgeProps {
-  children: ReactNode;
-  count?: number;
-  dot?: boolean;
-  max?: number;
-  showZero?: boolean;
-  color?: BadgeColor;
-  className?: string;
+  children: ReactNode
+  count?: number
+  dot?: boolean
+  max?: number
+  showZero?: boolean
+  color?: BadgeColor
+  className?: string
 }
 
 export function Badge({
@@ -21,8 +21,8 @@ export function Badge({
   color = 'danger',
   className = '',
 }: BadgeProps) {
-  const show = dot || (count !== undefined && (showZero || count > 0));
-  const label = count !== undefined ? (count > max ? `${max}+` : String(count)) : '';
+  const show = dot || (count !== undefined && (showZero || count > 0))
+  const label = count !== undefined ? (count > max ? `${max}+` : String(count)) : ''
   return (
     <span className={`badge-wrapper${className ? ` ${className}` : ''}`}>
       {children}
@@ -32,5 +32,5 @@ export function Badge({
         </span>
       )}
     </span>
-  );
+  )
 }

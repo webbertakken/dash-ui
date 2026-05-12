@@ -1,6 +1,6 @@
 <svelte:options tag="uni-dumbbell-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/DumbbellChart.svelte';
+  import Original from '@w5-ui/svelte/components/DumbbellChart.svelte';
   export let items = [];
   export let unit = '';
   export let color = '#006FFF';

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-sidebar" />
 <script>
-  import Original from '@dash-ui/svelte/components/Sidebar.svelte';
+  import Original from '@w5-ui/svelte/components/Sidebar.svelte';
   // no public props
 </script>
 

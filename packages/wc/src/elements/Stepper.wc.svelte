@@ -1,6 +1,6 @@
 <svelte:options tag="uni-stepper" />
 <script>
-  import Original from '@dash-ui/svelte/components/Stepper.svelte';
+  import Original from '@w5-ui/svelte/components/Stepper.svelte';
   // no public props
 </script>
 

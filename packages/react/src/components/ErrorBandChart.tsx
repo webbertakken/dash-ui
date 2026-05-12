@@ -1,26 +1,26 @@
 export interface ErrorBandSeries {
-  label: string;
-  color: string;
-  mean: number[];
-  lower: number[];
-  upper: number[];
+  label: string
+  color: string
+  mean: number[]
+  lower: number[]
+  upper: number[]
 }
 
 export interface ErrorBandChartProps {
-  series: ErrorBandSeries[];
-  xLabels?: string[];
-  yRange?: [number, number];
-  height?: number;
-  unit?: string;
-  ariaLabel?: string;
+  series: ErrorBandSeries[]
+  xLabels?: string[]
+  yRange?: [number, number]
+  height?: number
+  unit?: string
+  ariaLabel?: string
 }
 
-const VW = 340;
-const PAD_L = 28;
-const PAD_R = 8;
-const PAD_T = 8;
-const PAD_B = 20;
-const PLOT_W = VW - PAD_L - PAD_R;
+const VW = 340
+const PAD_L = 28
+const PAD_R = 8
+const PAD_T = 8
+const PAD_B = 20
+const PLOT_W = VW - PAD_L - PAD_R
 
 export function ErrorBandChart({
   series,
@@ -30,29 +30,34 @@ export function ErrorBandChart({
   unit = '',
   ariaLabel = 'Error band chart',
 }: ErrorBandChartProps) {
-  if (!series.length || !series[0].mean.length) return null;
+  if (!series.length || !series[0].mean.length) return null
 
-  const n = series[0].mean.length;
-  const PLOT_H = height - PAD_T - PAD_B;
+  const n = series[0].mean.length
+  const PLOT_H = height - PAD_T - PAD_B
 
-  const allVals = series.flatMap((s) => [...s.lower, ...s.upper]);
-  const minV = yRange ? yRange[0] : Math.min(...allVals);
-  const maxV = yRange ? yRange[1] : Math.max(...allVals);
-  const range = maxV - minV || 1;
+  const allVals = series.flatMap((s) => [...s.lower, ...s.upper])
+  const minV = yRange ? yRange[0] : Math.min(...allVals)
+  const maxV = yRange ? yRange[1] : Math.max(...allVals)
+  const range = maxV - minV || 1
 
-  const tx = (i: number) => PAD_L + (i / (n - 1 || 1)) * PLOT_W;
-  const ty = (v: number) => PAD_T + (1 - (v - minV) / range) * PLOT_H;
+  const tx = (i: number) => PAD_L + (i / (n - 1 || 1)) * PLOT_W
+  const ty = (v: number) => PAD_T + (1 - (v - minV) / range) * PLOT_H
 
   const bandPath = (lower: number[], upper: number[]) => {
-    const top = upper.map((v, i) => `${i === 0 ? 'M' : 'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');
-    const bot = [...lower].reverse().map((v, i) => `L${tx(n - 1 - i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');
-    return `${top} ${bot} Z`;
-  };
+    const top = upper
+      .map((v, i) => `${i === 0 ? 'M' : 'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`)
+      .join(' ')
+    const bot = [...lower]
+      .reverse()
+      .map((v, i) => `L${tx(n - 1 - i).toFixed(1)},${ty(v).toFixed(1)}`)
+      .join(' ')
+    return `${top} ${bot} Z`
+  }
 
   const linePath = (mean: number[]) =>
-    mean.map((v, i) => `${i === 0 ? 'M' : 'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');
+    mean.map((v, i) => `${i === 0 ? 'M' : 'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ')
 
-  const yTicks = [minV, (minV + maxV) / 2, maxV];
+  const yTicks = [minV, (minV + maxV) / 2, maxV]
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -80,7 +85,8 @@ export function ErrorBandChart({
               textAnchor="end"
               fontFamily="inherit"
             >
-              {Math.round(v)}{unit}
+              {Math.round(v)}
+              {unit}
             </text>
           </g>
         ))}
@@ -114,5 +120,5 @@ export function ErrorBandChart({
         ))}
       </svg>
     </div>
-  );
+  )
 }

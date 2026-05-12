@@ -8,10 +8,10 @@
     "build": "storybook build --output-dir storybook-static --disable-telemetry"
   },
   "dependencies": {
-    "@dash-ui/assets": "workspace:*",
-    "@dash-ui/storybook-meta": "workspace:*",
-    "@dash-ui/svelte": "workspace:*",
-    "@dash-ui/tokens": "workspace:*",
+    "@w5-ui/assets": "workspace:*",
+    "@w5-ui/storybook-meta": "workspace:*",
+    "@w5-ui/svelte": "workspace:*",
+    "@w5-ui/tokens": "workspace:*",
     "dashboard-svelte": "workspace:*",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",

@@ -1,26 +1,26 @@
 export interface LollipopItem {
-  label: string;
-  value: number;
-  color?: string;
+  label: string
+  value: number
+  color?: string
 }
 
 export interface LollipopChartProps {
-  items: LollipopItem[];
-  unit?: string;
-  color?: string;
-  ariaLabel?: string;
+  items: LollipopItem[]
+  unit?: string
+  color?: string
+  ariaLabel?: string
 }
 
-const VW = 340;
-const LABEL_W = 110;
-const VAL_W = 36;
-const PAD_R = 4;
-const TRACK_W = VW - LABEL_W - VAL_W - PAD_R;
-const DOT_R = 5;
-const ROW_H = 26;
-const PAD_T = 6;
-const AXIS_H = 18;
-const TICKS = 4;
+const VW = 340
+const LABEL_W = 110
+const VAL_W = 36
+const PAD_R = 4
+const TRACK_W = VW - LABEL_W - VAL_W - PAD_R
+const DOT_R = 5
+const ROW_H = 26
+const PAD_T = 6
+const AXIS_H = 18
+const TICKS = 4
 
 export function LollipopChart({
   items,
@@ -28,14 +28,12 @@ export function LollipopChart({
   color = '#006FFF',
   ariaLabel = 'Lollipop chart',
 }: LollipopChartProps) {
-  const maxVal = Math.max(...items.map((it) => it.value), 1);
-  const svgH = PAD_T + items.length * ROW_H + AXIS_H;
+  const maxVal = Math.max(...items.map((it) => it.value), 1)
+  const svgH = PAD_T + items.length * ROW_H + AXIS_H
 
-  const tx = (v: number) => LABEL_W + (v / maxVal) * TRACK_W;
+  const tx = (v: number) => LABEL_W + (v / maxVal) * TRACK_W
 
-  const ticks = Array.from({ length: TICKS + 1 }, (_, i) =>
-    Math.round((i / TICKS) * maxVal),
-  );
+  const ticks = Array.from({ length: TICKS + 1 }, (_, i) => Math.round((i / TICKS) * maxVal))
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -70,9 +68,9 @@ export function LollipopChart({
         ))}
 
         {items.map((item, i) => {
-          const cy = PAD_T + i * ROW_H + ROW_H / 2;
-          const cx = tx(item.value);
-          const c = item.color ?? color;
+          const cy = PAD_T + i * ROW_H + ROW_H / 2
+          const cx = tx(item.value)
+          const c = item.color ?? color
 
           return (
             <g key={i}>
@@ -99,20 +97,14 @@ export function LollipopChart({
 
               <circle cx={cx} cy={cy} r={DOT_R} fill={c} />
 
-              <text
-                x={cx + DOT_R + 4}
-                y={cy + 4}
-                fill="#A4A7B5"
-                fontSize={9}
-                fontFamily="inherit"
-              >
+              <text x={cx + DOT_R + 4} y={cy + 4} fill="#A4A7B5" fontSize={9} fontFamily="inherit">
                 {item.value}
                 {unit}
               </text>
             </g>
-          );
+          )
         })}
       </svg>
     </div>
-  );
+  )
 }

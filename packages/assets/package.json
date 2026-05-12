@@ -1,5 +1,5 @@
 {
-  "name": "@dash-ui/assets",
+  "name": "@w5-ui/assets",
   "version": "0.1.0",
   "description": "Brand assets (mark, wordmark, app-rail icons) for the Dash UI design system, by Webber's design systems.",
   "keywords": [
@@ -19,6 +19,11 @@
   },
   "bugs": "https://github.com/webbertakken/dash-ui/issues",
   "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -28,5 +33,8 @@
   "files": [
     "src",
     "logos"
-  ]
+  ],
+  "scripts": {
+    "typecheck": "yarn run -T tsgo --noEmit"
+  }
 }

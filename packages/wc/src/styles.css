@@ -1,4 +1,4 @@
-/* Re-export the @dash-ui/svelte component styles so consumers only need a
+/* Re-export the @w5-ui/svelte component styles so consumers only need a
    single stylesheet alongside the WC bundle. */
-@import '@dash-ui/svelte/styles.css';
-@import '@dash-ui/tokens/tokens.css';
+@import '@w5-ui/svelte/styles.css';
+@import '@w5-ui/tokens/tokens.css';

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-banner" />
 <script>
-  import Original from '@dash-ui/svelte/components/Banner.svelte';
+  import Original from '@w5-ui/svelte/components/Banner.svelte';
   // no public props
 </script>
 

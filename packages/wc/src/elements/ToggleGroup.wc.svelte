@@ -1,6 +1,6 @@
 <svelte:options tag="uni-toggle-group" />
 <script>
-  import Original from '@dash-ui/svelte/components/ToggleGroup.svelte';
+  import Original from '@w5-ui/svelte/components/ToggleGroup.svelte';
   export let options = [];
   export let value = [];
   export let ariaLabel = '';

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-stream-graph" />
 <script>
-  import Original from '@dash-ui/svelte/components/StreamGraph.svelte';
+  import Original from '@w5-ui/svelte/components/StreamGraph.svelte';
   export let labels = [];
   export let series = [];
   export let ariaLabel = 'Stream graph';

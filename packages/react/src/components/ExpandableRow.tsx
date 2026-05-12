@@ -1,15 +1,20 @@
-import { useId, useState, type ReactNode } from 'react';
+import { useId, useState, type ReactNode } from 'react'
 
 export interface ExpandableRowProps {
-  row: ReactNode;
-  detail: ReactNode;
-  colSpan: number;
-  defaultExpanded?: boolean;
+  row: ReactNode
+  detail: ReactNode
+  colSpan: number
+  defaultExpanded?: boolean
 }
 
-export function ExpandableRow({ row, detail, colSpan, defaultExpanded = false }: ExpandableRowProps) {
-  const [open, setOpen] = useState(defaultExpanded);
-  const detailId = useId();
+export function ExpandableRow({
+  row,
+  detail,
+  colSpan,
+  defaultExpanded = false,
+}: ExpandableRowProps) {
+  const [open, setOpen] = useState(defaultExpanded)
+  const detailId = useId()
   return (
     <tbody className="exp-tbody">
       <tr className="exp-row">
@@ -27,7 +32,13 @@ export function ExpandableRow({ row, detail, colSpan, defaultExpanded = false }:
               fill="none"
               aria-hidden="true"
             >
-              <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M1 1l4 4 4-4"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
         </td>
@@ -43,5 +54,5 @@ export function ExpandableRow({ row, detail, colSpan, defaultExpanded = false }:
         </td>
       </tr>
     </tbody>
-  );
+  )
 }

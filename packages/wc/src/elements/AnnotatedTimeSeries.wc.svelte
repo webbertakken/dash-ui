@@ -1,6 +1,6 @@
 <svelte:options tag="uni-annotated-time-series" />
 <script>
-  import Original from '@dash-ui/svelte/components/AnnotatedTimeSeries.svelte';
+  import Original from '@w5-ui/svelte/components/AnnotatedTimeSeries.svelte';
   export let data = [];
   export let labels = [];
   export let annotations = [];

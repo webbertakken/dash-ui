@@ -1,6 +1,6 @@
 <svelte:options tag="uni-resizable-panel" />
 <script>
-  import Original from '@dash-ui/svelte/components/ResizablePanel.svelte';
+  import Original from '@w5-ui/svelte/components/ResizablePanel.svelte';
   // no public props
 </script>
 

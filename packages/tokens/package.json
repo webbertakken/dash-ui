@@ -1,5 +1,5 @@
 {
-  "name": "@dash-ui/tokens",
+  "name": "@w5-ui/tokens",
   "version": "0.1.0",
   "description": "Design tokens (CSS variables for dark + light motifs and a JS token map) for the Dash UI design system, by Webber's design systems.",
   "keywords": [
@@ -19,6 +19,13 @@
   },
   "bugs": "https://github.com/webbertakken/dash-ui/issues",
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./src/tokens.ts",
   "types": "./src/tokens.ts",
   "exports": {
@@ -29,5 +36,8 @@
   },
   "files": [
     "src"
-  ]
+  ],
+  "scripts": {
+    "typecheck": "yarn run -T tsgo --noEmit"
+  }
 }

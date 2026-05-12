@@ -1,18 +1,18 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 
 export interface ToggleGroupOption {
-  value: string;
-  label: ReactNode;
-  disabled?: boolean;
+  value: string
+  label: ReactNode
+  disabled?: boolean
 }
 
 export interface ToggleGroupProps {
-  options: ToggleGroupOption[];
-  value: string[];
-  onChange: (value: string[]) => void;
-  ariaLabel: string;
-  size?: 'sm' | 'md';
-  className?: string;
+  options: ToggleGroupOption[]
+  value: string[]
+  onChange: (value: string[]) => void
+  ariaLabel: string
+  size?: 'sm' | 'md'
+  className?: string
 }
 
 export function ToggleGroup({
@@ -25,9 +25,9 @@ export function ToggleGroup({
 }: ToggleGroupProps) {
   function toggle(v: string) {
     if (value.includes(v)) {
-      onChange(value.filter((x) => x !== v));
+      onChange(value.filter((x) => x !== v))
     } else {
-      onChange([...value, v]);
+      onChange([...value, v])
     }
   }
 
@@ -38,7 +38,7 @@ export function ToggleGroup({
       className={`tg-group tg-group--${size}${className ? ` ${className}` : ''}`}
     >
       {options.map((opt) => {
-        const pressed = value.includes(opt.value);
+        const pressed = value.includes(opt.value)
         return (
           <button
             key={opt.value}
@@ -50,8 +50,8 @@ export function ToggleGroup({
           >
             {opt.label}
           </button>
-        );
+        )
       })}
     </div>
-  );
+  )
 }

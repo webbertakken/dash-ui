@@ -1,5 +1,5 @@
 {
-  "name": "@dash-ui/storybook-meta",
+  "name": "@w5-ui/storybook-meta",
   "version": "0.1.0",
   "description": "Internal: shared sidebar category map used by all @dash-ui storybook instances. Not published.",
   "author": "Webber Takken (https://github.com/webbertakken)",

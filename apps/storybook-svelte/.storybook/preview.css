@@ -11,8 +11,12 @@ body,
   font-family: var(--font-sans);
 }
 
-html[data-motif='dark'] { color-scheme: dark; }
-html[data-motif='light'] { color-scheme: light; }
+html[data-motif='dark'] {
+  color-scheme: dark;
+}
+html[data-motif='light'] {
+  color-scheme: light;
+}
 
 #storybook-root {
   padding: 16px;
@@ -27,6 +31,19 @@ html[data-motif='light'] { color-scheme: light; }
   color: var(--text-1) !important;
 }
 
-.sbdocs h1, .sbdocs h2, .sbdocs h3, .sbdocs h4, .sbdocs p, .sbdocs li,
-.sbdocs td, .sbdocs th { color: var(--text-1); }
-.sbdocs code { color: var(--text-2); background: var(--neutral-08); padding: 1px 4px; border-radius: 3px; }
+.sbdocs h1,
+.sbdocs h2,
+.sbdocs h3,
+.sbdocs h4,
+.sbdocs p,
+.sbdocs li,
+.sbdocs td,
+.sbdocs th {
+  color: var(--text-1);
+}
+.sbdocs code {
+  color: var(--text-2);
+  background: var(--neutral-08);
+  padding: 1px 4px;
+  border-radius: 3px;
+}

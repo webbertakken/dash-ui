@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, Pill, Button, SearchBox, Sparkline, Donut, StatusIndicator, PlusIcon, LineChart, BarChart, WaterfallChart, SankeyDiagram, WaffleChart, StreamGraph, NightingaleChart, DualAxisChart, Banner, AvatarGroup, RankedList } from '@dash-ui/svelte';
-  import type { SankeyNode, SankeyLink, StreamSeries, RankedItem } from '@dash-ui/svelte';
+  import { Card, Pill, Button, SearchBox, Sparkline, Donut, StatusIndicator, PlusIcon, LineChart, BarChart, WaterfallChart, SankeyDiagram, WaffleChart, StreamGraph, NightingaleChart, DualAxisChart, Banner, AvatarGroup, RankedList } from '@w5-ui/svelte';
+  import type { SankeyNode, SankeyLink, StreamSeries, RankedItem } from '@w5-ui/svelte';
   import { DASHBOARD_DEVICES, DASHBOARD_ALARMS } from '../data';
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher<{ adopt: void }>();

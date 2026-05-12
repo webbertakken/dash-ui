@@ -1,6 +1,6 @@
 <svelte:options tag="uni-stacked-bar-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/StackedBarChart.svelte';
+  import Original from '@w5-ui/svelte/components/StackedBarChart.svelte';
   export let series = [];
   export let labels = [];
   export let height = 180;

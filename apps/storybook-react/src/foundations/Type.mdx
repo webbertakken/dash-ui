@@ -1,10 +1,11 @@
-import { Meta } from '@storybook/blocks';
+import { Meta } from '@storybook/blocks'
 
 <Meta title="Foundations/Type" />
 
 # Typography
 
-UI uses **Inter**. Hex / IPs / MAC addresses / SKUs use **JetBrains Mono**. We do not use display / serif faces.
+UI uses **Inter**. Hex / IPs / MAC addresses / SKUs use **JetBrains Mono**. We do not use display /
+serif faces.
 
 <div style={{ display: 'grid', gap: 16, marginTop: 16 }}>
   {[
@@ -19,7 +20,13 @@ UI uses **Inter**. Hex / IPs / MAC addresses / SKUs use **JetBrains Mono**. We d
       <div style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 6 }}>
         {t.name} - {t.size}px / {t.weight}
       </div>
-      <div style={{ fontSize: t.size, fontWeight: t.weight, fontFamily: t.mono ? 'JetBrains Mono, monospace' : undefined }}>
+      <div
+        style={{
+          fontSize: t.size,
+          fontWeight: t.weight,
+          fontFamily: t.mono ? 'JetBrains Mono, monospace' : undefined,
+        }}
+      >
         {t.mono ? '00:1A:2B:3C:4D:5E' : 'The quick brown fox jumps over the lazy dog'}
       </div>
     </div>

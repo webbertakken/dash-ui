@@ -1,7 +1,7 @@
 name: Feature request
 description: A new component, prop, or capability
-title: "[feature] "
-labels: ["enhancement"]
+title: '[feature] '
+labels: ['enhancement']
 body:
   - type: dropdown
     id: kind

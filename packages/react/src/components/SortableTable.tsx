@@ -1,30 +1,33 @@
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react'
 
-export type SortDir = 'asc' | 'desc';
+export type SortDir = 'asc' | 'desc'
 
 export function useSortable() {
-  const [sortKey, setSortKey] = useState<string | null>(null);
-  const [dir, setDir] = useState<SortDir>('asc');
+  const [sortKey, setSortKey] = useState<string | null>(null)
+  const [dir, setDir] = useState<SortDir>('asc')
 
   function onSort(key: string) {
-    if (sortKey === key) setDir((d) => (d === 'asc' ? 'desc' : 'asc'));
-    else { setSortKey(key); setDir('asc'); }
+    if (sortKey === key) setDir((d) => (d === 'asc' ? 'desc' : 'asc'))
+    else {
+      setSortKey(key)
+      setDir('asc')
+    }
   }
 
-  return { sortKey, dir, onSort };
+  return { sortKey, dir, onSort }
 }
 
 export interface SortHeaderProps {
-  sortKey: string;
-  activeKey: string | null;
-  dir: SortDir;
-  onSort: (key: string) => void;
-  children: ReactNode;
-  style?: CSSProperties;
+  sortKey: string
+  activeKey: string | null
+  dir: SortDir
+  onSort: (key: string) => void
+  children: ReactNode
+  style?: CSSProperties
 }
 
 export function SortHeader({ sortKey, activeKey, dir, onSort, children, style }: SortHeaderProps) {
-  const active = activeKey === sortKey;
+  const active = activeKey === sortKey
   return (
     <th
       scope="col"
@@ -39,5 +42,5 @@ export function SortHeader({ sortKey, activeKey, dir, onSort, children, style }:
         </svg>
       </button>
     </th>
-  );
+  )
 }

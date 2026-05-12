@@ -1,10 +1,10 @@
-import type { Preview } from '@storybook/web-components';
-import { withThemeByDataAttribute } from '@storybook/addon-themes';
-import '@dash-ui/tokens/tokens.css';
+import { withThemeByDataAttribute } from '@storybook/addon-themes'
+import type { Preview } from '@storybook/web-components'
+import '@w5-ui/tokens/tokens.css'
 // Importing the wc bundle has the side effect of registering every uni-* tag
-import '@dash-ui/wc';
-import '@dash-ui/wc/styles.css';
-import './preview.css';
+import '@w5-ui/wc'
+import '@w5-ui/wc/styles.css'
+import './preview.css'
 
 const preview: Preview = {
   parameters: {
@@ -36,6 +36,6 @@ const preview: Preview = {
       attributeName: 'data-motif',
     }),
   ],
-};
+}
 
-export default preview;
+export default preview

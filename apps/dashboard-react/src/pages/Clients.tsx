@@ -1,76 +1,114 @@
-import { useState, useMemo } from 'react';
-import { SearchBox, Tabs, Signal, Checkbox, CopyButton, MultiSelect, BumpChart, Card, MarimekkoChart, CirclePacking, VennDiagram, VirtualList, SelectionToolbar } from '@dash-ui/react';
-import type { MultiSelectOption, BumpSeries, MarimekkoColumn, CirclePackItem, VennSet, VennIntersection, SelectionToolbarAction } from '@dash-ui/react';
-import { CLIENTS } from '../data.js';
+import {
+  SearchBox,
+  Tabs,
+  Signal,
+  Checkbox,
+  CopyButton,
+  MultiSelect,
+  BumpChart,
+  Card,
+  MarimekkoChart,
+  CirclePacking,
+  VennDiagram,
+  VirtualList,
+  SelectionToolbar,
+} from '@w5-ui/react'
+import type {
+  MultiSelectOption,
+  BumpSeries,
+  MarimekkoColumn,
+  CirclePackItem,
+  VennSet,
+  VennIntersection,
+  SelectionToolbarAction,
+} from '@w5-ui/react'
+import { useState } from 'react'
+import { CLIENTS } from '../data.js'
 
-const BANDS = ['5 GHz', '2.4 GHz', 'Wired', 'VPN'];
-const NETWORKS = ['Office', 'Staff', 'Guest', 'IoT VLAN'];
-const SIGNALS: Array<'strong' | 'weak' | null> = ['strong', 'strong', 'weak', null];
+const NETWORKS = ['Office', 'Staff', 'Guest', 'IoT VLAN']
+const SIGNALS: Array<'strong' | 'weak' | null> = ['strong', 'strong', 'weak', null]
 
-interface LeaseRow { name: string; ip: string; network: string; signal: 'strong' | 'weak' | null; }
+interface LeaseRow {
+  name: string
+  ip: string
+  network: string
+  signal: 'strong' | 'weak' | null
+}
 
 const ALL_LEASES: LeaseRow[] = Array.from({ length: 200 }, (_, i) => ({
   name: `Client-${String(i + 1).padStart(3, '0')}`,
   ip: `192.168.${Math.floor(i / 254) + 1}.${(i % 254) + 1}`,
   network: NETWORKS[i % NETWORKS.length],
   signal: SIGNALS[i % SIGNALS.length],
-}));
+}))
 
 const CLIENT_TRAFFIC_MIX: MarimekkoColumn[] = [
-  { label: 'WiFi 5 GHz', segments: [
-    { label: 'Streaming', value: 288, color: '#006FFF' },
-    { label: 'Browsing',  value: 96,  color: '#4797FF' },
-    { label: 'Gaming',    value: 72,  color: '#A78BFA' },
-    { label: 'Other',     value: 24,  color: '#6E7079' },
-  ]},
-  { label: 'WiFi 2.4 GHz', segments: [
-    { label: 'Streaming', value: 44,  color: '#006FFF' },
-    { label: 'Browsing',  value: 68,  color: '#4797FF' },
-    { label: 'Gaming',    value: 16,  color: '#A78BFA' },
-    { label: 'Other',     value: 52,  color: '#6E7079' },
-  ]},
-  { label: 'Wired', segments: [
-    { label: 'Streaming', value: 72,  color: '#006FFF' },
-    { label: 'Browsing',  value: 96,  color: '#4797FF' },
-    { label: 'Gaming',    value: 36,  color: '#A78BFA' },
-    { label: 'Other',     value: 12,  color: '#6E7079' },
-  ]},
-  { label: 'VPN', segments: [
-    { label: 'Streaming', value: 18,  color: '#006FFF' },
-    { label: 'Browsing',  value: 36,  color: '#4797FF' },
-    { label: 'Gaming',    value: 6,   color: '#A78BFA' },
-    { label: 'Other',     value: 20,  color: '#6E7079' },
-  ]},
-];
+  {
+    label: 'WiFi 5 GHz',
+    segments: [
+      { label: 'Streaming', value: 288, color: '#006FFF' },
+      { label: 'Browsing', value: 96, color: '#4797FF' },
+      { label: 'Gaming', value: 72, color: '#A78BFA' },
+      { label: 'Other', value: 24, color: '#6E7079' },
+    ],
+  },
+  {
+    label: 'WiFi 2.4 GHz',
+    segments: [
+      { label: 'Streaming', value: 44, color: '#006FFF' },
+      { label: 'Browsing', value: 68, color: '#4797FF' },
+      { label: 'Gaming', value: 16, color: '#A78BFA' },
+      { label: 'Other', value: 52, color: '#6E7079' },
+    ],
+  },
+  {
+    label: 'Wired',
+    segments: [
+      { label: 'Streaming', value: 72, color: '#006FFF' },
+      { label: 'Browsing', value: 96, color: '#4797FF' },
+      { label: 'Gaming', value: 36, color: '#A78BFA' },
+      { label: 'Other', value: 12, color: '#6E7079' },
+    ],
+  },
+  {
+    label: 'VPN',
+    segments: [
+      { label: 'Streaming', value: 18, color: '#006FFF' },
+      { label: 'Browsing', value: 36, color: '#4797FF' },
+      { label: 'Gaming', value: 6, color: '#A78BFA' },
+      { label: 'Other', value: 20, color: '#6E7079' },
+    ],
+  },
+]
 
-const CLIENT_RANK_LABELS = ['09:00', '10:00', '11:00', '12:00', '13:00'];
+const CLIENT_RANK_LABELS = ['09:00', '10:00', '11:00', '12:00', '13:00']
 const CLIENT_RANK_SERIES: BumpSeries[] = [
-  { label: 'MacBook Pro',  color: '#006FFF', ranks: [1, 2, 1, 1, 2] },
-  { label: 'Desktop PC',   color: '#00C8C8', ranks: [2, 1, 2, 3, 1] },
-  { label: 'iPhone 15',    color: '#F5A623', ranks: [3, 3, 4, 2, 3] },
-  { label: 'iPad Pro',     color: '#7FB6FF', ranks: [4, 4, 3, 4, 4] },
-  { label: 'Apple TV',     color: '#A878F5', ranks: [5, 5, 5, 5, 5] },
-];
+  { label: 'MacBook Pro', color: '#006FFF', ranks: [1, 2, 1, 1, 2] },
+  { label: 'Desktop PC', color: '#00C8C8', ranks: [2, 1, 2, 3, 1] },
+  { label: 'iPhone 15', color: '#F5A623', ranks: [3, 3, 4, 2, 3] },
+  { label: 'iPad Pro', color: '#7FB6FF', ranks: [4, 4, 3, 4, 4] },
+  { label: 'Apple TV', color: '#A878F5', ranks: [5, 5, 5, 5, 5] },
+]
 
 const DEVICE_TYPES: CirclePackItem[] = [
-  { id: 'laptop',     label: 'Laptop',     value: 38, color: '#006FFF' },
-  { id: 'smartphone', label: 'Phone',      value: 51, color: '#00C875' },
-  { id: 'tablet',     label: 'Tablet',     value: 14, color: '#F5A623' },
-  { id: 'iot',        label: 'IoT',        value: 22, color: '#A78BFA' },
-  { id: 'tv',         label: 'TV',         value: 9,  color: '#FF7B7B' },
-  { id: 'gaming',     label: 'Gaming',     value: 6,  color: '#00C8C8' },
-  { id: 'other',      label: 'Other',      value: 2,  color: '#6E7079' },
-];
+  { id: 'laptop', label: 'Laptop', value: 38, color: '#006FFF' },
+  { id: 'smartphone', label: 'Phone', value: 51, color: '#00C875' },
+  { id: 'tablet', label: 'Tablet', value: 14, color: '#F5A623' },
+  { id: 'iot', label: 'IoT', value: 22, color: '#A78BFA' },
+  { id: 'tv', label: 'TV', value: 9, color: '#FF7B7B' },
+  { id: 'gaming', label: 'Gaming', value: 6, color: '#00C8C8' },
+  { id: 'other', label: 'Other', value: 2, color: '#6E7079' },
+]
 
 const CONN_SETS: VennSet[] = [
-  { id: 'wifi',  label: 'WiFi',  value: 88, color: '#006FFF' },
+  { id: 'wifi', label: 'WiFi', value: 88, color: '#006FFF' },
   { id: 'wired', label: 'Wired', value: 42, color: '#00C875' },
-  { id: 'vpn',   label: 'VPN',   value: 12, color: '#A78BFA' },
-];
+  { id: 'vpn', label: 'VPN', value: 12, color: '#A78BFA' },
+]
 const CONN_INTERS: VennIntersection[] = [
   { sets: ['wifi', 'wired'], value: 5 },
-  { sets: ['wifi', 'vpn'],   value: 7 },
-];
+  { sets: ['wifi', 'vpn'], value: 7 },
+]
 
 const CLIENT_FILTER_OPTIONS: MultiSelectOption[] = [
   { value: 'wireless', label: 'Type: Wireless' },
@@ -81,36 +119,36 @@ const CLIENT_FILTER_OPTIONS: MultiSelectOption[] = [
   { value: 'default-net', label: 'Network: Default' },
   { value: 'iot', label: 'Network: IoT' },
   { value: 'blocked', label: 'Status: Blocked' },
-];
+]
 
 export function Clients() {
-  const [tab, setTab] = useState('all');
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [filters, setFilters] = useState<string[]>([]);
+  const [tab, setTab] = useState('all')
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [filters, setFilters] = useState<string[]>([])
 
-  const allKeys = CLIENTS.map((c) => c[2]);
-  const allSelected = allKeys.length > 0 && allKeys.every((k) => selected.has(k));
-  const someSelected = allKeys.some((k) => selected.has(k));
+  const allKeys = CLIENTS.map((c) => c[2])
+  const allSelected = allKeys.length > 0 && allKeys.every((k) => selected.has(k))
+  const someSelected = allKeys.some((k) => selected.has(k))
 
   function toggleAll() {
-    if (allSelected) setSelected(new Set());
-    else setSelected(new Set(allKeys));
+    if (allSelected) setSelected(new Set())
+    else setSelected(new Set(allKeys))
   }
 
   function toggleRow(key: string) {
     setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
   }
 
   const selectionActions: SelectionToolbarAction[] = [
     { label: 'Block', variant: 'danger', onClick: () => setSelected(new Set()) },
     { label: 'Disconnect', onClick: () => setSelected(new Set()) },
     { label: 'Export', onClick: () => setSelected(new Set()) },
-  ];
+  ]
 
   return (
     <>
@@ -127,7 +165,11 @@ export function Clients() {
           />
         </div>
       </div>
-      <SelectionToolbar count={selected.size} actions={selectionActions} onClear={() => setSelected(new Set())} />
+      <SelectionToolbar
+        count={selected.size}
+        actions={selectionActions}
+        onClear={() => setSelected(new Set())}
+      />
       <Tabs
         active={tab}
         onChange={setTab}
@@ -141,7 +183,9 @@ export function Clients() {
       />
       <div className="grid" style={{ paddingTop: 0 }}>
         <Card span={4}>
-          <h3>Device types <span className="unit">142 clients · circle size = count</span></h3>
+          <h3>
+            Device types <span className="unit">142 clients · circle size = count</span>
+          </h3>
           <CirclePacking
             items={DEVICE_TYPES}
             height={180}
@@ -149,7 +193,9 @@ export function Clients() {
           />
         </Card>
         <Card span={8}>
-          <h3>Top Clients by Usage Rank <span className="unit">Today · Bandwidth</span></h3>
+          <h3>
+            Top Clients by Usage Rank <span className="unit">Today · Bandwidth</span>
+          </h3>
           <BumpChart
             ariaLabel="Top client devices ranked by bandwidth usage from 09:00 to 13:00 today"
             labels={CLIENT_RANK_LABELS}
@@ -157,7 +203,9 @@ export function Clients() {
           />
         </Card>
         <Card span={6}>
-          <h3>Connectivity overlap <span className="unit">142 clients · shared connections</span></h3>
+          <h3>
+            Connectivity overlap <span className="unit">142 clients · shared connections</span>
+          </h3>
           <VennDiagram
             sets={CONN_SETS}
             intersections={CONN_INTERS}
@@ -166,7 +214,10 @@ export function Clients() {
           />
         </Card>
         <Card span={12}>
-          <h3>Traffic mix by connection type <span className="unit">Column width = share of total · 24 h</span></h3>
+          <h3>
+            Traffic mix by connection type{' '}
+            <span className="unit">Column width = share of total · 24 h</span>
+          </h3>
           <MarimekkoChart
             columns={CLIENT_TRAFFIC_MIX}
             height={160}
@@ -175,12 +226,21 @@ export function Clients() {
           <div style={{ display: 'flex', gap: 16, marginTop: 8, fontSize: 12 }}>
             {[
               { label: 'Streaming', color: '#006FFF' },
-              { label: 'Browsing',  color: '#4797FF' },
-              { label: 'Gaming',    color: '#A78BFA' },
-              { label: 'Other',     color: '#6E7079' },
+              { label: 'Browsing', color: '#4797FF' },
+              { label: 'Gaming', color: '#A78BFA' },
+              { label: 'Other', color: '#6E7079' },
             ].map(({ label, color }) => (
               <span key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ width: 10, height: 10, borderRadius: 2, background: color, display: 'inline-block' }} aria-hidden="true" />
+                <span
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 2,
+                    background: color,
+                    display: 'inline-block',
+                  }}
+                  aria-hidden="true"
+                />
                 <span style={{ color: '#A4A7B5' }}>{label}</span>
               </span>
             ))}
@@ -188,7 +248,14 @@ export function Clients() {
         </Card>
       </div>
       <div style={{ padding: '0 24px 24px' }}>
-        <table style={{ background: '#141415', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden' }}>
+        <table
+          style={{
+            background: '#141415',
+            border: '1px solid rgba(255,255,255,0.06)',
+            borderRadius: 8,
+            overflow: 'hidden',
+          }}
+        >
           <caption className="sr-only">Client devices</caption>
           <thead>
             <tr>
@@ -204,13 +271,20 @@ export function Clients() {
               <th scope="col">IP / MAC</th>
               <th scope="col">Network</th>
               <th scope="col">Connected to</th>
-              <th scope="col" style={{ textAlign: 'right' }}>RX / TX</th>
-              <th scope="col" style={{ textAlign: 'right' }}>Signal</th>
+              <th scope="col" style={{ textAlign: 'right' }}>
+                RX / TX
+              </th>
+              <th scope="col" style={{ textAlign: 'right' }}>
+                Signal
+              </th>
             </tr>
           </thead>
           <tbody>
             {CLIENTS.map((c) => (
-              <tr key={c[2]} style={selected.has(c[2]) ? { background: 'rgba(0,111,255,0.06)' } : undefined}>
+              <tr
+                key={c[2]}
+                style={selected.has(c[2]) ? { background: 'rgba(0,111,255,0.06)' } : undefined}
+              >
                 <td>
                   <Checkbox
                     checked={selected.has(c[2])}
@@ -234,8 +308,18 @@ export function Clients() {
                   {c[3]} · {c[4]}
                 </td>
                 <td style={{ color: '#A4A7B5' }}>{c[5]}</td>
-                <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#A4A7B5' }}>{c[6]}</td>
-                <td style={{ textAlign: 'right' }}>{c[7] ? <Signal weak={c[7] === 'weak'} /> : '—'}</td>
+                <td
+                  style={{
+                    textAlign: 'right',
+                    fontVariantNumeric: 'tabular-nums',
+                    color: '#A4A7B5',
+                  }}
+                >
+                  {c[6]}
+                </td>
+                <td style={{ textAlign: 'right' }}>
+                  {c[7] ? <Signal weak={c[7] === 'weak'} /> : '—'}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -251,17 +335,24 @@ export function Clients() {
             itemHeight={40}
             height={320}
             label="DHCP lease list"
-            renderItem={(row, i) => (
+            renderItem={(row) => (
               <div className="vl-row" style={{ height: 40 }}>
                 <span className="vl-row-name">{row.name}</span>
                 <span className="vl-row-ip">{row.ip}</span>
-                <span className="vl-row-badge" style={{ background: 'rgba(255,255,255,0.06)', color: '#A4A7B5' }}>{row.network}</span>
-                <span style={{ width: 20, textAlign: 'right' }}>{row.signal ? <Signal weak={row.signal === 'weak'} /> : '—'}</span>
+                <span
+                  className="vl-row-badge"
+                  style={{ background: 'rgba(255,255,255,0.06)', color: '#A4A7B5' }}
+                >
+                  {row.network}
+                </span>
+                <span style={{ width: 20, textAlign: 'right' }}>
+                  {row.signal ? <Signal weak={row.signal === 'weak'} /> : '—'}
+                </span>
               </div>
             )}
           />
         </Card>
       </div>
     </>
-  );
+  )
 }

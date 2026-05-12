@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button, SearchBox, Tabs, DownloadIcon, TimeRange, DateRangePicker, Card, PunchCard, LogViewer, FilterBuilder } from '@dash-ui/svelte';
-  import type { TimeRangeId, DateRange, LogEntry, FilterField, FilterRule } from '@dash-ui/svelte';
+  import { Button, SearchBox, Tabs, DownloadIcon, TimeRange, DateRangePicker, Card, PunchCard, LogViewer, FilterBuilder } from '@w5-ui/svelte';
+  import type { TimeRangeId, DateRange, LogEntry, FilterField, FilterRule } from '@w5-ui/svelte';
   import { LOG_ROWS } from '../data';
 
   let tab = 'all';

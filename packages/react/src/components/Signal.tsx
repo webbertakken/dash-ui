@@ -1,6 +1,6 @@
 export interface SignalProps {
-  weak?: boolean;
-  label?: string;
+  weak?: boolean
+  label?: string
 }
 
 export function Signal({ weak = false, label }: SignalProps) {
@@ -15,5 +15,5 @@ export function Signal({ weak = false, label }: SignalProps) {
       <i />
       <i />
     </span>
-  );
+  )
 }

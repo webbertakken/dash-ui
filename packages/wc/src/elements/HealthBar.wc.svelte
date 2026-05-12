@@ -1,6 +1,6 @@
 <svelte:options tag="uni-health-bar" />
 <script>
-  import Original from '@dash-ui/svelte/components/HealthBar.svelte';
+  import Original from '@w5-ui/svelte/components/HealthBar.svelte';
   export let value = undefined;
   export let fillStyle = '';
   export let label = undefined;

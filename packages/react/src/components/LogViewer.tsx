@@ -1,21 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react'
 
 export interface LogEntry {
-  id?: string;
-  timestamp: string;
-  level: 'info' | 'warn' | 'error' | 'debug';
-  category?: string;
-  event: string;
-  subject?: string;
-  detail?: string;
+  id?: string
+  timestamp: string
+  level: 'info' | 'warn' | 'error' | 'debug'
+  category?: string
+  event: string
+  subject?: string
+  detail?: string
 }
 
 export interface LogViewerProps {
-  entries: LogEntry[];
-  height?: number;
-  defaultFollow?: boolean;
-  ariaLabel?: string;
-  className?: string;
+  entries: LogEntry[]
+  height?: number
+  defaultFollow?: boolean
+  ariaLabel?: string
+  className?: string
 }
 
 const SEV_DOT: Record<string, string> = {
@@ -23,7 +23,7 @@ const SEV_DOT: Record<string, string> = {
   warn: '#F5A623',
   info: '#006FFF',
   debug: '#4A4B53',
-};
+}
 
 export function LogViewer({
   entries,
@@ -32,14 +32,14 @@ export function LogViewer({
   ariaLabel = 'Log entries',
   className = '',
 }: LogViewerProps) {
-  const [follow, setFollow] = useState(defaultFollow);
-  const bodyRef = useRef<HTMLDivElement>(null);
+  const [follow, setFollow] = useState(defaultFollow)
+  const bodyRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (follow && bodyRef.current) {
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+      bodyRef.current.scrollTop = bodyRef.current.scrollHeight
     }
-  }, [entries.length, follow]);
+  }, [entries.length, follow])
 
   return (
     <div className={`lv ${className}`.trim()}>
@@ -98,5 +98,5 @@ export function LogViewer({
         </table>
       </div>
     </div>
-  );
+  )
 }

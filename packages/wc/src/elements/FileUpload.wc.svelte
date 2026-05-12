@@ -1,6 +1,6 @@
 <svelte:options tag="uni-file-upload" />
 <script>
-  import Original from '@dash-ui/svelte/components/FileUpload.svelte';
+  import Original from '@w5-ui/svelte/components/FileUpload.svelte';
   export let label = 'Upload file';
   export let hint = undefined;
   export let accept = undefined;

@@ -1,8 +1,8 @@
-import type { Preview } from '@storybook/svelte';
-import { withThemeByDataAttribute } from '@storybook/addon-themes';
-import '@dash-ui/tokens/tokens.css';
-import '@dash-ui/svelte/styles.css';
-import './preview.css';
+import { withThemeByDataAttribute } from '@storybook/addon-themes'
+import type { Preview } from '@storybook/svelte'
+import '@w5-ui/tokens/tokens.css'
+import '@w5-ui/svelte/styles.css'
+import './preview.css'
 
 const preview: Preview = {
   parameters: {
@@ -37,6 +37,6 @@ const preview: Preview = {
       attributeName: 'data-motif',
     }),
   ],
-};
+}
 
-export default preview;
+export default preview

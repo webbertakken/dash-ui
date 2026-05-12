@@ -1,6 +1,6 @@
 <svelte:options tag="uni-code-block" />
 <script>
-  import Original from '@dash-ui/svelte/components/CodeBlock.svelte';
+  import Original from '@w5-ui/svelte/components/CodeBlock.svelte';
   export let code = '';
   export let label = 'Code block';
   export let language = '';

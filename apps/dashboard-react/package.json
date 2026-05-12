@@ -11,13 +11,14 @@
   },
   "scripts": {
     "dev": "vite --port 5173 --host",
-    "build": "tsc --noEmit && vite build",
+    "build": "yarn typecheck && vite build",
+    "typecheck": "yarn run -T tsgo --noEmit -p tsconfig.json",
     "preview": "vite preview --port 5173"
   },
   "dependencies": {
-    "@dash-ui/assets": "workspace:*",
-    "@dash-ui/react": "workspace:*",
-    "@dash-ui/tokens": "workspace:*",
+    "@w5-ui/assets": "workspace:*",
+    "@w5-ui/react": "workspace:*",
+    "@w5-ui/tokens": "workspace:*",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   },

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-drawer" />
 <script>
-  import Original from '@dash-ui/svelte/components/Drawer.svelte';
+  import Original from '@w5-ui/svelte/components/Drawer.svelte';
   export let open = false;
   export let title = undefined;
 </script>

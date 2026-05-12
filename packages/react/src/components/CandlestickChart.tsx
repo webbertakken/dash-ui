@@ -1,27 +1,27 @@
 export interface CandlestickBar {
-  label: string;
-  open: number;
-  close: number;
-  high: number;
-  low: number;
+  label: string
+  open: number
+  close: number
+  high: number
+  low: number
 }
 
 export interface CandlestickChartProps {
-  bars: CandlestickBar[];
-  yRange?: [number, number];
-  height?: number;
-  unit?: string;
-  upColor?: string;
-  downColor?: string;
-  ariaLabel?: string;
+  bars: CandlestickBar[]
+  yRange?: [number, number]
+  height?: number
+  unit?: string
+  upColor?: string
+  downColor?: string
+  ariaLabel?: string
 }
 
-const VW = 340;
-const PAD_L = 28;
-const PAD_R = 8;
-const PAD_T = 8;
-const PAD_B = 20;
-const PLOT_W = VW - PAD_L - PAD_R;
+const VW = 340
+const PAD_L = 28
+const PAD_R = 8
+const PAD_T = 8
+const PAD_B = 20
+const PLOT_W = VW - PAD_L - PAD_R
 
 export function CandlestickChart({
   bars,
@@ -32,21 +32,21 @@ export function CandlestickChart({
   downColor = '#FF7B7B',
   ariaLabel = 'Candlestick chart',
 }: CandlestickChartProps) {
-  if (!bars.length) return null;
+  if (!bars.length) return null
 
-  const n = bars.length;
-  const PLOT_H = height - PAD_T - PAD_B;
+  const n = bars.length
+  const PLOT_H = height - PAD_T - PAD_B
 
-  const allVals = bars.flatMap((b) => [b.low, b.high]);
-  const minV = yRange ? yRange[0] : Math.min(...allVals);
-  const maxV = yRange ? yRange[1] : Math.max(...allVals);
-  const range = maxV - minV || 1;
+  const allVals = bars.flatMap((b) => [b.low, b.high])
+  const minV = yRange ? yRange[0] : Math.min(...allVals)
+  const maxV = yRange ? yRange[1] : Math.max(...allVals)
+  const range = maxV - minV || 1
 
-  const tx = (i: number) => PAD_L + ((i + 0.5) / n) * PLOT_W;
-  const ty = (v: number) => PAD_T + (1 - (v - minV) / range) * PLOT_H;
+  const tx = (i: number) => PAD_L + ((i + 0.5) / n) * PLOT_W
+  const ty = (v: number) => PAD_T + (1 - (v - minV) / range) * PLOT_H
 
-  const candleW = Math.max(4, (PLOT_W / n) * 0.5);
-  const yTicks = [minV, (minV + maxV) / 2, maxV];
+  const candleW = Math.max(4, (PLOT_W / n) * 0.5)
+  const yTicks = [minV, (minV + maxV) / 2, maxV]
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -74,23 +74,24 @@ export function CandlestickChart({
               textAnchor="end"
               fontFamily="inherit"
             >
-              {Math.round(v)}{unit}
+              {Math.round(v)}
+              {unit}
             </text>
           </g>
         ))}
 
         {bars.map((b, i) => {
-          const x = tx(i);
-          const color = b.close >= b.open ? upColor : downColor;
-          const bodyTop = ty(Math.max(b.open, b.close));
-          const bodyBot = ty(Math.min(b.open, b.close));
-          const bodyH = Math.max(1, bodyBot - bodyTop);
+          const x = tx(i)
+          const color = b.close >= b.open ? upColor : downColor
+          const bodyTop = ty(Math.max(b.open, b.close))
+          const bodyBot = ty(Math.min(b.open, b.close))
+          const bodyH = Math.max(1, bodyBot - bodyTop)
           return (
             <g key={i}>
               <line x1={x} y1={ty(b.high)} x2={x} y2={ty(b.low)} stroke={color} strokeWidth={1} />
               <rect x={x - candleW / 2} y={bodyTop} width={candleW} height={bodyH} fill={color} />
             </g>
-          );
+          )
         })}
 
         {bars.map((b, i) => (
@@ -108,5 +109,5 @@ export function CandlestickChart({
         ))}
       </svg>
     </div>
-  );
+  )
 }

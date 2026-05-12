@@ -1,6 +1,6 @@
 <svelte:options tag="uni-violin-plot" />
 <script>
-  import Original from '@dash-ui/svelte/components/ViolinPlot.svelte';
+  import Original from '@w5-ui/svelte/components/ViolinPlot.svelte';
   export let series = [];
   export let yRange = undefined;
   export let height = 160;

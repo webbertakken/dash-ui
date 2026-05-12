@@ -1,6 +1,6 @@
 <svelte:options tag="uni-icicle-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/IcicleChart.svelte';
+  import Original from '@w5-ui/svelte/components/IcicleChart.svelte';
   export let root = undefined;
   export let height = 160;
   export let ariaLabel = 'Icicle chart';

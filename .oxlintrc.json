@@ -1,0 +1,101 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "oxc",
+    "import",
+    "promise",
+    "react",
+    "react-hooks",
+    "jsx-a11y"
+  ],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "typescript/no-explicit-any": "off",
+    "typescript/ban-ts-comment": [
+      "error",
+      {
+        "ts-ignore": "allow-with-description",
+        "ts-expect-error": "allow-with-description",
+        "ts-nocheck": true,
+        "ts-check": false
+      }
+    ],
+    "unicorn/no-abusive-eslint-disable": "error",
+    "unicorn/no-null": "off",
+    "unicorn/no-useless-undefined": "off",
+    "unicorn/numeric-separators-style": "off",
+    "unicorn/no-await-expression-member": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/no-nested-ternary": "off",
+    "unicorn/prefer-ternary": "off",
+    "unicorn/prefer-module": "off",
+    "unicorn/prefer-string-replace-all": "off",
+    "unicorn/prefer-string-raw": "off",
+    "unicorn/no-array-for-each": "off",
+    "unicorn/prefer-node-protocol": "off",
+    "unicorn/filename-case": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/no-unknown-property": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "jsx-a11y/no-autofocus": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/prefer-tag-over-role": "off",
+    "jsx-a11y/no-redundant-roles": "off",
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
+    "jsx-a11y/interactive-supports-focus": "off"
+  },
+  "overrides": [
+    {
+      "files": ["packages/*/src/**/*.{ts,tsx}"],
+      "rules": {
+        "typescript/no-explicit-any": "warn"
+      }
+    },
+    {
+      "files": [
+        "**/tests/**/*.{ts,tsx}",
+        "**/__tests__/**/*.{ts,tsx}",
+        "**/*.test.{ts,tsx}",
+        "**/*.spec.{ts,tsx}",
+        "**/test-fixtures/**/*.{ts,tsx}"
+      ],
+      "plugins": ["vitest"],
+      "rules": {
+        "typescript/no-explicit-any": "off",
+        "unicorn/no-null": "off",
+        "vitest/expect-expect": "off",
+        "vitest/require-mock-type-parameters": "off",
+        "vitest/valid-title": "off",
+        "vitest/no-conditional-expect": "off",
+        "vitest/no-disabled-tests": "off"
+      }
+    },
+    {
+      "files": ["scripts/**/*.{ts,tsx,js,mjs}", "packages/*/scripts/**/*.{ts,tsx,js,mjs}"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/storybook-static/**",
+    "**/*.config.js",
+    "**/*.config.mjs",
+    "**/*.config.ts",
+    "**/.changeset/**",
+    "**/runs/**",
+    "**/results.tsv",
+    "**/*.svelte"
+  ]
+}

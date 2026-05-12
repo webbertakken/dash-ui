@@ -1,6 +1,6 @@
 <svelte:options tag="uni-button" />
 <script>
-  import Original from '@dash-ui/svelte/components/Button.svelte';
+  import Original from '@w5-ui/svelte/components/Button.svelte';
   export let variant = 'ghost';
   export let iconOnly = false;
   export let loading = false;

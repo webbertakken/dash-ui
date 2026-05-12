@@ -1,6 +1,6 @@
 <svelte:options tag="uni-stacked-progress" />
 <script>
-  import Original from '@dash-ui/svelte/components/StackedProgress.svelte';
+  import Original from '@w5-ui/svelte/components/StackedProgress.svelte';
   export let segments = undefined;
   export let total = undefined;
   export let ariaLabel = undefined;

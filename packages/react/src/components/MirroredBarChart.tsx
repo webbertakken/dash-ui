@@ -1,26 +1,26 @@
 export interface MirroredBarItem {
-  label: string;
-  left: number;
-  right: number;
+  label: string
+  left: number
+  right: number
 }
 
 export interface MirroredBarChartProps {
-  items: MirroredBarItem[];
-  leftLabel?: string;
-  rightLabel?: string;
-  leftColor?: string;
-  rightColor?: string;
-  unit?: string;
-  ariaLabel?: string;
+  items: MirroredBarItem[]
+  leftLabel?: string
+  rightLabel?: string
+  leftColor?: string
+  rightColor?: string
+  unit?: string
+  ariaLabel?: string
 }
 
-const VW = 340;
-const LABEL_W = 80;
-const PAD_T = 20;
-const PAD_B = 8;
-const ROW_H = 26;
-const HALF_W = (VW - LABEL_W) / 2;
-const CX = VW / 2;
+const VW = 340
+const LABEL_W = 80
+const PAD_T = 20
+const PAD_B = 8
+const ROW_H = 26
+const HALF_W = (VW - LABEL_W) / 2
+const CX = VW / 2
 
 export function MirroredBarChart({
   items,
@@ -31,11 +31,11 @@ export function MirroredBarChart({
   unit = '',
   ariaLabel = 'Mirrored bar chart',
 }: MirroredBarChartProps) {
-  const svgH = PAD_T + items.length * ROW_H + PAD_B;
-  const maxVal = Math.max(...items.flatMap((it) => [it.left, it.right]), 1);
+  const svgH = PAD_T + items.length * ROW_H + PAD_B
+  const maxVal = Math.max(...items.flatMap((it) => [it.left, it.right]), 1)
 
   function bw(val: number): number {
-    return (val / maxVal) * HALF_W;
+    return (val / maxVal) * HALF_W
   }
 
   return (
@@ -77,12 +77,12 @@ export function MirroredBarChart({
         />
 
         {items.map((item, i) => {
-          const y = PAD_T + i * ROW_H;
-          const midY = y + ROW_H / 2;
-          const bh = ROW_H - 8;
-          const by = y + 4;
-          const lw = bw(item.left);
-          const rw = bw(item.right);
+          const y = PAD_T + i * ROW_H
+          const midY = y + ROW_H / 2
+          const bh = ROW_H - 8
+          const by = y + 4
+          const lw = bw(item.left)
+          const rw = bw(item.right)
           return (
             <g key={i}>
               <rect
@@ -140,9 +140,9 @@ export function MirroredBarChart({
                 </text>
               )}
             </g>
-          );
+          )
         })}
       </svg>
     </div>
-  );
+  )
 }

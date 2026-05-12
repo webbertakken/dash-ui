@@ -1,6 +1,6 @@
 <svelte:options tag="uni-tooltip" />
 <script>
-  import Original from '@dash-ui/svelte/components/Tooltip.svelte';
+  import Original from '@w5-ui/svelte/components/Tooltip.svelte';
   // no public props
 </script>
 

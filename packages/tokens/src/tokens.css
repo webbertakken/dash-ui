@@ -2,51 +2,51 @@
    Dash UI Design System — Colors + Type
    ========================================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ---- Brand blue ramp ----------------------------------------------------
    The only saturated color in the system. Used for primary actions,
    focus rings, status info, brand logo gradients. */
 :root {
-  --brand-01: #001F70;
+  --brand-01: #001f70;
   --brand-02: #003386;
-  --brand-03: #003C9E;
-  --brand-04: #005ED9;
-  --brand-05: #006FFF;          /* primary brand */
-  --brand-06: #4797FF;
-  --brand-07: #78C8F5;
-  --brand-08: #B8DBFF;
-  --brand-09: #E5F1FF;
+  --brand-03: #003c9e;
+  --brand-04: #005ed9;
+  --brand-05: #006fff; /* primary brand */
+  --brand-06: #4797ff;
+  --brand-07: #78c8f5;
+  --brand-08: #b8dbff;
+  --brand-09: #e5f1ff;
 
   /* Brand gradients (logos, hero accents) */
-  --brand-radial: radial-gradient(circle at 50% 0%, #006FFF 0%, #003C9E 100%);
-  --brand-radial-inner: radial-gradient(circle at 50% 50%, #005ED9 0%, #003386 100%);
-  --brand-silver: linear-gradient(160deg, #C2C4CE 0%, #D6D9E2 40%, #FFFFFF 100%);
+  --brand-radial: radial-gradient(circle at 50% 0%, #006fff 0%, #003c9e 100%);
+  --brand-radial-inner: radial-gradient(circle at 50% 50%, #005ed9 0%, #003386 100%);
+  --brand-silver: linear-gradient(160deg, #c2c4ce 0%, #d6d9e2 40%, #ffffff 100%);
 
   /* ---- Status -------------------------------------------------------- */
-  --status-success: #00B070;
-  --status-warning: #F5A623;
-  --status-danger:  #F03A3A;
-  --status-info:    var(--brand-05);
-  --status-neutral: #6E7079;
+  --status-success: #00b070;
+  --status-warning: #f5a623;
+  --status-danger: #f03a3a;
+  --status-info: var(--brand-05);
+  --status-neutral: #6e7079;
 
   --status-success-bg: rgba(0, 176, 112, 0.12);
   --status-warning-bg: rgba(245, 166, 35, 0.12);
-  --status-danger-bg:  rgba(240, 58, 58, 0.12);
-  --status-info-bg:    rgba(0, 111, 255, 0.12);
+  --status-danger-bg: rgba(240, 58, 58, 0.12);
+  --status-info-bg: rgba(0, 111, 255, 0.12);
 
   /* ---- Neutral ramp -------------------------------------------------- */
-  --neutral-00: #FFFFFF;
-  --neutral-01: #F6F6F7;
-  --neutral-02: #ECECEE;
-  --neutral-03: #D6D6DA;
-  --neutral-04: #A4A7B5;
-  --neutral-05: #6E7079;
-  --neutral-06: #4A4B53;
-  --neutral-07: #2D2F36;
-  --neutral-08: #1C1C1E;
+  --neutral-00: #ffffff;
+  --neutral-01: #f6f6f7;
+  --neutral-02: #ececee;
+  --neutral-03: #d6d6da;
+  --neutral-04: #a4a7b5;
+  --neutral-05: #6e7079;
+  --neutral-06: #4a4b53;
+  --neutral-07: #2d2f36;
+  --neutral-08: #1c1c1e;
   --neutral-09: #141415;
-  --neutral-10: #0A0A0B;
+  --neutral-10: #0a0a0b;
 
   /* ---- Spacing (4px grid) -------------------------------------------- */
   --space-1: 4px;
@@ -64,15 +64,15 @@
 
   /* ---- Radii --------------------------------------------------------- */
   --radius-sm: 4px;
-  --radius-md: 6px;        /* default — buttons, inputs, dashboard cards */
-  --radius-lg: 12px;       /* section panels */
-  --radius-xl: 16px;       /* marketing cards */
-  --radius-app: 22%;       /* squircle for app-logo containers */
+  --radius-md: 6px; /* default — buttons, inputs, dashboard cards */
+  --radius-lg: 12px; /* section panels */
+  --radius-xl: 16px; /* marketing cards */
+  --radius-app: 22%; /* squircle for app-logo containers */
   --radius-pill: 9999px;
 
   /* ---- Type scale ---------------------------------------------------- */
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
 
   --fs-11: 11px;
   --fs-12: 12px;
@@ -121,26 +121,26 @@
    Apply: <html data-motif="dark"> or <body motif-theme="dark">
    ========================================================================= */
 :root,
-[data-motif="dark"],
-[motif-theme="dark"] {
+[data-motif='dark'],
+[motif-theme='dark'] {
   color-scheme: dark;
 
-  --bg-page:   #0A0A0B;
-  --depthBg-0: #0A0A0B;
+  --bg-page: #0a0a0b;
+  --depthBg-0: #0a0a0b;
   --depthBg-1: #141415;
-  --depthBg-2: #1C1C1E;
-  --depthBg-3: #2A2A2C;
+  --depthBg-2: #1c1c1e;
+  --depthBg-3: #2a2a2c;
 
-  --text-1: #FFFFFF;        /* primary */
-  --text-2: #C8C9D0;        /* secondary */
-  --text-3: #A4A7B5;        /* tertiary, icon hover */
-  --text-4: #6E7079;        /* disabled / placeholder */
+  --text-1: #ffffff; /* primary */
+  --text-2: #c8c9d0; /* secondary */
+  --text-3: #a4a7b5; /* tertiary, icon hover */
+  --text-4: #6e7079; /* disabled / placeholder */
   --text-link: var(--brand-06);
 
   --border-1: rgba(255, 255, 255, 0.06);
-  --border-2: rgba(255, 255, 255, 0.10);
+  --border-2: rgba(255, 255, 255, 0.1);
   --border-3: rgba(255, 255, 255, 0.16);
-  --divider:  rgba(255, 255, 255, 0.04);
+  --divider: rgba(255, 255, 255, 0.04);
 
   --row-hover: rgba(255, 255, 255, 0.04);
   --row-active: rgba(0, 111, 255, 0.12);
@@ -148,8 +148,8 @@
   --primary: var(--brand-05);
   --primary-hover: var(--brand-06);
   --primary-press: var(--brand-04);
-  --primary-fg: #FFFFFF;
-  --primary-twotone-bg: #05254D;
+  --primary-fg: #ffffff;
+  --primary-twotone-bg: #05254d;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
   --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -161,26 +161,26 @@
 /* =========================================================================
    THEME — LIGHT (marketing, store, design-wizard)
    ========================================================================= */
-[data-motif="light"],
-[motif-theme="light"] {
+[data-motif='light'],
+[motif-theme='light'] {
   color-scheme: light;
 
-  --bg-page:   #FFFFFF;
-  --depthBg-0: #FFFFFF;
-  --depthBg-1: #FFFFFF;
-  --depthBg-2: #F6F6F7;
-  --depthBg-3: #ECECEE;
+  --bg-page: #ffffff;
+  --depthBg-0: #ffffff;
+  --depthBg-1: #ffffff;
+  --depthBg-2: #f6f6f7;
+  --depthBg-3: #ececee;
 
-  --text-1: #0A0A0B;
-  --text-2: #2D2F36;
-  --text-3: #6E7079;
-  --text-4: #A4A7B5;
+  --text-1: #0a0a0b;
+  --text-2: #2d2f36;
+  --text-3: #6e7079;
+  --text-4: #a4a7b5;
   --text-link: var(--brand-05);
 
-  --border-1: #ECECEE;
-  --border-2: #D6D6DA;
-  --border-3: #A4A7B5;
-  --divider:  #ECECEE;
+  --border-1: #ececee;
+  --border-2: #d6d6da;
+  --border-3: #a4a7b5;
+  --divider: #ececee;
 
   --row-hover: rgba(10, 10, 11, 0.04);
   --row-active: rgba(0, 111, 255, 0.08);
@@ -188,13 +188,13 @@
   --primary: var(--brand-05);
   --primary-hover: var(--brand-04);
   --primary-press: var(--brand-03);
-  --primary-fg: #FFFFFF;
-  --primary-twotone-bg: #E5F1FF;
+  --primary-fg: #ffffff;
+  --primary-twotone-bg: #e5f1ff;
 
-  --shadow-card:    0 1px 2px rgba(10,10,11,0.04), 0 8px 24px rgba(10,10,11,0.04);
-  --shadow-card-hover: 0 1px 2px rgba(10,10,11,0.06), 0 16px 32px rgba(10,10,11,0.08);
-  --shadow-modal:   0 24px 64px rgba(10,10,11,0.16), 0 2px 8px rgba(10,10,11,0.08);
-  --shadow-popover: 0 12px 32px rgba(10,10,11,0.12);
+  --shadow-card: 0 1px 2px rgba(10, 10, 11, 0.04), 0 8px 24px rgba(10, 10, 11, 0.04);
+  --shadow-card-hover: 0 1px 2px rgba(10, 10, 11, 0.06), 0 16px 32px rgba(10, 10, 11, 0.08);
+  --shadow-modal: 0 24px 64px rgba(10, 10, 11, 0.16), 0 2px 8px rgba(10, 10, 11, 0.08);
+  --shadow-popover: 0 12px 32px rgba(10, 10, 11, 0.12);
 
   --backdrop-blur: rgba(255, 255, 255, 0.7);
 }

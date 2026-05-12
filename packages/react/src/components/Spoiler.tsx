@@ -1,11 +1,11 @@
-import { useState, useRef, useLayoutEffect, type ReactNode } from 'react';
+import { useState, useRef, useLayoutEffect, type ReactNode } from 'react'
 
 export interface SpoilerProps {
-  children: ReactNode;
-  maxHeight?: number;
-  showLabel?: string;
-  hideLabel?: string;
-  className?: string;
+  children: ReactNode
+  maxHeight?: number
+  showLabel?: string
+  hideLabel?: string
+  className?: string
 }
 
 export function Spoiler({
@@ -15,22 +15,19 @@ export function Spoiler({
   hideLabel = 'Show less',
   className,
 }: SpoilerProps) {
-  const [expanded, setExpanded] = useState(false);
-  const [clipped, setClipped] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false)
+  const [clipped, setClipped] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
-    const el = ref.current;
-    if (el) setClipped(el.scrollHeight > maxHeight);
-  }, [maxHeight]);
+    const el = ref.current
+    if (el) setClipped(el.scrollHeight > maxHeight)
+  }, [maxHeight])
 
   return (
     <div className={`spoiler${className ? ' ' + className : ''}`}>
       <div className="spoiler-outer" style={{ position: 'relative' }}>
-        <div
-          ref={ref}
-          style={!expanded && clipped ? { maxHeight, overflow: 'hidden' } : undefined}
-        >
+        <div ref={ref} style={!expanded && clipped ? { maxHeight, overflow: 'hidden' } : undefined}>
           {children}
         </div>
         {!expanded && clipped && <div className="spoiler-fade" aria-hidden="true" />}
@@ -46,5 +43,5 @@ export function Spoiler({
         </button>
       )}
     </div>
-  );
+  )
 }

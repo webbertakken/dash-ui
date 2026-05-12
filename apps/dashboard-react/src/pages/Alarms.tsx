@@ -1,6 +1,26 @@
-import { useState } from 'react';
-import { Alert, Badge, BellIcon, Button, Card, EmptyState, NotificationPanel, Pill, Tabs, Timeline, AnnotatedTimeSeries, ActivityFeed, GroupedList } from '@dash-ui/react';
-import type { Notification, TimelineEvent, TimeSeriesAnnotation, ActivityItem, GroupedListGroup } from '@dash-ui/react';
+import {
+  Alert,
+  Badge,
+  BellIcon,
+  Button,
+  Card,
+  EmptyState,
+  NotificationPanel,
+  Pill,
+  Tabs,
+  Timeline,
+  AnnotatedTimeSeries,
+  ActivityFeed,
+  GroupedList,
+} from '@w5-ui/react'
+import type {
+  Notification,
+  TimelineEvent,
+  TimeSeriesAnnotation,
+  ActivityItem,
+  GroupedListGroup,
+} from '@w5-ui/react'
+import { useState } from 'react'
 
 const ALARM_HISTORY = [
   { label: '00:00', values: [1] },
@@ -16,35 +36,65 @@ const ALARM_HISTORY = [
   { label: '20:00', values: [4] },
   { label: '22:00', values: [3] },
   { label: 'Now', values: [3] },
-];
+]
 
-const ALARM_DATA = ALARM_HISTORY.map((h) => h.values[0]);
-const ALARM_LABELS = ALARM_HISTORY.map((h) => h.label);
+const ALARM_DATA = ALARM_HISTORY.map((h) => h.values[0])
+const ALARM_LABELS = ALARM_HISTORY.map((h) => h.label)
 const ALARM_ANNOTATIONS: TimeSeriesAnnotation[] = [
   { index: 9, label: 'WAN failover', color: '#00B458' },
   { index: 11, label: 'FW update', color: '#006FFF' },
-];
+]
 
 const ROWS = [
-  { sev: 'danger', source: ['CAM', 'Cam-Bullet 5 · Side Entry', 'CAM-Bullet5'], msg: 'No PoE link detected on uplink port', when: '2 min ago' },
-  { sev: 'warn', source: ['EG', 'Edge Gateway X1', 'EG-X1'], msg: 'CPU sustained at 84% for 3 minutes', when: '8 min ago' },
-  { sev: 'warn', source: ['VLN', 'DHCP · VLAN 20', '192.168.20.0/24'], msg: 'Pool 92% full · 234 / 254 leases active', when: '14 min ago' },
-] as const;
+  {
+    sev: 'danger',
+    source: ['CAM', 'Cam-Bullet 5 · Side Entry', 'CAM-Bullet5'],
+    msg: 'No PoE link detected on uplink port',
+    when: '2 min ago',
+  },
+  {
+    sev: 'warn',
+    source: ['EG', 'Edge Gateway X1', 'EG-X1'],
+    msg: 'CPU sustained at 84% for 3 minutes',
+    when: '8 min ago',
+  },
+  {
+    sev: 'warn',
+    source: ['VLN', 'DHCP · VLAN 20', '192.168.20.0/24'],
+    msg: 'Pool 92% full · 234 / 254 leases active',
+    when: '14 min ago',
+  },
+] as const
 
 const GROUPED_ALARMS: GroupedListGroup[] = [
   {
     label: 'Critical',
     color: '#F03A3A',
     items: [
-      { label: 'Cam-Bullet 5 — PoE link failure', sublabel: 'No PoE link on uplink port. Device offline.', meta: '2 min ago', status: 'danger' },
+      {
+        label: 'Cam-Bullet 5 — PoE link failure',
+        sublabel: 'No PoE link on uplink port. Device offline.',
+        meta: '2 min ago',
+        status: 'danger',
+      },
     ],
   },
   {
     label: 'Warning',
     color: '#F5A623',
     items: [
-      { label: 'Edge Gateway X1 — High CPU', sublabel: 'CPU at 84% for 3 minutes.', meta: '8 min ago', status: 'warn' },
-      { label: 'VLAN 20 — DHCP pool near full', sublabel: 'Pool 92% exhausted (234/254 leases).', meta: '14 min ago', status: 'warn' },
+      {
+        label: 'Edge Gateway X1 — High CPU',
+        sublabel: 'CPU at 84% for 3 minutes.',
+        meta: '8 min ago',
+        status: 'warn',
+      },
+      {
+        label: 'VLAN 20 — DHCP pool near full',
+        sublabel: 'Pool 92% exhausted (234/254 leases).',
+        meta: '14 min ago',
+        status: 'warn',
+      },
     ],
   },
   {
@@ -52,58 +102,215 @@ const GROUPED_ALARMS: GroupedListGroup[] = [
     color: '#006FFF',
     defaultOpen: false,
     items: [
-      { label: 'ES-48-Pro — Firmware updated', sublabel: 'Updated from 6.6.55 to 6.6.61 successfully.', meta: '2 h ago', status: 'success' },
-      { label: 'AP-Pro — Client roamed', sublabel: '14 clients roamed from Main Hall reception.', meta: '3 h ago', status: 'info' },
-      { label: 'Edge Gateway X1 — WAN failover', sublabel: 'WAN1 recovered. Traffic failed back from LTE.', meta: '6 h ago', status: 'success' },
+      {
+        label: 'ES-48-Pro — Firmware updated',
+        sublabel: 'Updated from 6.6.55 to 6.6.61 successfully.',
+        meta: '2 h ago',
+        status: 'success',
+      },
+      {
+        label: 'AP-Pro — Client roamed',
+        sublabel: '14 clients roamed from Main Hall reception.',
+        meta: '3 h ago',
+        status: 'info',
+      },
+      {
+        label: 'Edge Gateway X1 — WAN failover',
+        sublabel: 'WAN1 recovered. Traffic failed back from LTE.',
+        meta: '6 h ago',
+        status: 'success',
+      },
     ],
   },
-];
+]
 
 const HISTORY: TimelineEvent[] = [
-  { id: 'h1', title: 'Cam-Bullet 5 · Side Entry — PoE link failure', description: 'No PoE link detected on uplink port. Device went offline.', time: '2 min ago', variant: 'danger' },
-  { id: 'h2', title: 'Edge Gateway X1 — High CPU', description: 'CPU sustained at 84% for 3 minutes. Auto-throttled IDS/IPS inspection.', time: '8 min ago', variant: 'warn' },
-  { id: 'h3', title: 'VLAN 20 — DHCP pool near full', description: 'Pool 92% exhausted (234/254 leases). Consider expanding subnet.', time: '14 min ago', variant: 'warn' },
-  { id: 'h4', title: 'ES-48-Pro · Core — Firmware updated', description: 'Updated from 6.6.55 to 6.6.61 successfully.', time: '2 h ago', variant: 'success' },
-  { id: 'h5', title: 'AP-Pro · Main Hall — Client roamed', description: '14 clients roamed from AP-Pro · Reception within 30 s.', time: '3 h ago', variant: 'info' },
-  { id: 'h6', title: 'Edge Gateway X1 — WAN failover', description: 'WAN1 recovered. Traffic failed back from LTE within 4 s.', time: '6 h ago', variant: 'success' },
-  { id: 'h7', title: 'Cam-Dome 4 · Parking — Motion detected', description: 'Motion event recorded. Clip saved to NVR storage.', time: '8 h ago', variant: 'neutral' },
-];
+  {
+    id: 'h1',
+    title: 'Cam-Bullet 5 · Side Entry — PoE link failure',
+    description: 'No PoE link detected on uplink port. Device went offline.',
+    time: '2 min ago',
+    variant: 'danger',
+  },
+  {
+    id: 'h2',
+    title: 'Edge Gateway X1 — High CPU',
+    description: 'CPU sustained at 84% for 3 minutes. Auto-throttled IDS/IPS inspection.',
+    time: '8 min ago',
+    variant: 'warn',
+  },
+  {
+    id: 'h3',
+    title: 'VLAN 20 — DHCP pool near full',
+    description: 'Pool 92% exhausted (234/254 leases). Consider expanding subnet.',
+    time: '14 min ago',
+    variant: 'warn',
+  },
+  {
+    id: 'h4',
+    title: 'ES-48-Pro · Core — Firmware updated',
+    description: 'Updated from 6.6.55 to 6.6.61 successfully.',
+    time: '2 h ago',
+    variant: 'success',
+  },
+  {
+    id: 'h5',
+    title: 'AP-Pro · Main Hall — Client roamed',
+    description: '14 clients roamed from AP-Pro · Reception within 30 s.',
+    time: '3 h ago',
+    variant: 'info',
+  },
+  {
+    id: 'h6',
+    title: 'Edge Gateway X1 — WAN failover',
+    description: 'WAN1 recovered. Traffic failed back from LTE within 4 s.',
+    time: '6 h ago',
+    variant: 'success',
+  },
+  {
+    id: 'h7',
+    title: 'Cam-Dome 4 · Parking — Motion detected',
+    description: 'Motion event recorded. Clip saved to NVR storage.',
+    time: '8 h ago',
+    variant: 'neutral',
+  },
+]
 
 const FEED_ITEMS: ActivityItem[] = [
-  { id: 'f1', title: 'Cam-Bullet 5 -- Side Entry -- PoE link failure', description: 'No PoE link detected on uplink port. Device went offline.', time: '2 min ago', severity: 'error' },
-  { id: 'f2', title: 'Edge Gateway X1 -- High CPU', description: 'CPU sustained at 84% for 3 minutes. Auto-throttled IDS/IPS inspection.', time: '8 min ago', severity: 'warn' },
-  { id: 'f3', title: 'VLAN 20 -- DHCP pool near full', description: 'Pool 92% exhausted (234/254 leases). Consider expanding subnet.', time: '14 min ago', severity: 'warn' },
-  { id: 'f4', title: 'ES-48-Pro -- Core -- Firmware updated', description: 'Updated from 6.6.55 to 6.6.61 successfully.', time: '2 h ago', severity: 'success' },
-  { id: 'f5', title: 'AP-Pro -- Main Hall -- Client roamed', description: '14 clients roamed from AP-Pro -- Reception within 30 s.', time: '3 h ago', severity: 'info' },
-  { id: 'f6', title: 'Edge Gateway X1 -- WAN failover', description: 'WAN1 recovered. Traffic failed back from LTE within 4 s.', time: '6 h ago', severity: 'success' },
-  { id: 'f7', title: 'Cam-Dome 4 -- Parking -- Motion detected', description: 'Motion event recorded. Clip saved to NVR storage.', time: '8 h ago', severity: 'neutral' },
-  { id: 'f8', title: 'AP-Pro -- Reception -- Client connected', description: 'New client 9A:B3:7D:... connected at 1.2 Gbps (Wi-Fi 6E).', time: '10 h ago', severity: 'info' },
-  { id: 'f9', title: 'ES-8-Lite -- Break Room -- Port 4 up', description: 'Link established at 1 Gbps (full duplex).', time: '12 h ago', severity: 'neutral' },
-  { id: 'f10', title: 'Edge Gateway X1 -- DPI signature update', description: 'Deep Packet Inspection signatures updated to v2024.05.1.', time: '18 h ago', severity: 'info' },
-];
+  {
+    id: 'f1',
+    title: 'Cam-Bullet 5 -- Side Entry -- PoE link failure',
+    description: 'No PoE link detected on uplink port. Device went offline.',
+    time: '2 min ago',
+    severity: 'error',
+  },
+  {
+    id: 'f2',
+    title: 'Edge Gateway X1 -- High CPU',
+    description: 'CPU sustained at 84% for 3 minutes. Auto-throttled IDS/IPS inspection.',
+    time: '8 min ago',
+    severity: 'warn',
+  },
+  {
+    id: 'f3',
+    title: 'VLAN 20 -- DHCP pool near full',
+    description: 'Pool 92% exhausted (234/254 leases). Consider expanding subnet.',
+    time: '14 min ago',
+    severity: 'warn',
+  },
+  {
+    id: 'f4',
+    title: 'ES-48-Pro -- Core -- Firmware updated',
+    description: 'Updated from 6.6.55 to 6.6.61 successfully.',
+    time: '2 h ago',
+    severity: 'success',
+  },
+  {
+    id: 'f5',
+    title: 'AP-Pro -- Main Hall -- Client roamed',
+    description: '14 clients roamed from AP-Pro -- Reception within 30 s.',
+    time: '3 h ago',
+    severity: 'info',
+  },
+  {
+    id: 'f6',
+    title: 'Edge Gateway X1 -- WAN failover',
+    description: 'WAN1 recovered. Traffic failed back from LTE within 4 s.',
+    time: '6 h ago',
+    severity: 'success',
+  },
+  {
+    id: 'f7',
+    title: 'Cam-Dome 4 -- Parking -- Motion detected',
+    description: 'Motion event recorded. Clip saved to NVR storage.',
+    time: '8 h ago',
+    severity: 'neutral',
+  },
+  {
+    id: 'f8',
+    title: 'AP-Pro -- Reception -- Client connected',
+    description: 'New client 9A:B3:7D:... connected at 1.2 Gbps (Wi-Fi 6E).',
+    time: '10 h ago',
+    severity: 'info',
+  },
+  {
+    id: 'f9',
+    title: 'ES-8-Lite -- Break Room -- Port 4 up',
+    description: 'Link established at 1 Gbps (full duplex).',
+    time: '12 h ago',
+    severity: 'neutral',
+  },
+  {
+    id: 'f10',
+    title: 'Edge Gateway X1 -- DPI signature update',
+    description: 'Deep Packet Inspection signatures updated to v2024.05.1.',
+    time: '18 h ago',
+    severity: 'info',
+  },
+]
 
 const INITIAL_NOTIFICATIONS: Notification[] = [
-  { id: 'n1', type: 'alarm', severity: 'danger', title: 'PoE link failure — Cam-Bullet 5', description: 'No PoE link detected on uplink port. Device went offline.', time: '2 min ago', read: false },
-  { id: 'n2', type: 'alarm', severity: 'warn', title: 'High CPU — Edge Gateway X1', description: 'CPU sustained at 84% for 3 minutes.', time: '8 min ago', read: false },
-  { id: 'n3', type: 'alarm', severity: 'warn', title: 'DHCP pool near full — VLAN 20', description: 'Pool 92% exhausted (234/254 leases).', time: '14 min ago', read: false },
-  { id: 'n4', type: 'update', severity: 'success', title: 'Firmware updated — ES-48-Pro', description: 'Updated from 6.6.55 to 6.6.61 successfully.', time: '2 h ago', read: true },
-  { id: 'n5', type: 'system', severity: 'info', title: 'WAN failover recovered', description: 'WAN1 recovered. Traffic failed back from LTE within 4 s.', time: '6 h ago', read: true },
-];
+  {
+    id: 'n1',
+    type: 'alarm',
+    severity: 'danger',
+    title: 'PoE link failure — Cam-Bullet 5',
+    description: 'No PoE link detected on uplink port. Device went offline.',
+    time: '2 min ago',
+    read: false,
+  },
+  {
+    id: 'n2',
+    type: 'alarm',
+    severity: 'warn',
+    title: 'High CPU — Edge Gateway X1',
+    description: 'CPU sustained at 84% for 3 minutes.',
+    time: '8 min ago',
+    read: false,
+  },
+  {
+    id: 'n3',
+    type: 'alarm',
+    severity: 'warn',
+    title: 'DHCP pool near full — VLAN 20',
+    description: 'Pool 92% exhausted (234/254 leases).',
+    time: '14 min ago',
+    read: false,
+  },
+  {
+    id: 'n4',
+    type: 'update',
+    severity: 'success',
+    title: 'Firmware updated — ES-48-Pro',
+    description: 'Updated from 6.6.55 to 6.6.61 successfully.',
+    time: '2 h ago',
+    read: true,
+  },
+  {
+    id: 'n5',
+    type: 'system',
+    severity: 'info',
+    title: 'WAN failover recovered',
+    description: 'WAN1 recovered. Traffic failed back from LTE within 4 s.',
+    time: '6 h ago',
+    read: true,
+  },
+]
 
 export function Alarms() {
-  const [tab, setTab] = useState('active');
-  const [criticalDismissed, setCriticalDismissed] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
-  const [notifications, setNotifications] = useState<Notification[]>(INITIAL_NOTIFICATIONS);
+  const [tab, setTab] = useState('active')
+  const [criticalDismissed, setCriticalDismissed] = useState(false)
+  const [notifOpen, setNotifOpen] = useState(false)
+  const [notifications, setNotifications] = useState<Notification[]>(INITIAL_NOTIFICATIONS)
 
-  const unread = notifications.filter((n) => !n.read).length;
+  const unread = notifications.filter((n) => !n.read).length
 
   function markRead(id: string) {
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)))
   }
 
   function markAllRead() {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
   }
 
   return (
@@ -146,7 +353,8 @@ export function Alarms() {
       {!criticalDismissed && (
         <div style={{ padding: '12px 24px 0' }}>
           <Alert variant="danger" onDismiss={() => setCriticalDismissed(true)}>
-            1 critical alarm requires immediate attention: PoE link failure on Cam-Bullet 5 · Side Entry.
+            1 critical alarm requires immediate attention: PoE link failure on Cam-Bullet 5 · Side
+            Entry.
           </Alert>
         </div>
       )}
@@ -172,10 +380,7 @@ export function Alarms() {
         ) : tab === 'grouped' ? (
           <div style={{ paddingTop: 16 }}>
             <Card>
-              <GroupedList
-                groups={GROUPED_ALARMS}
-                ariaLabel="Alarms grouped by severity"
-              />
+              <GroupedList groups={GROUPED_ALARMS} ariaLabel="Alarms grouped by severity" />
             </Card>
           </div>
         ) : tab === 'all' ? (
@@ -184,14 +389,17 @@ export function Alarms() {
           </div>
         ) : tab === 'feed' ? (
           <div style={{ paddingTop: 16 }}>
-            <ActivityFeed
-              items={FEED_ITEMS}
-              label="Alarm event feed"
-              maxHeight={400}
-            />
+            <ActivityFeed items={FEED_ITEMS} label="Alarm event feed" maxHeight={400} />
           </div>
         ) : (
-          <table style={{ background: '#141415', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden' }}>
+          <table
+            style={{
+              background: '#141415',
+              border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: 8,
+              overflow: 'hidden',
+            }}
+          >
             <caption className="sr-only">Alarms</caption>
             <thead>
               <tr>
@@ -199,7 +407,9 @@ export function Alarms() {
                 <th scope="col">Source</th>
                 <th scope="col">Message</th>
                 <th scope="col">Site</th>
-                <th scope="col" style={{ textAlign: 'right' }}>When</th>
+                <th scope="col" style={{ textAlign: 'right' }}>
+                  When
+                </th>
                 <th scope="col" />
               </tr>
             </thead>
@@ -207,7 +417,9 @@ export function Alarms() {
               {ROWS.map((r) => (
                 <tr key={r.source[1]}>
                   <td>
-                    <Pill variant={r.sev as any}>{r.sev === 'danger' ? 'Critical' : 'Warning'}</Pill>
+                    <Pill variant={r.sev as any}>
+                      {r.sev === 'danger' ? 'Critical' : 'Warning'}
+                    </Pill>
                   </td>
                   <td>
                     <div className="name-cell">
@@ -233,5 +445,5 @@ export function Alarms() {
         )}
       </div>
     </>
-  );
+  )
 }

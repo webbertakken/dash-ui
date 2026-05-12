@@ -1,6 +1,6 @@
 <svelte:options tag="uni-date-picker" />
 <script>
-  import Original from '@dash-ui/svelte/components/DatePicker.svelte';
+  import Original from '@w5-ui/svelte/components/DatePicker.svelte';
   // no public props
 </script>
 

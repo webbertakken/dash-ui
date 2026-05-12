@@ -11,12 +11,13 @@
     "dev": "vite --port 5174 --host",
     "build": "vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json",
     "preview": "vite preview --port 5174"
   },
   "dependencies": {
-    "@dash-ui/assets": "workspace:*",
-    "@dash-ui/svelte": "workspace:*",
-    "@dash-ui/tokens": "workspace:*",
+    "@w5-ui/assets": "workspace:*",
+    "@w5-ui/svelte": "workspace:*",
+    "@w5-ui/tokens": "workspace:*",
     "svelte": "^4.2.19"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 <svelte:options tag="uni-tree-map" />
 <script>
-  import Original from '@dash-ui/svelte/components/TreeMap.svelte';
+  import Original from '@w5-ui/svelte/components/TreeMap.svelte';
   export let nodes = [];
   export let height = 160;
   export let ariaLabel = 'Treemap chart';

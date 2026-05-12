@@ -1,6 +1,6 @@
 <svelte:options tag="uni-bullet-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/BulletChart.svelte';
+  import Original from '@w5-ui/svelte/components/BulletChart.svelte';
   export let items = [];
   export let max = 100;
   export let ariaLabel = 'Bullet chart';

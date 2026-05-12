@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, Button, SearchBox, HealthBar, Toggle, InlineEdit, SortableList, PlusIcon, WifiIcon, AreaChart, MirroredBarChart, RidgelinePlot, HorizonChart } from '@dash-ui/svelte';
-  import type { AreaChartSeries, MirroredBarItem, RidgelineSeries, HorizonSeries, SortableItem } from '@dash-ui/svelte';
+  import { Card, Button, SearchBox, HealthBar, Toggle, InlineEdit, SortableList, PlusIcon, WifiIcon, AreaChart, MirroredBarChart, RidgelinePlot, HorizonChart } from '@w5-ui/svelte';
+  import type { AreaChartSeries, MirroredBarItem, RidgelineSeries, HorizonSeries, SortableItem } from '@w5-ui/svelte';
   import { SSIDS } from '../data';
 
   let enabled: Record<string, boolean> = Object.fromEntries(SSIDS.map((s) => [s[0], s[5] === 'active']));

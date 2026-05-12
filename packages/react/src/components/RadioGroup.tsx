@@ -1,22 +1,22 @@
-import { useId } from 'react';
-import type { ReactNode } from 'react';
+import { useId } from 'react'
+import type { ReactNode } from 'react'
 
 export interface RadioOption {
-  value: string;
-  label: ReactNode;
-  description?: string;
-  disabled?: boolean;
+  value: string
+  label: ReactNode
+  description?: string
+  disabled?: boolean
 }
 
 export interface RadioGroupProps {
-  legend: string;
-  name?: string;
-  options: RadioOption[];
-  value?: string;
-  defaultValue?: string;
-  onChange?: (value: string) => void;
-  srOnlyLegend?: boolean;
-  horizontal?: boolean;
+  legend: string
+  name?: string
+  options: RadioOption[]
+  value?: string
+  defaultValue?: string
+  onChange?: (value: string) => void
+  srOnlyLegend?: boolean
+  horizontal?: boolean
 }
 
 export function RadioGroup({
@@ -29,20 +29,22 @@ export function RadioGroup({
   srOnlyLegend = false,
   horizontal = false,
 }: RadioGroupProps) {
-  const groupId = useId();
-  const groupName = name ?? groupId;
-  const cls = ['radio-group', horizontal && 'radio-group--h'].filter(Boolean).join(' ');
+  const groupId = useId()
+  const groupName = name ?? groupId
+  const cls = ['radio-group', horizontal && 'radio-group--h'].filter(Boolean).join(' ')
 
   return (
     <fieldset className={cls}>
       <legend className={srOnlyLegend ? 'sr-only' : 'radio-group__legend'}>{legend}</legend>
       {options.map((opt) => {
-        const optId = `${groupName}-${opt.value}`;
+        const optId = `${groupName}-${opt.value}`
         return (
           <label
             key={opt.value}
             htmlFor={optId}
-            className={['radio-option', opt.disabled && 'radio-option--disabled'].filter(Boolean).join(' ')}
+            className={['radio-option', opt.disabled && 'radio-option--disabled']
+              .filter(Boolean)
+              .join(' ')}
           >
             <input
               type="radio"
@@ -60,8 +62,8 @@ export function RadioGroup({
               {opt.description && <span className="radio-description">{opt.description}</span>}
             </span>
           </label>
-        );
+        )
       })}
     </fieldset>
-  );
+  )
 }

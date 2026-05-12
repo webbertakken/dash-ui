@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   SkipLink,
   Topbar,
@@ -25,21 +24,22 @@ import {
   InfraIcon,
   IntegrationsIcon,
   type SidebarSectionDef,
-} from '@dash-ui/react';
-import { Dashboard } from './pages/Dashboard.js';
-import { Topology } from './pages/Topology.js';
-import { Devices } from './pages/Devices.js';
-import { Clients } from './pages/Clients.js';
-import { Alarms } from './pages/Alarms.js';
-import { Logs } from './pages/Logs.js';
-import { Wifi } from './pages/Wifi.js';
-import { Ports } from './pages/Ports.js';
-import { Vpn } from './pages/Vpn.js';
-import { Security } from './pages/Security.js';
-import { Settings } from './pages/Settings.js';
-import { Wireless } from './pages/Wireless.js';
-import { Infrastructure } from './pages/Infrastructure.js';
-import { Integrations } from './pages/Integrations.js';
+} from '@w5-ui/react'
+import { useEffect, useState } from 'react'
+import { Alarms } from './pages/Alarms.js'
+import { Clients } from './pages/Clients.js'
+import { Dashboard } from './pages/Dashboard.js'
+import { Devices } from './pages/Devices.js'
+import { Infrastructure } from './pages/Infrastructure.js'
+import { Integrations } from './pages/Integrations.js'
+import { Logs } from './pages/Logs.js'
+import { Ports } from './pages/Ports.js'
+import { Security } from './pages/Security.js'
+import { Settings } from './pages/Settings.js'
+import { Topology } from './pages/Topology.js'
+import { Vpn } from './pages/Vpn.js'
+import { Wifi } from './pages/Wifi.js'
+import { Wireless } from './pages/Wireless.js'
 
 const SECTIONS: SidebarSectionDef[] = [
   {
@@ -71,11 +71,11 @@ const SECTIONS: SidebarSectionDef[] = [
       { id: 'integrations', label: 'Integrations', icon: <IntegrationsIcon /> },
     ],
   },
-];
+]
 
 const PAGE_LABELS: Record<string, string> = Object.fromEntries(
   SECTIONS.flatMap((s) => s.items).map((i) => [i.id, i.label]),
-);
+)
 
 const SHORTCUTS: Record<string, string> = {
   dashboard: 'G+D',
@@ -85,37 +85,37 @@ const SHORTCUTS: Record<string, string> = {
   alarms: 'G+A',
   logs: 'G+L',
   settings: 'G+S',
-};
+}
 
 const CMD_ITEMS: CommandItem[] = SECTIONS.flatMap((s) =>
   s.items.map((i) => ({ id: i.id, label: i.label, group: s.title, shortcut: SHORTCUTS[i.id] })),
-);
+)
 
 export function App() {
-  const [activeApp, setActiveApp] = useState('system');
-  const [page, setPage] = useState('topology');
-  const [adoptOpen, setAdoptOpen] = useState(false);
-  const [cmdOpen, setCmdOpen] = useState(false);
+  const [activeApp, setActiveApp] = useState('system')
+  const [page, setPage] = useState('topology')
+  const [adoptOpen, setAdoptOpen] = useState(false)
+  const [cmdOpen, setCmdOpen] = useState(false)
 
-  const openAdopt = () => setAdoptOpen(true);
-  const closeAdopt = () => setAdoptOpen(false);
+  const openAdopt = () => setAdoptOpen(true)
+  const closeAdopt = () => setAdoptOpen(false)
 
-  const pageLabel = PAGE_LABELS[page] ?? page;
+  const pageLabel = PAGE_LABELS[page] ?? page
 
   useEffect(() => {
-    document.title = `${pageLabel} · Dash UI`;
-  }, [pageLabel]);
+    document.title = `${pageLabel} · Dash UI`
+  }, [pageLabel])
 
   useEffect(() => {
     function handler(e: KeyboardEvent) {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        setCmdOpen((o) => !o);
+        e.preventDefault()
+        setCmdOpen((o) => !o)
       }
     }
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, []);
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
 
   return (
     <div className="app">
@@ -124,7 +124,9 @@ export function App() {
       <div className="workspace">
         <Sidebar sections={SECTIONS} activeId={page} onChange={setPage} />
         <main className="content" id="main-content" tabIndex={-1} aria-labelledby="page-title">
-          <h1 id="page-title" className="sr-only">{pageLabel}</h1>
+          <h1 id="page-title" className="sr-only">
+            {pageLabel}
+          </h1>
           {page === 'dashboard' && <Dashboard onAdopt={openAdopt} />}
           {page === 'devices' && <Devices onAdopt={openAdopt} />}
           {page === 'clients' && <Clients />}
@@ -148,7 +150,10 @@ export function App() {
         open={cmdOpen}
         onClose={() => setCmdOpen(false)}
         items={CMD_ITEMS}
-        onSelect={(id) => { setPage(id); setCmdOpen(false); }}
+        onSelect={(id) => {
+          setPage(id)
+          setCmdOpen(false)
+        }}
       />
 
       <Modal
@@ -181,7 +186,9 @@ export function App() {
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: '#fff' }}>AP Pro · Warehouse</div>
-            <div style={{ fontSize: 11, color: '#6E7079', fontFamily: '"JetBrains Mono", monospace' }}>
+            <div
+              style={{ fontSize: 11, color: '#6E7079', fontFamily: '"JetBrains Mono", monospace' }}
+            >
               f4:b1:00:aa:bb:c2 · 192.168.1.19
             </div>
           </div>
@@ -191,5 +198,5 @@ export function App() {
         <Field label="Site" defaultValue="Demo cluster" />
       </Modal>
     </div>
-  );
+  )
 }

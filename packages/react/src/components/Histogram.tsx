@@ -1,22 +1,22 @@
 export interface HistogramBin {
-  x0: number;
-  x1: number;
-  count: number;
+  x0: number
+  x1: number
+  count: number
 }
 
 export interface HistogramProps {
-  bins: HistogramBin[];
-  height?: number;
-  color?: string;
-  xUnit?: string;
-  ariaLabel?: string;
+  bins: HistogramBin[]
+  height?: number
+  color?: string
+  xUnit?: string
+  ariaLabel?: string
 }
 
-const VW = 320;
-const PAD_L = 36;
-const PAD_R = 8;
-const PAD_T = 8;
-const PAD_B = 28;
+const VW = 320
+const PAD_L = 36
+const PAD_R = 8
+const PAD_T = 8
+const PAD_B = 28
 
 export function Histogram({
   bins,
@@ -25,24 +25,24 @@ export function Histogram({
   xUnit = '',
   ariaLabel = 'Histogram',
 }: HistogramProps) {
-  const PLOT_W = VW - PAD_L - PAD_R;
-  const PLOT_H = height - PAD_T - PAD_B;
-  const maxCount = Math.max(...bins.map((b) => b.count), 1);
-  const barW = PLOT_W / bins.length;
+  const PLOT_W = VW - PAD_L - PAD_R
+  const PLOT_H = height - PAD_T - PAD_B
+  const maxCount = Math.max(...bins.map((b) => b.count), 1)
+  const barW = PLOT_W / bins.length
 
-  const yTicks = [0, 1, 2, 3].map((i) => Math.round((maxCount * i) / 3));
+  const yTicks = [0, 1, 2, 3].map((i) => Math.round((maxCount * i) / 3))
 
-  const xStep = bins.length <= 6 ? 1 : Math.ceil(bins.length / 5);
-  const xLabels: { x: number; label: string }[] = [];
+  const xStep = bins.length <= 6 ? 1 : Math.ceil(bins.length / 5)
+  const xLabels: { x: number; label: string }[] = []
   bins.forEach((bin, i) => {
     if (i % xStep === 0) {
-      xLabels.push({ x: PAD_L + i * barW, label: String(bin.x0) + xUnit });
+      xLabels.push({ x: PAD_L + i * barW, label: String(bin.x0) + xUnit })
     }
-  });
+  })
   xLabels.push({
     x: PAD_L + PLOT_W,
     label: String(bins[bins.length - 1].x1) + xUnit,
-  });
+  })
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%' }}>
@@ -53,7 +53,7 @@ export function Histogram({
         focusable="false"
       >
         {yTicks.map((tick, i) => {
-          const ty = PAD_T + PLOT_H - (tick / maxCount) * PLOT_H;
+          const ty = PAD_T + PLOT_H - (tick / maxCount) * PLOT_H
           return (
             <g key={i}>
               <line
@@ -75,11 +75,11 @@ export function Histogram({
                 {tick}
               </text>
             </g>
-          );
+          )
         })}
 
         {bins.map((bin, i) => {
-          const bh = (bin.count / maxCount) * PLOT_H;
+          const bh = (bin.count / maxCount) * PLOT_H
           return (
             <rect
               key={i}
@@ -90,7 +90,7 @@ export function Histogram({
               fill={color}
               opacity={0.85}
             />
-          );
+          )
         })}
 
         <line
@@ -117,5 +117,5 @@ export function Histogram({
         ))}
       </svg>
     </div>
-  );
+  )
 }

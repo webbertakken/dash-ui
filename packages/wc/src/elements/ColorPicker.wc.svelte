@@ -1,6 +1,6 @@
 <svelte:options tag="uni-color-picker" />
 <script>
-  import Original from '@dash-ui/svelte/components/ColorPicker.svelte';
+  import Original from '@w5-ui/svelte/components/ColorPicker.svelte';
   // no public props
 </script>
 

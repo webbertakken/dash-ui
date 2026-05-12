@@ -2,20 +2,26 @@
 
 ## Goal
 
-Ship a static Storybook site that documents every component in the design system, exposed as React components, Svelte components, and Web Components, with SSR-ready output where it matters.
+Ship a static Storybook site that documents every component in the design system, exposed as React
+components, Svelte components, and Web Components, with SSR-ready output where it matters.
 
 ## Decisions (in DECISIONS.md)
 
-- Tri-framework: phased. React + Svelte stories + tests first; Web Components via Svelte 4 `customElement` compile (no rewrite of 168 components).
-- Storybook: three Storybook 8 instances, one per renderer, assembled into `dist/` under `/`, `/svelte/`, `/wc/`.
+- Tri-framework: phased. React + Svelte stories + tests first; Web Components via Svelte 4
+  `customElement` compile (no rewrite of 168 components).
+- Storybook: three Storybook 8 instances, one per renderer, assembled into `dist/` under `/`,
+  `/svelte/`, `/wc/`.
 - Sidebar: 12 categories defined in `packages/storybook-meta/categories.ts`.
 - Test runner: vitest + jsdom (+ node env for Svelte SSR).
-- SSR: React `renderToString` smoke for every component, Svelte SSR-compile smoke for every component.
-- Coverage: 95% lines for `packages/react/src/components` (smoke + interaction). Documented trade-off in DECISIONS.
+- SSR: React `renderToString` smoke for every component, Svelte SSR-compile smoke for every
+  component.
+- Coverage: 95% lines for `packages/react/src/components` (smoke + interaction). Documented
+  trade-off in DECISIONS.
 
 ## Sidebar categories (12)
 
-Foundations, Layout, Inputs, Selection & menus, Navigation, Feedback, Data display, Charts: comparison, Charts: time-series, Charts: distribution, Charts: hierarchy & flow, Specialised.
+Foundations, Layout, Inputs, Selection & menus, Navigation, Feedback, Data display, Charts:
+comparison, Charts: time-series, Charts: distribution, Charts: hierarchy & flow, Specialised.
 
 ## Tasks
 
@@ -30,7 +36,8 @@ Foundations, Layout, Inputs, Selection & menus, Navigation, Feedback, Data displ
 
 ### Phase 1: React tests
 
-- [x] Fixtures registry (`packages/react/test-fixtures/fixtures.tsx`) covering 168 components + 22 icons
+- [x] Fixtures registry (`packages/react/test-fixtures/fixtures.tsx`) covering 168 components + 22
+      icons
 - [x] Auto-render test (398 smoke tests)
 - [x] Interaction test (113 keyboard / mouse / focus tests)
 - [x] Coverage: 96.2% lines, 88.9% functions, 85.1% branches across `packages/react/src/components`
@@ -50,7 +57,7 @@ Foundations, Layout, Inputs, Selection & menus, Navigation, Feedback, Data displ
 - [x] `packages/wc` package with auto-generated thin Svelte custom-element wrappers
 - [x] Vite library build outputs ESM bundle (`dist/index.js`) registering 166 `uni-*` tags
 - [x] Smoke tests: every tag registers + connects without throwing
-- [x] Commit: "Add @dash-ui/wc: 166 web components compiled from @dash-ui/svelte"
+- [x] Commit: "Add @w5-ui/wc: 166 web components compiled from @w5-ui/svelte"
 
 ### Phase 4: Svelte tests + Storybook
 
@@ -63,7 +70,8 @@ Foundations, Layout, Inputs, Selection & menus, Navigation, Feedback, Data displ
 ### Phase 5: Web components Storybook
 
 - [x] `apps/storybook-wc` with `@storybook/web-components-vite` (165 stories)
-- [x] Importing `@dash-ui/wc` registers all elements; stories render via `document.createElement(tag)` with property assignment
+- [x] Importing `@w5-ui/wc` registers all elements; stories render via `document.createElement(tag)`
+      with property assignment
 - [x] Commit: "Add Storybook for Web Components (165 stories)"
 
 ### Phase 6: SSR proof
@@ -74,7 +82,8 @@ Foundations, Layout, Inputs, Selection & menus, Navigation, Feedback, Data displ
 
 ### Phase 7: Static site assembly
 
-- [x] `apps/storybook-site` builds all three Storybooks and assembles `dist/index.html` + `/react/`, `/svelte/`, `/wc/`
+- [x] `apps/storybook-site` builds all three Storybooks and assembles `dist/index.html` + `/react/`,
+      `/svelte/`, `/wc/`
 - [x] Tokens CSS inlined in landing page
 - [x] `pnpm build:site` + `pnpm serve:site` scripts at root
 - [x] Verified all four routes serve HTTP 200
@@ -93,5 +102,6 @@ Foundations, Layout, Inputs, Selection & menus, Navigation, Feedback, Data displ
 - React coverage at 96.2% lines (target was 100%); see DECISIONS.md \u00a7Coverage thresholds
 - A11y warnings in 4 Svelte components (NumberInput, ActivityFeed, DateRangePicker, TagInput)
 - WC bundle is 2.5 MB unminified; could be code-split per-element if anyone wants tree-shaking
-- Svelte 4 \u2192 Svelte 5 upgrade deferred (would unlock better customElement compile + native `svelte/server`)
+- Svelte 4 \u2192 Svelte 5 upgrade deferred (would unlock better customElement compile + native
+  `svelte/server`)
 - Lit-SSR / Declarative Shadow DOM for the WC layer not in scope

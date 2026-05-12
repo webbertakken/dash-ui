@@ -1,6 +1,6 @@
 <svelte:options tag="uni-slope-chart" />
 <script>
-  import Original from '@dash-ui/svelte/components/SlopeChart.svelte';
+  import Original from '@w5-ui/svelte/components/SlopeChart.svelte';
   export let items = [];
   export let labelBefore = 'Before';
   export let labelAfter = 'After';

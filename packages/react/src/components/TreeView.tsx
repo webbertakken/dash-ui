@@ -1,40 +1,40 @@
-import { useState, useRef, useCallback } from 'react';
-import type { HTMLAttributes, KeyboardEvent, ReactNode } from 'react';
+import { useState, useRef, useCallback } from 'react'
+import type { HTMLAttributes, KeyboardEvent, ReactNode } from 'react'
 
 export interface TreeNode {
-  id: string;
-  label: string;
-  icon?: ReactNode;
-  meta?: string;
-  children?: TreeNode[];
+  id: string
+  label: string
+  icon?: ReactNode
+  meta?: string
+  children?: TreeNode[]
 }
 
 export interface TreeViewProps extends Omit<HTMLAttributes<HTMLUListElement>, 'onSelect'> {
-  nodes: TreeNode[];
-  selected?: string;
-  onSelect?: (id: string) => void;
-  defaultExpanded?: string[];
-  label?: string;
+  nodes: TreeNode[]
+  selected?: string
+  onSelect?: (id: string) => void
+  defaultExpanded?: string[]
+  label?: string
 }
 
 function visibleIds(nodes: TreeNode[], expanded: Set<string>): string[] {
-  const ids: string[] = [];
+  const ids: string[] = []
   function walk(list: TreeNode[]) {
     for (const n of list) {
-      ids.push(n.id);
-      if (n.children?.length && expanded.has(n.id)) walk(n.children);
+      ids.push(n.id)
+      if (n.children?.length && expanded.has(n.id)) walk(n.children)
     }
   }
-  walk(nodes);
-  return ids;
+  walk(nodes)
+  return ids
 }
 
 function findNode(id: string, list: TreeNode[]): TreeNode | undefined {
   for (const n of list) {
-    if (n.id === id) return n;
+    if (n.id === id) return n
     if (n.children) {
-      const found = findNode(id, n.children);
-      if (found) return found;
+      const found = findNode(id, n.children)
+      if (found) return found
     }
   }
 }
@@ -45,14 +45,14 @@ function TreeItem({
   focusedId,
   expanded,
 }: {
-  node: TreeNode;
-  selected: string | undefined;
-  focusedId: string;
-  expanded: Set<string>;
+  node: TreeNode
+  selected: string | undefined
+  focusedId: string
+  expanded: Set<string>
 }) {
-  const hasChildren = !!node.children?.length;
-  const isExpanded = expanded.has(node.id);
-  const isSelected = selected === node.id;
+  const hasChildren = !!node.children?.length
+  const isExpanded = expanded.has(node.id)
+  const isSelected = selected === node.id
 
   return (
     <li
@@ -82,7 +82,11 @@ function TreeItem({
         ) : (
           <span className="tree__indent" aria-hidden="true" />
         )}
-        {node.icon && <span className="tree__icon" aria-hidden="true">{node.icon}</span>}
+        {node.icon && (
+          <span className="tree__icon" aria-hidden="true">
+            {node.icon}
+          </span>
+        )}
         <span className="tree__label">{node.label}</span>
         {node.meta && <span className="tree__meta">{node.meta}</span>}
       </div>
@@ -100,7 +104,7 @@ function TreeItem({
         </ul>
       )}
     </li>
-  );
+  )
 }
 
 export function TreeView({
@@ -112,83 +116,83 @@ export function TreeView({
   className = '',
   ...rest
 }: TreeViewProps) {
-  const [expanded, setExpanded] = useState<Set<string>>(() => new Set(defaultExpanded));
-  const [focusedId, setFocusedId] = useState<string>(() => nodes[0]?.id ?? '');
-  const rootRef = useRef<HTMLUListElement>(null);
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set(defaultExpanded))
+  const [focusedId, setFocusedId] = useState<string>(() => nodes[0]?.id ?? '')
+  const rootRef = useRef<HTMLUListElement>(null)
 
   const toggle = useCallback((id: string) => {
     setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }, [])
 
   function moveFocus(id: string) {
-    setFocusedId(id);
+    setFocusedId(id)
     requestAnimationFrame(() => {
-      rootRef.current?.querySelector<HTMLElement>(`[data-tree-id="${id}"]`)?.focus();
-    });
+      rootRef.current?.querySelector<HTMLElement>(`[data-tree-id="${id}"]`)?.focus()
+    })
   }
 
   function handleFocus(e: React.FocusEvent<HTMLUListElement>) {
-    const el = (e.target as HTMLElement).closest('[data-tree-id]');
-    if (el) setFocusedId(el.getAttribute('data-tree-id') ?? focusedId);
+    const el = (e.target as HTMLElement).closest('[data-tree-id]')
+    if (el) setFocusedId(el.getAttribute('data-tree-id') ?? focusedId)
   }
 
   function handleClick(e: React.MouseEvent<HTMLUListElement>) {
-    const row = (e.target as HTMLElement).closest('.tree__row');
-    if (!row) return;
-    const item = row.closest('[data-tree-id]');
-    if (!item) return;
-    const id = item.getAttribute('data-tree-id');
-    if (!id) return;
-    onSelect?.(id);
-    setFocusedId(id);
-    moveFocus(id);
-    const node = findNode(id, nodes);
-    if (node?.children?.length) toggle(id);
+    const row = (e.target as HTMLElement).closest('.tree__row')
+    if (!row) return
+    const item = row.closest('[data-tree-id]')
+    if (!item) return
+    const id = item.getAttribute('data-tree-id')
+    if (!id) return
+    onSelect?.(id)
+    setFocusedId(id)
+    moveFocus(id)
+    const node = findNode(id, nodes)
+    if (node?.children?.length) toggle(id)
   }
 
   function handleKeyDown(e: KeyboardEvent<HTMLUListElement>) {
-    const el = (e.target as HTMLElement).closest('[data-tree-id]');
-    if (!el) return;
-    const id = el.getAttribute('data-tree-id');
-    if (!id) return;
+    const el = (e.target as HTMLElement).closest('[data-tree-id]')
+    if (!el) return
+    const id = el.getAttribute('data-tree-id')
+    if (!id) return
 
-    const visible = visibleIds(nodes, expanded);
-    const idx = visible.indexOf(id);
-    const node = findNode(id, nodes);
-    const hasChildren = !!node?.children?.length;
-    const isNodeExpanded = expanded.has(id);
+    const visible = visibleIds(nodes, expanded)
+    const idx = visible.indexOf(id)
+    const node = findNode(id, nodes)
+    const hasChildren = !!node?.children?.length
+    const isNodeExpanded = expanded.has(id)
 
     if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      const next = visible[idx + 1];
-      if (next) moveFocus(next);
+      e.preventDefault()
+      const next = visible[idx + 1]
+      if (next) moveFocus(next)
     } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      const prev = visible[idx - 1];
-      if (prev) moveFocus(prev);
+      e.preventDefault()
+      const prev = visible[idx - 1]
+      if (prev) moveFocus(prev)
     } else if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      if (hasChildren && !isNodeExpanded) toggle(id);
-      else if (hasChildren && isNodeExpanded) moveFocus(node!.children![0]!.id);
+      e.preventDefault()
+      if (hasChildren && !isNodeExpanded) toggle(id)
+      else if (hasChildren && isNodeExpanded) moveFocus(node!.children![0]!.id)
     } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      if (hasChildren && isNodeExpanded) toggle(id);
+      e.preventDefault()
+      if (hasChildren && isNodeExpanded) toggle(id)
     } else if (e.key === 'Home') {
-      e.preventDefault();
-      if (visible[0]) moveFocus(visible[0]);
+      e.preventDefault()
+      if (visible[0]) moveFocus(visible[0])
     } else if (e.key === 'End') {
-      e.preventDefault();
-      const last = visible[visible.length - 1];
-      if (last) moveFocus(last);
+      e.preventDefault()
+      const last = visible[visible.length - 1]
+      if (last) moveFocus(last)
     } else if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onSelect?.(id);
-      setFocusedId(id);
+      e.preventDefault()
+      onSelect?.(id)
+      setFocusedId(id)
     }
   }
 
@@ -213,5 +217,5 @@ export function TreeView({
         />
       ))}
     </ul>
-  );
+  )
 }

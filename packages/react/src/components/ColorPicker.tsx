@@ -1,9 +1,9 @@
-import { useId, useState, useRef, useCallback } from 'react';
+import { useId, useState, useRef, useCallback } from 'react'
 
 export interface ColorSwatchDef {
-  value: string;
-  label: string;
-  color: string;
+  value: string
+  label: string
+  color: string
 }
 
 export const COLOR_SWATCHES: ColorSwatchDef[] = [
@@ -17,16 +17,16 @@ export const COLOR_SWATCHES: ColorSwatchDef[] = [
   { value: 'orange', label: 'Orange', color: '#FF6B35' },
   { value: 'slate', label: 'Slate', color: '#6E7079' },
   { value: 'light', label: 'Light', color: '#E8E8EC' },
-];
+]
 
 export interface ColorPickerProps {
-  label?: string;
-  srOnlyLabel?: boolean;
-  value?: string;
-  defaultValue?: string;
-  swatches?: ColorSwatchDef[];
-  onChange?: (value: string) => void;
-  disabled?: boolean;
+  label?: string
+  srOnlyLabel?: boolean
+  value?: string
+  defaultValue?: string
+  swatches?: ColorSwatchDef[]
+  onChange?: (value: string) => void
+  disabled?: boolean
 }
 
 export function ColorPicker({
@@ -38,42 +38,42 @@ export function ColorPicker({
   onChange,
   disabled = false,
 }: ColorPickerProps) {
-  const groupId = useId();
-  const [internal, setInternal] = useState(defaultValue ?? swatches[0]?.value ?? '');
-  const controlled = value !== undefined;
-  const current = controlled ? value : internal;
-  const gridRef = useRef<HTMLDivElement>(null);
+  const groupId = useId()
+  const [internal, setInternal] = useState(defaultValue ?? swatches[0]?.value ?? '')
+  const controlled = value !== undefined
+  const current = controlled ? value : internal
+  const gridRef = useRef<HTMLDivElement>(null)
 
   const set = useCallback(
     (v: string) => {
-      if (!controlled) setInternal(v);
-      onChange?.(v);
+      if (!controlled) setInternal(v)
+      onChange?.(v)
     },
     [controlled, onChange],
-  );
+  )
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       const cells = Array.from(
         gridRef.current?.querySelectorAll<HTMLInputElement>('input[type="radio"]') ?? [],
-      );
-      if (!cells.length) return;
-      const idx = cells.findIndex((c) => c.value === current);
-      let next = idx;
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % cells.length;
+      )
+      if (!cells.length) return
+      const idx = cells.findIndex((c) => c.value === current)
+      let next = idx
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % cells.length
       else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp')
-        next = (idx - 1 + cells.length) % cells.length;
-      else if (e.key === 'Home') next = 0;
-      else if (e.key === 'End') next = cells.length - 1;
-      else return;
-      e.preventDefault();
-      cells[next].focus();
-      set(cells[next].value);
+        next = (idx - 1 + cells.length) % cells.length
+      else if (e.key === 'Home') next = 0
+      else if (e.key === 'End') next = cells.length - 1
+      else return
+      e.preventDefault()
+      cells[next].focus()
+      set(cells[next].value)
     },
     [current, set],
-  );
+  )
 
-  const hasMatch = swatches.some((s) => s.value === current);
+  const hasMatch = swatches.some((s) => s.value === current)
 
   return (
     <div className={`color-picker${disabled ? ' color-picker--disabled' : ''}`}>
@@ -91,8 +91,8 @@ export function ColorPicker({
         onKeyDown={handleKeyDown}
       >
         {swatches.map((sw, i) => {
-          const checked = sw.value === current;
-          const tabIdx = checked || (i === 0 && !hasMatch) ? 0 : -1;
+          const checked = sw.value === current
+          const tabIdx = checked || (i === 0 && !hasMatch) ? 0 : -1
           return (
             <label key={sw.value} className="color-picker__swatch" title={sw.label}>
               <input
@@ -112,9 +112,9 @@ export function ColorPicker({
                 aria-hidden="true"
               />
             </label>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }
