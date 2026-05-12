@@ -22,6 +22,7 @@
     hint = undefined,
     children
   }: Props = $props();
+  // svelte-ignore state_referenced_locally
   const inputId = id ?? `dash-ui-field-${++counter}`;
   let errorId = $derived(error ? `${inputId}-error` : undefined);
   let hintId = $derived(hint ? `${inputId}-hint` : undefined);

@@ -27,6 +27,7 @@
     className = '',
   }: Props = $props();
 
+  // svelte-ignore state_referenced_locally
   let follow = $state(defaultFollow);
   let bodyEl = $state<HTMLDivElement | undefined>(undefined);
 

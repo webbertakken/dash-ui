@@ -16,6 +16,7 @@
   }: Props = $props();
 
   let editing = $state(false);
+  // svelte-ignore state_referenced_locally
   let draft = $state(value);
   let inputEl: HTMLInputElement = $state();
   let editBtnEl: HTMLButtonElement = $state();

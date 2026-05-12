@@ -7,6 +7,7 @@
 
   let { title, defaultOpen = false, children }: Props = $props();
 
+  // svelte-ignore state_referenced_locally
   let open = $state(defaultOpen);
   const uid = Math.random().toString(36).slice(2, 9);
   const btnId = `acc-btn-${uid}`;

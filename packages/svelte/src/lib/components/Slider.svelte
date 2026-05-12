@@ -26,6 +26,7 @@
   }: Props = $props();
 
   let counter = 0;
+  // svelte-ignore state_referenced_locally
   const inputId = id ?? `slider-${counter++}`;
   let pct = $derived(max === min ? 0 : ((value - min) / (max - min)) * 100);
 

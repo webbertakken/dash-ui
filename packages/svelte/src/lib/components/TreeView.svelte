@@ -27,7 +27,9 @@
     className = ''
   }: Props = $props();
 
+  // svelte-ignore state_referenced_locally
   let expanded = $state(new Set<string>(defaultExpanded));
+  // svelte-ignore state_referenced_locally
   let focusedId: string = $state(nodes[0]?.id ?? '');
   let rootEl: HTMLUListElement = $state();
 

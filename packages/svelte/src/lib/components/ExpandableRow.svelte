@@ -13,6 +13,7 @@
     detail
   }: Props = $props();
 
+  // svelte-ignore state_referenced_locally
   let open = $state(defaultExpanded);
   const detailId = `exp-${Math.random().toString(36).slice(2, 9)}`;
 </script>
@@ -25,6 +26,7 @@
         class="exp-toggle"
         aria-expanded={open}
         aria-controls={detailId}
+        aria-label={open ? 'Collapse row' : 'Expand row'}
         onclick={() => (open = !open)}
       >
         <svg

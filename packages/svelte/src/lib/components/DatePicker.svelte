@@ -53,7 +53,9 @@
   const today = new Date();
 
   let open = $state(false);
+  // svelte-ignore state_referenced_locally
   let viewYear = $state(value?.getFullYear() ?? today.getFullYear());
+  // svelte-ignore state_referenced_locally
   let viewMonth = $state(value?.getMonth() ?? today.getMonth());
   let focusIdx = $state(0);
   let triggerEl: HTMLButtonElement = $state();

@@ -24,6 +24,10 @@
   let isObj = $derived(v !== null && typeof v === 'object');
   let expandable = $derived(isArr || isObj);
 
+  // `open` is initialised from `startOpen`/`depth`/`maxDepth` props but is
+  // intentionally a one-shot snapshot at construction time — afterwards
+  // the user controls it via the toggle.
+  // svelte-ignore state_referenced_locally
   let open = $state(startOpen && depth < maxDepth);
 
   let entries = $derived(isArr

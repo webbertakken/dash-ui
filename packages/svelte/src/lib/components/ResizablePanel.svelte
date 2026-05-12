@@ -25,6 +25,7 @@
     second
   }: Props = $props();
 
+  // svelte-ignore state_referenced_locally
   let size = $state(defaultSize);
   let container: HTMLDivElement = $state();
 

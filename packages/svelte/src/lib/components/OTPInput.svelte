@@ -24,9 +24,12 @@
   }: Props = $props();
   const uid = `dash-ui-otp-${++counter}`;
 
+  // svelte-ignore state_referenced_locally
   let digits: string[] = $state(Array.from({ length }, (_, i) => value[i] ?? ''));
+  // svelte-ignore state_referenced_locally
   let inputs: (HTMLInputElement | null)[] = $state(Array(length).fill(null));
 
+  // svelte-ignore state_referenced_locally
   const half = Math.floor(length / 2);
 
   function focusAt(i: number) {

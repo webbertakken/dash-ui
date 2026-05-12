@@ -24,6 +24,10 @@
   }: Props = $props();
   
 
+  // `current` snapshots `from` once and then animates towards `to`. Live-
+  // tracking `from` would yank the animation back to the prop on every
+  // update.
+  // svelte-ignore state_referenced_locally
   let current = $state(from);
   let rafId: number;
 

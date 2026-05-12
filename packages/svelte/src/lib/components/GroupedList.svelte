@@ -34,7 +34,10 @@
   };
 
   const uid = Math.random().toString(36).slice(2, 9);
-  let open: boolean[] = $state(groups.map(g => g.defaultOpen !== false));
+  // Initial open state mirrors each group's `defaultOpen` once; afterwards
+  // the user toggles each entry independently.
+  // svelte-ignore state_referenced_locally
+  let open: boolean[] = $state(groups.map((g) => g.defaultOpen !== false));
 
   function toggle(i: number) { open[i] = !open[i]; open = [...open]; }
 </script>

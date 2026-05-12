@@ -27,6 +27,7 @@
     horizontal = false
   }: Props = $props();
 
+  // svelte-ignore state_referenced_locally
   const groupName = name ?? `dash-ui-rg-${++counter}`;
 </script>
 

@@ -156,6 +156,7 @@
       role="dialog"
       aria-modal="true"
       aria-label="Select date range"
+      tabindex="-1"
       class="drp-cal"
       onkeydown={(e) => {
         if (e.key === 'Escape') { e.preventDefault(); open = false; picking = null; triggerEl?.focus(); }
