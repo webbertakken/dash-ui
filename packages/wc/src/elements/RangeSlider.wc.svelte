@@ -1,14 +1,16 @@
 <svelte:options customElement="uni-range-slider" />
 <script>
   import Original from '@w5-ui/svelte/components/RangeSlider.svelte';
-  export let label = undefined;
-  export let min = 0;
-  export let max = 100;
-  export let step = 1;
-  export let low = 0;
-  export let high = 100;
-  export let suffix = undefined;
-  export let disabled = false;
+  let {
+    label = undefined,
+    min = 0,
+    max = 100,
+    step = 1,
+    low = 0,
+    high = 100,
+    suffix = undefined,
+    disabled = false
+  } = $props();
 </script>
 
 <Original {label} {min} {max} {step} {low} {high} {suffix} {disabled}>

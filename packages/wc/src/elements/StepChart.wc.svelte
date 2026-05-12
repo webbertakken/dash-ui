@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-step-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/StepChart.svelte';
-  // no public props
+  let {
+    series = [],
+    labels = [],
+    height = 160,
+    ariaLabel = 'Step chart'
+  } = $props();
 </script>
 
-<Original >
+<Original {series} {labels} {height} {ariaLabel}>
   <slot />
 </Original>

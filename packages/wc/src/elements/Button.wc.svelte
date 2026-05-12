@@ -1,16 +1,19 @@
 <svelte:options customElement="uni-button" />
 <script>
   import Original from '@w5-ui/svelte/components/Button.svelte';
-  export let variant = 'ghost';
-  export let iconOnly = false;
-  export let loading = false;
-  export let title = undefined;
-  export let type = 'button';
-  export let disabled = false;
-  export let style = '';
-  export let ariaLabel = undefined;
+  let {
+    variant = 'ghost',
+    iconOnly = false,
+    loading = false,
+    title = undefined,
+    type = 'button',
+    disabled = false,
+    class: className = '',
+    style = '',
+    ariaLabel = undefined
+  } = $props();
 </script>
 
-<Original {variant} {iconOnly} {loading} {title} {type} {disabled} {style} {ariaLabel}>
+<Original {variant} {iconOnly} {loading} {title} {type} {disabled} class={className} {style} {ariaLabel}>
   <slot />
 </Original>

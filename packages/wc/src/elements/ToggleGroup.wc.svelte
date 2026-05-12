@@ -1,12 +1,15 @@
 <svelte:options customElement="uni-toggle-group" />
 <script>
   import Original from '@w5-ui/svelte/components/ToggleGroup.svelte';
-  export let options = [];
-  export let value = [];
-  export let ariaLabel = '';
-  export let size = 'md';
+  let {
+    options = [],
+    value = [],
+    ariaLabel = '',
+    size = 'md',
+    class: klass = ''
+  } = $props();
 </script>
 
-<Original {options} {value} {ariaLabel} {size}>
+<Original {options} {value} {ariaLabel} {size} class={klass}>
   <slot />
 </Original>

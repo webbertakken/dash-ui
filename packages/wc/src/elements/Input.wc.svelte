@@ -1,12 +1,15 @@
 <svelte:options customElement="uni-input" />
 <script>
   import Original from '@w5-ui/svelte/components/Input.svelte';
-  export let value = '';
-  export let placeholder = '';
-  export let type = 'text';
-  export let style = '';
+  let {
+    value = '',
+    placeholder = '',
+    type = 'text',
+    class: className = '',
+    style = ''
+  } = $props();
 </script>
 
-<Original {value} {placeholder} {type} {style}>
+<Original {value} {placeholder} {type} class={className} {style}>
   <slot />
 </Original>

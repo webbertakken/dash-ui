@@ -1,11 +1,13 @@
 <svelte:options customElement="uni-file-upload" />
 <script>
   import Original from '@w5-ui/svelte/components/FileUpload.svelte';
-  export let label = 'Upload file';
-  export let hint = undefined;
-  export let accept = undefined;
-  export let multiple = false;
-  export let disabled = false;
+  let {
+    label = 'Upload file',
+    hint = undefined,
+    accept = undefined,
+    multiple = false,
+    disabled = false
+  } = $props();
 </script>
 
 <Original {label} {hint} {accept} {multiple} {disabled}>

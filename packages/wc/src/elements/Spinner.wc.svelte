@@ -1,8 +1,10 @@
 <svelte:options customElement="uni-spinner" />
 <script>
   import Original from '@w5-ui/svelte/components/Spinner.svelte';
-  export let size = 'md';
-  export let label = 'Loading';
+  let {
+    size = 'md',
+    label = 'Loading'
+  } = $props();
 </script>
 
 <Original {size} {label}>

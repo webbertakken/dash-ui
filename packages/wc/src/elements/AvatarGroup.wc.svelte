@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-avatar-group" />
 <script>
   import Original from '@w5-ui/svelte/components/AvatarGroup.svelte';
-  // no public props
+  let {
+    avatars = [],
+    max = 5,
+    size = 'md',
+    ariaLabel = 'Avatar group'
+  } = $props();
 </script>
 
-<Original >
+<Original {avatars} {max} {size} {ariaLabel}>
   <slot />
 </Original>

@@ -1,9 +1,16 @@
 <svelte:options customElement="uni-hexbin-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/HexbinChart.svelte';
-  // no public props
+  let {
+    points = [],
+    xRange = undefined,
+    yRange = undefined,
+    height = 200,
+    hexRadius = 10,
+    ariaLabel = 'Hexbin chart'
+  } = $props();
 </script>
 
-<Original >
+<Original {points} {xRange} {yRange} {height} {hexRadius} {ariaLabel}>
   <slot />
 </Original>

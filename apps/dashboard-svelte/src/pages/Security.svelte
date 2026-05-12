@@ -271,7 +271,7 @@
     <div style="display:flex;align-items:center;gap:5px;margin-top:8px;font-size:11px;color:#6E7079;">
       <span>Less</span>
       {#each ['rgba(255,255,255,0.06)', '#0d2a5e', '#1a4da6', '#2979ff', '#5ba4ff'] as c, i (i)}
-        <span style="width:10px;height:10px;background:{c};border-radius:2px;display:inline-block;" aria-hidden="true" />
+        <span style="width:10px;height:10px;background:{c};border-radius:2px;display:inline-block;" aria-hidden="true"></span>
       {/each}
       <span>More</span>
     </div>
@@ -345,7 +345,7 @@
         <div style="font-weight:600;color:#A4A7B5;margin-bottom:8px;">Ring (inner to outer)</div>
         {#each DAY_LABELS as day, i (day)}
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-            <span style="display:inline-block;width:24px;height:8px;border-radius:2px;background:rgba(255,123,123,{(0.15 + 0.85 * ((i + 0.5) / 7)).toFixed(2)});" />
+            <span style="display:inline-block;width:24px;height:8px;border-radius:2px;background:rgba(255,123,123,{(0.15 + 0.85 * ((i + 0.5) / 7)).toFixed(2)});"></span>
             {day}
           </div>
         {/each}

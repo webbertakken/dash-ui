@@ -1,9 +1,11 @@
 <svelte:options customElement="uni-status-indicator" />
 <script>
   import Original from '@w5-ui/svelte/components/StatusIndicator.svelte';
-  export let color = undefined;
-  export let text = undefined;
-  export let textColor = undefined;
+  let {
+    color = undefined,
+    text = undefined,
+    textColor = undefined
+  } = $props();
 </script>
 
 <Original {color} {text} {textColor}>

@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-sankey-diagram" />
 <script>
   import Original from '@w5-ui/svelte/components/SankeyDiagram.svelte';
-  // no public props
+  let {
+    nodes = [],
+    links = [],
+    height = 180,
+    ariaLabel = 'Sankey diagram'
+  } = $props();
 </script>
 
-<Original >
+<Original {nodes} {links} {height} {ariaLabel}>
   <slot />
 </Original>

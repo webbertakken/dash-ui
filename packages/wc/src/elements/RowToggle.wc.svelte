@@ -1,9 +1,13 @@
 <svelte:options customElement="uni-row-toggle" />
 <script>
   import Original from '@w5-ui/svelte/components/RowToggle.svelte';
-  // no public props
+  let {
+    title = undefined,
+    description = undefined,
+    on = false
+  } = $props();
 </script>
 
-<Original >
+<Original {title} {description} {on}>
   <slot />
 </Original>

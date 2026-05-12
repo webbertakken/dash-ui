@@ -1,9 +1,12 @@
 <svelte:options customElement="uni-sortable-list" />
 <script>
   import Original from '@w5-ui/svelte/components/SortableList.svelte';
-  // no public props
+  let {
+    items = [],
+    ariaLabel = undefined
+  } = $props();
 </script>
 
-<Original >
+<Original {items} {ariaLabel}>
   <slot />
 </Original>

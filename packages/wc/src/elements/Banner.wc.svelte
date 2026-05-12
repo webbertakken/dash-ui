@@ -1,9 +1,13 @@
 <svelte:options customElement="uni-banner" />
 <script>
   import Original from '@w5-ui/svelte/components/Banner.svelte';
-  // no public props
+  let {
+    variant = 'info',
+    title = undefined,
+    action = undefined
+  } = $props();
 </script>
 
-<Original >
+<Original {variant} {title} {action}>
   <slot />
 </Original>

@@ -1,10 +1,12 @@
 <svelte:options customElement="uni-sparkline" />
 <script>
   import Original from '@w5-ui/svelte/components/Sparkline.svelte';
-  export let bars = 36;
-  export let active = false;
-  export let seed = 1;
-  export let ariaLabel = 'Activity sparkline';
+  let {
+    bars = 36,
+    active = false,
+    seed = 1,
+    ariaLabel = 'Activity sparkline'
+  } = $props();
 </script>
 
 <Original {bars} {active} {seed} {ariaLabel}>

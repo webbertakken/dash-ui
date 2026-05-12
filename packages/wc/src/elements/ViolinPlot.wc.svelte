@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-violin-plot" />
 <script>
   import Original from '@w5-ui/svelte/components/ViolinPlot.svelte';
-  // no public props
+  let {
+    series = [],
+    yRange = undefined,
+    height = 160,
+    ariaLabel = 'Violin plot'
+  } = $props();
 </script>
 
-<Original >
+<Original {series} {yRange} {height} {ariaLabel}>
   <slot />
 </Original>

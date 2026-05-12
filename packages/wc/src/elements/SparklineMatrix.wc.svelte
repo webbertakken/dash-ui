@@ -1,9 +1,13 @@
 <svelte:options customElement="uni-sparkline-matrix" />
 <script>
   import Original from '@w5-ui/svelte/components/SparklineMatrix.svelte';
-  // no public props
+  let {
+    rows = [],
+    height = 160,
+    ariaLabel = 'Sparkline matrix'
+  } = $props();
 </script>
 
-<Original >
+<Original {rows} {height} {ariaLabel}>
   <slot />
 </Original>

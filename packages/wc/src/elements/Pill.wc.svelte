@@ -1,11 +1,14 @@
 <svelte:options customElement="uni-pill" />
 <script>
   import Original from '@w5-ui/svelte/components/Pill.svelte';
-  export let variant = 'neutral';
-  export let showDot = true;
-  export let style = '';
+  let {
+    variant = 'neutral',
+    showDot = true,
+    class: className = '',
+    style = ''
+  } = $props();
 </script>
 
-<Original {variant} {showDot} {style}>
+<Original {variant} {showDot} class={className} {style}>
   <slot />
 </Original>

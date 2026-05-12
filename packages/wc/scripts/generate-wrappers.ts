@@ -1,14 +1,17 @@
 #!/usr/bin/env tsx
-// Reads every Svelte 4 component in @w5-ui/svelte and emits a thin custom
+// Reads every Svelte 5 component in @w5-ui/svelte and emits a thin custom
 // element wrapper into packages/wc/src/elements/. Each wrapper:
 //   - declares <svelte:options customElement="uni-<kebab-name>" />
-//   - re-exports the original component's `export let` props
-//   - forwards the default slot
+//   - re-declares the original component's destructured props as $props()
+//   - forwards the default slot via <slot /> (Svelte 5 keeps the old slot
+//     syntax inside CE compilation mode for legacy interop; snippet
+//     children are not addressable as attributes anyway)
 //
-// We deliberately skip components whose props include heavy ReactNode-style
-// inputs that don't round-trip well to attributes; those components are
-// listed in SKIP. They still ship in the @w5-ui/svelte package, just not as
-// custom elements (callers can mount them via Svelte directly).
+// We deliberately skip components whose props include heavy ReactNode-
+// style inputs (callbacks / snippets that don't round-trip as attributes);
+// those components are listed in SKIP. They still ship in the
+// @w5-ui/svelte package, just not as custom elements (callers can mount
+// them via Svelte directly).
 
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -35,87 +38,213 @@ function kebab(name: string): string {
 }
 
 interface Prop {
-  name: string
+  /** As written in the destructure (e.g. `class: className`) — used for renaming. */
+  destructureName: string
+  /** As seen by the outside world (`class`, `variant`, ...). */
+  externalName: string
+  /** As referenced inside the template (`className`, `variant`, ...). */
+  internalName: string
+  /** Verbatim default expression, or null if none. */
   defaultExpr: string | null
 }
 
-function extractProps(src: string): Prop[] {
-  // Strip <script> body
-  const m = src.match(/<script[^>]*>([\s\S]*?)<\/script>/)
-  if (!m) return []
-  const body = m[1]!
-  const props: Prop[] = []
+/** Parse the instance `<script>` block once, returning the destructure plus
+ *  a set of prop names whose declared type is `Snippet` (we can't shuttle
+ *  snippets as HTML attributes on a custom element, so we omit them). */
+function extractScriptInfo(src: string): { props: Prop[]; snippetNames: Set<string> } {
+  const props = extractProps(src)
+  const snippetNames = new Set<string>()
 
-  // Tokenise by walking the script body and finding each "export let NAME"
-  // declaration. After the name, walk forward respecting (), <>, [], {}
-  // depth until a top-level `=` (assignment) or `;` (no default) is reached.
-  let i = 0
-  const N = body.length
-  while (i < N) {
-    const idx = body.indexOf('export', i)
-    if (idx < 0) break
-    // Check that it's actually `export let`
-    const after = body.slice(idx)
-    const declMatch = after.match(/^export\s+let\s+([A-Za-z_$][\w$]*)/)
-    if (!declMatch) {
-      i = idx + 6
-      continue
-    }
-    const name = declMatch[1]!
-    let j = idx + declMatch[0].length
-    // Skip optional `?` and type annotation `: T`
-    while (j < N && /\s/.test(body[j]!)) j++
-    if (body[j] === '?') j++
-    while (j < N && /\s/.test(body[j]!)) j++
-    if (body[j] === ':') {
-      j++ // consume `:`
-      // Walk through type, respecting depth, until we find a top-level `=`
-      // (assignment) or `;`. Generic angle brackets are tracked, but we
-      // ignore both `<` and `>` because TS type unions / extends can cause
-      // false positives. Instead we rely on `(`, `[`, `{` depth and treat `=>`
-      // (arrow function in type) as not-an-assignment by skipping when the
-      // next char is `>`.
-      let depth = 0
-      while (j < N) {
-        const c = body[j]!
-        if (c === '(' || c === '[' || c === '{') depth++
-        else if (c === ')' || c === ']' || c === '}') depth--
-        else if (depth === 0 && c === '=' && body[j + 1] !== '>') break
-        else if (depth === 0 && c === ';') break
-        j++
-      }
-    }
-    // Now at `=` or `;`
-    let def: string | null = null
-    if (body[j] === '=') {
-      j++ // consume `=`
-      const start = j
-      let depth = 0
-      while (j < N) {
-        const c = body[j]!
-        if (c === '(' || c === '[' || c === '{') depth++
-        else if (c === ')' || c === ']' || c === '}') depth--
-        else if (depth === 0 && c === ';') break
-        // Watch out for arrow `=>` in default expressions; treat ; as terminator
-        j++
-      }
-      def = body.slice(start, j).trim()
-      // Strip trailing line comment
-      def = def.replace(/\/\/.*$/, '').trim()
-    }
-    if (body[j] === ';') j++
-    props.push({ name, defaultExpr: def })
-    i = j
+  // Find the body again so we can scan the `interface Props { ... }` block.
+  const scripts = [...src.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)]
+  const instance = scripts.find(
+    (m) => !/\bmodule\b/.test(m[1]) && !/context=['"]module['"]/.test(m[1]),
+  )
+  if (!instance) return { props, snippetNames }
+  const body = instance[2]!
+  const ifaceMatch = body.match(/interface\s+Props\b[\s\S]*?\{([\s\S]*?)\n\s*\}/m)
+  if (!ifaceMatch) return { props, snippetNames }
+  const fields = ifaceMatch[1]!
+  for (const raw of splitTopLevel(fields, ';')) {
+    // Strip leading JSDoc / line comments before matching the field name.
+    const t = raw
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '')
+      .trim()
+    if (!t) continue
+    const m = t.match(/^([A-Za-z_$][\w$]*)\??\s*:\s*([\s\S]+)$/)
+    if (!m) continue
+    const name = m[1]!
+    const typeText = m[2]!
+    if (/\bSnippet\b/.test(typeText)) snippetNames.add(name)
+    // Also skip callback-shaped props (any `(...) => ...` type) — they
+    // can't be set via an HTML attribute on the CE either.
+    if (/=>/.test(typeText)) snippetNames.add(name)
   }
-
-  return props
+  return { props, snippetNames }
 }
 
-function renderDefault(expr: string | null): string {
-  if (!expr) return 'undefined'
-  // If the default looks like a TS-only type cast or contains template literals
-  // or arrow functions, wrap defensively. Most defaults are primitives.
-  return expr
+/** Parse the instance `<script>` body to find the single `$props()` destructure. */
+function extractProps(src: string): Prop[] {
+  // Skip module-scope script. The first `<script>` without `module` is the
+  // instance script. The codemod sometimes emits `<script module>` or
+  // `<script context="module">`.
+  const scripts = [...src.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)]
+  const instance = scripts.find(
+    (m) => !/\bmodule\b/.test(m[1]) && !/context=['"]module['"]/.test(m[1]),
+  )
+  if (!instance) return []
+  const body = instance[2]!
+  // Find `$props()` — the destructure looks like `let { ... } = $props();`
+  // (optionally preceded by a type annotation `: Props`).
+  const propsCallIdx = body.indexOf('$props()')
+  if (propsCallIdx < 0) return []
+  // 1. Walk back from `$props()` to the closing `}` of the destructure.
+  let braceEnd = -1
+  for (let i = propsCallIdx - 1; i >= 0; i--) {
+    if (body[i] === '}') {
+      braceEnd = i
+      break
+    }
+  }
+  if (braceEnd < 0) return []
+  // 2. From `braceEnd`, walk back to the matching `{`.
+  let braceStart = -1
+  let depth = 1
+  for (let i = braceEnd - 1; i >= 0; i--) {
+    const c = body[i]!
+    if (c === '}') depth++
+    else if (c === '{') {
+      depth--
+      if (depth === 0) {
+        braceStart = i
+        break
+      }
+    }
+  }
+  if (braceStart < 0) return []
+  const inside = body.slice(braceStart + 1, braceEnd)
+  return parseDestructure(inside)
+}
+
+function parseDestructure(inside: string): Prop[] {
+  const out: Prop[] = []
+  for (const raw of splitTopLevel(inside, ',')) {
+    const trimmed = raw.trim()
+    if (!trimmed) continue
+    if (trimmed.startsWith('...')) continue // rest parameter — we don't forward this
+    let externalName: string
+    let internalName: string
+    let defaultExpr: string | null = null
+    // Look for `=` at top level — that splits prop name from default.
+    const eqIdx = findTopLevel(trimmed, '=')
+    let lhs: string
+    if (eqIdx >= 0) {
+      lhs = trimmed.slice(0, eqIdx).trim()
+      defaultExpr = trimmed.slice(eqIdx + 1).trim()
+    } else {
+      lhs = trimmed
+    }
+    // Handle renaming `class: className` or plain `variant`.
+    const colonIdx = findTopLevel(lhs, ':')
+    if (colonIdx >= 0) {
+      externalName = lhs.slice(0, colonIdx).trim()
+      internalName = lhs.slice(colonIdx + 1).trim()
+    } else {
+      externalName = lhs
+      internalName = lhs
+    }
+    if (!/^[A-Za-z_$][\w$]*$/.test(externalName) || !/^[A-Za-z_$][\w$]*$/.test(internalName)) {
+      // Bail on shapes we don't understand (nested destructures, etc.).
+      continue
+    }
+    out.push({
+      destructureName: lhs,
+      externalName,
+      internalName,
+      defaultExpr,
+    })
+  }
+  return out
+}
+
+function splitTopLevel(input: string, sep: string): string[] {
+  const out: string[] = []
+  const depth: number[] = []
+  let buf = ''
+  let quote: string | null = null
+  for (let i = 0; i < input.length; i++) {
+    const c = input[i]!
+    if (quote) {
+      buf += c
+      if (c === '\\') {
+        buf += input[++i] ?? ''
+        continue
+      }
+      if (c === quote) quote = null
+      continue
+    }
+    if (c === "'" || c === '"' || c === '`') {
+      quote = c
+      buf += c
+      continue
+    }
+    if (c === '(' || c === '[' || c === '{' || c === '<') depth.push(1)
+    else if (c === ')' || c === ']' || c === '}' || c === '>') depth.pop()
+    if (depth.length === 0 && c === sep) {
+      out.push(buf)
+      buf = ''
+    } else {
+      buf += c
+    }
+  }
+  if (buf.trim()) out.push(buf)
+  return out
+}
+
+function findTopLevel(input: string, sep: string): number {
+  const depth: number[] = []
+  let quote: string | null = null
+  for (let i = 0; i < input.length; i++) {
+    const c = input[i]!
+    if (quote) {
+      if (c === '\\') {
+        i++
+        continue
+      }
+      if (c === quote) quote = null
+      continue
+    }
+    if (c === "'" || c === '"' || c === '`') {
+      quote = c
+      continue
+    }
+    if (c === '(' || c === '[' || c === '{' || c === '<') depth.push(1)
+    else if (c === ')' || c === ']' || c === '}' || c === '>') depth.pop()
+    else if (depth.length === 0 && c === sep) return i
+  }
+  return -1
+}
+
+/** Drop props whose declared default expression contains JSX/Snippet/callback
+ *  shapes that don't round-trip as HTML attributes on a custom element.
+ *  Also drop `children` and any `on*` callbacks. */
+function isAttributeRoundTrippable(p: Prop, snippetNames: Set<string>): boolean {
+  if (p.externalName === 'children') return false
+  if (/^on[a-z]/.test(p.externalName)) return false
+  if (snippetNames.has(p.externalName)) return false
+  if (p.defaultExpr && /=>|Snippet/.test(p.defaultExpr)) return false
+  return true
+}
+
+/** Unwrap `$bindable(default)` in a destructure default so the CE wrapper
+ *  gets a plain one-way value (CE attribute -> prop is read-only). */
+function unwrapBindable(expr: string | null): string | null {
+  if (!expr) return expr
+  const m = expr.match(/^\$bindable\(([\s\S]*)\)$/)
+  if (!m) return expr
+  const inner = m[1]!.trim()
+  return inner === '' ? 'undefined' : inner
 }
 
 const files = (await readdir(SRC_DIR)).filter((f) => f.endsWith('.svelte')).sort()
@@ -129,27 +258,37 @@ for (const file of files) {
   const name = file.replace(/\.svelte$/, '')
   if (SKIP.has(name)) continue
   const src = await readFile(path.join(SRC_DIR, file), 'utf8')
-  const props = extractProps(src)
+  const { props: allProps, snippetNames } = extractScriptInfo(src)
+  const props = allProps
+    .filter((p) => isAttributeRoundTrippable(p, snippetNames))
+    .map((p) => ({ ...p, defaultExpr: unwrapBindable(p.defaultExpr) }))
 
   const tag = `uni-${kebab(name)}`
 
-  // Build the wrapper. We use a property forwarding pattern that handles
-  // missing values gracefully: if a prop wasn't set on the custom element
-  // the wrapper still passes `undefined`, leaving the original component's
-  // default to take effect.
-  const propDeclarations = props
-    .map((p) => `  export let ${p.name} = ${renderDefault(p.defaultExpr)};`)
-    .join('\n')
-  const propForwards = props.map((p) => `{${p.name}}`).join(' ')
+  const propLines = props
+    .map(
+      (p) =>
+        `    ${p.externalName === p.internalName ? p.externalName : `${p.externalName}: ${p.internalName}`} = ${p.defaultExpr ?? 'undefined'}`,
+    )
+    .join(',\n')
+  const propForwards = props
+    .map((p) =>
+      p.externalName === p.internalName
+        ? `{${p.internalName}}`
+        : `${p.externalName}={${p.internalName}}`,
+    )
+    .join(' ')
 
-  // No lang="ts" - we don't run a TypeScript preprocessor on these wrappers.
-  // Defaults are inlined verbatim from the source, which usually keeps them
-  // valid JavaScript. Components whose defaults reference TS-only constructs
-  // should be added to SKIP above.
+  // Svelte 5 wrapper: typed `$props()` destructure, slot forwards as <slot />.
+  // We don't typecheck these wrappers (vite-plugin-svelte compiles them
+  // directly without `lang="ts"` running through tsc), so the prop types are
+  // intentionally erased — defaults carry the runtime intent.
   const wrapper = `<svelte:options customElement="${tag}" />
 <script>
   import Original from '@w5-ui/svelte/components/${name}.svelte';
-${propDeclarations || '  // no public props'}
+  let {
+${propLines || '    /* no public props */'}
+  } = $props();
 </script>
 
 <Original ${propForwards}>

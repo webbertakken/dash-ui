@@ -1,9 +1,16 @@
 <svelte:options customElement="uni-password-input" />
 <script>
   import Original from '@w5-ui/svelte/components/PasswordInput.svelte';
-  // no public props
+  let {
+    label = undefined,
+    value = '',
+    placeholder = undefined,
+    disabled = false,
+    autocomplete = 'current-password',
+    class: className = ''
+  } = $props();
 </script>
 
-<Original >
+<Original {label} {value} {placeholder} {disabled} {autocomplete} class={className}>
   <slot />
 </Original>

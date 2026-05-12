@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-bar-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/BarChart.svelte';
-  // no public props
+  let {
+    series = [],
+    labels = [],
+    height = 160,
+    ariaLabel = 'Bar chart'
+  } = $props();
 </script>
 
-<Original >
+<Original {series} {labels} {height} {ariaLabel}>
   <slot />
 </Original>

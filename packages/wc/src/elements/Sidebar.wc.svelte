@@ -1,9 +1,12 @@
 <svelte:options customElement="uni-sidebar" />
 <script>
   import Original from '@w5-ui/svelte/components/Sidebar.svelte';
-  // no public props
+  let {
+    sections = [],
+    activeId = undefined
+  } = $props();
 </script>
 
-<Original >
+<Original {sections} {activeId}>
   <slot />
 </Original>
