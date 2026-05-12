@@ -3,16 +3,14 @@
 </script>
 
 <script lang="ts">
-  import { run, createBubbler } from 'svelte/legacy';
-
-  const bubble = createBubbler();
   interface Props {
     checked?: boolean;
     indeterminate?: boolean;
     label?: string | undefined;
     id?: string | undefined;
     disabled?: boolean;
-    [key: string]: any
+    onchange?: (event: Event) => void;
+    [key: string]: unknown;
   }
 
   let {
@@ -21,14 +19,18 @@
     label = undefined,
     id = undefined,
     disabled = false,
+    onchange,
     ...rest
   }: Props = $props();
 
   const uid = `dash-ui-cb-${++counter}`;
   let inputId = $derived(id ?? uid);
 
-  let el: HTMLInputElement = $state();
-  run(() => {
+  let el = $state<HTMLInputElement | undefined>(undefined);
+
+  // Sync the imperative DOM properties to the reactive props. `$effect` reads
+  // both `checked` and `indeterminate` so it re-runs whenever either flips.
+  $effect(() => {
     if (el) {
       el.checked = checked;
       el.indeterminate = indeterminate;
@@ -44,7 +46,7 @@
       id={inputId}
       {disabled}
       class="checkbox"
-      onchange={bubble('change')}
+      {onchange}
       {...rest}
     />
     <span>{label}</span>
@@ -56,7 +58,7 @@
     id={inputId}
     {disabled}
     class="checkbox"
-    onchange={bubble('change')}
+    {onchange}
     {...rest}
   />
 {/if}

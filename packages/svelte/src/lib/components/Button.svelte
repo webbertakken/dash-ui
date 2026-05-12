@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { createBubbler } from 'svelte/legacy';
-
-  const bubble = createBubbler();
+  import type { Snippet } from 'svelte';
   import Spinner from './Spinner.svelte';
-  
+
   interface Props {
     variant?: 'primary' | 'ghost' | 'danger';
     iconOnly?: boolean;
@@ -14,7 +12,8 @@
     class?: string;
     style?: string;
     ariaLabel?: string | undefined;
-    children?: import('svelte').Snippet;
+    onclick?: (event: MouseEvent) => void;
+    children?: Snippet;
   }
 
   let {
@@ -27,16 +26,16 @@
     class: className = '',
     style = '',
     ariaLabel = undefined,
-    children
+    onclick,
+    children,
   }: Props = $props();
-  
 </script>
 
 <button
   {type}
   {title}
   aria-label={ariaLabel}
-  onclick={bubble('click')}
+  {onclick}
   class="btn btn-{variant} {iconOnly ? 'btn-icon' : ''} {className}"
   {style}
   disabled={disabled || loading}

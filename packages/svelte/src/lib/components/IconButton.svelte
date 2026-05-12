@@ -1,15 +1,14 @@
 <script lang="ts">
-  import { createBubbler } from 'svelte/legacy';
+  import type { Snippet } from 'svelte';
 
-  const bubble = createBubbler();
-  
   interface Props {
     title?: string | undefined;
     type?: 'button' | 'submit' | 'reset';
     class?: string;
     style?: string;
-    children?: import('svelte').Snippet;
-    [key: string]: any
+    onclick?: (event: MouseEvent) => void;
+    children?: Snippet;
+    [key: string]: unknown;
   }
 
   let {
@@ -17,6 +16,7 @@
     type = 'button',
     class: className = '',
     style = '',
+    onclick,
     children,
     ...rest
   }: Props = $props();
@@ -28,8 +28,8 @@
   {title}
   {style}
   {...rest}
-  aria-label={rest['aria-label'] ?? title}
-  onclick={bubble('click')}
+  aria-label={(rest['aria-label'] as string | undefined) ?? title}
+  {onclick}
 >
   {@render children?.()}
 </button>

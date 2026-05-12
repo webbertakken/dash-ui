@@ -3,10 +3,6 @@
 </script>
 
 <script lang="ts">
-  import { createBubbler } from 'svelte/legacy';
-
-  const bubble = createBubbler();
-  
   interface Props {
     value?: string;
     rows?: number;
@@ -16,6 +12,10 @@
     id?: string | undefined;
     class?: string;
     style?: string;
+    oninput?: (event: Event) => void;
+    onchange?: (event: Event) => void;
+    onfocus?: (event: FocusEvent) => void;
+    onblur?: (event: FocusEvent) => void;
   }
 
   let {
@@ -26,7 +26,11 @@
     readonly = false,
     id = undefined,
     class: className = '',
-    style = ''
+    style = '',
+    oninput,
+    onchange,
+    onfocus,
+    onblur,
   }: Props = $props();
 
   const uid = `dash-ui-ta-${++counter}`;
@@ -40,10 +44,10 @@
   {rows}
   {placeholder}
   {disabled}
-  readonly={readonly}
+  {readonly}
   bind:value
-  oninput={bubble('input')}
-  onchange={bubble('change')}
-  onfocus={bubble('focus')}
-  onblur={bubble('blur')}
+  {oninput}
+  {onchange}
+  {onfocus}
+  {onblur}
 ></textarea>
