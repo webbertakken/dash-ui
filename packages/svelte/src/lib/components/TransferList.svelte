@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface TransferListItem {
     id: string;
     label: string;
@@ -9,21 +9,31 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  export let sourceLabel: string = 'Available';
-  export let targetLabel: string = 'Selected';
-  export let source: TransferListItem[] = [];
-  export let target: TransferListItem[] = [];
-  let className = '';
-  export { className as class };
+  interface Props {
+    sourceLabel?: string;
+    targetLabel?: string;
+    source?: TransferListItem[];
+    target?: TransferListItem[];
+    class?: string;
+  }
+
+  let {
+    sourceLabel = 'Available',
+    targetLabel = 'Selected',
+    source = $bindable([]),
+    target = $bindable([]),
+    class: className = ''
+  }: Props = $props();
+  
 
   const dispatch = createEventDispatcher<{ change: { source: TransferListItem[]; target: TransferListItem[] } }>();
 
-  let selSrc = new Set<string>();
-  let selTgt = new Set<string>();
-  let focSrc = 0;
-  let focTgt = 0;
-  let srcEls: (HTMLLIElement | null)[] = [];
-  let tgtEls: (HTMLLIElement | null)[] = [];
+  let selSrc = $state(new Set<string>());
+  let selTgt = $state(new Set<string>());
+  let focSrc = $state(0);
+  let focTgt = $state(0);
+  let srcEls: (HTMLLIElement | null)[] = $state([]);
+  let tgtEls: (HTMLLIElement | null)[] = $state([]);
 
   function commit() {
     dispatch('change', { source, target });
@@ -112,7 +122,7 @@
       aria-label={sourceLabel}
       aria-multiselectable="true"
       class="tl__list"
-      on:keydown={srcKey}
+      onkeydown={srcKey}
     >
       {#if source.length === 0}
         <li class="tl__empty" role="option" aria-selected="false" aria-disabled="true">Empty</li>
@@ -124,8 +134,8 @@
             aria-selected={selSrc.has(item.id)}
             tabindex={i === focSrc ? 0 : -1}
             class="tl__item{selSrc.has(item.id) ? ' tl__item--sel' : ''}"
-            on:click={() => { focSrc = i; toggleSrc(item.id); }}
-            on:keydown={(e) => { if (e.key === ' ') { e.preventDefault(); focSrc = i; toggleSrc(item.id); } }}
+            onclick={() => { focSrc = i; toggleSrc(item.id); }}
+            onkeydown={(e) => { if (e.key === ' ') { e.preventDefault(); focSrc = i; toggleSrc(item.id); } }}
           >
             <span class="tl__item-label">{item.label}</span>
             {#if item.description}<span class="tl__item-desc">{item.description}</span>{/if}
@@ -138,16 +148,16 @@
   <div class="tl__controls" role="group" aria-label="Transfer controls">
     <button type="button" class="tl__btn" aria-label="Move all to {targetLabel}"
       disabled={source.length === 0}
-      on:click={() => moveRight(new Set(source.map((i) => i.id)))}>»</button>
+      onclick={() => moveRight(new Set(source.map((i) => i.id)))}>»</button>
     <button type="button" class="tl__btn" aria-label="Move selected to {targetLabel}"
       disabled={selSrc.size === 0}
-      on:click={() => moveRight(selSrc)}>›</button>
+      onclick={() => moveRight(selSrc)}>›</button>
     <button type="button" class="tl__btn" aria-label="Move selected back to {sourceLabel}"
       disabled={selTgt.size === 0}
-      on:click={() => moveLeft(selTgt)}>‹</button>
+      onclick={() => moveLeft(selTgt)}>‹</button>
     <button type="button" class="tl__btn" aria-label="Move all back to {sourceLabel}"
       disabled={target.length === 0}
-      on:click={() => moveLeft(new Set(target.map((i) => i.id)))}>«</button>
+      onclick={() => moveLeft(new Set(target.map((i) => i.id)))}>«</button>
   </div>
 
   <div class="tl__panel">
@@ -159,7 +169,7 @@
       aria-label={targetLabel}
       aria-multiselectable="true"
       class="tl__list"
-      on:keydown={tgtKey}
+      onkeydown={tgtKey}
     >
       {#if target.length === 0}
         <li class="tl__empty" role="option" aria-selected="false" aria-disabled="true">Empty</li>
@@ -171,8 +181,8 @@
             aria-selected={selTgt.has(item.id)}
             tabindex={i === focTgt ? 0 : -1}
             class="tl__item{selTgt.has(item.id) ? ' tl__item--sel' : ''}"
-            on:click={() => { focTgt = i; toggleTgt(item.id); }}
-            on:keydown={(e) => { if (e.key === ' ') { e.preventDefault(); focTgt = i; toggleTgt(item.id); } }}
+            onclick={() => { focTgt = i; toggleTgt(item.id); }}
+            onkeydown={(e) => { if (e.key === ' ') { e.preventDefault(); focTgt = i; toggleTgt(item.id); } }}
           >
             <span class="tl__item-label">{item.label}</span>
             {#if item.description}<span class="tl__item-desc">{item.description}</span>{/if}

@@ -1,17 +1,28 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  export let label: string;
-  export let value: number = 0;
-  export let max: number = 5;
-  export let readOnly: boolean = false;
-  export let size: 'sm' | 'md' = 'md';
-  export let onChange: ((v: number) => void) | undefined = undefined;
+  interface Props {
+    label: string;
+    value?: number;
+    max?: number;
+    readOnly?: boolean;
+    size?: 'sm' | 'md';
+    onChange?: ((v: number) => void) | undefined;
+  }
+
+  let {
+    label,
+    value = $bindable(0),
+    max = 5,
+    readOnly = false,
+    size = 'md',
+    onChange = undefined
+  }: Props = $props();
 
   const gid = `dash-ui-sr-${++counter}`;
-  let hovered = 0;
+  let hovered = $state(0);
 
   function pick(star: number) {
     value = star;
@@ -42,8 +53,8 @@
       <label
         for="{gid}-{star}"
         class="star-label{on ? ' star-label--on' : ''}"
-        on:mouseenter={() => (hovered = star)}
-        on:mouseleave={() => (hovered = 0)}
+        onmouseenter={() => (hovered = star)}
+        onmouseleave={() => (hovered = 0)}
       >
         <input
           type="radio"
@@ -53,7 +64,7 @@
           checked={value === star}
           class="star-radio"
           aria-label="{star} out of {max}"
-          on:change={() => pick(star)}
+          onchange={() => pick(star)}
         />
         <svg viewBox="0 0 24 24" fill={on ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
           <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />

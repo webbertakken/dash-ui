@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type GroupedListItemStatus = 'danger' | 'warn' | 'success' | 'info' | 'neutral';
 
   export interface GroupedListItem {
@@ -17,9 +17,13 @@
 </script>
 
 <script lang="ts">
-  export let groups: GroupedListGroup[];
-  export let collapsible: boolean = true;
-  export let ariaLabel: string = 'Grouped list';
+  interface Props {
+    groups: GroupedListGroup[];
+    collapsible?: boolean;
+    ariaLabel?: string;
+  }
+
+  let { groups, collapsible = true, ariaLabel = 'Grouped list' }: Props = $props();
 
   const STATUS_COLORS: Record<GroupedListItemStatus, string> = {
     danger: '#F03A3A',
@@ -30,7 +34,7 @@
   };
 
   const uid = Math.random().toString(36).slice(2, 9);
-  let open: boolean[] = groups.map(g => g.defaultOpen !== false);
+  let open: boolean[] = $state(groups.map(g => g.defaultOpen !== false));
 
   function toggle(i: number) { open[i] = !open[i]; open = [...open]; }
 </script>
@@ -46,7 +50,7 @@
           class="gl-header"
           aria-expanded={isOpen}
           aria-controls={panelId}
-          on:click={() => toggle(gi)}
+          onclick={() => toggle(gi)}
         >
           {#if group.color}<span class="gl-color-dot" style="background:{group.color}" aria-hidden="true"></span>{/if}
           <span class="gl-title">{group.label}</span>

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   const MONTHS = [
@@ -43,27 +43,31 @@
 <script lang="ts">
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
-  export let value: DateRange = { start: null, end: null };
-  export let placeholder: string = 'Select date range';
-  export let disabled: boolean = false;
+  interface Props {
+    value?: DateRange;
+    placeholder?: string;
+    disabled?: boolean;
+  }
+
+  let { value = { start: null, end: null }, placeholder = 'Select date range', disabled = false }: Props = $props();
 
   const dispatch = createEventDispatcher<{ change: DateRange }>();
   const uid = `dash-ui-drp-${++counter}`;
   const dlgId = `${uid}-dlg`;
   const today = new Date();
 
-  let open = false;
-  let picking: Date | null = null;
-  let hoverDate: Date | null = null;
-  let viewYear = today.getFullYear();
-  let viewMonth = today.getMonth();
-  let triggerEl: HTMLButtonElement;
-  let dlgEl: HTMLDivElement;
+  let open = $state(false);
+  let picking: Date | null = $state(null);
+  let hoverDate: Date | null = $state(null);
+  let viewYear = $state(today.getFullYear());
+  let viewMonth = $state(today.getMonth());
+  let triggerEl: HTMLButtonElement = $state();
+  let dlgEl: HTMLDivElement = $state();
 
-  $: rightMonth = viewMonth === 11 ? 0 : viewMonth + 1;
-  $: rightYear = viewMonth === 11 ? viewYear + 1 : viewYear;
-  $: leftGrid = buildGrid(viewYear, viewMonth);
-  $: rightGrid = buildGrid(rightYear, rightMonth);
+  let rightMonth = $derived(viewMonth === 11 ? 0 : viewMonth + 1);
+  let rightYear = $derived(viewMonth === 11 ? viewYear + 1 : viewYear);
+  let leftGrid = $derived(buildGrid(viewYear, viewMonth));
+  let rightGrid = $derived(buildGrid(rightYear, rightMonth));
 
   function prevMonth() {
     if (viewMonth === 0) { viewYear -= 1; viewMonth = 11; }
@@ -134,7 +138,7 @@
     aria-expanded={open}
     aria-controls={open ? dlgId : undefined}
     {disabled}
-    on:click={() => { if (open) { open = false; picking = null; } else open = true; }}
+    onclick={() => { if (open) { open = false; picking = null; } else open = true; }}
   >
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
       <rect x="1" y="2" width="12" height="11" rx="1.5" />
@@ -144,7 +148,7 @@
   </button>
 
   {#if open}
-    <!-- svelte-ignore a11y-no-noninteractive-element-interactions - dialog uses keyboard listener for Escape -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions - dialog uses keyboard listener for Escape -->
     <div
       id={dlgId}
       bind:this={dlgEl}
@@ -152,7 +156,7 @@
       aria-modal="true"
       aria-label="Select date range"
       class="drp-cal"
-      on:keydown={(e) => {
+      onkeydown={(e) => {
         if (e.key === 'Escape') { e.preventDefault(); open = false; picking = null; triggerEl?.focus(); }
       }}
     >
@@ -160,7 +164,7 @@
         <!-- Left calendar -->
         <div class="drp-month">
           <div class="dp-header">
-            <button type="button" class="dp-nav" on:click={prevMonth} aria-label="Previous month">
+            <button type="button" class="dp-nav" onclick={prevMonth} aria-label="Previous month">
               <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <path d="M7 1L2 6l5 5" />
               </svg>
@@ -188,9 +192,9 @@
                         type="button"
                         class="dp-day{outside ? ' dp-day--outside' : ''}{isTodayDay && !start && !end ? ' dp-day--today' : ''}{start ? ' dp-day--start' : ''}{end ? ' dp-day--end' : ''}{inRange ? ' dp-day--in-range' : ''}"
                         aria-label={day.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-                        on:click={() => handleDayClick(day)}
-                        on:mouseenter={() => { if (picking) hoverDate = day; }}
-                        on:mouseleave={() => { if (picking) hoverDate = null; }}
+                        onclick={() => handleDayClick(day)}
+                        onmouseenter={() => { if (picking) hoverDate = day; }}
+                        onmouseleave={() => { if (picking) hoverDate = null; }}
                       >{day.getDate()}</button>
                     </td>
                   {/each}
@@ -204,7 +208,7 @@
           <div class="dp-header">
             <span style="width:28px;display:inline-block;" aria-hidden="true"></span>
             <span class="dp-month-label" aria-live="polite">{MONTHS[rightMonth]} {rightYear}</span>
-            <button type="button" class="dp-nav" on:click={nextMonth} aria-label="Next month">
+            <button type="button" class="dp-nav" onclick={nextMonth} aria-label="Next month">
               <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <path d="M1 1l5 5-5 5" />
               </svg>
@@ -230,9 +234,9 @@
                         type="button"
                         class="dp-day{outside ? ' dp-day--outside' : ''}{isTodayDay && !start && !end ? ' dp-day--today' : ''}{start ? ' dp-day--start' : ''}{end ? ' dp-day--end' : ''}{inRange ? ' dp-day--in-range' : ''}"
                         aria-label={day.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-                        on:click={() => handleDayClick(day)}
-                        on:mouseenter={() => { if (picking) hoverDate = day; }}
-                        on:mouseleave={() => { if (picking) hoverDate = null; }}
+                        onclick={() => handleDayClick(day)}
+                        onmouseenter={() => { if (picking) hoverDate = day; }}
+                        onmouseleave={() => { if (picking) hoverDate = null; }}
                       >{day.getDate()}</button>
                     </td>
                   {/each}

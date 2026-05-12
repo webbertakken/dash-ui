@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface HorizonSeries {
     label: string;
     values: number[];
@@ -8,10 +8,19 @@
 
 <script lang="ts">
 
-  export let series: HorizonSeries[] = [];
-  export let xLabels: string[] | undefined = undefined;
-  export let bands = 3;
-  export let ariaLabel = 'Horizon chart';
+  interface Props {
+    series?: HorizonSeries[];
+    xLabels?: string[] | undefined;
+    bands?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    xLabels = undefined,
+    bands = 3,
+    ariaLabel = 'Horizon chart'
+  }: Props = $props();
 
   const LABEL_W = 72;
   const ROW_H = 24;
@@ -19,18 +28,18 @@
   const X_H = 14;
   const W = 400;
 
-  $: n = series[0]?.values.length ?? 0;
-  $: allVals = series.flatMap((s) => s.values);
-  $: maxVal = Math.max(...allVals, 1);
-  $: step = maxVal / bands;
-  $: chartW = W - LABEL_W;
-  $: colW = chartW / Math.max(n, 1);
-  $: totalH = series.length * (ROW_H + ROW_GAP) - ROW_GAP + (xLabels ? X_H + 4 : 0);
+  let n = $derived(series[0]?.values.length ?? 0);
+  let allVals = $derived(series.flatMap((s) => s.values));
+  let maxVal = $derived(Math.max(...allVals, 1));
+  let step = $derived(maxVal / bands);
+  let chartW = $derived(W - LABEL_W);
+  let colW = $derived(chartW / Math.max(n, 1));
+  let totalH = $derived(series.length * (ROW_H + ROW_GAP) - ROW_GAP + (xLabels ? X_H + 4 : 0));
 
   interface Band { x: number; y: number; w: number; h: number; alpha: number; color: string; }
   interface Row { rowY: number; color: string; label: string; bands: Band[]; }
 
-  $: rows = series.map((s, si) => {
+  let rows = $derived(series.map((s, si) => {
     const rowY = si * (ROW_H + ROW_GAP);
     const color = s.color ?? '#006FFF';
     const rowBands: Band[] = [];
@@ -45,15 +54,15 @@
       }
     });
     return { rowY, color, label: s.label, bands: rowBands } as Row;
-  });
+  }));
 
-  $: xTickPositions = xLabels
+  let xTickPositions = $derived(xLabels
     ? xLabels.map((label, i) => ({
         label,
         x: LABEL_W + (i / Math.max(xLabels!.length - 1, 1)) * chartW,
         anchor: i === 0 ? 'start' : i === xLabels!.length - 1 ? 'end' : 'middle',
       }))
-    : [];
+    : []);
 </script>
 
 {#if series.length}

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface BeeswarmSeries {
     label: string;
     points: number[];
@@ -8,12 +8,23 @@
 
 <script lang="ts">
 
-  export let series: BeeswarmSeries[] = [];
-  export let yRange: [number, number] | undefined = undefined;
-  export let height = 200;
-  export let unit = '';
-  export let dotRadius = 4;
-  export let ariaLabel = 'Beeswarm chart';
+  interface Props {
+    series?: BeeswarmSeries[];
+    yRange?: [number, number] | undefined;
+    height?: number;
+    unit?: string;
+    dotRadius?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    yRange = undefined,
+    height = 200,
+    unit = '',
+    dotRadius = 4,
+    ariaLabel = 'Beeswarm chart'
+  }: Props = $props();
 
   const PALETTE = ['#006FFF', '#00C875', '#FF7B7B', '#F5C26B', '#A78BFA', '#34D399'];
   const VW = 340;
@@ -45,16 +56,16 @@
     return pts;
   }
 
-  $: PLOT_W = VW - PAD_L - PAD_R;
-  $: PLOT_H = height - PAD_T - PAD_B;
-  $: n = series.length || 1;
-  $: colWidth = PLOT_W / n;
-  $: halfWidth = colWidth / 2 - dotRadius;
-  $: allPts = series.flatMap((s) => s.points);
-  $: minV = yRange ? yRange[0] : allPts.length ? Math.min(...allPts) : 0;
-  $: maxV = yRange ? yRange[1] : allPts.length ? Math.max(...allPts) : 1;
-  $: vRange = maxV - minV || 1;
-  $: yTicks = [minV, (minV + maxV) / 2, maxV];
+  let PLOT_W = $derived(VW - PAD_L - PAD_R);
+  let PLOT_H = $derived(height - PAD_T - PAD_B);
+  let n = $derived(series.length || 1);
+  let colWidth = $derived(PLOT_W / n);
+  let halfWidth = $derived(colWidth / 2 - dotRadius);
+  let allPts = $derived(series.flatMap((s) => s.points));
+  let minV = $derived(yRange ? yRange[0] : allPts.length ? Math.min(...allPts) : 0);
+  let maxV = $derived(yRange ? yRange[1] : allPts.length ? Math.max(...allPts) : 1);
+  let vRange = $derived(maxV - minV || 1);
+  let yTicks = $derived([minV, (minV + maxV) / 2, maxV]);
 
   function ty(v: number): number {
     return PAD_T + (1 - (v - minV) / vRange) * PLOT_H;
@@ -64,7 +75,7 @@
     return PAD_L + (i + 0.5) * colWidth;
   }
 
-  $: swarmed = series.map((s) => swarmedPositions(s.points, ty, dotRadius, halfWidth));
+  let swarmed = $derived(series.map((s) => swarmedPositions(s.points, ty, dotRadius, halfWidth)));
 </script>
 
 {#if series.length > 0}

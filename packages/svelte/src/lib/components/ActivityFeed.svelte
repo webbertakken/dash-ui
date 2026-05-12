@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: Can't migrate code with afterUpdate. Please migrate by hand. -->
 <script context="module" lang="ts">
   export type ActivitySeverity = 'info' | 'success' | 'warn' | 'error' | 'neutral';
   export interface ActivityItem {

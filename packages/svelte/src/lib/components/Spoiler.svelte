@@ -1,15 +1,26 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  export let maxHeight: number = 80;
-  export let showLabel: string = 'Show more';
-  export let hideLabel: string = 'Show less';
-  let klass: string = '';
-  export { klass as class };
+  interface Props {
+    maxHeight?: number;
+    showLabel?: string;
+    hideLabel?: string;
+    class?: string;
+    children?: import('svelte').Snippet;
+  }
 
-  let expanded = false;
-  let clipped = false;
-  let bodyEl: HTMLDivElement;
+  let {
+    maxHeight = 80,
+    showLabel = 'Show more',
+    hideLabel = 'Show less',
+    class: klass = '',
+    children
+  }: Props = $props();
+  
+
+  let expanded = $state(false);
+  let clipped = $state(false);
+  let bodyEl: HTMLDivElement = $state();
 
   onMount(() => {
     if (bodyEl) clipped = bodyEl.scrollHeight > maxHeight;
@@ -22,10 +33,10 @@
       bind:this={bodyEl}
       style={!expanded && clipped ? `max-height:${maxHeight}px;overflow:hidden` : undefined}
     >
-      <slot />
+      {@render children?.()}
     </div>
     {#if !expanded && clipped}
-      <div class="spoiler-fade" aria-hidden="true" />
+      <div class="spoiler-fade" aria-hidden="true"></div>
     {/if}
   </div>
   {#if clipped}
@@ -33,7 +44,7 @@
       type="button"
       class="spoiler-toggle"
       aria-expanded={expanded}
-      on:click={() => (expanded = !expanded)}
+      onclick={() => (expanded = !expanded)}
     >
       {expanded ? hideLabel : showLabel}
     </button>

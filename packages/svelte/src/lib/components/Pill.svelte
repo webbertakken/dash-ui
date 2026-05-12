@@ -1,12 +1,23 @@
 <script lang="ts">
-  export let variant: 'success' | 'warn' | 'danger' | 'info' | 'neutral' = 'neutral';
-  export let showDot: boolean = true;
-  let className = '';
-  export { className as class };
-  export let style: string = '';
+  
+  interface Props {
+    variant?: 'success' | 'warn' | 'danger' | 'info' | 'neutral';
+    showDot?: boolean;
+    class?: string;
+    style?: string;
+    children?: import('svelte').Snippet;
+  }
+
+  let {
+    variant = 'neutral',
+    showDot = true,
+    class: className = '',
+    style = '',
+    children
+  }: Props = $props();
 </script>
 
 <span class="pill pill-{variant} {className}" {style}>
   {#if showDot}<span class="dot" aria-hidden="true"></span>{/if}
-  <slot />
+  {@render children?.()}
 </span>

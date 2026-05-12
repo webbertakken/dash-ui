@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface FDNode {
     id: string;
     label?: string;
@@ -13,10 +13,19 @@
 
 <script lang="ts">
 
-  export let nodes: FDNode[] = [];
-  export let links: FDLink[] = [];
-  export let height = 260;
-  export let ariaLabel = 'Force-directed network graph';
+  interface Props {
+    nodes?: FDNode[];
+    links?: FDLink[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    nodes = [],
+    links = [],
+    height = 260,
+    ariaLabel = 'Force-directed network graph'
+  }: Props = $props();
 
   const PALETTE = ['#006FFF', '#00C875', '#FF7B7B', '#F5C26B', '#A78BFA', '#34D399'];
   const VW = 340;
@@ -80,8 +89,8 @@
     return state.map((s) => ({ x: s.x, y: s.y }));
   }
 
-  $: pos = nodes.length > 0 ? layout(VW, height) : [];
-  $: idxById = Object.fromEntries(nodes.map((n, i) => [n.id, i]));
+  let pos = $derived(nodes.length > 0 ? layout(VW, height) : []);
+  let idxById = $derived(Object.fromEntries(nodes.map((n, i) => [n.id, i])));
 </script>
 
 {#if nodes.length > 0}

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export type TimeRangeId = '1h' | '6h' | '24h' | '7d' | '30d';
   const PRESETS: { id: TimeRangeId; label: string; short: string }[] = [
@@ -11,20 +11,26 @@
 </script>
 
 <script lang="ts">
+  import { preventDefault } from 'svelte/legacy';
+
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
-  export let value: TimeRangeId = '1h';
+  interface Props {
+    value?: TimeRangeId;
+  }
+
+  let { value = '1h' }: Props = $props();
 
   const dispatch = createEventDispatcher<{ change: TimeRangeId }>();
   const uid = `dash-ui-tr-${++counter}`;
   const listId = `${uid}-list`;
 
-  let open = false;
-  let activeIdx = 0;
-  let triggerEl: HTMLButtonElement;
-  let wrapperEl: HTMLDivElement;
+  let open = $state(false);
+  let activeIdx = $state(0);
+  let triggerEl: HTMLButtonElement = $state();
+  let wrapperEl: HTMLDivElement = $state();
 
-  $: selected = PRESETS.find((p) => p.id === value) ?? PRESETS[0];
+  let selected = $derived(PRESETS.find((p) => p.id === value) ?? PRESETS[0]);
 
   function toggle() {
     if (!open) activeIdx = PRESETS.findIndex((p) => p.id === value);
@@ -71,8 +77,8 @@
     aria-haspopup="listbox"
     aria-expanded={open}
     aria-controls={open ? listId : undefined}
-    on:click={toggle}
-    on:keydown={onKeyDown}
+    onclick={toggle}
+    onkeydown={onKeyDown}
   >
     {selected.short}
     <svg class="time-range-chevron" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -88,8 +94,8 @@
           tabindex="-1"
           data-active={idx === activeIdx ? 'true' : undefined}
           class="time-range-option"
-          on:mouseenter={() => { activeIdx = idx; }}
-          on:mousedown|preventDefault={() => select(p.id)}
+          onmouseenter={() => { activeIdx = idx; }}
+          onmousedown={preventDefault(() => select(p.id))}
         >
           {p.label}
           {#if p.id === value}

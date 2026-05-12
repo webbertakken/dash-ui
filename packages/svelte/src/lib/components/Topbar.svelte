@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface AppDef { id: string; label: string; logo: AppLogo }
 </script>
 
@@ -19,11 +19,21 @@
     { id: 'agents', label: 'Agents', logo: 'agents' },
   ];
 
-  export let siteName: string;
-  export let activeApp: string;
-  export let apps: AppDef[] = DEFAULT_APPS;
-  export let initials: string = 'MS';
-  export let notificationCount: number = 1;
+  interface Props {
+    siteName: string;
+    activeApp: string;
+    apps?: AppDef[];
+    initials?: string;
+    notificationCount?: number;
+  }
+
+  let {
+    siteName,
+    activeApp = $bindable(),
+    apps = DEFAULT_APPS,
+    initials = 'MS',
+    notificationCount = 1
+  }: Props = $props();
   const dispatch = createEventDispatcher<{ appchange: string }>();
 </script>
 
@@ -39,7 +49,7 @@
         type="button"
         class="app-tab {a.id === activeApp ? 'active' : ''}"
         aria-current={a.id === activeApp ? 'page' : undefined}
-        on:click={() => { activeApp = a.id; dispatch('appchange', a.id); }}
+        onclick={() => { activeApp = a.id; dispatch('appchange', a.id); }}
       >
         <img src={appLogos[a.logo]} alt="" width="24" height="24" />
         <span class="label">{a.label}</span>

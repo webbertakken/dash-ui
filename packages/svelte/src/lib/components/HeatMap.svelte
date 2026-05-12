@@ -1,10 +1,21 @@
 <script lang="ts">
-  export let data: number[][] = [];
-  export let colors: string[] = ['#1B2D5A', '#3F7BC4', '#7FB6FF', '#F5C26B', '#F5A623', '#FF7B7B'];
-  export let xLabels: string[] = [];
-  export let height: number = 160;
-  export let cellGap: number = 1;
-  export let ariaLabel: string = 'Heat map';
+  interface Props {
+    data?: number[][];
+    colors?: string[];
+    xLabels?: string[];
+    height?: number;
+    cellGap?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    data = [],
+    colors = ['#1B2D5A', '#3F7BC4', '#7FB6FF', '#F5C26B', '#F5A623', '#FF7B7B'],
+    xLabels = [],
+    height = 160,
+    cellGap = 1,
+    ariaLabel = 'Heat map'
+  }: Props = $props();
 
   const VW = 400;
   const PAD_BASE = { t: 4, r: 4, l: 4 };
@@ -24,15 +35,15 @@
     return `rgb(${Math.round(r1 + f * (r2 - r1))},${Math.round(g1 + f * (g2 - g1))},${Math.round(b1 + f * (b2 - b1))})`;
   }
 
-  $: rows = data.length;
-  $: cols = data[0]?.length ?? 0;
-  $: padB = xLabels.length ? 16 : 4;
-  $: chartW = VW - PAD_BASE.l - PAD_BASE.r;
-  $: chartH = height - PAD_BASE.t - padB;
-  $: cellW = cols > 0 ? (chartW - (cols - 1) * cellGap) / cols : 0;
-  $: cellH = rows > 0 ? (chartH - (rows - 1) * cellGap) / rows : 0;
+  let rows = $derived(data.length);
+  let cols = $derived(data[0]?.length ?? 0);
+  let padB = $derived(xLabels.length ? 16 : 4);
+  let chartW = $derived(VW - PAD_BASE.l - PAD_BASE.r);
+  let chartH = $derived(height - PAD_BASE.t - padB);
+  let cellW = $derived(cols > 0 ? (chartW - (cols - 1) * cellGap) / cols : 0);
+  let cellH = $derived(rows > 0 ? (chartH - (rows - 1) * cellGap) / rows : 0);
 
-  $: rects = rows > 0 && cols > 0
+  let rects = $derived(rows > 0 && cols > 0
     ? data.flatMap((rowData, row) =>
         rowData.map((val, col) => ({
           key: `${row}-${col}`,
@@ -43,13 +54,13 @@
           fill: interpolateColor(colors, val),
         }))
       )
-    : [];
+    : []);
 
-  $: labelNodes = xLabels.map((lbl, i) => ({
+  let labelNodes = $derived(xLabels.map((lbl, i) => ({
     lbl,
     x: (PAD_BASE.l + (xLabels.length > 1 ? (i / (xLabels.length - 1)) * chartW : chartW / 2)).toFixed(1),
     y: height - 2,
-  }));
+  })));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

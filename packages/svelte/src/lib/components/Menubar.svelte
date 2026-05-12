@@ -1,28 +1,34 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface MenubarItem { id: string; label: string; disabled?: boolean; separator?: boolean; }
   export interface MenubarMenu { id: string; label: string; items: MenubarItem[]; }
 </script>
 
 <script lang="ts">
+  import { preventDefault } from 'svelte/legacy';
+
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
-  export let menus: MenubarMenu[] = [];
-  export let label: string = 'Menu';
-  let klass = '';
-  export { klass as class };
+  interface Props {
+    menus?: MenubarMenu[];
+    label?: string;
+    class?: string;
+  }
+
+  let { menus = [], label = 'Menu', class: klass = '' }: Props = $props();
+  
 
   const dispatch = createEventDispatcher<{ action: { menuId: string; itemId: string } }>();
   const uid = `dash-ui-mb-${++counter}`;
 
-  let openIdx: number | null = null;
-  let activeItemIdx = 0;
-  let triggerEls: HTMLButtonElement[] = [];
-  let rootEl: HTMLDivElement;
+  let openIdx: number | null = $state(null);
+  let activeItemIdx = $state(0);
+  let triggerEls: HTMLButtonElement[] = $state([]);
+  let rootEl: HTMLDivElement = $state();
 
-  $: currentEligible = openIdx !== null
+  let currentEligible = $derived(openIdx !== null
     ? menus[openIdx].items.filter((i) => !i.separator && !i.disabled)
-    : [];
+    : []);
 
   function openMenu(idx: number, focusLast = false) {
     const items = menus[idx].items.filter((i) => !i.separator && !i.disabled);
@@ -101,8 +107,8 @@
         aria-expanded={isOpen}
         aria-controls={isOpen ? menuId : undefined}
         class={`menubar-trigger${isOpen ? ' is-open' : ''}`}
-        on:click={() => { if (isOpen) closeMenu(); else openMenu(idx); }}
-        on:keydown={(e) => handleTriggerKeyDown(e, idx)}
+        onclick={() => { if (isOpen) closeMenu(); else openMenu(idx); }}
+        onkeydown={(e) => handleTriggerKeyDown(e, idx)}
       >
         {menu.label}
       </button>
@@ -110,7 +116,7 @@
         <ul id={menuId} role="menu" aria-label={menu.label} class="menubar-dropdown">
           {#each menu.items as item (item.id)}
             {#if item.separator}
-              <li role="separator" class="menubar-sep" aria-hidden="true" />
+              <li role="separator" class="menubar-sep" aria-hidden="true"></li>
             {:else}
               {@const eligIdx = elig.indexOf(item)}
               <li
@@ -119,8 +125,8 @@
                 aria-disabled={item.disabled}
                 data-active={eligIdx === activeItemIdx && !item.disabled ? 'true' : undefined}
                 class="menubar-item"
-                on:mouseenter={() => { if (!item.disabled) activeItemIdx = eligIdx; }}
-                on:mousedown|preventDefault={() => { if (!item.disabled) activate(menu.id, item.id); }}
+                onmouseenter={() => { if (!item.disabled) activeItemIdx = eligIdx; }}
+                onmousedown={preventDefault(() => { if (!item.disabled) activate(menu.id, item.id); })}
               >{item.label}</li>
             {/if}
           {/each}

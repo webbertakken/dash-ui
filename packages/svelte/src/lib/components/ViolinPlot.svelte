@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface ViolinSeries {
     label: string;
     values: number[];
@@ -8,10 +8,19 @@
 
 <script lang="ts">
 
-  export let series: ViolinSeries[] = [];
-  export let yRange: [number, number] | undefined = undefined;
-  export let height: number = 160;
-  export let ariaLabel: string = 'Violin plot';
+  interface Props {
+    series?: ViolinSeries[];
+    yRange?: [number, number] | undefined;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    yRange = undefined,
+    height = 160,
+    ariaLabel = 'Violin plot'
+  }: Props = $props();
 
   const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#7FB6FF', '#A878F5', '#F56342'];
   const SQRT_TWO_PI = Math.sqrt(2 * Math.PI);
@@ -40,30 +49,30 @@
   }
 
   const VW = 380;
-  $: VH = height;
+  let VH = $derived(height);
   const PAD_L = 28;
   const PAD_R = 8;
   const PAD_T = 8;
   const PAD_B = 20;
 
-  $: allVals = series.flatMap(s => s.values);
-  $: yMin = yRange ? yRange[0] : Math.min(...allVals);
-  $: yMax = yRange ? yRange[1] : Math.max(...allVals);
+  let allVals = $derived(series.flatMap(s => s.values));
+  let yMin = $derived(yRange ? yRange[0] : Math.min(...allVals));
+  let yMax = $derived(yRange ? yRange[1] : Math.max(...allVals));
 
-  $: TRACK_W = VW - PAD_L - PAD_R;
-  $: TRACK_H = VH - PAD_T - PAD_B;
-  $: slotW = TRACK_W / series.length;
-  $: maxHalfW = slotW * 0.38;
+  let TRACK_W = $derived(VW - PAD_L - PAD_R);
+  let TRACK_H = $derived(VH - PAD_T - PAD_B);
+  let slotW = $derived(TRACK_W / series.length);
+  let maxHalfW = $derived(slotW * 0.38);
 
-  $: evalPts = Array.from({ length: NUM_PTS }, (_, i) =>
+  let evalPts = $derived(Array.from({ length: NUM_PTS }, (_, i) =>
     yMin + (i / (NUM_PTS - 1)) * (yMax - yMin)
-  );
+  ));
 
   function ySvg(v: number): number {
     return PAD_T + ((yMax - v) / (yMax - yMin)) * TRACK_H;
   }
 
-  $: violins = series.map((s, si) => {
+  let violins = $derived(series.map((s, si) => {
     const h = bw(s.values);
     const dens = kde(s.values, h, evalPts);
     const maxD = Math.max(...dens, 1e-9);
@@ -81,12 +90,12 @@
       color: s.color ?? COLORS[si % COLORS.length],
       label: s.label,
     };
-  });
+  }));
 
-  $: ticks = [0, 0.25, 0.5, 0.75, 1].map(t => {
+  let ticks = $derived([0, 0.25, 0.5, 0.75, 1].map(t => {
     const v = yMin + t * (yMax - yMin);
     return { v, y: ySvg(v) };
-  });
+  }));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

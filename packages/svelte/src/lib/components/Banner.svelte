@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type BannerVariant = 'info' | 'success' | 'warn' | 'danger';
   export interface BannerAction {
     label: string;
@@ -8,12 +8,23 @@
 
 <script lang="ts">
   import CloseIcon from '../icons/CloseIcon.svelte';
-  export let variant: BannerVariant = 'info';
-  export let title: string | undefined = undefined;
-  export let action: BannerAction | undefined = undefined;
-  export let onDismiss: (() => void) | undefined = undefined;
+  interface Props {
+    variant?: BannerVariant;
+    title?: string | undefined;
+    action?: BannerAction | undefined;
+    onDismiss?: (() => void) | undefined;
+    children?: import('svelte').Snippet;
+  }
 
-  $: isUrgent = variant === 'danger' || variant === 'warn';
+  let {
+    variant = 'info',
+    title = undefined,
+    action = undefined,
+    onDismiss = undefined,
+    children
+  }: Props = $props();
+
+  let isUrgent = $derived(variant === 'danger' || variant === 'warn');
 </script>
 
 <div
@@ -24,13 +35,13 @@
 >
   <div class="banner__body">
     {#if title}<span class="banner__title">{title}</span>{/if}
-    <span><slot /></span>
+    <span>{@render children?.()}</span>
   </div>
   {#if action}
-    <button type="button" class="banner__action" on:click={action.onClick}>{action.label}</button>
+    <button type="button" class="banner__action" onclick={action.onClick}>{action.label}</button>
   {/if}
   {#if onDismiss}
-    <button type="button" class="banner__dismiss icon-btn" on:click={onDismiss} aria-label="Dismiss banner">
+    <button type="button" class="banner__dismiss icon-btn" onclick={onDismiss} aria-label="Dismiss banner">
       <CloseIcon />
     </button>
   {/if}

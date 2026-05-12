@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface DumbbellItem {
     label: string;
     start: number;
@@ -9,10 +9,19 @@
 
 <script lang="ts">
 
-  export let items: DumbbellItem[] = [];
-  export let unit: string = '';
-  export let color: string = '#006FFF';
-  export let ariaLabel: string = 'Dumbbell chart';
+  interface Props {
+    items?: DumbbellItem[];
+    unit?: string;
+    color?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    items = [],
+    unit = '',
+    color = '#006FFF',
+    ariaLabel = 'Dumbbell chart'
+  }: Props = $props();
 
   const VW = 340;
   const LABEL_W = 110;
@@ -24,19 +33,19 @@
   const AXIS_H = 18;
   const TICKS = 4;
 
-  $: allValues = items.flatMap((it) => [it.start, it.end]);
-  $: minVal = allValues.length ? Math.min(...allValues) : 0;
-  $: maxVal = allValues.length ? Math.max(...allValues) : 1;
-  $: range = maxVal - minVal || 1;
-  $: svgH = PAD_T + items.length * ROW_H + AXIS_H;
+  let allValues = $derived(items.flatMap((it) => [it.start, it.end]));
+  let minVal = $derived(allValues.length ? Math.min(...allValues) : 0);
+  let maxVal = $derived(allValues.length ? Math.max(...allValues) : 1);
+  let range = $derived(maxVal - minVal || 1);
+  let svgH = $derived(PAD_T + items.length * ROW_H + AXIS_H);
 
   function tx(v: number): number {
     return LABEL_W + ((v - minVal) / range) * TRACK_W;
   }
 
-  $: ticks = Array.from({ length: TICKS + 1 }, (_, i) =>
+  let ticks = $derived(Array.from({ length: TICKS + 1 }, (_, i) =>
     Math.round(minVal + (i / TICKS) * range),
-  );
+  ));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

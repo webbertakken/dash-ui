@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface HistogramBin {
     x0: number;
     x1: number;
@@ -8,11 +8,21 @@
 
 <script lang="ts">
 
-  export let bins: HistogramBin[] = [];
-  export let height: number = 160;
-  export let color: string = '#006FFF';
-  export let xUnit: string = '';
-  export let ariaLabel: string = 'Histogram';
+  interface Props {
+    bins?: HistogramBin[];
+    height?: number;
+    color?: string;
+    xUnit?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    bins = [],
+    height = 160,
+    color = '#006FFF',
+    xUnit = '',
+    ariaLabel = 'Histogram'
+  }: Props = $props();
 
   const VW = 320;
   const PAD_L = 36;
@@ -20,15 +30,15 @@
   const PAD_T = 8;
   const PAD_B = 28;
 
-  $: PLOT_W = VW - PAD_L - PAD_R;
-  $: PLOT_H = height - PAD_T - PAD_B;
-  $: maxCount = Math.max(...bins.map((b) => b.count), 1);
-  $: barW = PLOT_W / bins.length;
+  let PLOT_W = $derived(VW - PAD_L - PAD_R);
+  let PLOT_H = $derived(height - PAD_T - PAD_B);
+  let maxCount = $derived(Math.max(...bins.map((b) => b.count), 1));
+  let barW = $derived(PLOT_W / bins.length);
 
-  $: yTicks = [0, 1, 2, 3].map((i) => Math.round((maxCount * i) / 3));
+  let yTicks = $derived([0, 1, 2, 3].map((i) => Math.round((maxCount * i) / 3)));
 
-  $: xStep = bins.length <= 6 ? 1 : Math.ceil(bins.length / 5);
-  $: xLabels = (() => {
+  let xStep = $derived(bins.length <= 6 ? 1 : Math.ceil(bins.length / 5));
+  let xLabels = $derived((() => {
     const labels: { x: number; label: string }[] = [];
     bins.forEach((bin, i) => {
       if (i % xStep === 0) {
@@ -37,7 +47,7 @@
     });
     labels.push({ x: PAD_L + PLOT_W, label: String(bins[bins.length - 1].x1) + xUnit });
     return labels;
-  })();
+  })());
 
   function bh(count: number): number {
     return (count / maxCount) * PLOT_H;

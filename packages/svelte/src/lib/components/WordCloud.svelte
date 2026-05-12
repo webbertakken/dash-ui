@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface WordCloudItem {
     word: string;
     weight: number;
@@ -8,9 +8,13 @@
 
 <script lang="ts">
 
-  export let items: WordCloudItem[] = [];
-  export let height: number = 160;
-  export let ariaLabel: string = 'Word cloud';
+  interface Props {
+    items?: WordCloudItem[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { items = [], height = 160, ariaLabel = 'Word cloud' }: Props = $props();
 
   const VW = 380;
   const PAD = 14;
@@ -19,12 +23,12 @@
   const GAP = 6;
   const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#7FB6FF', '#A878F5', '#F56342', '#00C875', '#FF7BB1'];
 
-  $: sorted = [...items].sort((a, b) => b.weight - a.weight);
-  $: maxW = sorted[0]?.weight ?? 1;
-  $: minW = sorted[sorted.length - 1]?.weight ?? 0;
-  $: range = maxW - minW || 1;
+  let sorted = $derived([...items].sort((a, b) => b.weight - a.weight));
+  let maxW = $derived(sorted[0]?.weight ?? 1);
+  let minW = $derived(sorted[sorted.length - 1]?.weight ?? 0);
+  let range = $derived(maxW - minW || 1);
 
-  $: words = sorted.map((item, i) => {
+  let words = $derived(sorted.map((item, i) => {
     const t = (item.weight - minW) / range;
     const fontSize = MIN_FONT + t * (MAX_FONT - MIN_FONT);
     const approxW = item.word.length * fontSize * 0.56 + GAP * 2;
@@ -36,9 +40,9 @@
       color: item.color ?? COLORS[i % COLORS.length],
       bold: fontSize >= 16,
     };
-  });
+  }));
 
-  $: placed = (() => {
+  let placed = $derived((() => {
     const usableW = VW - PAD * 2;
     const rows: (typeof words)[] = [];
     let row: typeof words = [];
@@ -70,9 +74,9 @@
         return { ...w, cx, cy: baseY + w.fontSize };
       });
     });
-  })();
+  })());
 
-  $: svgH = (() => {
+  let svgH = $derived((() => {
     const ROW_H = 32;
     const usableW = VW - PAD * 2;
     let rows = 1; let rowW = 0;
@@ -81,7 +85,7 @@
       else rowW += w.approxW;
     }
     return Math.max(height, rows * ROW_H + PAD * 2);
-  })();
+  })());
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

@@ -1,20 +1,33 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  export let label: string | undefined = undefined;
-  export let min = 0;
-  export let max = 100;
-  export let step = 1;
-  export let low = 0;
-  export let high = 100;
-  export let suffix: string | undefined = undefined;
-  export let disabled = false;
+  interface Props {
+    label?: string | undefined;
+    min?: number;
+    max?: number;
+    step?: number;
+    low?: number;
+    high?: number;
+    suffix?: string | undefined;
+    disabled?: boolean;
+  }
+
+  let {
+    label = undefined,
+    min = 0,
+    max = 100,
+    step = 1,
+    low = $bindable(0),
+    high = $bindable(100),
+    suffix = undefined,
+    disabled = false
+  }: Props = $props();
 
   const dispatch = createEventDispatcher<{ change: [number, number] }>();
 
-  $: lowPct = max === min ? 0 : ((low - min) / (max - min)) * 100;
-  $: highPct = max === min ? 0 : ((high - min) / (max - min)) * 100;
-  $: lowOnTop = low >= max - step;
+  let lowPct = $derived(max === min ? 0 : ((low - min) / (max - min)) * 100);
+  let highPct = $derived(max === min ? 0 : ((high - min) / (max - min)) * 100);
+  let lowOnTop = $derived(low >= max - step);
 
   function handleLow(e: Event) {
     low = Math.min(Number((e.target as HTMLInputElement).value), high - step);
@@ -51,7 +64,7 @@
       style="z-index:{lowOnTop ? 2 : 1}"
       aria-label={label ? `${label} minimum` : 'Minimum'}
       aria-valuetext={suffix ? `${low}${suffix}` : String(low)}
-      on:input={handleLow}
+      oninput={handleLow}
     />
     <input
       type="range"
@@ -62,7 +75,7 @@
       style="z-index:{lowOnTop ? 1 : 2}"
       aria-label={label ? `${label} maximum` : 'Maximum'}
       aria-valuetext={suffix ? `${high}${suffix}` : String(high)}
-      on:input={handleHigh}
+      oninput={handleHigh}
     />
   </div>
 </div>

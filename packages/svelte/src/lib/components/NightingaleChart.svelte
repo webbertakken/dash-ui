@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface NightingaleSegment {
     label: string;
     value: number;
@@ -8,9 +8,13 @@
 
 <script lang="ts">
 
-  export let segments: NightingaleSegment[] = [];
-  export let color: string = '#006FFF';
-  export let ariaLabel: string = 'Nightingale chart';
+  interface Props {
+    segments?: NightingaleSegment[];
+    color?: string;
+    ariaLabel?: string;
+  }
+
+  let { segments = [], color = '#006FFF', ariaLabel = 'Nightingale chart' }: Props = $props();
 
   const SIZE = 280;
   const CX = SIZE / 2;
@@ -27,11 +31,11 @@
     return `M ${CX} ${CY} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r.toFixed(2)} ${r.toFixed(2)} 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`;
   }
 
-  $: n = segments.length;
-  $: maxVal = n ? Math.max(...segments.map((s) => s.value), 1) : 1;
-  $: step = n ? (2 * Math.PI) / n : 0;
-  $: labelEvery = n <= 8 ? 1 : Math.round(n / 8);
-  $: wedges = segments.map((seg, i) => {
+  let n = $derived(segments.length);
+  let maxVal = $derived(n ? Math.max(...segments.map((s) => s.value), 1) : 1);
+  let step = $derived(n ? (2 * Math.PI) / n : 0);
+  let labelEvery = $derived(n <= 8 ? 1 : Math.round(n / 8));
+  let wedges = $derived(segments.map((seg, i) => {
     const sa = -Math.PI / 2 + i * step;
     const ea = -Math.PI / 2 + (i + 1) * step;
     const r = MIN_R + (seg.value / maxVal) * (MAX_R - MIN_R);
@@ -45,7 +49,7 @@
       label: seg.label,
       showLabel: i % labelEvery === 0,
     };
-  });
+  }));
 </script>
 
 {#if segments.length}

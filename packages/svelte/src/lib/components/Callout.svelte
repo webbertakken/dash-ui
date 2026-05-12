@@ -1,10 +1,15 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type CalloutVariant = 'info' | 'success' | 'warn' | 'danger' | 'tip';
 </script>
 
 <script lang="ts">
-  export let variant: CalloutVariant = 'info';
-  export let title: string | undefined = undefined;
+  interface Props {
+    variant?: CalloutVariant;
+    title?: string | undefined;
+    children?: import('svelte').Snippet;
+  }
+
+  let { variant = 'info', title = undefined, children }: Props = $props();
 </script>
 
 <div class="callout callout--{variant}" role="note">
@@ -33,6 +38,6 @@
     {#if title}
       <div class="callout-title">{title}</div>
     {/if}
-    <div><slot /></div>
+    <div>{@render children?.()}</div>
   </div>
 </div>

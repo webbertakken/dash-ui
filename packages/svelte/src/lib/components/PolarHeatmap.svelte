@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface PolarCell {
     row: number;
     col: number;
@@ -8,12 +8,23 @@
 
 <script lang="ts">
 
-  export let data: PolarCell[] = [];
-  export let rows: number = 7;
-  export let cols: number = 24;
-  export let colLabels: string[] = [];
-  export let color: string = '#006FFF';
-  export let ariaLabel: string = 'Polar heatmap';
+  interface Props {
+    data?: PolarCell[];
+    rows?: number;
+    cols?: number;
+    colLabels?: string[];
+    color?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    data = [],
+    rows = 7,
+    cols = 24,
+    colLabels = [],
+    color = '#006FFF',
+    ariaLabel = 'Polar heatmap'
+  }: Props = $props();
 
   const SIZE = 280;
   const CX = SIZE / 2;
@@ -39,14 +50,14 @@
     ].join(' ');
   }
 
-  $: maxVal = data.length ? Math.max(...data.map((d) => d.value), 1) : 1;
-  $: ringH = (MAX_R - MIN_R) / rows;
-  $: segA = (2 * Math.PI) / cols;
-  $: [rC, gC, bC] = hexToRgb(color);
-  $: LABEL_R = MAX_R + 14;
-  $: labelEvery = cols <= 12 ? 1 : cols <= 24 ? 3 : Math.round(cols / 8);
-  $: rings = Array.from({ length: rows + 1 }, (_, i) => +(MIN_R + i * ringH).toFixed(2));
-  $: cells = data.map((cell) => {
+  let maxVal = $derived(data.length ? Math.max(...data.map((d) => d.value), 1) : 1);
+  let ringH = $derived((MAX_R - MIN_R) / rows);
+  let segA = $derived((2 * Math.PI) / cols);
+  let [rC, gC, bC] = $derived(hexToRgb(color));
+  let LABEL_R = $derived(MAX_R + 14);
+  let labelEvery = $derived(cols <= 12 ? 1 : cols <= 24 ? 3 : Math.round(cols / 8));
+  let rings = $derived(Array.from({ length: rows + 1 }, (_, i) => +(MIN_R + i * ringH).toFixed(2)));
+  let cells = $derived(data.map((cell) => {
     const ir = MIN_R + cell.row * ringH;
     const or = ir + ringH - 0.5;
     const sa = BASE + cell.col * segA + 0.01;
@@ -56,8 +67,8 @@
       d: annularSector(ir, or, sa, ea),
       fill: `rgba(${rC},${gC},${bC},${(0.08 + 0.92 * norm).toFixed(3)})`,
     };
-  });
-  $: visibleColLabels = colLabels
+  }));
+  let visibleColLabels = $derived(colLabels
     .map((label, i) => {
       if (i % labelEvery !== 0) return null;
       const a = BASE + (i + 0.5) * segA;
@@ -67,7 +78,7 @@
         label,
       };
     })
-    .filter(Boolean) as { x: string; y: string; label: string }[];
+    .filter(Boolean) as { x: string; y: string; label: string }[]);
 </script>
 
 {#if data.length}

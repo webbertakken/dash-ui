@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (value to value_1) making the component unusable -->
 <script lang="ts">
   import Card from './Card.svelte';
   export let label: string;

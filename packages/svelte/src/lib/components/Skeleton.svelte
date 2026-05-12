@@ -1,17 +1,27 @@
 <script lang="ts">
-  export let variant: 'text' | 'title' | 'stat' | 'circle' | 'block' = 'text';
-  export let width: string | number | undefined = undefined;
-  export let height: string | number | undefined = undefined;
-  let className = '';
-  export { className as class };
-  export let ariaLabel: string = 'Loading';
+  
+  interface Props {
+    variant?: 'text' | 'title' | 'stat' | 'circle' | 'block';
+    width?: string | number | undefined;
+    height?: string | number | undefined;
+    class?: string;
+    ariaLabel?: string;
+  }
 
-  $: variantClass = variant === 'block' ? '' : variant;
-  $: w = width ?? (variant === 'circle' ? height : undefined);
-  $: style = [
+  let {
+    variant = 'text',
+    width = undefined,
+    height = undefined,
+    class: className = '',
+    ariaLabel = 'Loading'
+  }: Props = $props();
+
+  let variantClass = $derived(variant === 'block' ? '' : variant);
+  let w = $derived(width ?? (variant === 'circle' ? height : undefined));
+  let style = $derived([
     w !== undefined ? `width:${typeof w === 'number' ? w + 'px' : w}` : '',
     height !== undefined ? `height:${typeof height === 'number' ? height + 'px' : height}` : '',
-  ].filter(Boolean).join(';');
+  ].filter(Boolean).join(';'));
 </script>
 
 <span

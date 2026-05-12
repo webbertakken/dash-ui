@@ -1,20 +1,36 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  export let value: string = '';
-  export let rows: number = 4;
-  export let placeholder: string | undefined = undefined;
-  export let disabled: boolean = false;
-  export let readonly: boolean = false;
-  export let id: string | undefined = undefined;
-  let className = '';
-  export { className as class };
-  export let style: string = '';
+  import { createBubbler } from 'svelte/legacy';
+
+  const bubble = createBubbler();
+  
+  interface Props {
+    value?: string;
+    rows?: number;
+    placeholder?: string | undefined;
+    disabled?: boolean;
+    readonly?: boolean;
+    id?: string | undefined;
+    class?: string;
+    style?: string;
+  }
+
+  let {
+    value = $bindable(''),
+    rows = 4,
+    placeholder = undefined,
+    disabled = false,
+    readonly = false,
+    id = undefined,
+    class: className = '',
+    style = ''
+  }: Props = $props();
 
   const uid = `dash-ui-ta-${++counter}`;
-  $: inputId = id ?? uid;
+  let inputId = $derived(id ?? uid);
 </script>
 
 <textarea
@@ -26,8 +42,8 @@
   {disabled}
   readonly={readonly}
   bind:value
-  on:input
-  on:change
-  on:focus
-  on:blur
+  oninput={bubble('input')}
+  onchange={bubble('change')}
+  onfocus={bubble('focus')}
+  onblur={bubble('blur')}
 ></textarea>

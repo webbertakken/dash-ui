@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface BulletItem {
     label: string;
     value: number;
@@ -11,9 +11,13 @@
 
 <script lang="ts">
 
-  export let items: BulletItem[] = [];
-  export let max: number = 100;
-  export let ariaLabel: string = 'Bullet chart';
+  interface Props {
+    items?: BulletItem[];
+    max?: number;
+    ariaLabel?: string;
+  }
+
+  let { items = [], max = 100, ariaLabel = 'Bullet chart' }: Props = $props();
 
   const VW = 400;
   const LABEL_W = 110;
@@ -23,10 +27,10 @@
   const ROW_H = 34;
   const PAD = 8;
 
-  $: trackW = VW - LABEL_W - VAL_W;
-  $: totalH = items.length * ROW_H + PAD * 2;
+  let trackW = $derived(VW - LABEL_W - VAL_W);
+  let totalH = $derived(items.length * ROW_H + PAD * 2);
 
-  $: rows = items.map((item, i) => {
+  let rows = $derived(items.map((item, i) => {
     const y = PAD + i * ROW_H;
     const midY = y + ROW_H / 2;
     const rangeY = midY - RANGE_H / 2;
@@ -49,7 +53,7 @@
       label: item.label,
       value: item.value,
     };
-  });
+  }));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

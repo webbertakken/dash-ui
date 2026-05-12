@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface RadioOption {
     value: string;
@@ -9,12 +9,23 @@
 </script>
 
 <script lang="ts">
-  export let legend: string;
-  export let name: string | undefined = undefined;
-  export let options: RadioOption[] = [];
-  export let value: string | undefined = undefined;
-  export let srOnlyLegend: boolean = false;
-  export let horizontal: boolean = false;
+  interface Props {
+    legend: string;
+    name?: string | undefined;
+    options?: RadioOption[];
+    value?: string | undefined;
+    srOnlyLegend?: boolean;
+    horizontal?: boolean;
+  }
+
+  let {
+    legend,
+    name = undefined,
+    options = [],
+    value = $bindable(undefined),
+    srOnlyLegend = false,
+    horizontal = false
+  }: Props = $props();
 
   const groupName = name ?? `dash-ui-rg-${++counter}`;
 </script>
@@ -35,7 +46,7 @@
         checked={value === opt.value}
         disabled={opt.disabled}
         class="radio"
-        on:change={() => { value = opt.value; }}
+        onchange={() => { value = opt.value; }}
       />
       <span class="radio-text">
         <span>{opt.label}</span>

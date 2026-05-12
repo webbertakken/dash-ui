@@ -1,15 +1,24 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  export let label: string | undefined = undefined;
-  export let value: string = '0.0.0.0/0';
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    value?: string;
+    disabled?: boolean;
+    class?: string;
+  }
+
+  let {
+    label = undefined,
+    value = $bindable('0.0.0.0/0'),
+    disabled = false,
+    class: className = ''
+  }: Props = $props();
+  
 
   const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-cidr-${++counter}`;
@@ -34,8 +43,8 @@
     return [parts[0] ?? '0', parts[1] ?? '0', parts[2] ?? '0', parts[3] ?? '0', prefix];
   }
 
-  let fields: [string, string, string, string, string] = parseCIDR(value);
-  let inputs: (HTMLInputElement | null)[] = [null, null, null, null, null];
+  let fields: [string, string, string, string, string] = $state(parseCIDR(value));
+  let inputs: (HTMLInputElement | null)[] = $state([null, null, null, null, null]);
 
   function focusAt(i: number) {
     const el = inputs[i];
@@ -112,10 +121,10 @@
         {disabled}
         maxlength={3}
         class="cidr-input__octet"
-        on:input={(e) => commitOctet(i, e.currentTarget.value)}
-        on:keydown={(e) => handleKey(i, e)}
-        on:paste={handlePaste}
-        on:focus={(e) => e.currentTarget.select()}
+        oninput={(e) => commitOctet(i, e.currentTarget.value)}
+        onkeydown={(e) => handleKey(i, e)}
+        onpaste={handlePaste}
+        onfocus={(e) => e.currentTarget.select()}
       />
       <span class="cidr-input__dot" aria-hidden="true">{i < 3 ? '.' : '/'}</span>
     {/each}
@@ -133,10 +142,10 @@
       {disabled}
       maxlength={2}
       class="cidr-input__prefix"
-      on:input={(e) => commitPrefix(e.currentTarget.value)}
-      on:keydown={(e) => handleKey(4, e)}
-      on:paste={handlePaste}
-      on:focus={(e) => e.currentTarget.select()}
+      oninput={(e) => commitPrefix(e.currentTarget.value)}
+      onkeydown={(e) => handleKey(4, e)}
+      onpaste={handlePaste}
+      onfocus={(e) => e.currentTarget.select()}
     />
   </div>
 </div>

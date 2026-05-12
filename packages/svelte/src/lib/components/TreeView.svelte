@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface TreeNode {
     id: string;
     label: string;
@@ -11,15 +11,25 @@
   import { tick } from 'svelte';
   import TreeItem from './TreeItem.svelte';
 
-  export let nodes: TreeNode[] = [];
-  export let selected: string | undefined = undefined;
-  export let defaultExpanded: string[] = [];
-  export let label: string | undefined = undefined;
-  export let className: string = '';
+  interface Props {
+    nodes?: TreeNode[];
+    selected?: string | undefined;
+    defaultExpanded?: string[];
+    label?: string | undefined;
+    className?: string;
+  }
 
-  let expanded = new Set<string>(defaultExpanded);
-  let focusedId: string = nodes[0]?.id ?? '';
-  let rootEl: HTMLUListElement;
+  let {
+    nodes = [],
+    selected = $bindable(undefined),
+    defaultExpanded = [],
+    label = undefined,
+    className = ''
+  }: Props = $props();
+
+  let expanded = $state(new Set<string>(defaultExpanded));
+  let focusedId: string = $state(nodes[0]?.id ?? '');
+  let rootEl: HTMLUListElement = $state();
 
   function visibleIds(list: TreeNode[]): string[] {
     const ids: string[] = [];
@@ -120,9 +130,9 @@
   role="tree"
   aria-label={label}
   class={`tree${className ? ' ' + className : ''}`}
-  on:keydown={handleKeydown}
-  on:focusin={handleFocusin}
-  on:click={handleClick}
+  onkeydown={handleKeydown}
+  onfocusin={handleFocusin}
+  onclick={handleClick}
 >
   {#each nodes as node (node.id)}
     <TreeItem {node} {expanded} {selected} {focusedId} />

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface SegmentOption {
     value: string;
     label: string;
@@ -9,11 +9,15 @@
 <script lang="ts">
   import { tick } from 'svelte';
 
-  export let label: string;
-  export let options: SegmentOption[] = [];
-  export let value: string = options[0]?.value ?? '';
+  interface Props {
+    label: string;
+    options?: SegmentOption[];
+    value?: string;
+  }
 
-  let root: HTMLDivElement;
+  let { label, options = [], value = $bindable(options[0]?.value ?? '') }: Props = $props();
+
+  let root: HTMLDivElement = $state();
 
   async function handleKeyDown(e: KeyboardEvent) {
     const enabled = options.filter((o) => !o.disabled);
@@ -34,7 +38,7 @@
   }
 </script>
 
-<div bind:this={root} role="radiogroup" aria-label={label} class="seg-ctrl" tabindex="-1" on:keydown={handleKeyDown}>
+<div bind:this={root} role="radiogroup" aria-label={label} class="seg-ctrl" tabindex="-1" onkeydown={handleKeyDown}>
   {#each options as opt (opt.value)}
     <button
       type="button"
@@ -43,7 +47,7 @@
       disabled={opt.disabled}
       tabindex={value === opt.value ? 0 : -1}
       class="seg-ctrl__btn{value === opt.value ? ' seg-ctrl__btn--active' : ''}"
-      on:click={() => { value = opt.value; }}
+      onclick={() => { value = opt.value; }}
     >
       {opt.label}
     </button>

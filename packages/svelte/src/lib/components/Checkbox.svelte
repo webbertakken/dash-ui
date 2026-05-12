@@ -1,22 +1,39 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  export let checked: boolean = false;
-  export let indeterminate: boolean = false;
-  export let label: string | undefined = undefined;
-  export let id: string | undefined = undefined;
-  export let disabled: boolean = false;
+  import { run, createBubbler } from 'svelte/legacy';
+
+  const bubble = createBubbler();
+  interface Props {
+    checked?: boolean;
+    indeterminate?: boolean;
+    label?: string | undefined;
+    id?: string | undefined;
+    disabled?: boolean;
+    [key: string]: any
+  }
+
+  let {
+    checked = false,
+    indeterminate = false,
+    label = undefined,
+    id = undefined,
+    disabled = false,
+    ...rest
+  }: Props = $props();
 
   const uid = `dash-ui-cb-${++counter}`;
-  $: inputId = id ?? uid;
+  let inputId = $derived(id ?? uid);
 
-  let el: HTMLInputElement;
-  $: if (el) {
-    el.checked = checked;
-    el.indeterminate = indeterminate;
-  }
+  let el: HTMLInputElement = $state();
+  run(() => {
+    if (el) {
+      el.checked = checked;
+      el.indeterminate = indeterminate;
+    }
+  });
 </script>
 
 {#if label}
@@ -27,8 +44,8 @@
       id={inputId}
       {disabled}
       class="checkbox"
-      on:change
-      {...$$restProps}
+      onchange={bubble('change')}
+      {...rest}
     />
     <span>{label}</span>
   </label>
@@ -39,7 +56,7 @@
     id={inputId}
     {disabled}
     class="checkbox"
-    on:change
-    {...$$restProps}
+    onchange={bubble('change')}
+    {...rest}
   />
 {/if}

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface SparklineMatrixRow {
     label: string;
     values: number[];
@@ -9,9 +9,13 @@
 
 <script lang="ts">
 
-  export let rows: SparklineMatrixRow[] = [];
-  export let height: number = 160;
-  export let ariaLabel: string = 'Sparkline matrix';
+  interface Props {
+    rows?: SparklineMatrixRow[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { rows = [], height = 160, ariaLabel = 'Sparkline matrix' }: Props = $props();
 
   const VW = 380;
   const PAD_L = 76;
@@ -20,12 +24,12 @@
   const SPARK_PAD_Y = 5;
   const PALETTE = ['#006FFF', '#00C875', '#7FB6FF', '#F5A623', '#FF7B7B', '#A78BFA'];
 
-  $: rowH = height / (rows.length || 1);
-  $: sparkX0 = PAD_L + SPARK_PAD_X;
-  $: sparkW = VW - PAD_L - PAD_R - SPARK_PAD_X * 2;
-  $: sparkH = rowH - SPARK_PAD_Y * 2;
+  let rowH = $derived(height / (rows.length || 1));
+  let sparkX0 = $derived(PAD_L + SPARK_PAD_X);
+  let sparkW = $derived(VW - PAD_L - PAD_R - SPARK_PAD_X * 2);
+  let sparkH = $derived(rowH - SPARK_PAD_Y * 2);
 
-  $: computed = rows.map((row, i) => {
+  let computed = $derived(rows.map((row, i) => {
     const y0 = i * rowH + SPARK_PAD_Y;
     const color = row.color ?? PALETTE[i % PALETTE.length];
     const min = Math.min(...row.values);
@@ -46,7 +50,7 @@
 
     const dotY = y0 + sparkH - ((lastVal - min) / range) * sparkH;
     return { color, lastVal, d, dotX: sparkX0 + sparkW, dotY, midY: i * rowH + rowH / 2 };
-  });
+  }));
 </script>
 
 {#if rows.length}

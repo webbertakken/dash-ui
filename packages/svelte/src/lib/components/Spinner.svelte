@@ -1,6 +1,10 @@
 <script lang="ts">
-  export let size: 'sm' | 'md' | 'lg' = 'md';
-  export let label: string = 'Loading';
+  interface Props {
+    size?: 'sm' | 'md' | 'lg';
+    label?: string;
+  }
+
+  let { size = 'md', label = 'Loading' }: Props = $props();
 </script>
 
-<span role="status" aria-label={label} class="spinner {size}" />
+<span role="status" aria-label={label} class="spinner {size}"></span>

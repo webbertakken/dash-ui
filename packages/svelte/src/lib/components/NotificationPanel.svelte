@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type NotifType = 'alarm' | 'system' | 'update';
   export type NotifSeverity = 'danger' | 'warn' | 'info' | 'success';
   export interface Notification {
@@ -13,19 +13,31 @@
 </script>
 
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { onDestroy } from 'svelte';
 
 
 
-  export let open: boolean = false;
-  export let notifications: Notification[] = [];
-  export let onClose: () => void = () => {};
-  export let onMarkRead: ((id: string) => void) | undefined = undefined;
-  export let onMarkAllRead: (() => void) | undefined = undefined;
+  interface Props {
+    open?: boolean;
+    notifications?: Notification[];
+    onClose?: () => void;
+    onMarkRead?: ((id: string) => void) | undefined;
+    onMarkAllRead?: (() => void) | undefined;
+  }
 
-  let filter: 'all' | NotifType = 'all';
-  let panelEl: HTMLDivElement;
-  let prevFocus: HTMLElement | null = null;
+  let {
+    open = false,
+    notifications = [],
+    onClose = () => {},
+    onMarkRead = undefined,
+    onMarkAllRead = undefined
+  }: Props = $props();
+
+  let filter: 'all' | NotifType = $state('all');
+  let panelEl: HTMLDivElement = $state();
+  let prevFocus: HTMLElement | null = $state(null);
 
   const SEV_COLOR: Record<string, string> = {
     danger: '#F03A3A',
@@ -43,8 +55,8 @@
 
   function setFilter(f: string) { filter = f as 'all' | NotifType; }
 
-  $: unread = notifications.filter((n) => !n.read).length;
-  $: filtered = filter === 'all' ? notifications : notifications.filter((n) => n.type === filter);
+  let unread = $derived(notifications.filter((n) => !n.read).length);
+  let filtered = $derived(filter === 'all' ? notifications : notifications.filter((n) => n.type === filter));
 
   const FOCUSABLE =
     'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
@@ -61,18 +73,20 @@
     else if (!e.shiftKey && active === l) { e.preventDefault(); f.focus(); }
   }
 
-  $: if (open) {
-    prevFocus = document.activeElement as HTMLElement | null;
-    setTimeout(() => {
-      if (!panelEl) return;
-      const first = panelEl.querySelector<HTMLElement>(FOCUSABLE);
-      (first ?? panelEl)?.focus();
-    }, 0);
-    window.addEventListener('keydown', trapFocus);
-  } else {
-    window.removeEventListener('keydown', trapFocus);
-    prevFocus?.focus?.();
-  }
+  run(() => {
+    if (open) {
+      prevFocus = document.activeElement as HTMLElement | null;
+      setTimeout(() => {
+        if (!panelEl) return;
+        const first = panelEl.querySelector<HTMLElement>(FOCUSABLE);
+        (first ?? panelEl)?.focus();
+      }, 0);
+      window.addEventListener('keydown', trapFocus);
+    } else {
+      window.removeEventListener('keydown', trapFocus);
+      prevFocus?.focus?.();
+    }
+  });
 
   onDestroy(() => {
     window.removeEventListener('keydown', trapFocus);
@@ -81,12 +95,12 @@
   let titleId = 'np-title-' + Math.random().toString(36).slice(2);
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
   class="np-overlay{open ? ' np-overlay--show' : ''}"
-  on:click={onClose}
+  onclick={onClose}
   aria-hidden="true"
-/>
+></div>
 <div
   bind:this={panelEl}
   class="np-panel{open ? ' np-panel--show' : ''}"
@@ -105,11 +119,11 @@
       </h2>
       <div class="np-header-actions">
         {#if unread > 0 && onMarkAllRead}
-          <button type="button" class="np-mark-all" on:click={onMarkAllRead}>
+          <button type="button" class="np-mark-all" onclick={onMarkAllRead}>
             Mark all read
           </button>
         {/if}
-        <button type="button" class="icon-btn" on:click={onClose} aria-label="Close notifications">
+        <button type="button" class="icon-btn" onclick={onClose} aria-label="Close notifications">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
             <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"/>
           </svg>
@@ -123,7 +137,7 @@
           role="tab"
           aria-selected={filter === f}
           class="np-filter{filter === f ? ' np-filter--active' : ''}"
-          on:click={() => setFilter(f)}
+          onclick={() => setFilter(f)}
         >
           {TYPE_LABEL[f] ?? f}
         </button>
@@ -161,7 +175,7 @@
             <button
               type="button"
               class="np-read-btn"
-              on:click={() => onMarkRead?.(n.id)}
+              onclick={() => onMarkRead?.(n.id)}
               aria-label="Mark as read: {n.title}"
               title="Mark as read"
             >&#10003;</button>

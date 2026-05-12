@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   export interface ContextMenuItem {
     id: string;
     label: string;
@@ -9,28 +9,40 @@
 </script>
 
 <script lang="ts">
+  import { run, preventDefault } from 'svelte/legacy';
+
   import { onDestroy, tick, createEventDispatcher } from 'svelte';
 
-  export let items: ContextMenuEntry[] = [];
-  export let x = 0;
-  export let y = 0;
-  export let open = false;
-  export let label = 'Context menu';
+  interface Props {
+    items?: ContextMenuEntry[];
+    x?: number;
+    y?: number;
+    open?: boolean;
+    label?: string;
+  }
+
+  let {
+    items = [],
+    x = 0,
+    y = 0,
+    open = false,
+    label = 'Context menu'
+  }: Props = $props();
 
   const dispatch = createEventDispatcher<{ close: void; action: string }>();
 
-  let menuEl: HTMLUListElement;
-  let activeIdx = 0;
+  let menuEl: HTMLUListElement = $state();
+  let activeIdx = $state(0);
 
-  $: actionItems = items.reduce<ContextMenuItem[]>((acc, e) => {
+  let actionItems = $derived(items.reduce<ContextMenuItem[]>((acc, e) => {
     if (!('separator' in e)) acc.push(e);
     return acc;
-  }, []);
+  }, []));
 
   const menuW = 168;
-  $: menuH = items.length * 30 + 8;
-  $: cx = Math.min(x, (typeof window !== 'undefined' ? window.innerWidth : 1200) - menuW - 8);
-  $: cy = Math.min(y, (typeof window !== 'undefined' ? window.innerHeight : 800) - menuH - 8);
+  let menuH = $derived(items.length * 30 + 8);
+  let cx = $derived(Math.min(x, (typeof window !== 'undefined' ? window.innerWidth : 1200) - menuW - 8));
+  let cy = $derived(Math.min(y, (typeof window !== 'undefined' ? window.innerHeight : 800) - menuH - 8));
 
   function activate(id: string) {
     dispatch('action', id);
@@ -55,13 +67,15 @@
     if (!menuEl?.contains(e.target as Node)) dispatch('close');
   }
 
-  $: if (open) {
-    activeIdx = 0;
-    tick().then(() => menuEl?.focus());
-    document.addEventListener('mousedown', handleOutside);
-  } else {
-    document.removeEventListener('mousedown', handleOutside);
-  }
+  run(() => {
+    if (open) {
+      activeIdx = 0;
+      tick().then(() => menuEl?.focus());
+      document.addEventListener('mousedown', handleOutside);
+    } else {
+      document.removeEventListener('mousedown', handleOutside);
+    }
+  });
 
   onDestroy(() => {
     document.removeEventListener('mousedown', handleOutside);
@@ -74,7 +88,7 @@
 </script>
 
 {#if open}
-  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
   <ul
     bind:this={menuEl}
     role="menu"
@@ -82,13 +96,13 @@
     tabindex="-1"
     class="ctx-menu"
     style="left:{cx}px;top:{cy}px"
-    on:keydown={handleKeyDown}
+    onkeydown={handleKeyDown}
   >
     {#each items as entry, i (i)}
       {#if 'separator' in entry}
         <li role="separator" class="ctx-menu-sep"></li>
       {:else}
-        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <li
           role="menuitem"
           tabindex="-1"
@@ -96,8 +110,8 @@
           data-active={actionIndex(entry) === activeIdx ? 'true' : undefined}
           data-danger={entry.danger || undefined}
           class="ctx-menu-item"
-          on:mouseenter={() => (activeIdx = actionIndex(entry))}
-          on:mousedown|preventDefault={() => { if (!entry.disabled) activate(entry.id); }}
+          onmouseenter={() => (activeIdx = actionIndex(entry))}
+          onmousedown={preventDefault(() => { if (!entry.disabled) activate(entry.id); })}
         >
           {entry.label}
         </li>

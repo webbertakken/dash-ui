@@ -1,21 +1,31 @@
 <script lang="ts">
-  export let value: number = 0;
-  export let label: string = '';
-  export let color: string = '#006FFF';
-  export let size: number = 120;
-  export let ariaLabel: string | undefined = undefined;
+  interface Props {
+    value?: number;
+    label?: string;
+    color?: string;
+    size?: number;
+    ariaLabel?: string | undefined;
+  }
 
-  $: sw = 10;
-  $: cx = size / 2;
-  $: cy = size / 2;
-  $: r = cx - sw / 2 - 2;
-  $: svgH = Math.round(size * 0.7);
-  $: pathLen = Math.PI * r;
-  $: fillLen = (Math.min(100, Math.max(0, value)) / 100) * pathLen;
-  $: d = `M ${cx - r},${cy} A ${r},${r} 0 1 1 ${cx + r},${cy}`;
-  $: valY = cy + Math.round(size * 0.06);
-  $: lblY = valY + Math.round(size * 0.13) + 2;
-  $: a11yLabel = ariaLabel ?? `${label} ${value}%`;
+  let {
+    value = 0,
+    label = '',
+    color = '#006FFF',
+    size = 120,
+    ariaLabel = undefined
+  }: Props = $props();
+
+  
+  let cx = $derived(size / 2);
+  let cy = $derived(size / 2);
+  let r = $derived(cx - sw / 2 - 2);
+  let svgH = $derived(Math.round(size * 0.7));
+  let pathLen = $derived(Math.PI * r);
+  let fillLen = $derived((Math.min(100, Math.max(0, value)) / 100) * pathLen);
+  let d = $derived(`M ${cx - r},${cy} A ${r},${r} 0 1 1 ${cx + r},${cy}`);
+  let valY = $derived(cy + Math.round(size * 0.06));
+  let lblY = $derived(valY + Math.round(size * 0.13) + 2);
+  let a11yLabel = $derived(ariaLabel ?? `${label} ${value}%`);
 </script>
 
 <div

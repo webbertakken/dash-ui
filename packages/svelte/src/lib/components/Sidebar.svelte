@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { ComponentType } from 'svelte';
   export interface SidebarItemDef {
     id: string;
@@ -15,8 +15,12 @@
 
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  export let sections: SidebarSectionDef[] = [];
-  export let activeId: string;
+  interface Props {
+    sections?: SidebarSectionDef[];
+    activeId: string;
+  }
+
+  let { sections = [], activeId = $bindable() }: Props = $props();
   const dispatch = createEventDispatcher<{ change: string }>();
 </script>
 
@@ -30,9 +34,9 @@
             type="button"
             class="sb-item {it.id === activeId ? 'active' : ''}"
             aria-current={it.id === activeId ? 'page' : undefined}
-            on:click={() => { activeId = it.id; dispatch('change', it.id); }}
+            onclick={() => { activeId = it.id; dispatch('change', it.id); }}
           >
-            <span class="sb-ico"><svelte:component this={it.icon} /></span>
+            <span class="sb-ico"><it.icon /></span>
             {it.label}
             {#if it.count !== undefined}<span class="sb-count">{it.count}</span>{/if}
             {#if it.pill !== undefined}<span class="sb-pill">{it.pill}<span class="sr-only"> alert{it.pill !== 1 ? 's' : ''}</span></span>{/if}

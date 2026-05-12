@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface StreamSeries {
     label: string;
     values: number[];
@@ -8,9 +8,13 @@
 
 <script lang="ts">
 
-  export let labels: string[] = [];
-  export let series: StreamSeries[] = [];
-  export let ariaLabel: string = 'Stream graph';
+  interface Props {
+    labels?: string[];
+    series?: StreamSeries[];
+    ariaLabel?: string;
+  }
+
+  let { labels = [], series = [], ariaLabel = 'Stream graph' }: Props = $props();
 
   const VW = 380;
   const VH = 120;
@@ -20,20 +24,20 @@
   const PAD_B = 20;
   const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#7FB6FF', '#A878F5', '#F56342'];
 
-  $: n = labels.length;
-  $: TRACK_W = VW - PAD_L - PAD_R;
-  $: TRACK_H = VH - PAD_T - PAD_B;
+  let n = $derived(labels.length);
+  let TRACK_W = $derived(VW - PAD_L - PAD_R);
+  let TRACK_H = $derived(VH - PAD_T - PAD_B);
 
-  $: totals = Array.from({ length: n }, (_, i) =>
+  let totals = $derived(Array.from({ length: n }, (_, i) =>
     series.reduce((sum, s) => sum + (s.values[i] ?? 0), 0)
-  );
-  $: maxTotal = Math.max(...totals, 1);
+  ));
+  let maxTotal = $derived(Math.max(...totals, 1));
 
   function xOf(i: number): number {
     return n > 1 ? PAD_L + (i / (n - 1)) * TRACK_W : PAD_L + TRACK_W / 2;
   }
 
-  $: layers = series.map((s, si) => {
+  let layers = $derived(series.map((s, si) => {
     const tops: number[] = [];
     const bots: number[] = [];
     for (let i = 0; i < n; i++) {
@@ -46,7 +50,7 @@
       tops[i] = PAD_T + (top / maxTotal) * TRACK_H;
     }
     return { tops, bots, color: s.color ?? COLORS[si % COLORS.length] };
-  });
+  }));
 
   function buildArea(tops: number[], bots: number[]): string {
     const fwd = tops.map((y, i) => {

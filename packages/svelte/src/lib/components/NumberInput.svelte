@@ -1,23 +1,37 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  export let label: string | undefined = undefined;
-  export let value: number = 0;
-  export let min: number | undefined = undefined;
-  export let max: number | undefined = undefined;
-  export let step: number = 1;
-  export let suffix: string | undefined = undefined;
-  export let disabled: boolean = false;
-  export let id: string | undefined = undefined;
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    value?: number;
+    min?: number | undefined;
+    max?: number | undefined;
+    step?: number;
+    suffix?: string | undefined;
+    disabled?: boolean;
+    id?: string | undefined;
+    class?: string;
+  }
+
+  let {
+    label = undefined,
+    value = $bindable(0),
+    min = undefined,
+    max = undefined,
+    step = 1,
+    suffix = undefined,
+    disabled = false,
+    id = undefined,
+    class: className = ''
+  }: Props = $props();
+  
 
   const uid = `dash-ui-ni-${++counter}`;
-  $: inputId = id ?? uid;
+  let inputId = $derived(id ?? uid);
 
   const dispatch = createEventDispatcher<{ change: number }>();
 
@@ -47,8 +61,8 @@
     if (!isNaN(n)) commit(n);
   }
 
-  $: canDecrement = !disabled && (min === undefined || value > min);
-  $: canIncrement = !disabled && (max === undefined || value < max);
+  let canDecrement = $derived(!disabled && (min === undefined || value > min));
+  let canIncrement = $derived(!disabled && (max === undefined || value < max));
 </script>
 
 <div class="number-input {className}">
@@ -62,9 +76,9 @@
       aria-label="Decrement"
       tabindex="-1"
       disabled={!canDecrement}
-      on:click={() => commit(value - step)}
+      onclick={() => commit(value - step)}
     >−</button>
-    <!-- svelte-ignore a11y-no-redundant-roles - role kept explicit for screen reader compat -->
+    <!-- svelte-ignore a11y_no_redundant_roles - role kept explicit for screen reader compat -->
     <input
       id={inputId}
       type="number"
@@ -76,8 +90,8 @@
       {value}
       {disabled}
       class="number-input__field"
-      on:change={handleChange}
-      on:keydown={handleKey}
+      onchange={handleChange}
+      onkeydown={handleKey}
     />
     {#if suffix}
       <span class="number-input__suffix" aria-hidden="true">{suffix}</span>
@@ -88,7 +102,7 @@
       aria-label="Increment"
       tabindex="-1"
       disabled={!canIncrement}
-      on:click={() => commit(value + step)}
+      onclick={() => commit(value + step)}
     >+</button>
   </div>
 </div>

@@ -1,12 +1,16 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface ChordNode { label: string; color?: string; }
 </script>
 
 <script lang="ts">
 
-  export let nodes: ChordNode[];
-  export let matrix: number[][];
-  export let ariaLabel: string = 'Chord diagram';
+  interface Props {
+    nodes: ChordNode[];
+    matrix: number[][];
+    ariaLabel?: string;
+  }
+
+  let { nodes, matrix, ariaLabel = 'Chord diagram' }: Props = $props();
 
   const PALETTE = ['#006FFF', '#00C875', '#A78BFA', '#F5A623', '#50B8E7', '#F04949'];
   const CX = 160, CY = 160, R_IN = 108, R_ARC = 125, R_LBL = 138, PAD = 0.04;
@@ -30,7 +34,7 @@
   type Chord = { d: string; fill: string };
   type Label = { x: number; y: number; anchor: string; text: string };
 
-  $: ({ arcs, chords, labels } = (() => {
+  let { arcs, chords, labels } = $derived((() => {
     const n = nodes.length;
     const totals = nodes.map((_, i) => matrix[i].reduce((s, v) => s + v, 0));
     const grand = totals.reduce((s, v) => s + v, 0);

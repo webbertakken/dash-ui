@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface ErrorBandSeries {
     label: string;
     color: string;
@@ -10,12 +10,23 @@
 
 <script lang="ts">
 
-  export let series: ErrorBandSeries[] = [];
-  export let xLabels: string[] = [];
-  export let yRange: [number, number] | undefined = undefined;
-  export let height = 180;
-  export let unit = '';
-  export let ariaLabel = 'Error band chart';
+  interface Props {
+    series?: ErrorBandSeries[];
+    xLabels?: string[];
+    yRange?: [number, number] | undefined;
+    height?: number;
+    unit?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    xLabels = [],
+    yRange = undefined,
+    height = 180,
+    unit = '',
+    ariaLabel = 'Error band chart'
+  }: Props = $props();
 
   const VW = 340;
   const PAD_L = 28;
@@ -24,13 +35,13 @@
   const PAD_B = 20;
   const PLOT_W = VW - PAD_L - PAD_R;
 
-  $: n = series.length ? series[0].mean.length : 0;
-  $: PLOT_H = height - PAD_T - PAD_B;
-  $: allVals = series.flatMap((s) => [...s.lower, ...s.upper]);
-  $: minV = yRange ? yRange[0] : allVals.length ? Math.min(...allVals) : 0;
-  $: maxV = yRange ? yRange[1] : allVals.length ? Math.max(...allVals) : 1;
-  $: vRange = maxV - minV || 1;
-  $: yTicks = [minV, (minV + maxV) / 2, maxV];
+  let n = $derived(series.length ? series[0].mean.length : 0);
+  let PLOT_H = $derived(height - PAD_T - PAD_B);
+  let allVals = $derived(series.flatMap((s) => [...s.lower, ...s.upper]));
+  let minV = $derived(yRange ? yRange[0] : allVals.length ? Math.min(...allVals) : 0);
+  let maxV = $derived(yRange ? yRange[1] : allVals.length ? Math.max(...allVals) : 1);
+  let vRange = $derived(maxV - minV || 1);
+  let yTicks = $derived([minV, (minV + maxV) / 2, maxV]);
 
   function tx(i: number): number {
     return PAD_L + (i / (n - 1 || 1)) * PLOT_W;

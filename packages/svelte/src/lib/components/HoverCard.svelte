@@ -1,16 +1,28 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  export let placement: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
-  export let delay: number = 300;
-  let className = '';
-  export { className as class };
+  interface Props {
+    placement?: 'top' | 'bottom' | 'left' | 'right';
+    delay?: number;
+    class?: string;
+    trigger?: import('svelte').Snippet;
+    content?: import('svelte').Snippet;
+  }
+
+  let {
+    placement = 'bottom',
+    delay = 300,
+    class: className = '',
+    trigger,
+    content
+  }: Props = $props();
+  
 
   const id = `dash-ui-hovercard-${++counter}`;
-  let open = false;
+  let open = $state(false);
   let timer: ReturnType<typeof setTimeout> | null = null;
 
   function show() {
@@ -29,17 +41,17 @@
 <div
   role="group"
   class="hovercard-wrapper hovercard-{placement} {className}"
-  on:mouseenter={show}
-  on:mouseleave={hide}
-  on:focusin={show}
-  on:focusout={hide}
+  onmouseenter={show}
+  onmouseleave={hide}
+  onfocusin={show}
+  onfocusout={hide}
 >
   <div class="hovercard-trigger" aria-describedby={open ? id : undefined}>
-    <slot name="trigger" />
+    {@render trigger?.()}
   </div>
   {#if open}
     <div {id} role="tooltip" class="hovercard">
-      <slot name="content" />
+      {@render content?.()}
     </div>
   {/if}
 </div>

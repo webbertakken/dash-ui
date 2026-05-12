@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface CandlestickBar {
     label: string;
     open: number;
@@ -10,13 +10,25 @@
 
 <script lang="ts">
 
-  export let bars: CandlestickBar[] = [];
-  export let yRange: [number, number] | undefined = undefined;
-  export let height = 180;
-  export let unit = '';
-  export let upColor = '#00C875';
-  export let downColor = '#FF7B7B';
-  export let ariaLabel = 'Candlestick chart';
+  interface Props {
+    bars?: CandlestickBar[];
+    yRange?: [number, number] | undefined;
+    height?: number;
+    unit?: string;
+    upColor?: string;
+    downColor?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    bars = [],
+    yRange = undefined,
+    height = 180,
+    unit = '',
+    upColor = '#00C875',
+    downColor = '#FF7B7B',
+    ariaLabel = 'Candlestick chart'
+  }: Props = $props();
 
   const VW = 340;
   const PAD_L = 28;
@@ -25,14 +37,14 @@
   const PAD_B = 20;
   const PLOT_W = VW - PAD_L - PAD_R;
 
-  $: n = bars.length;
-  $: PLOT_H = height - PAD_T - PAD_B;
-  $: allVals = bars.flatMap((b) => [b.low, b.high]);
-  $: minV = yRange ? yRange[0] : allVals.length ? Math.min(...allVals) : 0;
-  $: maxV = yRange ? yRange[1] : allVals.length ? Math.max(...allVals) : 1;
-  $: vRange = maxV - minV || 1;
-  $: yTicks = [minV, (minV + maxV) / 2, maxV];
-  $: candleW = Math.max(4, (PLOT_W / (n || 1)) * 0.5);
+  let n = $derived(bars.length);
+  let PLOT_H = $derived(height - PAD_T - PAD_B);
+  let allVals = $derived(bars.flatMap((b) => [b.low, b.high]));
+  let minV = $derived(yRange ? yRange[0] : allVals.length ? Math.min(...allVals) : 0);
+  let maxV = $derived(yRange ? yRange[1] : allVals.length ? Math.max(...allVals) : 1);
+  let vRange = $derived(maxV - minV || 1);
+  let yTicks = $derived([minV, (minV + maxV) / 2, maxV]);
+  let candleW = $derived(Math.max(4, (PLOT_W / (n || 1)) * 0.5));
 
   function tx(i: number): number {
     return PAD_L + ((i + 0.5) / (n || 1)) * PLOT_W;

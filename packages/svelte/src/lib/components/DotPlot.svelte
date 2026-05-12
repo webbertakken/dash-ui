@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface DotPlotItem {
     label: string;
     value: number;
@@ -9,13 +9,25 @@
 
 <script lang="ts">
 
-  export let items: DotPlotItem[] = [];
-  export let min: number = 0;
-  export let max: number | undefined = undefined;
-  export let unit: string = '';
-  export let valueLegend: string | undefined = undefined;
-  export let compareLegend: string | undefined = undefined;
-  export let ariaLabel: string = 'Dot plot';
+  interface Props {
+    items?: DotPlotItem[];
+    min?: number;
+    max?: number | undefined;
+    unit?: string;
+    valueLegend?: string | undefined;
+    compareLegend?: string | undefined;
+    ariaLabel?: string;
+  }
+
+  let {
+    items = [],
+    min = 0,
+    max = undefined,
+    unit = '',
+    valueLegend = undefined,
+    compareLegend = undefined,
+    ariaLabel = 'Dot plot'
+  }: Props = $props();
 
   const VW = 380;
   const LABEL_W = 132;
@@ -29,16 +41,16 @@
   const LEG_H = 18;
   const TICKS = 5;
 
-  $: hasCompare = items.some((it) => it.compare !== undefined);
-  $: maxVal = max ?? Math.max(...items.map((it) => Math.max(it.value, it.compare ?? 0)));
-  $: range = Math.max(maxVal - min, 1);
-  $: svgH =
-    PAD_T +
+  let hasCompare = $derived(items.some((it) => it.compare !== undefined));
+  let maxVal = $derived(max ?? Math.max(...items.map((it) => Math.max(it.value, it.compare ?? 0))));
+  let range = $derived(Math.max(maxVal - min, 1));
+  let svgH =
+    $derived(PAD_T +
     items.length * ROW_H +
     AXIS_H +
-    (hasCompare && (valueLegend || compareLegend) ? LEG_H + 4 : 0);
-  $: ticks = Array.from({ length: TICKS }, (_, i) => min + (i / (TICKS - 1)) * range);
-  $: legY = PAD_T + items.length * ROW_H + AXIS_H + 4;
+    (hasCompare && (valueLegend || compareLegend) ? LEG_H + 4 : 0));
+  let ticks = $derived(Array.from({ length: TICKS }, (_, i) => min + (i / (TICKS - 1)) * range));
+  let legY = $derived(PAD_T + items.length * ROW_H + AXIS_H + 4);
 
   function tx(v: number): number {
     return LABEL_W + ((v - min) / range) * TRACK_W;

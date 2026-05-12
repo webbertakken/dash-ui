@@ -1,22 +1,28 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface ActionMenuItem { id: string; label: string; danger?: boolean; disabled?: boolean; }
 </script>
 
 <script lang="ts">
+  import { preventDefault } from 'svelte/legacy';
+
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
-  export let items: ActionMenuItem[] = [];
-  export let label: string = 'Actions';
+  interface Props {
+    items?: ActionMenuItem[];
+    label?: string;
+  }
+
+  let { items = [], label = 'Actions' }: Props = $props();
 
   const dispatch = createEventDispatcher<{ action: string }>();
   const uid = `dash-ui-am-${++counter}`;
   const menuId = `${uid}-menu`;
 
-  let open = false;
-  let activeIdx = 0;
-  let triggerEl: HTMLButtonElement;
-  let wrapperEl: HTMLDivElement;
+  let open = $state(false);
+  let activeIdx = $state(0);
+  let triggerEl: HTMLButtonElement = $state();
+  let wrapperEl: HTMLDivElement = $state();
 
   function toggle() {
     if (!open) activeIdx = 0;
@@ -68,8 +74,8 @@
     aria-haspopup="menu"
     aria-expanded={open}
     aria-controls={open ? menuId : undefined}
-    on:click={toggle}
-    on:keydown={onKeyDown}
+    onclick={toggle}
+    onkeydown={onKeyDown}
   >
     <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false" fill="currentColor">
       <circle cx="7" cy="2.5" r="1.2" />
@@ -87,8 +93,8 @@
           data-active={idx === activeIdx ? 'true' : undefined}
           data-danger={item.danger ? 'true' : undefined}
           class="action-menu-item"
-          on:mouseenter={() => { activeIdx = idx; }}
-          on:mousedown|preventDefault={() => { if (!item.disabled) activate(item.id); }}
+          onmouseenter={() => { activeIdx = idx; }}
+          onmousedown={preventDefault(() => { if (!item.disabled) activate(item.id); })}
         >{item.label}</li>
       {/each}
     </ul>

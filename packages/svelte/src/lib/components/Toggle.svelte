@@ -1,8 +1,12 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  export let on: boolean = false;
-  export let ariaLabel: string | undefined = undefined;
-  export let ariaDescribedBy: string | undefined = undefined;
+  interface Props {
+    on?: boolean;
+    ariaLabel?: string | undefined;
+    ariaDescribedBy?: string | undefined;
+  }
+
+  let { on = $bindable(false), ariaLabel = undefined, ariaDescribedBy = undefined }: Props = $props();
   const dispatch = createEventDispatcher<{ toggle: boolean }>();
   function flip() {
     on = !on;
@@ -17,7 +21,7 @@
   aria-label={ariaLabel}
   aria-describedby={ariaDescribedBy}
   class="toggle-track {on ? 'on' : 'off'}"
-  on:click={flip}
+  onclick={flip}
 >
   <span class="knob"></span>
 </button>

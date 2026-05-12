@@ -1,6 +1,10 @@
 <script lang="ts">
-  export let weak: boolean = false;
-  export let label: string | undefined = undefined;
+  interface Props {
+    weak?: boolean;
+    label?: string | undefined;
+  }
+
+  let { weak = false, label = undefined }: Props = $props();
 </script>
 
 <span

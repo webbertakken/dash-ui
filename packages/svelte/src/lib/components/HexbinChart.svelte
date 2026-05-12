@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface HexbinPoint {
     x: number;
     y: number;
@@ -7,12 +7,23 @@
 
 <script lang="ts">
 
-  export let points: HexbinPoint[] = [];
-  export let xRange: [number, number] | undefined = undefined;
-  export let yRange: [number, number] | undefined = undefined;
-  export let height = 200;
-  export let hexRadius = 10;
-  export let ariaLabel = 'Hexbin chart';
+  interface Props {
+    points?: HexbinPoint[];
+    xRange?: [number, number] | undefined;
+    yRange?: [number, number] | undefined;
+    height?: number;
+    hexRadius?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    points = [],
+    xRange = undefined,
+    yRange = undefined,
+    height = 200,
+    hexRadius = 10,
+    ariaLabel = 'Hexbin chart'
+  }: Props = $props();
 
   const ROOT3 = Math.sqrt(3);
   const VW = 340;
@@ -46,18 +57,18 @@
     return `M${pts.join('L')}Z`;
   }
 
-  $: PLOT_W = VW - PAD_L - PAD_R;
-  $: PLOT_H = height - PAD_T - PAD_B;
-  $: xs = points.map((p) => p.x);
-  $: ys = points.map((p) => p.y);
-  $: xMin = xRange ? xRange[0] : (xs.length ? Math.min(...xs) : 0);
-  $: xMax = xRange ? xRange[1] : (xs.length ? Math.max(...xs) : 1);
-  $: yMin = yRange ? yRange[0] : (ys.length ? Math.min(...ys) : 0);
-  $: yMax = yRange ? yRange[1] : (ys.length ? Math.max(...ys) : 1);
-  $: xSpan = xMax - xMin || 1;
-  $: ySpan = yMax - yMin || 1;
+  let PLOT_W = $derived(VW - PAD_L - PAD_R);
+  let PLOT_H = $derived(height - PAD_T - PAD_B);
+  let xs = $derived(points.map((p) => p.x));
+  let ys = $derived(points.map((p) => p.y));
+  let xMin = $derived(xRange ? xRange[0] : (xs.length ? Math.min(...xs) : 0));
+  let xMax = $derived(xRange ? xRange[1] : (xs.length ? Math.max(...xs) : 1));
+  let yMin = $derived(yRange ? yRange[0] : (ys.length ? Math.min(...ys) : 0));
+  let yMax = $derived(yRange ? yRange[1] : (ys.length ? Math.max(...ys) : 1));
+  let xSpan = $derived(xMax - xMin || 1);
+  let ySpan = $derived(yMax - yMin || 1);
 
-  $: bins = (() => {
+  let bins = $derived((() => {
     const map = new Map<string, { q: number; r: number; count: number }>();
     for (const pt of points) {
       const px = ((pt.x - xMin) / xSpan) * PLOT_W;
@@ -69,11 +80,11 @@
       else map.set(key, { q, r, count: 1 });
     }
     return [...map.values()];
-  })();
+  })());
 
-  $: maxCount = bins.length ? Math.max(...bins.map((b) => b.count)) : 1;
-  $: yTicks = [yMin, (yMin + yMax) / 2, yMax];
-  $: xTicks = [xMin, (xMin + xMax) / 2, xMax];
+  let maxCount = $derived(bins.length ? Math.max(...bins.map((b) => b.count)) : 1);
+  let yTicks = $derived([yMin, (yMin + yMax) / 2, yMax]);
+  let xTicks = $derived([xMin, (xMin + xMax) / 2, xMax]);
 
   function ty(v: number): number { return PAD_T + (1 - (v - yMin) / ySpan) * PLOT_H; }
   function tx(v: number): number { return PAD_L + ((v - xMin) / xSpan) * PLOT_W; }

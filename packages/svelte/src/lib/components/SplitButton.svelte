@@ -1,24 +1,35 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface SplitButtonItem { id: string; label: string; disabled?: boolean; }
 </script>
 
 <script lang="ts">
+  import { preventDefault } from 'svelte/legacy';
+
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
-  export let label: string;
-  export let variant: 'primary' | 'ghost' | 'danger' = 'ghost';
-  export let disabled: boolean = false;
-  export let items: SplitButtonItem[] = [];
+  interface Props {
+    label: string;
+    variant?: 'primary' | 'ghost' | 'danger';
+    disabled?: boolean;
+    items?: SplitButtonItem[];
+  }
+
+  let {
+    label,
+    variant = 'ghost',
+    disabled = false,
+    items = []
+  }: Props = $props();
 
   const dispatch = createEventDispatcher<{ primary: void; action: string }>();
   const uid = `dash-ui-spbtn-${++counter}`;
   const menuId = `${uid}-menu`;
 
-  let open = false;
-  let activeIdx = 0;
-  let caretEl: HTMLButtonElement;
-  let wrapperEl: HTMLDivElement;
+  let open = $state(false);
+  let activeIdx = $state(0);
+  let caretEl: HTMLButtonElement = $state();
+  let wrapperEl: HTMLDivElement = $state();
 
   function toggleMenu() {
     if (!open) activeIdx = 0;
@@ -66,7 +77,7 @@
     type="button"
     class="btn btn-{variant} split-btn-primary"
     {disabled}
-    on:click={() => dispatch('primary')}
+    onclick={() => dispatch('primary')}
   >{label}</button>
   <button
     bind:this={caretEl}
@@ -77,8 +88,8 @@
     aria-haspopup="menu"
     aria-expanded={open}
     aria-controls={open ? menuId : undefined}
-    on:click={toggleMenu}
-    on:keydown={onKeyDown}
+    onclick={toggleMenu}
+    onkeydown={onKeyDown}
   >
     <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M1 3 L5 7 L9 3" />
@@ -93,8 +104,8 @@
           aria-disabled={item.disabled}
           data-active={idx === activeIdx ? 'true' : undefined}
           class="action-menu-item"
-          on:mouseenter={() => { activeIdx = idx; }}
-          on:mousedown|preventDefault={() => { if (!item.disabled) activate(item.id); }}
+          onmouseenter={() => { activeIdx = idx; }}
+          onmousedown={preventDefault(() => { if (!item.disabled) activate(item.id); })}
         >{item.label}</li>
       {/each}
     </ul>

@@ -1,9 +1,25 @@
 <script lang="ts">
-  export let title: string | undefined = undefined;
-  export let type: 'button' | 'submit' | 'reset' = 'button';
-  let className = '';
-  export { className as class };
-  export let style: string = '';
+  import { createBubbler } from 'svelte/legacy';
+
+  const bubble = createBubbler();
+  
+  interface Props {
+    title?: string | undefined;
+    type?: 'button' | 'submit' | 'reset';
+    class?: string;
+    style?: string;
+    children?: import('svelte').Snippet;
+    [key: string]: any
+  }
+
+  let {
+    title = undefined,
+    type = 'button',
+    class: className = '',
+    style = '',
+    children,
+    ...rest
+  }: Props = $props();
 </script>
 
 <button
@@ -11,9 +27,9 @@
   class="icon-btn {className}"
   {title}
   {style}
-  {...$$restProps}
-  aria-label={$$restProps['aria-label'] ?? title}
-  on:click
+  {...rest}
+  aria-label={rest['aria-label'] ?? title}
+  onclick={bubble('click')}
 >
-  <slot />
+  {@render children?.()}
 </button>

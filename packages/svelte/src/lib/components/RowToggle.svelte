@@ -1,12 +1,16 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
   import Toggle from './Toggle.svelte';
-  export let title: string;
-  export let description: string;
-  export let on: boolean = false;
+  interface Props {
+    title: string;
+    description: string;
+    on?: boolean;
+  }
+
+  let { title, description, on = $bindable(false) }: Props = $props();
   const descId = `dash-ui-rowtoggle-${++counter}`;
 </script>
 

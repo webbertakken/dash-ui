@@ -1,18 +1,31 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  export let label: string;
-  export let value: string = '';
-  export let id: string | undefined = undefined;
-  export let error: string | undefined = undefined;
-  export let required: boolean = false;
-  export let hint: string | undefined = undefined;
+  interface Props {
+    label: string;
+    value?: string;
+    id?: string | undefined;
+    error?: string | undefined;
+    required?: boolean;
+    hint?: string | undefined;
+    children?: import('svelte').Snippet;
+  }
+
+  let {
+    label,
+    value = $bindable(''),
+    id = undefined,
+    error = undefined,
+    required = false,
+    hint = undefined,
+    children
+  }: Props = $props();
   const inputId = id ?? `dash-ui-field-${++counter}`;
-  $: errorId = error ? `${inputId}-error` : undefined;
-  $: hintId = hint ? `${inputId}-hint` : undefined;
-  $: describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+  let errorId = $derived(error ? `${inputId}-error` : undefined);
+  let hintId = $derived(hint ? `${inputId}-hint` : undefined);
+  let describedBy = $derived([hintId, errorId].filter(Boolean).join(' ') || undefined);
 </script>
 
 <div class="field">
@@ -22,8 +35,8 @@
   {#if hint}
     <div class="field-hint" id={hintId}>{hint}</div>
   {/if}
-  {#if $$slots.default}
-    <slot />
+  {#if children}
+    {@render children?.()}
   {:else}
     <input
       class="input"

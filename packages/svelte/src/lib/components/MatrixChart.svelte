@@ -1,9 +1,19 @@
 <script lang="ts">
-  export let rows: string[] = [];
-  export let cols: string[] = [];
-  export let values: number[][] = [];
-  export let unit = '';
-  export let ariaLabel = 'Matrix chart';
+  interface Props {
+    rows?: string[];
+    cols?: string[];
+    values?: number[][];
+    unit?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    rows = [],
+    cols = [],
+    values = [],
+    unit = '',
+    ariaLabel = 'Matrix chart'
+  }: Props = $props();
 
   const LEFT = 80;
   const TOP = 60;
@@ -19,10 +29,10 @@
     return String(n);
   }
 
-  $: allVals = values.flat();
-  $: max = Math.max(...allVals, 1);
-  $: W = LEFT + cols.length * CELL;
-  $: H = TOP + rows.length * CELL;
+  let allVals = $derived(values.flat());
+  let max = $derived(Math.max(...allVals, 1));
+  let W = $derived(LEFT + cols.length * CELL);
+  let H = $derived(TOP + rows.length * CELL);
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

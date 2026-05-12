@@ -1,15 +1,24 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  export let label: string | undefined = undefined;
-  export let value: string = '0.0.0.0';
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    value?: string;
+    disabled?: boolean;
+    class?: string;
+  }
+
+  let {
+    label = undefined,
+    value = $bindable('0.0.0.0'),
+    disabled = false,
+    class: className = ''
+  }: Props = $props();
+  
 
   const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-ip-${++counter}`;
@@ -26,8 +35,8 @@
     return [parts[0] ?? '0', parts[1] ?? '0', parts[2] ?? '0', parts[3] ?? '0'];
   }
 
-  let octets: [string, string, string, string] = parseIP(value);
-  let inputs: (HTMLInputElement | null)[] = [null, null, null, null];
+  let octets: [string, string, string, string] = $state(parseIP(value));
+  let inputs: (HTMLInputElement | null)[] = $state([null, null, null, null]);
 
   function focusAt(i: number) {
     const el = inputs[i];
@@ -90,10 +99,10 @@
         {disabled}
         maxlength={3}
         class="ip-input__octet"
-        on:input={(e) => commitOctet(i, e.currentTarget.value)}
-        on:keydown={(e) => handleKey(i, e)}
-        on:paste={handlePaste}
-        on:focus={(e) => e.currentTarget.select()}
+        oninput={(e) => commitOctet(i, e.currentTarget.value)}
+        onkeydown={(e) => handleKey(i, e)}
+        onpaste={handlePaste}
+        onfocus={(e) => e.currentTarget.select()}
       />
       {#if i < 3}
         <span class="ip-input__dot" aria-hidden="true">.</span>

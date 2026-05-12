@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface SlopeItem {
     label: string;
     before: number;
@@ -8,12 +8,23 @@
 
 <script lang="ts">
 
-  export let items: SlopeItem[] = [];
-  export let labelBefore: string = 'Before';
-  export let labelAfter: string = 'After';
-  export let unit: string = '';
-  export let ariaLabel: string = 'Slope chart';
-  export let positiveIsGood: boolean = false;
+  interface Props {
+    items?: SlopeItem[];
+    labelBefore?: string;
+    labelAfter?: string;
+    unit?: string;
+    ariaLabel?: string;
+    positiveIsGood?: boolean;
+  }
+
+  let {
+    items = [],
+    labelBefore = 'Before',
+    labelAfter = 'After',
+    unit = '',
+    ariaLabel = 'Slope chart',
+    positiveIsGood = false
+  }: Props = $props();
 
   const VW = 340;
   const COL_L = 108;
@@ -39,18 +50,18 @@
     return res;
   }
 
-  $: allVals = items.flatMap((it) => [it.before, it.after]);
-  $: minV = allVals.length ? Math.min(...allVals) : 0;
-  $: maxV = allVals.length ? Math.max(...allVals) : 1;
-  $: range = maxV - minV || 1;
-  $: ty = (v: number) => PAD_T + (1 - (v - minV) / range) * CHART_H;
+  let allVals = $derived(items.flatMap((it) => [it.before, it.after]));
+  let minV = $derived(allVals.length ? Math.min(...allVals) : 0);
+  let maxV = $derived(allVals.length ? Math.max(...allVals) : 1);
+  let range = $derived(maxV - minV || 1);
+  let ty = $derived((v: number) => PAD_T + (1 - (v - minV) / range) * CHART_H);
 
-  $: leftDotY = items.map((it) => ty(it.before));
-  $: rightDotY = items.map((it) => ty(it.after));
-  $: leftLabelY = nudge(leftDotY, LABEL_GAP);
-  $: rightLabelY = nudge(rightDotY, LABEL_GAP);
+  let leftDotY = $derived(items.map((it) => ty(it.before)));
+  let rightDotY = $derived(items.map((it) => ty(it.after)));
+  let leftLabelY = $derived(nudge(leftDotY, LABEL_GAP));
+  let rightLabelY = $derived(nudge(rightDotY, LABEL_GAP));
 
-  $: colored = items.map((it, i) => {
+  let colored = $derived(items.map((it, i) => {
     const diff = it.after - it.before;
     const c =
       diff === 0 ? '#A4A7B5' : diff > 0 === positiveIsGood ? '#00C875' : '#FF7B7B';
@@ -63,7 +74,7 @@
       rly: rightLabelY[i],
       delta: it.after - it.before,
     };
-  });
+  }));
 </script>
 
 {#if items.length}

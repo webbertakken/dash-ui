@@ -1,6 +1,10 @@
 <script lang="ts">
-  export let rows: Array<{ label: string; value: string; valueColor?: string }> = [];
-  export let caption: string | undefined = undefined;
+  interface Props {
+    rows?: Array<{ label: string; value: string; valueColor?: string }>;
+    caption?: string | undefined;
+  }
+
+  let { rows = [], caption = undefined }: Props = $props();
 </script>
 
 <table class="kv-table">

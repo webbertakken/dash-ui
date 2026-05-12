@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface CalendarDay {
     date: string;
     value: number;
@@ -7,9 +7,13 @@
 
 <script lang="ts">
 
-  export let data: CalendarDay[] = [];
-  export let maxValue: number | undefined = undefined;
-  export let ariaLabel: string = 'Calendar heatmap';
+  interface Props {
+    data?: CalendarDay[];
+    maxValue?: number | undefined;
+    ariaLabel?: string;
+  }
+
+  let { data = [], maxValue = undefined, ariaLabel = 'Calendar heatmap' }: Props = $props();
 
   const CELL = 10;
   const GAP = 2;
@@ -33,7 +37,7 @@
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
-  $: ({ cells, monthLabels } = (() => {
+  let { cells, monthLabels } = $derived((() => {
     const byDate = new Map(data.map((d) => [d.date, d.value]));
     const mx = maxValue ?? Math.max(1, ...data.map((d) => d.value));
 

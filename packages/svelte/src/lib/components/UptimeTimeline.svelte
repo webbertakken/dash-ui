@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type UptimeStatus = 'up' | 'degraded' | 'down';
   export interface UptimeSegment {
     from: number;
@@ -15,9 +15,13 @@
 
 
 
-  export let series: UptimeSeries[] = [];
-  export let xLabels: string[] = [];
-  export let ariaLabel: string = 'Uptime timeline';
+  interface Props {
+    series?: UptimeSeries[];
+    xLabels?: string[];
+    ariaLabel?: string;
+  }
+
+  let { series = [], xLabels = [], ariaLabel = 'Uptime timeline' }: Props = $props();
 
   const VW = 400;
   const LABEL_W = 88;
@@ -41,13 +45,13 @@
     { status: 'down', label: 'Down' },
   ];
 
-  $: trackW = VW - LABEL_W - PAD_R;
-  $: rowsH = series.length * (ROW_H + ROW_GAP) - ROW_GAP;
-  $: totalH = PAD_T + rowsH + PAD_B;
-  $: xlblY = PAD_T + rowsH + XLBL_H;
-  $: legY = xlblY + LEG_H;
+  let trackW = $derived(VW - LABEL_W - PAD_R);
+  let rowsH = $derived(series.length * (ROW_H + ROW_GAP) - ROW_GAP);
+  let totalH = $derived(PAD_T + rowsH + PAD_B);
+  let xlblY = $derived(PAD_T + rowsH + XLBL_H);
+  let legY = $derived(xlblY + LEG_H);
 
-  $: rows = series.map((s, si) => ({
+  let rows = $derived(series.map((s, si) => ({
     label: s.label,
     y: PAD_T + si * (ROW_H + ROW_GAP),
     midY: PAD_T + si * (ROW_H + ROW_GAP) + ROW_H / 2 + 4,
@@ -56,13 +60,13 @@
       w: (seg.to - seg.from) * trackW,
       color: STATUS_COLOR[seg.status],
     })),
-  }));
+  })));
 
-  $: xlbls = xLabels.map((lbl, i) => ({
+  let xlbls = $derived(xLabels.map((lbl, i) => ({
     lbl,
     x: LABEL_W + (xLabels.length > 1 ? i / (xLabels.length - 1) : 0) * trackW,
     anchor: i === 0 ? 'start' : i === xLabels.length - 1 ? 'end' : 'middle',
-  }));
+  })));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

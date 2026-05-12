@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface ColorSwatchDef {
     value: string;
@@ -20,12 +20,23 @@
 </script>
 
 <script lang="ts">
-  export let label: string = 'Colour';
-  export let srOnlyLabel: boolean = false;
-  export let value: string = COLOR_SWATCHES[0].value;
-  export let swatches: ColorSwatchDef[] = COLOR_SWATCHES;
-  export let disabled: boolean = false;
-  export let onChange: ((v: string) => void) | undefined = undefined;
+  interface Props {
+    label?: string;
+    srOnlyLabel?: boolean;
+    value?: string;
+    swatches?: ColorSwatchDef[];
+    disabled?: boolean;
+    onChange?: ((v: string) => void) | undefined;
+  }
+
+  let {
+    label = 'Colour',
+    srOnlyLabel = false,
+    value = $bindable(COLOR_SWATCHES[0].value),
+    swatches = COLOR_SWATCHES,
+    disabled = false,
+    onChange = undefined
+  }: Props = $props();
 
   const groupId = `dash-ui-cp-${++counter}`;
 
@@ -48,7 +59,7 @@
     onChange?.(value);
   }
 
-  $: hasMatch = swatches.some((s) => s.value === value);
+  let hasMatch = $derived(swatches.some((s) => s.value === value));
 </script>
 
 <div class="color-picker{disabled ? ' color-picker--disabled' : ''}">
@@ -60,7 +71,7 @@
     aria-labelledby="{groupId}-label"
     class="color-picker__grid"
     tabindex="-1"
-    on:keydown={handleKeyDown}
+    onkeydown={handleKeyDown}
   >
     {#each swatches as sw, i}
       {@const checked = sw.value === value}
@@ -75,7 +86,7 @@
           class="sr-only"
           tabindex={tabIdx}
           aria-label={sw.label}
-          on:change={() => {
+          onchange={() => {
             value = sw.value;
             onChange?.(value);
           }}
@@ -84,7 +95,7 @@
           class="color-picker__circle{checked ? ' color-picker__circle--selected' : ''}"
           style="background:{sw.color}"
           aria-hidden="true"
-        />
+></span>
       </label>
     {/each}
   </div>

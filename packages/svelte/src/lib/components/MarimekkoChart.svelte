@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface MarimekkoSegment {
     label: string;
     value: number;
@@ -13,9 +13,13 @@
 <script lang="ts">
 
 
-  export let columns: MarimekkoColumn[];
-  export let height = 160;
-  export let ariaLabel = 'Marimekko chart';
+  interface Props {
+    columns: MarimekkoColumn[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { columns, height = 160, ariaLabel = 'Marimekko chart' }: Props = $props();
 
   const PALETTE = ['#006FFF', '#00C875', '#F5A623', '#A78BFA', '#FF7B7B', '#00C8C8', '#FB923C'];
   const VW = 340;
@@ -25,7 +29,7 @@
   interface Cell { x: number; y: number; w: number; h: number; color: string; label: string; }
   interface Header { x: number; w: number; label: string; }
 
-  $: layout = (() => {
+  let layout = $derived((() => {
     const colTotals = columns.map(col => col.segments.reduce((s, seg) => s + seg.value, 0));
     const grandTotal = colTotals.reduce((s, t) => s + t, 0);
     if (grandTotal === 0) return { cells: [] as Cell[], headers: [] as Header[] };
@@ -53,7 +57,7 @@
       cx += colW;
     });
     return { cells, headers };
-  })();
+  })());
 </script>
 
 {#if layout.cells.length > 0}

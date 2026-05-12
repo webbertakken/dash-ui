@@ -1,21 +1,32 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface DonutSegment { label: string; value: number; color: string }
 </script>
 
 <script lang="ts">
-  export let size: number = 96;
-  export let segments: DonutSegment[] = [];
-  export let centerValue: string | number;
-  export let centerLabel: string;
-  export let trackColor: string = 'rgba(255,255,255,0.06)';
-  export let ariaLabel: string | undefined = undefined;
+  interface Props {
+    size?: number;
+    segments?: DonutSegment[];
+    centerValue: string | number;
+    centerLabel: string;
+    trackColor?: string;
+    ariaLabel?: string | undefined;
+  }
 
-  $: total = segments.reduce((s, x) => s + x.value, 0) || 1;
-  $: r = (size - 20) / 2;
-  $: c = 2 * Math.PI * r;
-  $: segDesc = segments.map((s) => `${s.label} ${Math.round((s.value / total) * 100)}%`).join(', ');
-  $: label = ariaLabel ?? `${centerValue} ${centerLabel}${segDesc ? `: ${segDesc}` : ''}`;
-  $: arcs = (() => {
+  let {
+    size = 96,
+    segments = [],
+    centerValue,
+    centerLabel,
+    trackColor = 'rgba(255,255,255,0.06)',
+    ariaLabel = undefined
+  }: Props = $props();
+
+  let total = $derived(segments.reduce((s, x) => s + x.value, 0) || 1);
+  let r = $derived((size - 20) / 2);
+  let c = $derived(2 * Math.PI * r);
+  let segDesc = $derived(segments.map((s) => `${s.label} ${Math.round((s.value / total) * 100)}%`).join(', '));
+  let label = $derived(ariaLabel ?? `${centerValue} ${centerLabel}${segDesc ? `: ${segDesc}` : ''}`);
+  let arcs = $derived((() => {
     let cum = 0;
     return segments.map((seg) => {
       const frac = seg.value / total;
@@ -24,7 +35,7 @@
       cum += frac;
       return { ...seg, offset, rotate };
     });
-  })();
+  })());
 </script>
 
 <div role="img" aria-label={label} style="position:relative;width:{size}px;height:{size}px;flex-shrink:0;">

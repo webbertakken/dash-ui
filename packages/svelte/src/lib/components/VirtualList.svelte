@@ -1,17 +1,29 @@
 <script lang="ts">
-  export let items: unknown[] = [];
-  export let itemHeight: number = 48;
-  export let height: number = 400;
-  export let label: string | undefined = undefined;
-  export let overscan: number = 3;
+  interface Props {
+    items?: unknown[];
+    itemHeight?: number;
+    height?: number;
+    label?: string | undefined;
+    overscan?: number;
+    children?: import('svelte').Snippet<[any]>;
+  }
 
-  let scrollTop = 0;
+  let {
+    items = [],
+    itemHeight = 48,
+    height = 400,
+    label = undefined,
+    overscan = 3,
+    children
+  }: Props = $props();
 
-  $: totalHeight = items.length * itemHeight;
-  $: firstVisible = Math.floor(scrollTop / itemHeight);
-  $: startIndex = Math.max(0, firstVisible - overscan);
-  $: endIndex = Math.min(items.length, firstVisible + Math.ceil(height / itemHeight) + overscan + 1);
-  $: visible = items.slice(startIndex, endIndex).map((item, i) => ({ item, index: startIndex + i }));
+  let scrollTop = $state(0);
+
+  let totalHeight = $derived(items.length * itemHeight);
+  let firstVisible = $derived(Math.floor(scrollTop / itemHeight));
+  let startIndex = $derived(Math.max(0, firstVisible - overscan));
+  let endIndex = $derived(Math.min(items.length, firstVisible + Math.ceil(height / itemHeight) + overscan + 1));
+  let visible = $derived(items.slice(startIndex, endIndex).map((item, i) => ({ item, index: startIndex + i })));
 </script>
 
 <div
@@ -20,7 +32,7 @@
   class="vl"
   style:height="{height}px"
   style:overflow-y="auto"
-  on:scroll={(e) => (scrollTop = e.currentTarget.scrollTop)}
+  onscroll={(e) => (scrollTop = e.currentTarget.scrollTop)}
 >
   <div style:height="{totalHeight}px" style:position="relative">
     <div style:position="absolute" style:top="{startIndex * itemHeight}px" style:width="100%">
@@ -30,7 +42,7 @@
           style:height="{itemHeight}px"
           style:overflow="hidden"
         >
-          <slot {item} {index} />
+          {@render children?.({ item, index, })}
         </div>
       {/each}
     </div>

@@ -1,8 +1,19 @@
 <script lang="ts">
-  export let colSpan: number;
-  export let defaultExpanded: boolean = false;
+  interface Props {
+    colSpan: number;
+    defaultExpanded?: boolean;
+    row?: import('svelte').Snippet;
+    detail?: import('svelte').Snippet;
+  }
 
-  let open = defaultExpanded;
+  let {
+    colSpan,
+    defaultExpanded = false,
+    row,
+    detail
+  }: Props = $props();
+
+  let open = $state(defaultExpanded);
   const detailId = `exp-${Math.random().toString(36).slice(2, 9)}`;
 </script>
 
@@ -14,7 +25,7 @@
         class="exp-toggle"
         aria-expanded={open}
         aria-controls={detailId}
-        on:click={() => (open = !open)}
+        onclick={() => (open = !open)}
       >
         <svg
           class="exp-chevron"
@@ -27,7 +38,7 @@
         </svg>
       </button>
     </td>
-    <slot name="row" />
+    {@render row?.()}
   </tr>
   <tr
     id={detailId}
@@ -36,7 +47,7 @@
     aria-hidden={!open}
   >
     <td colspan={colSpan + 1} class="exp-detail-cell">
-      <slot name="detail" />
+      {@render detail?.()}
     </td>
   </tr>
 </tbody>

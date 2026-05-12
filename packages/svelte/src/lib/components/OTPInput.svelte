@@ -1,22 +1,32 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  export let label: string | undefined = undefined;
-  export let length: number = 6;
-  export let value: string = '';
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    length?: number;
+    value?: string;
+    disabled?: boolean;
+    class?: string;
+  }
+
+  let {
+    label = undefined,
+    length = 6,
+    value = $bindable(''),
+    disabled = false,
+    class: className = ''
+  }: Props = $props();
+  
 
   const dispatch = createEventDispatcher<{ change: string }>();
   const uid = `dash-ui-otp-${++counter}`;
 
-  let digits: string[] = Array.from({ length }, (_, i) => value[i] ?? '');
-  let inputs: (HTMLInputElement | null)[] = Array(length).fill(null);
+  let digits: string[] = $state(Array.from({ length }, (_, i) => value[i] ?? ''));
+  let inputs: (HTMLInputElement | null)[] = $state(Array(length).fill(null));
 
   const half = Math.floor(length / 2);
 
@@ -84,10 +94,10 @@
         {disabled}
         class="otp-input__digit"
         autocomplete={i === 0 ? 'one-time-code' : 'off'}
-        on:input={(e) => handleInput(i, e.currentTarget.value)}
-        on:keydown={(e) => handleKey(i, e)}
-        on:paste={handlePaste}
-        on:focus={(e) => e.currentTarget.select()}
+        oninput={(e) => handleInput(i, e.currentTarget.value)}
+        onkeydown={(e) => handleKey(i, e)}
+        onpaste={handlePaste}
+        onfocus={(e) => e.currentTarget.select()}
       />
     {/each}
   </div>

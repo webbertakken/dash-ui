@@ -1,8 +1,17 @@
 <script lang="ts">
-  export let labels: string[] = [];
-  export let data: number[][] = [];
-  export let cellSize: number = 52;
-  export let ariaLabel: string = 'Correlation matrix';
+  interface Props {
+    labels?: string[];
+    data?: number[][];
+    cellSize?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    labels = [],
+    data = [],
+    cellSize = 52,
+    ariaLabel = 'Correlation matrix'
+  }: Props = $props();
 
   const LABEL_W = 68;
   const LABEL_H = 26;
@@ -25,9 +34,9 @@
     return `rgb(${lerp(r0, r1, t)},${lerp(g0, g1, t)},${lerp(b0, b1, t)})`;
   }
 
-  $: n = labels.length;
-  $: svgW = LABEL_W + n * cellSize;
-  $: svgH = LABEL_H + n * cellSize;
+  let n = $derived(labels.length);
+  let svgW = $derived(LABEL_W + n * cellSize);
+  let svgH = $derived(LABEL_H + n * cellSize);
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">
