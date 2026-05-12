@@ -126,7 +126,7 @@
 <div class="topo">
   <div class="topo-toolbar">
     <Tooltip label="Map view" placement="bottom">
-      <IconButton title="Map" aria-pressed={view === 'map'} on:click={() => (view = 'map')}>
+      <IconButton title="Map" aria-pressed={view === 'map'} onclick={() => (view = 'map')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <circle cx="7" cy="3" r="1.4" stroke="currentColor" stroke-width="1.4" />
           <circle cx="3" cy="11" r="1.4" stroke="currentColor" stroke-width="1.4" />
@@ -136,14 +136,14 @@
       </IconButton>
     </Tooltip>
     <Tooltip label="List view" placement="bottom">
-      <IconButton title="List" aria-pressed={view === 'list'} on:click={() => (view = 'list')}>
+      <IconButton title="List" aria-pressed={view === 'list'} onclick={() => (view = 'list')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M3 3.5h8M3 7h8M3 10.5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
         </svg>
       </IconButton>
     </Tooltip>
     <Tooltip label="Tree view" placement="bottom">
-      <IconButton title="Tree" aria-pressed={view === 'tree'} on:click={() => (view = 'tree')}>
+      <IconButton title="Tree" aria-pressed={view === 'tree'} onclick={() => (view = 'tree')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <circle cx="2.5" cy="7" r="1.5" stroke="currentColor" stroke-width="1.2" />
           <circle cx="11.5" cy="3" r="1.5" stroke="currentColor" stroke-width="1.2" />
@@ -303,7 +303,7 @@
   x={ctxMenu?.x ?? 0}
   y={ctxMenu?.y ?? 0}
   open={ctxMenu !== null}
-  on:close={() => (ctxMenu = null)}
-  on:action={() => (ctxMenu = null)}
+  onclose={() => (ctxMenu = null)}
+  onaction={() => (ctxMenu = null)}
   label="Device actions"
 />

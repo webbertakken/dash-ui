@@ -90,7 +90,7 @@
   <div class="ph-title">Alarm Manager</div>
   <div class="ph-actions">
     <Button
-      on:click={() => { notifOpen = true; }}
+      onclick={() => { notifOpen = true; }}
       aria-label="Notification centre{unread > 0 ? `, ${unread} unread` : ''}"
       style="display:inline-flex;align-items:center;gap:6px;"
     >

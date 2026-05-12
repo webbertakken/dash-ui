@@ -114,7 +114,7 @@
     <MultiSelect
       options={CLIENT_FILTER_OPTIONS}
       value={filters}
-      on:change={(e) => { filters = e.detail; }}
+      onchange={(e) => { filters = e; }}
       label="Filter clients"
       placeholder="Filter…"
     />
@@ -188,7 +188,7 @@
           <Checkbox
             checked={allSelected}
             indeterminate={!allSelected && someSelected}
-            on:change={toggleAll}
+            onchange={toggleAll}
             aria-label="Select all clients"
           />
         </th>
@@ -206,7 +206,7 @@
           <td>
             <Checkbox
               checked={selected.has(c[2])}
-              on:change={() => toggleRow(c[2])}
+              onchange={() => toggleRow(c[2])}
               aria-label="Select {c[0]}"
             />
           </td>

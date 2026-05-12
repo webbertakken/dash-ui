@@ -2,8 +2,6 @@
   import { Card, Pill, Button, SearchBox, Sparkline, Donut, StatusIndicator, PlusIcon, LineChart, BarChart, WaterfallChart, SankeyDiagram, WaffleChart, StreamGraph, NightingaleChart, DualAxisChart, Banner, AvatarGroup, RankedList } from '@w5-ui/svelte';
   import type { SankeyNode, SankeyLink, StreamSeries, RankedItem } from '@w5-ui/svelte';
   import { DASHBOARD_DEVICES, DASHBOARD_ALARMS } from '../data';
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher<{ adopt: void }>();
   let showBanner = $state(true);
   const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
   function thumb(model: string) {
@@ -78,7 +76,7 @@
   <div class="ph-actions">
     <SearchBox placeholder="Search devices, clients…" />
     <Button>Last 24 h</Button>
-    <Button variant="primary" on:click={() => dispatch('adopt')}>
+    <Button variant="primary" onclick={() => onadopt?.()}>
       <PlusIcon /> Adopt
     </Button>
   </div>

@@ -76,8 +76,8 @@
       { id: 'advanced', label: 'Show advanced settings' },
     ]},
   ];
-  function onMenuAction(e: CustomEvent<{ menuId: string; itemId: string }>) {
-    const { itemId } = e.detail;
+  function onMenuAction(detail: { menuId: string; itemId: string }) {
+    const { itemId } = detail;
     if (itemId === 'save' || itemId === 'save-apply') toast.success('Settings saved');
     else if (itemId === 'export') toast.info('Config exported');
     else if (itemId === 'import') toast.info('Import config…');
@@ -105,16 +105,16 @@
         { id: 'save-apply', label: 'Save & apply now' },
         { id: 'export', label: 'Export config…' },
       ]}
-      on:primary={() => toast.success('Settings saved')}
-      on:action={(e) => {
-        if (e.detail === 'save-apply') toast.success('Saved & applying…');
+      onprimary={() => toast.success('Settings saved')}
+      onaction={(e) => {
+        if (e === 'save-apply') toast.success('Saved & applying…');
         else toast.info('Config exported');
       }}
     />
   </div>
 </div>
 <div style="padding:8px 24px 0;">
-  <Menubar label="Settings toolbar" menus={SETTINGS_MENUS} on:action={onMenuAction} />
+  <Menubar label="Settings toolbar" menus={SETTINGS_MENUS} onaction={onMenuAction} />
 </div>
 <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;padding:16px 24px 24px;">
   <aside style="display:flex;flex-direction:column;gap:1px;font-size:13px;">
@@ -131,18 +131,18 @@
           <Field label="Site name" value="Edge Gateway (Gateway)" />
           <div class="field">
             <label for="sys-country" style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:4px;">Country / Region</label>
-            <Combobox id="sys-country" options={COUNTRY_OPTIONS} value={country} on:change={(e) => (country = e.detail)} placeholder="Search country…" />
+            <Combobox id="sys-country" options={COUNTRY_OPTIONS} value={country} onchange={(e) => (country = e)} placeholder="Search country…" />
           </div>
           <div class="field">
             <label for="sys-tz" style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:4px;">Timezone</label>
-            <Combobox id="sys-tz" options={TIMEZONE_OPTIONS} value={timezone} on:change={(e) => (timezone = e.detail)} placeholder="Search timezone…" />
+            <Combobox id="sys-tz" options={TIMEZONE_OPTIONS} value={timezone} onchange={(e) => (timezone = e)} placeholder="Search timezone…" />
           </div>
           <div class="field">
             <span style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:6px;">Maintenance window (Sundays)</span>
             <div style="display:flex;align-items:center;gap:8px;">
-              <TimePicker label="Start" value={maintStart} on:change={(e) => (maintStart = e.detail)} />
+              <TimePicker label="Start" value={maintStart} onchange={(e) => (maintStart = e)} />
               <span style="color:#6E7079;font-size:13px;margin-top:18px;">–</span>
-              <TimePicker label="End" value={maintEnd} on:change={(e) => (maintEnd = e.detail)} />
+              <TimePicker label="End" value={maintEnd} onchange={(e) => (maintEnd = e)} />
             </div>
           </div>
         </div>
@@ -415,7 +415,7 @@
           <OTPInput label="Verification code" bind:value={otpValue} />
           <div style="display:flex;gap:8px;">
             <Button variant="primary" disabled={otpValue.length < 6}>Verify</Button>
-            <Button on:click={() => (otpValue = '')}>Reset</Button>
+            <Button onclick={() => (otpValue = '')}>Reset</Button>
           </div>
         </div>
       </Card>

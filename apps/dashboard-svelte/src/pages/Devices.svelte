@@ -2,8 +2,6 @@
   import { Button, SearchBox, Tabs, Signal, StatusIndicator, Pagination, Select, SortHeader, ActionMenu, Popover, Drawer, HoverCard, ConfirmDialog, JsonViewer, KVTable, KanbanBoard, ColumnToggle } from '@w5-ui/svelte';
   import type { ActionMenuItem, KanbanColumn, ColumnToggleDef } from '@w5-ui/svelte';
   import { DEVICES, type DeviceRow } from '../data';
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher<{ adopt: void }>();
   let tab = $state('all');
   let page = $state(1);
   let pageSize = $state(5);
@@ -109,12 +107,12 @@
       </fieldset>
     </Popover>
     <ColumnToggle columns={deviceColumns} visible={visibleCols} onChange={(v) => { visibleCols = v; }} />
-    <Button variant="primary" on:click={() => dispatch('adopt')}>Adopt Device</Button>
+    <Button variant="primary" onclick={() => onadopt?.()}>Adopt Device</Button>
   </div>
 </div>
 <Tabs
   bind:active={tab}
-  on:change={() => { page = 1; }}
+  onchange={() => { page = 1; }}
   items={[
     { id: 'all', label: 'All', badge: 12 },
     { id: 'gw', label: 'Gateways', badge: 1 },
@@ -135,11 +133,11 @@
     <caption class="sr-only">Devices</caption>
     <thead>
       <tr>
-        <SortHeader sortKey="name" activeKey={sortKey} dir={sortDir} on:sort={(e) => onSort(e.detail)}>Name / Model</SortHeader>
+        <SortHeader sortKey="name" activeKey={sortKey} dir={sortDir} onsort={(e) => onSort(e)}>Name / Model</SortHeader>
         {#if visibleCols.has('mac')}<th scope="col">MAC / IP</th>{/if}
         {#if visibleCols.has('site')}<th scope="col">Site</th>{/if}
         {#if visibleCols.has('uptime')}<th scope="col" style="text-align:right;">Uptime</th>{/if}
-        {#if visibleCols.has('clients')}<SortHeader sortKey="clients" activeKey={sortKey} dir={sortDir} on:sort={(e) => onSort(e.detail)}>Clients</SortHeader>{/if}
+        {#if visibleCols.has('clients')}<SortHeader sortKey="clients" activeKey={sortKey} dir={sortDir} onsort={(e) => onSort(e)}>Clients</SortHeader>{/if}
         {#if visibleCols.has('signal')}<th scope="col" style="text-align:right;">Signal</th>{/if}
         {#if visibleCols.has('status')}<th scope="col">Status</th>{/if}
         <th scope="col"><span class="sr-only">Actions</span></th>
@@ -189,7 +187,7 @@
           {/if}
           {#if visibleCols.has('status')}<td><StatusIndicator color={r[6]} text={r[7]} textColor={r[8]} /></td>{/if}
           <td style="text-align:right;width:32px;">
-            <ActionMenu items={deviceActions} label="Actions for {r[0]}" on:action={(e) => { if (e.detail === 'details') { drawerDevice = r; drawerOpen = true; } if (e.detail === 'forget') { forgetDevice = r; } }} />
+            <ActionMenu items={deviceActions} label="Actions for {r[0]}" onaction={(e) => { if (e === 'details') { drawerDevice = r; drawerOpen = true; } if (e.detail === 'forget') { forgetDevice = r; } }} />
           </td>
         </tr>
       {/each}
@@ -200,9 +198,9 @@
       label="Rows per page"
       options={perPageOptions}
       value={String(pageSize)}
-      on:change={(e) => { pageSize = Number(e.detail); page = 1; }}
+      onchange={(e) => { pageSize = Number(e); page = 1; }}
     />
-    <Pagination {page} {pageSize} total={DEVICES.length} on:change={(e) => { page = e.detail; }} />
+    <Pagination {page} {pageSize} total={DEVICES.length} onchange={(e) => { page = e; }} />
   </div>
 </div>
 {/if}

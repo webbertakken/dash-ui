@@ -233,7 +233,7 @@
           low={noiseRange[0]}
           high={noiseRange[1]}
           suffix=" dBm"
-          on:change={(e) => { noiseRange = e.detail; }}
+          onchange={(e) => { noiseRange = e; }}
         />
       </div>
     </div>

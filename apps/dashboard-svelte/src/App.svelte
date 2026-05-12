@@ -123,8 +123,8 @@
     <Sidebar sections={SECTIONS} bind:activeId={page} />
     <main class="content" id="main-content" tabindex="-1" aria-labelledby="page-title">
       <h1 id="page-title" class="sr-only">{pageLabel}</h1>
-      {#if page === 'dashboard'}<Dashboard on:adopt={() => (adoptOpen = true)} />
-      {:else if page === 'devices'}<Devices on:adopt={() => (adoptOpen = true)} />
+      {#if page === 'dashboard'}<Dashboard onadopt={() => (adoptOpen = true)} />
+      {:else if page === 'devices'}<Devices onadopt={() => (adoptOpen = true)} />
       {:else if page === 'clients'}<Clients />
       {:else if page === 'topology'}<Topology />
       {:else if page === 'alarms'}<Alarms />
@@ -146,8 +146,8 @@
   <CommandPalette
     open={cmdOpen}
     items={cmdItems}
-    on:select={(e) => { page = e.detail; cmdOpen = false; }}
-    on:close={() => (cmdOpen = false)}
+    onselect={(e) => { page = e; cmdOpen = false; }}
+    onclose={() => (cmdOpen = false)}
   />
 
   <Modal bind:open={adoptOpen} title="Adopt Device">
@@ -163,8 +163,8 @@
     <Field label="Site" value="Demo cluster" />
     {#snippet footer()}
       
-        <Button on:click={() => (adoptOpen = false)}>Cancel</Button>
-        <Button variant="primary" on:click={() => (adoptOpen = false)}>Adopt</Button>
+        <Button onclick={() => (adoptOpen = false)}>Cancel</Button>
+        <Button variant="primary" onclick={() => (adoptOpen = false)}>Adopt</Button>
       
       {/snippet}
   </Modal>

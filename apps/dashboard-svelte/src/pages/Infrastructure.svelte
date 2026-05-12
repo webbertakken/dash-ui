@@ -217,7 +217,7 @@
         bind:value={visibleIfaces}
         ariaLabel="Toggle interface visibility"
         size="sm"
-        on:change={(e) => { visibleIfaces = e.detail; }}
+        onchange={(e) => { visibleIfaces = e; }}
       />
     </div>
     <SparklineMatrix
@@ -308,7 +308,7 @@
                 variant={r[5].startsWith('Adopt') ? 'primary' : 'ghost'}
                 style="font-size:11px;padding:4px 10px;height:auto;"
                 loading={adopting === r[0]}
-                on:click={() => { if (r[5].startsWith('Adopt')) handleAdopt(r[0]); }}
+                onclick={() => { if (r[5].startsWith('Adopt')) handleAdopt(r[0]); }}
               >{adopting === r[0] ? 'Adopting…' : r[5]}</Button>
             </td>
           </tr>

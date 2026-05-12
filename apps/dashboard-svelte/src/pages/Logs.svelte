@@ -68,8 +68,8 @@
   <div class="ph-title">Logs</div>
   <div class="ph-actions">
     <SearchBox placeholder="Search logs…" />
-    <TimeRange value={timeRange} on:change={(e) => { timeRange = e.detail; }} />
-    <DateRangePicker value={customRange} on:change={(e) => { customRange = e.detail; }} placeholder="Custom range" />
+    <TimeRange value={timeRange} onchange={(e) => { timeRange = e; }} />
+    <DateRangePicker value={customRange} onchange={(e) => { customRange = e; }} placeholder="Custom range" />
     <Button iconOnly title="Download"><DownloadIcon /></Button>
   </div>
 </div>
@@ -101,7 +101,7 @@
       value={filterRules}
       {conjunction}
       ariaLabel="Log filters"
-      on:change={(e) => { filterRules = e.detail.rules; conjunction = e.detail.conjunction; }}
+      onchange={(e) => { filterRules = e.rules; conjunction = e.conjunction; }}
     />
     <LogViewer
       {entries}
