@@ -38,7 +38,7 @@ jobs:
 
       - name: Restore yarn install cache (node_modules + cacheFolder + install-state)
         id: yarn-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
