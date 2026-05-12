@@ -10,14 +10,14 @@ jobs:
   release:
     name: Version + publish
     runs-on: ubuntu-latest
-    # Don't run on the auto-commit from the "Version Packages" PR if Changesets
-    # configured commit:false. We use a guard later but the action no-ops anyway
-    # when there are no pending changesets and the working tree is at the
-    # already-published version.
+    # Trusted Publishing: id-token: write lets npm CLI 11.5.1+ exchange a
+    # short-lived OIDC token for an npm credential. No NPM_TOKEN secret needed.
+    # contents: write is for changesets to push tags and the Version Packages PR.
+    # pull-requests: write is for opening the Version Packages PR.
     permissions:
       contents: write
       pull-requests: write
-      id-token: write # for npm provenance
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,6 +38,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.node.outputs.version }}
+          registry-url: https://registry.npmjs.org
+
+      - name: Upgrade npm to a Trusted Publishing-aware version
+        # Node 22 ships with npm 10.x. Trusted Publishing (OIDC exchange) needs
+        # npm >= 11.5.1.
+        run: npm install -g npm@latest
 
       - name: Install deps
         env:
@@ -46,13 +52,6 @@ jobs:
 
       - name: Build packages
         run: yarn build
-
-      - name: Configure npm auth (registry + provenance)
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
-          echo "registry=https://registry.npmjs.org" >> ~/.npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create release PR or publish
         id: changesets
@@ -64,5 +63,30 @@ jobs:
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # No NPM_TOKEN: npm CLI does Trusted Publishing via OIDC.
           NPM_CONFIG_PROVENANCE: 'true'
+
+      - name: Create GitHub Releases for major versions only
+        # Tags created by changesets/action via the default GITHUB_TOKEN do not
+        # trigger separate workflows (GitHub's anti-infinite-loop rule), so we
+        # do the GH Release creation inline. Filter: version is X.0.0 with X>=1.
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISHED: ${{ steps.changesets.outputs.publishedPackages }}
+        run: |
+          echo "Published packages: $PUBLISHED"
+          echo "$PUBLISHED" | jq -c '.[]' | while read -r entry; do
+            name=$(echo "$entry" | jq -r '.name')
+            version=$(echo "$entry" | jq -r '.version')
+            if [[ "$version" =~ ^([0-9]+)\.0\.0$ ]] && (( BASH_REMATCH[1] >= 1 )); then
+              tag="${name}@${version}"
+              echo "Promoting $tag to GitHub Release"
+              gh release create "$tag" \
+                --title "$tag" \
+                --generate-notes \
+                --latest
+            else
+              echo "Skipping GitHub Release for $name@$version (not a >=1.0.0 major)"
+            fi
+          done

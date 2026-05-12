@@ -88,10 +88,12 @@ What happens after the commit lands on `main`:
 Followers therefore see one Release notification per major release across the whole `@w5-ui` suite,
 not one per patch.
 
-### Required repo secrets
+### Trusted Publishing (no secrets)
 
-- `NPM_TOKEN` - granular publish token scoped to `@w5-ui/*` with 2FA "Authorization only" mode.
-  Generate at https://www.npmjs.com/settings/<user>/tokens.
+Each `@w5-ui/*` package has a [Trusted Publisher](https://docs.npmjs.com/trusted-publishers)
+configured on npm that authorises `webbertakken/dash-ui` -> `release.yml` to publish via GitHub
+OIDC. No `NPM_TOKEN` is stored in the repo; npm CLI 11.5.1+ exchanges a short-lived OIDC token for a
+publish credential per run. Provenance attestations are signed automatically.
 
 ### Linked packages
 
