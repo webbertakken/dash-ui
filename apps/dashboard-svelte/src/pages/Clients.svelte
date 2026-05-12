@@ -69,9 +69,9 @@
     { sets: ['wifi', 'vpn'],   value: 7 },
   ];
 
-  let tab = 'all';
-  let selected = new Set<string>();
-  let filters: string[] = [];
+  let tab = $state('all');
+  let selected = $state(new Set<string>());
+  let filters: string[] = $state([]);
 
   const CLIENT_FILTER_OPTIONS: MultiSelectOption[] = [
     { value: 'wireless', label: 'Type: Wireless' },
@@ -84,9 +84,9 @@
     { value: 'blocked', label: 'Status: Blocked' },
   ];
 
-  $: allKeys = CLIENTS.map((c) => c[2]);
-  $: allSelected = allKeys.length > 0 && allKeys.every((k) => selected.has(k));
-  $: someSelected = allKeys.some((k) => selected.has(k));
+  let allKeys = $derived(CLIENTS.map((c) => c[2]));
+  let allSelected = $derived(allKeys.length > 0 && allKeys.every((k) => selected.has(k)));
+  let someSelected = $derived(allKeys.some((k) => selected.has(k)));
 
   function toggleAll() {
     if (allSelected) selected = new Set();
@@ -114,7 +114,7 @@
     <MultiSelect
       options={CLIENT_FILTER_OPTIONS}
       value={filters}
-      on:change={(e) => { filters = e.detail; }}
+      onchange={(e) => { filters = e; }}
       label="Filter clients"
       placeholder="Filter…"
     />
@@ -188,7 +188,7 @@
           <Checkbox
             checked={allSelected}
             indeterminate={!allSelected && someSelected}
-            on:change={toggleAll}
+            onchange={toggleAll}
             aria-label="Select all clients"
           />
         </th>
@@ -206,7 +206,7 @@
           <td>
             <Checkbox
               checked={selected.has(c[2])}
-              on:change={() => toggleRow(c[2])}
+              onchange={() => toggleRow(c[2])}
               aria-label="Select {c[0]}"
             />
           </td>
@@ -237,19 +237,21 @@
       DHCP Leases · {ALL_LEASES.length}
     </h2>
     <VirtualList items={ALL_LEASES} itemHeight={40} height={320} label="DHCP lease list">
-      <svelte:fragment let:item let:index>
-        {#if item}
-          {@const row = asLease(item)}
-          <div class="vl-row" style="height:40px;">
-            <span class="vl-row-name">{row.name}</span>
-            <span class="vl-row-ip">{row.ip}</span>
-            <span class="vl-row-badge" style="background:rgba(255,255,255,0.06);color:#A4A7B5;">{row.network}</span>
-            <span style="width:20px;text-align:right;">
-              {#if row.signal}<Signal weak={row.signal === 'weak'} />{:else}—{/if}
-            </span>
-          </div>
-        {/if}
-      </svelte:fragment>
+      {#snippet children({ item, index })}
+          
+          {#if item}
+            {@const row = asLease(item)}
+            <div class="vl-row" style="height:40px;">
+              <span class="vl-row-name">{row.name}</span>
+              <span class="vl-row-ip">{row.ip}</span>
+              <span class="vl-row-badge" style="background:rgba(255,255,255,0.06);color:#A4A7B5;">{row.network}</span>
+              <span style="width:20px;text-align:right;">
+                {#if row.signal}<Signal weak={row.signal === 'weak'} />{:else}—{/if}
+              </span>
+            </div>
+          {/if}
+        
+          {/snippet}
     </VirtualList>
   </Card>
 </div>

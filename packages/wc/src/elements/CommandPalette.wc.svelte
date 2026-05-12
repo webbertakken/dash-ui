@@ -1,9 +1,13 @@
 <svelte:options customElement="uni-command-palette" />
 <script>
   import Original from '@w5-ui/svelte/components/CommandPalette.svelte';
-  // no public props
+  let {
+    open = false,
+    items = [],
+    placeholder = 'Search pages and actions…'
+  } = $props();
 </script>
 
-<Original >
+<Original {open} {items} {placeholder}>
   <slot />
 </Original>

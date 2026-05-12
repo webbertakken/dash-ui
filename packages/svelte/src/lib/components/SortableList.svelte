@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface SortableItem {
     id: string;
     label: string;
@@ -8,13 +8,17 @@
 
 <script lang="ts">
 
-  export let items: SortableItem[] = [];
-  export let onChange: (items: SortableItem[]) => void = () => {};
-  export let ariaLabel: string | undefined = undefined;
+  interface Props {
+    items?: SortableItem[];
+    onChange?: (items: SortableItem[]) => void;
+    ariaLabel?: string | undefined;
+  }
 
-  let grabbed: string | null = null;
-  let dragSrc: string | null = null;
-  let dragOver: string | null = null;
+  let { items = $bindable([]), onChange = () => {}, ariaLabel = undefined }: Props = $props();
+
+  let grabbed: string | null = $state(null);
+  let dragSrc: string | null = $state(null);
+  let dragOver: string | null = $state(null);
 
   function reorder(fromId: string, toId: string) {
     if (fromId === toId) return;
@@ -56,18 +60,18 @@
       class:is-grabbed={grabbed === item.id}
       class:is-drag-over={dragOver === item.id}
       draggable="true"
-      on:dragstart={e => { e.dataTransfer?.setData('text/plain', item.id); if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; dragSrc = item.id; }}
-      on:dragend={() => { dragSrc = null; dragOver = null; }}
-      on:dragover={e => { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'move'; dragOver = item.id; }}
-      on:dragleave={() => { dragOver = null; }}
-      on:drop={e => { e.preventDefault(); if (dragSrc) reorder(dragSrc, item.id); dragSrc = null; dragOver = null; }}
+      ondragstart={e => { e.dataTransfer?.setData('text/plain', item.id); if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; dragSrc = item.id; }}
+      ondragend={() => { dragSrc = null; dragOver = null; }}
+      ondragover={e => { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'move'; dragOver = item.id; }}
+      ondragleave={() => { dragOver = null; }}
+      ondrop={e => { e.preventDefault(); if (dragSrc) reorder(dragSrc, item.id); dragSrc = null; dragOver = null; }}
     >
       <button
         type="button"
         class="sortable-list__handle"
         aria-label="{grabbed === item.id ? 'Release' : 'Grab'} {item.label}. Use arrow keys to reorder."
         aria-pressed={grabbed === item.id}
-        on:keydown={e => handleKeyDown(e, item.id)}
+        onkeydown={e => handleKeyDown(e, item.id)}
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true" focusable="false">
           <rect x="3" y="2" width="2" height="2" rx="1" />

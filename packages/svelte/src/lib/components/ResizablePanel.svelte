@@ -1,17 +1,33 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type ResizableOrientation = 'horizontal' | 'vertical';
 </script>
 
 <script lang="ts">
-  export let defaultSize: number = 50;
-  export let min: number = 20;
-  export let max: number = 80;
-  export let orientation: ResizableOrientation = 'vertical';
-  export let label: string = 'Resize panels';
-  export let style: string = '';
+  interface Props {
+    defaultSize?: number;
+    min?: number;
+    max?: number;
+    orientation?: ResizableOrientation;
+    label?: string;
+    style?: string;
+    first?: import('svelte').Snippet;
+    second?: import('svelte').Snippet;
+  }
 
-  let size = defaultSize;
-  let container: HTMLDivElement;
+  let {
+    defaultSize = 50,
+    min = 20,
+    max = 80,
+    orientation = 'vertical',
+    label = 'Resize panels',
+    style = '',
+    first,
+    second
+  }: Props = $props();
+
+  // svelte-ignore state_referenced_locally
+  let size = $state(defaultSize);
+  let container = $state<HTMLDivElement | undefined>(undefined);
 
   function clamp(v: number) { return Math.min(max, Math.max(min, v)); }
 
@@ -49,16 +65,16 @@
     if (e.key === 'End') { e.preventDefault(); size = max; }
   }
 
-  $: firstStyle = orientation === 'vertical'
+  let firstStyle = $derived(orientation === 'vertical'
     ? `flex: 0 0 ${size}%; min-width: 0;`
-    : `flex: 0 0 ${size}%; min-height: 0;`;
+    : `flex: 0 0 ${size}%; min-height: 0;`);
 </script>
 
 <div bind:this={container} class="rp rp--{orientation}" {style}>
   <div class="rp-pane" style={firstStyle}>
-    <slot name="first" />
+    {@render first?.()}
   </div>
-  <!-- svelte-ignore a11y-no-noninteractive-tabindex a11y-no-noninteractive-element-interactions -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
   <div
     role="separator"
     tabindex="0"
@@ -68,10 +84,10 @@
     aria-valuemax={max}
     aria-label={label}
     class="rp-handle"
-    on:mousedown={onMouseDown}
-    on:keydown={onKeyDown}
-  />
+    onmousedown={onMouseDown}
+    onkeydown={onKeyDown}
+></div>
   <div class="rp-pane rp-pane--second">
-    <slot name="second" />
+    {@render second?.()}
   </div>
 </div>

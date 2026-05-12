@@ -1,15 +1,16 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let page: number = 1;
-  export let pageSize: number = 10;
-  export let total: number = 0;
+  interface Props {
+    page?: number;
+    pageSize?: number;
+    total?: number;
+    onchange?: (payload: number) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ change: number }>();
-
-  $: totalPages = Math.max(1, Math.ceil(total / pageSize));
-  $: pages = getPageNumbers(page, totalPages);
-
+  let { page = 1, pageSize = 10, total = 0,
+    onchange,
+  }: Props = $props();
   function getPageNumbers(p: number, tp: number): (number | '...')[] {
     if (tp <= 7) return Array.from({ length: tp }, (_, i) => i + 1);
     const items: (number | '...')[] = [1];
@@ -22,7 +23,9 @@
     return items;
   }
 
-  function go(p: number) { dispatch('change', p); }
+  function go(p: number) { onchange?.(p); }
+  let totalPages = $derived(Math.max(1, Math.ceil(total / pageSize)));
+  let pages = $derived(getPageNumbers(page, totalPages));
 </script>
 
 {#if totalPages > 1}
@@ -32,7 +35,7 @@
       class="pagination-btn"
       aria-label="Previous page"
       disabled={page <= 1}
-      on:click={() => go(page - 1)}
+      onclick={() => go(page - 1)}
     >&#x2039;</button>
     {#each pages as p, i (typeof p === 'number' ? p : `e${i}`)}
       {#if p === '...'}
@@ -43,7 +46,7 @@
           class="pagination-btn{p === page ? ' active' : ''}"
           aria-label="Page {p}"
           aria-current={p === page ? 'page' : undefined}
-          on:click={() => go(p)}
+          onclick={() => go(p)}
         >{p}</button>
       {/if}
     {/each}
@@ -52,7 +55,7 @@
       class="pagination-btn"
       aria-label="Next page"
       disabled={page >= totalPages}
-      on:click={() => go(page + 1)}
+      onclick={() => go(page + 1)}
     >&#x203A;</button>
   </nav>
 {/if}

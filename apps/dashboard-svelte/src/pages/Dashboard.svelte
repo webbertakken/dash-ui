@@ -2,9 +2,13 @@
   import { Card, Pill, Button, SearchBox, Sparkline, Donut, StatusIndicator, PlusIcon, LineChart, BarChart, WaterfallChart, SankeyDiagram, WaffleChart, StreamGraph, NightingaleChart, DualAxisChart, Banner, AvatarGroup, RankedList } from '@w5-ui/svelte';
   import type { SankeyNode, SankeyLink, StreamSeries, RankedItem } from '@w5-ui/svelte';
   import { DASHBOARD_DEVICES, DASHBOARD_ALARMS } from '../data';
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher<{ adopt: void }>();
-  let showBanner = true;
+
+  interface Props {
+    onadopt?: () => void;
+  }
+  let { onadopt }: Props = $props();
+
+  let showBanner = $state(true);
   const pillVariant = (sev: string): 'danger' | 'warn' => (sev === 'danger' ? 'danger' : 'warn');
   function thumb(model: string) {
     if (model.includes('EG')) return 'EG';
@@ -78,7 +82,7 @@
   <div class="ph-actions">
     <SearchBox placeholder="Search devices, clients…" />
     <Button>Last 24 h</Button>
-    <Button variant="primary" on:click={() => dispatch('adopt')}>
+    <Button variant="primary" onclick={() => onadopt?.()}>
       <PlusIcon /> Adopt
     </Button>
   </div>
@@ -272,7 +276,7 @@
     <div style="display:flex;gap:12px;margin-top:8px;font-size:12px;flex-wrap:wrap;">
       {#each streamSeries as s (s.label)}
         <span style="display:flex;align-items:center;gap:5px;">
-          <span style="width:10px;height:10px;background:{s.color};border-radius:2px;display:inline-block;" aria-hidden="true" />
+          <span style="width:10px;height:10px;background:{s.color};border-radius:2px;display:inline-block;" aria-hidden="true"></span>
           <span style="color:#A4A7B5;">{s.label}</span>
         </span>
       {/each}

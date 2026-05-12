@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface AvatarItem {
     initials?: string;
     src?: string;
@@ -10,13 +10,22 @@
   import Avatar from './Avatar.svelte';
   import type { AvatarSize } from './Avatar.svelte';
 
-  export let avatars: AvatarItem[] = [];
-  export let max: number = 5;
-  export let size: AvatarSize = 'md';
-  export let ariaLabel: string = 'Avatar group';
+  interface Props {
+    avatars?: AvatarItem[];
+    max?: number;
+    size?: AvatarSize;
+    ariaLabel?: string;
+  }
 
-  $: visible = avatars.slice(0, max);
-  $: overflow = avatars.length - visible.length;
+  let {
+    avatars = [],
+    max = 5,
+    size = 'md',
+    ariaLabel = 'Avatar group'
+  }: Props = $props();
+
+  let visible = $derived(avatars.slice(0, max));
+  let overflow = $derived(avatars.length - visible.length);
 </script>
 
 <span class="avatar-group" role="list" aria-label={ariaLabel}>

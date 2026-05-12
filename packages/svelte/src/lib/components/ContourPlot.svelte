@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface ContourPoint {
     x: number;
     y: number;
@@ -7,13 +7,25 @@
 
 <script lang="ts">
 
-  export let points: ContourPoint[] = [];
-  export let xRange: [number, number] | undefined = undefined;
-  export let yRange: [number, number] | undefined = undefined;
-  export let height = 200;
-  export let bandwidth = 3.5;
-  export let color = '#006FFF';
-  export let ariaLabel = 'Contour plot';
+  interface Props {
+    points?: ContourPoint[];
+    xRange?: [number, number] | undefined;
+    yRange?: [number, number] | undefined;
+    height?: number;
+    bandwidth?: number;
+    color?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    points = [],
+    xRange = undefined,
+    yRange = undefined,
+    height = 200,
+    bandwidth = 3.5,
+    color = '#006FFF',
+    ariaLabel = 'Contour plot'
+  }: Props = $props();
 
   const VW = 340;
   const PAD_L = 28;
@@ -81,34 +93,34 @@
     return [];
   }
 
-  $: PW = VW - PAD_L - PAD_R;
-  $: PH = height - PAD_T - PAD_B;
-  $: xs = points.map((p) => p.x);
-  $: ys = points.map((p) => p.y);
-  $: xMin = xRange ? xRange[0] : (xs.length ? Math.min(...xs) : 0);
-  $: xMax = xRange ? xRange[1] : (xs.length ? Math.max(...xs) : 1);
-  $: yMin = yRange ? yRange[0] : (ys.length ? Math.min(...ys) : 0);
-  $: yMax = yRange ? yRange[1] : (ys.length ? Math.max(...ys) : 1);
-  $: xSpan = xMax - xMin || 1;
-  $: ySpan = yMax - yMin || 1;
+  let PW = $derived(VW - PAD_L - PAD_R);
+  let PH = $derived(height - PAD_T - PAD_B);
+  let xs = $derived(points.map((p) => p.x));
+  let ys = $derived(points.map((p) => p.y));
+  let xMin = $derived(xRange ? xRange[0] : (xs.length ? Math.min(...xs) : 0));
+  let xMax = $derived(xRange ? xRange[1] : (xs.length ? Math.max(...xs) : 1));
+  let yMin = $derived(yRange ? yRange[0] : (ys.length ? Math.min(...ys) : 0));
+  let yMax = $derived(yRange ? yRange[1] : (ys.length ? Math.max(...ys) : 1));
+  let xSpan = $derived(xMax - xMin || 1);
+  let ySpan = $derived(yMax - yMin || 1);
 
-  $: gridPts = points.map((p) => ({
+  let gridPts = $derived(points.map((p) => ({
     gx: ((p.x - xMin) / xSpan) * GW,
     gy: (1 - (p.y - yMin) / ySpan) * GH,
-  }));
-  $: grid = buildGrid(gridPts, bandwidth);
-  $: cellW = PW / GW;
-  $: cellH = PH / GH;
+  })));
+  let grid = $derived(buildGrid(gridPts, bandwidth));
+  let cellW = $derived(PW / GW);
+  let cellH = $derived(PH / GH);
 
   function svgX(col: number, lx: number): number { return PAD_L + (col + lx) * cellW; }
   function svgY(row: number, ly: number): number { return PAD_T + (row + ly) * cellH; }
   function tyY(v: number): number { return PAD_T + (1 - (v - yMin) / ySpan) * PH; }
   function txX(v: number): number { return PAD_L + ((v - xMin) / xSpan) * PW; }
 
-  $: yTicks = [yMin, (yMin + yMax) / 2, yMax];
-  $: xTicks = [xMin, (xMin + xMax) / 2, xMax];
+  let yTicks = $derived([yMin, (yMin + yMax) / 2, yMax]);
+  let xTicks = $derived([xMin, (xMin + xMax) / 2, xMax]);
 
-  $: levelLines = LEVELS.map((t, li) => {
+  let levelLines = $derived(LEVELS.map((t, li) => {
     const opacity = 0.28 + li * 0.18;
     const sw = 0.55 + li * 0.28;
     const lines: Array<{ key: string; x1: number; y1: number; x2: number; y2: number }> = [];
@@ -128,7 +140,7 @@
       }
     }
     return { opacity, sw, lines };
-  });
+  }));
 </script>
 
 {#if points.length > 0}

@@ -1,9 +1,12 @@
 <svelte:options customElement="uni-radial-bar-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/RadialBarChart.svelte';
-  // no public props
+  let {
+    items = [],
+    ariaLabel = 'Radial bar chart'
+  } = $props();
 </script>
 
-<Original >
+<Original {items} {ariaLabel}>
   <slot />
 </Original>

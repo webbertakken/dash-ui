@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface StackedBarSeries {
     label: string;
     color: string;
@@ -8,29 +8,39 @@
 
 <script lang="ts">
 
-  export let series: StackedBarSeries[] = [];
-  export let labels: string[] = [];
-  export let height = 180;
-  export let normalized = false;
-  export let ariaLabel = 'Stacked bar chart';
+  interface Props {
+    series?: StackedBarSeries[];
+    labels?: string[];
+    height?: number;
+    normalized?: boolean;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    labels = [],
+    height = 180,
+    normalized = false,
+    ariaLabel = 'Stacked bar chart'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 10, r: 8, b: 28, l: 36 };
 
-  $: n = series.length && series[0].values.length ? series[0].values.length : 0;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
-  $: bot = PAD.t + chartH;
-  $: barW = n > 0 ? (chartW / n) * 0.72 : 0;
-  $: gap = n > 0 ? (chartW / n) * 0.28 : 0;
+  let n = $derived(series.length && series[0].values.length ? series[0].values.length : 0);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let bot = $derived(PAD.t + chartH);
+  let barW = $derived(n > 0 ? (chartW / n) * 0.72 : 0);
+  let gap = $derived(n > 0 ? (chartW / n) * 0.28 : 0);
 
-  $: totals = Array.from({ length: n }, (_, i) =>
+  let totals = $derived(Array.from({ length: n }, (_, i) =>
     series.reduce((s, ser) => s + (ser.values[i] ?? 0), 0)
-  );
+  ));
 
-  $: maxTotal = normalized ? 1 : (totals.length ? Math.max(...totals) : 1) || 1;
+  let maxTotal = $derived(normalized ? 1 : (totals.length ? Math.max(...totals) : 1) || 1);
 
-  $: stacks = Array.from({ length: n }, (_, gi) => {
+  let stacks = $derived(Array.from({ length: n }, (_, gi) => {
     let y = bot;
     const total = totals[gi] || 1;
     return series.map((ser) => {
@@ -48,18 +58,18 @@
       y -= bh;
       return rect;
     });
-  });
+  }));
 
-  $: gridFracs = [0.25, 0.5, 0.75, 1];
-  $: gridLines = gridFracs.map((f) => ({
+  let gridFracs = $derived([0.25, 0.5, 0.75, 1]);
+  let gridLines = $derived(gridFracs.map((f) => ({
     y: PAD.t + (1 - f) * chartH,
     label: normalized ? `${Math.round(f * 100)}%` : String(Math.round(f * maxTotal)),
-  }));
+  })));
 
-  $: xLabels = Array.from({ length: n }, (_, i) => ({
+  let xLabels = $derived(Array.from({ length: n }, (_, i) => ({
     x: PAD.l + i * (barW + gap) + gap / 2 + barW / 2,
     text: labels[i] ?? String(i),
-  }));
+  })));
 </script>
 
 {#if n > 0}

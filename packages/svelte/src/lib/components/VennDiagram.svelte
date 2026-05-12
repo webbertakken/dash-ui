@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface VennSet {
     id: string;
     label: string;
@@ -13,10 +13,19 @@
 
 <script lang="ts">
 
-  export let sets: VennSet[] = [];
-  export let intersections: VennIntersection[] = [];
-  export let height = 240;
-  export let ariaLabel = 'Venn diagram';
+  interface Props {
+    sets?: VennSet[];
+    intersections?: VennIntersection[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    sets = [],
+    intersections = [],
+    height = 240,
+    ariaLabel = 'Venn diagram'
+  }: Props = $props();
 
   const PALETTE = ['#006FFF', '#00C875', '#A78BFA'];
   const VW = 340;
@@ -25,12 +34,12 @@
     return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n);
   }
 
-  $: valid = sets.length >= 2 && sets.length <= 3;
-  $: is3 = sets.length === 3;
-  $: cx = VW / 2;
-  $: cy = height / 2;
+  let valid = $derived(sets.length >= 2 && sets.length <= 3);
+  let is3 = $derived(sets.length === 3);
+  let cx = $derived(VW / 2);
+  let cy = $derived(height / 2);
 
-  $: circles = is3
+  let circles = $derived(is3
     ? [
         { x: cx,      y: cy - 40, r: 75 },
         { x: cx - 65, y: cy + 50, r: 75 },
@@ -39,9 +48,9 @@
     : [
         { x: cx - 58, y: cy, r: 85 },
         { x: cx + 58, y: cy, r: 85 },
-      ];
+      ]);
 
-  $: exclusiveValues = sets.map((s) =>
+  let exclusiveValues = $derived(sets.map((s) =>
     Math.max(
       0,
       s.value -
@@ -49,7 +58,7 @@
           .filter((i) => i.sets.includes(s.id))
           .reduce((sum, i) => sum + i.value, 0),
     ),
-  );
+  ));
 
   function getPt(inter: VennIntersection): { x: number; y: number } | null {
     const idxById: Record<string, number> = {};

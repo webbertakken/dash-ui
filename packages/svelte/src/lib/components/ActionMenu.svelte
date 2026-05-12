@@ -1,22 +1,27 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface ActionMenuItem { id: string; label: string; danger?: boolean; disabled?: boolean; }
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
-  export let items: ActionMenuItem[] = [];
-  export let label: string = 'Actions';
+  interface Props {
+    items?: ActionMenuItem[];
+    label?: string;
+    onaction?: (payload: string) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ action: string }>();
+  let { items = [], label = 'Actions',
+    onaction,
+  }: Props = $props();
   const uid = `dash-ui-am-${++counter}`;
   const menuId = `${uid}-menu`;
 
-  let open = false;
-  let activeIdx = 0;
-  let triggerEl: HTMLButtonElement;
-  let wrapperEl: HTMLDivElement;
+  let open = $state(false);
+  let activeIdx = $state(0);
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
   function toggle() {
     if (!open) activeIdx = 0;
@@ -24,7 +29,7 @@
   }
 
   function activate(id: string) {
-    dispatch('action', id);
+    onaction?.(id);
     open = false;
     triggerEl?.focus();
   }
@@ -68,8 +73,8 @@
     aria-haspopup="menu"
     aria-expanded={open}
     aria-controls={open ? menuId : undefined}
-    on:click={toggle}
-    on:keydown={onKeyDown}
+    onclick={toggle}
+    onkeydown={onKeyDown}
   >
     <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false" fill="currentColor">
       <circle cx="7" cy="2.5" r="1.2" />
@@ -87,8 +92,8 @@
           data-active={idx === activeIdx ? 'true' : undefined}
           data-danger={item.danger ? 'true' : undefined}
           class="action-menu-item"
-          on:mouseenter={() => { activeIdx = idx; }}
-          on:mousedown|preventDefault={() => { if (!item.disabled) activate(item.id); }}
+          onmouseenter={() => { activeIdx = idx; }}
+          onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(item.id); })(); }}
         >{item.label}</li>
       {/each}
     </ul>

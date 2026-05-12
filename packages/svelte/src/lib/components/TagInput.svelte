@@ -1,34 +1,43 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let label: string | undefined = undefined;
-  export let value: string[] = [];
-  export let placeholder: string = 'Type and press Enter…';
-  export let disabled: boolean = false;
-  let klass = '';
-  export { klass as class };
+  interface Props {
+    label?: string | undefined;
+    value?: string[];
+    placeholder?: string;
+    disabled?: boolean;
+    class?: string;
+    onchange?: (payload: string[]) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ change: string[] }>();
+  let {
+    label = undefined,
+    value = $bindable([]),
+    placeholder = 'Type and press Enter…',
+    disabled = false,
+    class: klass = '',
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-tag-input-${++counter}`;
 
-  let draft = '';
-  let inputEl: HTMLInputElement;
+  let draft = $state('');
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
 
   function addTag(raw: string) {
     const trimmed = raw.trim();
     if (!trimmed || value.includes(trimmed)) return;
     value = [...value, trimmed];
     draft = '';
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function removeTag(index: number) {
     value = value.filter((_, i) => i !== index);
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleKeyDown(e: KeyboardEvent) {
@@ -51,13 +60,13 @@
   {#if label}
     <label for={uid} class="tag-input__label">{label}</label>
   {/if}
-  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-  <!-- svelte-ignore a11y-no-noninteractive-element-interactions - group container focuses input on click -->
+  <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+  <!-- svelte-ignore a11y_no_noninteractive_element_interactions - group container focuses input on click -->
   <div
     role="group"
     aria-label={label ?? 'Tags'}
     class="tag-input{disabled ? ' tag-input--disabled' : ''}"
-    on:click={() => inputEl?.focus()}
+    onclick={() => inputEl?.focus()}
   >
     {#each value as tag, i}
       <span class="tag">
@@ -67,7 +76,7 @@
             type="button"
             class="tag__remove"
             aria-label="Remove {tag}"
-            on:click|stopPropagation={() => removeTag(i)}
+            onclick={(e) => { e.stopPropagation(); (() => removeTag(i))(); }}
           >
             <svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true" focusable="false">
               <path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -86,8 +95,8 @@
       placeholder={value.length === 0 ? placeholder : ''}
       aria-label={label ?? 'Add tag'}
       autocomplete="off"
-      on:keydown={handleKeyDown}
-      on:blur={handleBlur}
+      onkeydown={handleKeyDown}
+      onblur={handleBlur}
     />
   </div>
 </div>

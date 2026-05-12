@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface IcicleNode {
     label: string;
     value?: number;
@@ -9,9 +9,13 @@
 
 <script lang="ts">
 
-  export let root: IcicleNode;
-  export let height = 160;
-  export let ariaLabel = 'Icicle chart';
+  interface Props {
+    root: IcicleNode;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { root, height = 160, ariaLabel = 'Icicle chart' }: Props = $props();
 
   const PALETTE = ['#FF7B7B', '#F5A623', '#A78BFA', '#34D399', '#006FFF', '#00C875', '#FB923C'];
   const VW = 340;
@@ -52,9 +56,9 @@
     return cells;
   }
 
-  $: depth = treeDepth(root);
-  $: levelH = height / (depth + 1);
-  $: cells = flatten(root, 0, 0, VW, levelH, 0, PALETTE[0], { n: 0 });
+  let depth = $derived(treeDepth(root));
+  let levelH = $derived(height / (depth + 1));
+  let cells = $derived(flatten(root, 0, 0, VW, levelH, 0, PALETTE[0], { n: 0 }));
 </script>
 
 {#if cells.length > 0}

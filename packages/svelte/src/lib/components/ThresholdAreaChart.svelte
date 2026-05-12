@@ -1,33 +1,46 @@
-<script context="module">
+<script module>
   let _n = 0;
 </script>
 <script lang="ts">
   const uid = `tac${_n++}`;
 
-  export let values: number[];
-  export let labels: string[] = [];
-  export let threshold: number;
-  export let thresholdLabel: string | undefined = undefined;
-  export let belowColor: string = '#00C875';
-  export let aboveColor: string = '#FF7B7B';
-  export let height: number = 160;
-  export let ariaLabel: string = 'Threshold area chart';
+  interface Props {
+    values: number[];
+    labels?: string[];
+    threshold: number;
+    thresholdLabel?: string | undefined;
+    belowColor?: string;
+    aboveColor?: string;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    values,
+    labels = [],
+    threshold,
+    thresholdLabel = undefined,
+    belowColor = '#00C875',
+    aboveColor = '#FF7B7B',
+    height = 160,
+    ariaLabel = 'Threshold area chart'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 16, r: 8, b: 28, l: 8 };
 
-  $: n = values.length;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
-  $: maxV = Math.max(...values, threshold, 1);
-  $: toX = (i: number) => PAD.l + (n > 1 ? (i / (n - 1)) * chartW : chartW / 2);
-  $: toY = (v: number) => PAD.t + chartH - (v / maxV) * chartH;
-  $: threshY = toY(threshold);
-  $: baseY = PAD.t + chartH;
-  $: pts = values.map((v, i) => `${toX(i).toFixed(1)},${toY(v).toFixed(1)}`);
-  $: d = `M ${pts.join(' L ')} L ${toX(n - 1).toFixed(1)},${baseY} L ${toX(0).toFixed(1)},${baseY} Z`;
-  $: tLabel = thresholdLabel ?? String(threshold);
-  $: gridLines = [0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH);
+  let n = $derived(values.length);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let maxV = $derived(Math.max(...values, threshold, 1));
+  let toX = $derived((i: number) => PAD.l + (n > 1 ? (i / (n - 1)) * chartW : chartW / 2));
+  let toY = $derived((v: number) => PAD.t + chartH - (v / maxV) * chartH);
+  let threshY = $derived(toY(threshold));
+  let baseY = $derived(PAD.t + chartH);
+  let pts = $derived(values.map((v, i) => `${toX(i).toFixed(1)},${toY(v).toFixed(1)}`));
+  let d = $derived(`M ${pts.join(' L ')} L ${toX(n - 1).toFixed(1)},${baseY} L ${toX(0).toFixed(1)},${baseY} Z`);
+  let tLabel = $derived(thresholdLabel ?? String(threshold));
+  let gridLines = $derived([0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%">

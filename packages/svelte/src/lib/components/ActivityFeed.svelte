@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type ActivitySeverity = 'info' | 'success' | 'warn' | 'error' | 'neutral';
   export interface ActivityItem {
     id: string;
@@ -10,16 +10,28 @@
 </script>
 
 <script lang="ts">
-  import { afterUpdate } from 'svelte';
-  export let items: ActivityItem[] = [];
-  export let label: string = 'Activity feed';
-  export let busy: boolean = false;
-  export let maxHeight: number = 360;
-  export let autoScroll: boolean = false;
+  interface Props {
+    items?: ActivityItem[];
+    label?: string;
+    busy?: boolean;
+    maxHeight?: number;
+    autoScroll?: boolean;
+  }
 
-  let endEl: HTMLDivElement;
+  let {
+    items = [],
+    label = 'Activity feed',
+    busy = false,
+    maxHeight = 360,
+    autoScroll = false,
+  }: Props = $props();
 
-  afterUpdate(() => {
+  let endEl = $state<HTMLDivElement | undefined>(undefined);
+
+  // Replaces `afterUpdate`. Reading `items.length` makes the effect depend
+  // on the visible list so we re-scroll whenever an item is appended.
+  $effect(() => {
+    void items.length;
     if (autoScroll && endEl) endEl.scrollIntoView({ block: 'nearest' });
   });
 </script>
@@ -33,7 +45,7 @@
   style:overflow-y="auto"
 >
   {#each items as item, i (item.id)}
-    <!-- svelte-ignore a11y-no-noninteractive-tabindex - navigable feed item for keyboard users -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex - navigable feed item for keyboard users -->
     <article
       class="af-item af-item--{item.severity ?? 'neutral'}"
       aria-labelledby="af-title-{item.id}"
@@ -42,7 +54,7 @@
       aria-setsize={items.length}
       tabindex="0"
     >
-      <div class="af-dot" aria-hidden="true" />
+      <div class="af-dot" aria-hidden="true"></div>
       <div class="af-body">
         <div class="af-header">
           <span id="af-title-{item.id}" class="af-title">{item.title}</span>
@@ -57,5 +69,5 @@
   {#if items.length === 0}
     <div class="af-empty" role="status">No activity</div>
   {/if}
-  <div bind:this={endEl} />
+  <div bind:this={endEl}></div>
 </div>

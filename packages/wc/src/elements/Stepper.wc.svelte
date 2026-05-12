@@ -1,9 +1,13 @@
 <svelte:options customElement="uni-stepper" />
 <script>
   import Original from '@w5-ui/svelte/components/Stepper.svelte';
-  // no public props
+  let {
+    steps = undefined,
+    active = undefined,
+    class: className = ''
+  } = $props();
 </script>
 
-<Original >
+<Original {steps} {active} class={className}>
   <slot />
 </Original>

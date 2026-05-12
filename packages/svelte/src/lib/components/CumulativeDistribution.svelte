@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface CdfSeries {
     label: string;
     color: string;
@@ -8,25 +8,35 @@
 
 <script lang="ts">
 
-  export let series: CdfSeries[] = [];
-  export let guides: number[] = [50, 95];
-  export let height: number = 160;
-  export let unit: string = '';
-  export let ariaLabel: string = 'Cumulative distribution chart';
+  interface Props {
+    series?: CdfSeries[];
+    guides?: number[];
+    height?: number;
+    unit?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    guides = [50, 95],
+    height = 160,
+    unit = '',
+    ariaLabel = 'Cumulative distribution chart'
+  }: Props = $props();
 
   const W = 400, PL = 38, PR = 12, PT = 14, PB = 28;
 
-  $: allVals = series.flatMap((s) => s.values);
-  $: xMin = allVals.length ? Math.min(...allVals) : 0;
-  $: xMax = allVals.length ? Math.max(...allVals) : 1;
-  $: xRange = (xMax - xMin) || 1;
-  $: cW = W - PL - PR;
-  $: cH = height - PT - PB;
+  let allVals = $derived(series.flatMap((s) => s.values));
+  let xMin = $derived(allVals.length ? Math.min(...allVals) : 0);
+  let xMax = $derived(allVals.length ? Math.max(...allVals) : 1);
+  let xRange = $derived((xMax - xMin) || 1);
+  let cW = $derived(W - PL - PR);
+  let cH = $derived(height - PT - PB);
 
   function toX(v: number) { return PL + ((v - xMin) / xRange) * cW; }
   function toY(p: number) { return PT + (1 - p) * cH; }
 
-  $: paths = series.map((s) => {
+  let paths = $derived(series.map((s) => {
     const sorted = [...s.values].sort((a, b) => a - b);
     const n = sorted.length;
     let d = `M${toX(xMin).toFixed(1)},${toY(0).toFixed(1)}`;
@@ -35,15 +45,15 @@
     });
     d += ` H${toX(xMax).toFixed(1)}`;
     return { label: s.label, color: s.color, d };
-  });
+  }));
 
-  $: yTicks = [0, 0.25, 0.5, 0.75, 1].map((p) => ({ y: toY(p), label: `${Math.round(p * 100)}%` }));
-  $: xStep = xRange / 4;
-  $: xTicks = Array.from({ length: 5 }, (_, i) => {
+  let yTicks = $derived([0, 0.25, 0.5, 0.75, 1].map((p) => ({ y: toY(p), label: `${Math.round(p * 100)}%` })));
+  let xStep = $derived(xRange / 4);
+  let xTicks = $derived(Array.from({ length: 5 }, (_, i) => {
     const v = xMin + xStep * i;
     return { x: toX(v), label: `${Math.round(v)}${unit}` };
-  });
-  $: guideLines = guides.map((g) => ({ p: g, y: toY(g / 100) }));
+  }));
+  let guideLines = $derived(guides.map((g) => ({ p: g, y: toY(g / 100) })));
 </script>
 
 {#if allVals.length}

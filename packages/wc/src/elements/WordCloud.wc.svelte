@@ -1,9 +1,13 @@
 <svelte:options customElement="uni-word-cloud" />
 <script>
   import Original from '@w5-ui/svelte/components/WordCloud.svelte';
-  // no public props
+  let {
+    items = [],
+    height = 160,
+    ariaLabel = 'Word cloud'
+  } = $props();
 </script>
 
-<Original >
+<Original {items} {height} {ariaLabel}>
   <slot />
 </Original>

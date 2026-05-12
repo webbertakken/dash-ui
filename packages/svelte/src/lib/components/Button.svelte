@@ -1,28 +1,46 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
   import Spinner from './Spinner.svelte';
-  export let variant: 'primary' | 'ghost' | 'danger' = 'ghost';
-  export let iconOnly = false;
-  export let loading = false;
-  export let title: string | undefined = undefined;
-  export let type: 'button' | 'submit' | 'reset' = 'button';
-  export let disabled = false;
-  let className = '';
-  export { className as class };
-  export let style: string = '';
-  export let ariaLabel: string | undefined = undefined;
-  export { ariaLabel as 'aria-label' };
+
+  interface Props {
+    variant?: 'primary' | 'ghost' | 'danger';
+    iconOnly?: boolean;
+    loading?: boolean;
+    title?: string | undefined;
+    type?: 'button' | 'submit' | 'reset';
+    disabled?: boolean;
+    class?: string;
+    style?: string;
+    'aria-label'?: string | undefined;
+    onclick?: (event: MouseEvent) => void;
+    children?: Snippet;
+  }
+
+  let {
+    variant = 'ghost',
+    iconOnly = false,
+    loading = false,
+    title = undefined,
+    type = 'button',
+    disabled = false,
+    class: className = '',
+    style = '',
+    'aria-label': ariaLabel = undefined,
+    onclick,
+    children,
+  }: Props = $props();
 </script>
 
 <button
   {type}
   {title}
   aria-label={ariaLabel}
-  on:click
+  {onclick}
   class="btn btn-{variant} {iconOnly ? 'btn-icon' : ''} {className}"
   {style}
   disabled={disabled || loading}
   aria-busy={loading ? true : undefined}
 >
   {#if loading}<Spinner size="sm" />{/if}
-  <slot />
+  {@render children?.()}
 </button>

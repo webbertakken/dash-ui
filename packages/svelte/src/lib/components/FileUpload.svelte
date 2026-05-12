@@ -1,23 +1,32 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let label = 'Upload file';
-  export let hint: string | undefined = undefined;
-  export let accept: string | undefined = undefined;
-  export let multiple = false;
-  export let disabled = false;
+  interface Props {
+    label?: string;
+    hint?: string | undefined;
+    accept?: string | undefined;
+    multiple?: boolean;
+    disabled?: boolean;
+    onfiles?: (payload: File[]) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ files: File[] }>();
-
-  let drag = false;
-  let done: string | null = null;
-  let inputEl: HTMLInputElement;
+  let {
+    label = 'Upload file',
+    hint = undefined,
+    accept = undefined,
+    multiple = false,
+    disabled = false,
+    onfiles,
+  }: Props = $props();
+  let drag = $state(false);
+  let done: string | null = $state(null);
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
 
   function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
     const arr = Array.from(files);
     done = arr.length === 1 ? arr[0].name : `${arr.length} files selected`;
-    dispatch('files', arr);
+    onfiles?.(arr);
   }
 
   function onChange(e: Event) {
@@ -43,13 +52,13 @@
   }
 
   function onClick() {
-    if (!disabled) inputEl.click();
+    if (!disabled) inputEl?.click();
   }
 
   function onKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (!disabled) inputEl.click();
+      if (!disabled) inputEl?.click();
     }
   }
 </script>
@@ -60,11 +69,11 @@
   class:file-upload--drag={drag}
   class:file-upload--done={done}
   class:file-upload--disabled={disabled}
-  on:dragover={onDragOver}
-  on:dragleave={onDragLeave}
-  on:drop={onDrop}
-  on:click={onClick}
-  on:keydown={onKeyDown}
+  ondragover={onDragOver}
+  ondragleave={onDragLeave}
+  ondrop={onDrop}
+  onclick={onClick}
+  onkeydown={onKeyDown}
   tabindex={disabled ? -1 : 0}
   aria-label={done ?? label}
 >
@@ -77,7 +86,7 @@
     class="sr-only"
     aria-label={label}
     tabindex="-1"
-    on:change={onChange}
+    onchange={onChange}
   />
   <svg class="file-upload__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     {#if done}

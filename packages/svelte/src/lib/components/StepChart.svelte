@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface StepChartSeries {
     label: string;
     color: string;
@@ -8,21 +8,30 @@
 
 <script lang="ts">
 
-  export let series: StepChartSeries[] = [];
-  export let labels: string[] = [];
-  export let height: number = 160;
-  export let ariaLabel: string = 'Step chart';
+  interface Props {
+    series?: StepChartSeries[];
+    labels?: string[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    labels = [],
+    height = 160,
+    ariaLabel = 'Step chart'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 12, r: 8, b: 28, l: 8 };
 
-  $: allValues = series.flatMap((s) => s.values);
-  $: minV = allValues.length ? Math.min(...allValues) : 0;
-  $: maxV = allValues.length ? Math.max(...allValues) : 1;
-  $: range = maxV - minV || 1;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
-  $: n = series[0]?.values.length ?? 0;
+  let allValues = $derived(series.flatMap((s) => s.values));
+  let minV = $derived(allValues.length ? Math.min(...allValues) : 0);
+  let maxV = $derived(allValues.length ? Math.max(...allValues) : 1);
+  let range = $derived(maxV - minV || 1);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let n = $derived(series[0]?.values.length ?? 0);
 
   function toX(i: number): number {
     return PAD.l + (n > 1 ? (i / (n - 1)) * chartW : chartW / 2);
@@ -51,9 +60,9 @@
     return d;
   }
 
-  $: gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH);
-  $: paths = series.map((s) => ({ color: s.color, label: s.label, d: stepPath(s) }));
-  $: areas = series.map((s) => ({ color: s.color, label: s.label, d: stepArea(s) }));
+  let gridLines = $derived([0, 0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH));
+  let paths = $derived(series.map((s) => ({ color: s.color, label: s.label, d: stepPath(s) })));
+  let areas = $derived(series.map((s) => ({ color: s.color, label: s.label, d: stepArea(s) })));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

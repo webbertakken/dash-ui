@@ -1,7 +1,12 @@
 <script lang="ts">
-  export let id: string;
-  export let active: string;
-  $: isActive = id === active;
+  interface Props {
+    id: string;
+    active: string;
+    children?: import('svelte').Snippet;
+  }
+
+  let { id, active, children }: Props = $props();
+  let isActive = $derived(id === active);
 </script>
 
 <div
@@ -12,6 +17,6 @@
   tabindex="0"
 >
   {#if isActive}
-    <slot />
+    {@render children?.()}
   {/if}
 </div>

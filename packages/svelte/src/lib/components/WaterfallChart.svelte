@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface WaterfallBar {
     label: string;
     value: number;
@@ -8,9 +8,13 @@
 
 <script lang="ts">
 
-  export let bars: WaterfallBar[] = [];
-  export let height: number = 160;
-  export let ariaLabel: string = 'Waterfall chart';
+  interface Props {
+    bars?: WaterfallBar[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { bars = [], height = 160, ariaLabel = 'Waterfall chart' }: Props = $props();
 
   const VW = 320;
   const PAD = { t: 12, r: 8, b: 24, l: 8 };
@@ -19,14 +23,14 @@
   const COLOR_NEG = '#F04949';
   const COLOR_TOTAL = '#A78BFA';
 
-  $: chartH = height - PAD.t - PAD.b;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: n = bars.length;
-  $: colW = n > 0 ? chartW / n : chartW;
-  $: gap = colW * 0.15;
-  $: barW = colW - gap * 2;
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let n = $derived(bars.length);
+  let colW = $derived(n > 0 ? chartW / n : chartW);
+  let gap = $derived(colW * 0.15);
+  let barW = $derived(colW - gap * 2);
 
-  $: cumBases = (() => {
+  let cumBases = $derived((() => {
     const result: number[] = [];
     let acc = 0;
     for (const b of bars) {
@@ -39,25 +43,25 @@
       }
     }
     return result;
-  })();
+  })());
 
-  $: tops = bars.map((b, i) => {
+  let tops = $derived(bars.map((b, i) => {
     if (b.type === 'start' || b.type === 'total') return b.value;
     return cumBases[i] + b.value;
-  });
+  }));
 
-  $: allVals = [0, ...cumBases, ...tops];
-  $: minV = allVals.length ? Math.min(...allVals) : 0;
-  $: maxV = allVals.length ? Math.max(...allVals) : 1;
-  $: range = maxV - minV || 1;
+  let allVals = $derived([0, ...cumBases, ...tops]);
+  let minV = $derived(allVals.length ? Math.min(...allVals) : 0);
+  let maxV = $derived(allVals.length ? Math.max(...allVals) : 1);
+  let range = $derived(maxV - minV || 1);
 
   function toY(v: number): number {
     return PAD.t + (1 - (v - minV) / range) * chartH;
   }
 
-  $: bot = PAD.t + chartH;
+  let bot = $derived(PAD.t + chartH);
 
-  $: rects = bars.map((b, i) => {
+  let rects = $derived(bars.map((b, i) => {
     const base = cumBases[i];
     const top = b.type === 'start' || b.type === 'total' ? b.value : base + b.value;
     const y0 = toY(Math.max(base, top));
@@ -65,20 +69,20 @@
     const x = PAD.l + i * colW + gap;
     const color = b.type === 'start' ? COLOR_START : b.type === 'total' ? COLOR_TOTAL : b.value >= 0 ? COLOR_POS : COLOR_NEG;
     return { x: x.toFixed(1), y: y0.toFixed(1), w: barW.toFixed(1), h: Math.max(y1 - y0, 1).toFixed(1), color };
-  });
+  }));
 
-  $: connectors = rects.slice(0, -1).map((r, i) => {
+  let connectors = $derived(rects.slice(0, -1).map((r, i) => {
     const nextX = PAD.l + (i + 1) * colW + gap;
     return { x1: parseFloat(r.x), x2: nextX + barW + gap, y: parseFloat(r.y) };
-  });
+  }));
 
-  $: labels = bars.map((b, i) => ({
+  let labels = $derived(bars.map((b, i) => ({
     x: (PAD.l + (i + 0.5) * colW).toFixed(1),
     y: (bot + 10).toFixed(1),
     label: b.label,
-  }));
+  })));
 
-  $: gridLines = [0.25, 0.5, 0.75, 1].map((f) => (PAD.t + (1 - f) * chartH).toFixed(1));
+  let gridLines = $derived([0.25, 0.5, 0.75, 1].map((f) => (PAD.t + (1 - f) * chartH).toFixed(1)));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

@@ -1,16 +1,28 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type AvatarSize = 'sm' | 'md' | 'lg';
   export type AvatarStatus = 'online' | 'offline' | 'away';
 </script>
 
 <script lang="ts">
-  export let initials: string = '?';
-  export let src: string | undefined = undefined;
-  export let alt: string | undefined = undefined;
-  export let size: AvatarSize = 'md';
-  export let status: AvatarStatus | undefined = undefined;
-  export let className: string = '';
-  export let style: string = '';
+  interface Props {
+    initials?: string;
+    src?: string | undefined;
+    alt?: string | undefined;
+    size?: AvatarSize;
+    status?: AvatarStatus | undefined;
+    className?: string;
+    style?: string;
+  }
+
+  let {
+    initials = '?',
+    src = undefined,
+    alt = undefined,
+    size = 'md',
+    status = undefined,
+    className = '',
+    style = ''
+  }: Props = $props();
 </script>
 
 <span

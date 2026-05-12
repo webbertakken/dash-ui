@@ -1,10 +1,12 @@
 <svelte:options customElement="uni-progress-bar" />
 <script>
   import Original from '@w5-ui/svelte/components/ProgressBar.svelte';
-  export let value = undefined;
-  export let label = undefined;
-  export let valueText = undefined;
-  export let color = '#006FFF';
+  let {
+    value = undefined,
+    label = undefined,
+    valueText = undefined,
+    color = '#006FFF'
+  } = $props();
 </script>
 
 <Original {value} {label} {valueText} {color}>

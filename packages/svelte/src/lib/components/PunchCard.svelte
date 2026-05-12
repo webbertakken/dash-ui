@@ -1,40 +1,51 @@
-<script context="module">
+<script module>
   let _n = 0;
 </script>
 <script lang="ts">
   const _uid = `pc${_n++}`;
 
-  export let data: number[][];
-  export let rowLabels: string[] | undefined = undefined;
-  export let colLabels: string[] | undefined = undefined;
-  export let color: string = '#006FFF';
-  export let height: number = 180;
-  export let ariaLabel: string = 'Punch card chart';
+  interface Props {
+    data: number[][];
+    rowLabels?: string[] | undefined;
+    colLabels?: string[] | undefined;
+    color?: string;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    data,
+    rowLabels = undefined,
+    colLabels = undefined,
+    color = '#006FFF',
+    height = 180,
+    ariaLabel = 'Punch card chart'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 16, r: 8, b: 28, l: 28 };
   const DEFAULT_ROWS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-  $: rows = data.length;
-  $: cols = data[0]?.length ?? 0;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
-  $: cellW = chartW / (cols || 1);
-  $: cellH = chartH / (rows || 1);
-  $: maxR = Math.min(cellW, cellH) / 2 * 0.85;
-  $: maxVal = Math.max(...data.flat(), 1);
-  $: rLabels = rowLabels ?? DEFAULT_ROWS.slice(0, rows);
-  $: cLabels = colLabels ?? Array.from({ length: cols }, (_, i) =>
+  let rows = $derived(data.length);
+  let cols = $derived(data[0]?.length ?? 0);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let cellW = $derived(chartW / (cols || 1));
+  let cellH = $derived(chartH / (rows || 1));
+  let maxR = $derived(Math.min(cellW, cellH) / 2 * 0.85);
+  let maxVal = $derived(Math.max(...data.flat(), 1));
+  let rLabels = $derived(rowLabels ?? DEFAULT_ROWS.slice(0, rows));
+  let cLabels = $derived(colLabels ?? Array.from({ length: cols }, (_, i) =>
     i % 6 === 0 ? String(i).padStart(2, '0') : ''
-  );
-  $: dots = data.flatMap((row, ri) =>
+  ));
+  let dots = $derived(data.flatMap((row, ri) =>
     row.map((val, ci) => ({
       ri, ci,
       r: Math.sqrt(val / maxVal) * maxR,
       cx: PAD.l + (ci + 0.5) * cellW,
       cy: PAD.t + (ri + 0.5) * cellH,
     }))
-  ).filter(d => d.r >= 0.4);
+  ).filter(d => d.r >= 0.4));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%">

@@ -3,11 +3,11 @@
   import type { ComboboxOption } from '@w5-ui/svelte';
   const TAB_NAMES = ['System', 'Console', 'Network', 'Internet', 'WiFi', 'VLANs', 'Routing', 'Profiles', 'Advanced'] as const;
   type SettingsTab = (typeof TAB_NAMES)[number];
-  let tab: SettingsTab = 'System';
-  let country = 'gb';
-  let timezone = 'Europe/London';
-  let maintStart = '03:00';
-  let maintEnd = '05:00';
+  let tab: SettingsTab = $state('System');
+  let country = $state('gb');
+  let timezone = $state('Europe/London');
+  let maintStart = $state('03:00');
+  let maintEnd = $state('05:00');
 
   const VLAN_ROWS = [
     { name: 'Default', id: '1', purpose: 'Corporate LAN', isolation: '—', dhcp: 'Yes', color: 'blue' },
@@ -17,9 +17,9 @@
     { name: 'Servers', id: '50', purpose: 'Rack / NAS', isolation: '—', dhcp: 'Static', color: 'teal' },
     { name: 'Mgmt', id: '99', purpose: 'Switch/AP mgmt', isolation: 'Isolated', dhcp: 'Yes', color: 'slate' },
   ];
-  let vlanColors: Record<string, string> = Object.fromEntries(VLAN_ROWS.map((r) => [r.name, r.color]));
-  let selectedVlan = VLAN_ROWS[0].name;
-  $: selectedVlanColor = vlanColors[selectedVlan] ?? 'blue';
+  let vlanColors: Record<string, string> = $state(Object.fromEntries(VLAN_ROWS.map((r) => [r.name, r.color])));
+  let selectedVlan = $state(VLAN_ROWS[0].name);
+  let selectedVlanColor = $derived(vlanColors[selectedVlan] ?? 'blue');
 
   const COUNTRY_OPTIONS: ComboboxOption[] = [
     { value: 'au', label: 'Australia' },
@@ -52,11 +52,11 @@
     { value: 'Australia/Sydney', label: 'Australia/Sydney (GMT+10)' },
     { value: 'UTC', label: 'UTC (GMT+0)' },
   ];
-  let txPower2g = 80;
-  let txPower5g = 100;
-  let rxSensitivity = 50;
+  let txPower2g = $state(80);
+  let txPower5g = $state(100);
+  let rxSensitivity = $state(50);
 
-  let otpValue = '';
+  let otpValue = $state('');
   const SETTINGS_MENUS = [
     { id: 'file', label: 'File', items: [
       { id: 'save', label: 'Save' },
@@ -76,8 +76,8 @@
       { id: 'advanced', label: 'Show advanced settings' },
     ]},
   ];
-  function onMenuAction(e: CustomEvent<{ menuId: string; itemId: string }>) {
-    const { itemId } = e.detail;
+  function onMenuAction(detail: { menuId: string; itemId: string }) {
+    const { itemId } = detail;
     if (itemId === 'save' || itemId === 'save-apply') toast.success('Settings saved');
     else if (itemId === 'export') toast.info('Config exported');
     else if (itemId === 'import') toast.info('Import config…');
@@ -105,21 +105,21 @@
         { id: 'save-apply', label: 'Save & apply now' },
         { id: 'export', label: 'Export config…' },
       ]}
-      on:primary={() => toast.success('Settings saved')}
-      on:action={(e) => {
-        if (e.detail === 'save-apply') toast.success('Saved & applying…');
+      onprimary={() => toast.success('Settings saved')}
+      onaction={(e) => {
+        if (e === 'save-apply') toast.success('Saved & applying…');
         else toast.info('Config exported');
       }}
     />
   </div>
 </div>
 <div style="padding:8px 24px 0;">
-  <Menubar label="Settings toolbar" menus={SETTINGS_MENUS} on:action={onMenuAction} />
+  <Menubar label="Settings toolbar" menus={SETTINGS_MENUS} onaction={onMenuAction} />
 </div>
 <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;padding:16px 24px 24px;">
   <aside style="display:flex;flex-direction:column;gap:1px;font-size:13px;">
     {#each TAB_NAMES as s}
-      <button type="button" class="sb-item {tab === s ? 'active' : ''}" aria-current={tab === s ? 'page' : undefined} style="padding:8px 10px;" on:click={() => (tab = s)}>{s}</button>
+      <button type="button" class="sb-item {tab === s ? 'active' : ''}" aria-current={tab === s ? 'page' : undefined} style="padding:8px 10px;" onclick={() => (tab = s)}>{s}</button>
     {/each}
   </aside>
   <div style="display:flex;flex-direction:column;gap:12px;">
@@ -131,18 +131,18 @@
           <Field label="Site name" value="Edge Gateway (Gateway)" />
           <div class="field">
             <label for="sys-country" style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:4px;">Country / Region</label>
-            <Combobox id="sys-country" options={COUNTRY_OPTIONS} value={country} on:change={(e) => (country = e.detail)} placeholder="Search country…" />
+            <Combobox id="sys-country" options={COUNTRY_OPTIONS} value={country} onchange={(e) => (country = e)} placeholder="Search country…" />
           </div>
           <div class="field">
             <label for="sys-tz" style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:4px;">Timezone</label>
-            <Combobox id="sys-tz" options={TIMEZONE_OPTIONS} value={timezone} on:change={(e) => (timezone = e.detail)} placeholder="Search timezone…" />
+            <Combobox id="sys-tz" options={TIMEZONE_OPTIONS} value={timezone} onchange={(e) => (timezone = e)} placeholder="Search timezone…" />
           </div>
           <div class="field">
             <span style="font-size:12px;color:#A4A7B5;display:block;margin-bottom:6px;">Maintenance window (Sundays)</span>
             <div style="display:flex;align-items:center;gap:8px;">
-              <TimePicker label="Start" value={maintStart} on:change={(e) => (maintStart = e.detail)} />
+              <TimePicker label="Start" value={maintStart} onchange={(e) => (maintStart = e)} />
               <span style="color:#6E7079;font-size:13px;margin-top:18px;">–</span>
-              <TimePicker label="End" value={maintEnd} on:change={(e) => (maintEnd = e.detail)} />
+              <TimePicker label="End" value={maintEnd} onchange={(e) => (maintEnd = e)} />
             </div>
           </div>
         </div>
@@ -345,14 +345,14 @@
             {#each VLAN_ROWS as r}
               {@const swatch = COLOR_SWATCHES.find((s) => s.value === vlanColors[r.name])}
               <tr
-                on:click={() => (selectedVlan = r.name)}
+                onclick={() => (selectedVlan = r.name)}
                 style="cursor:pointer;{selectedVlan === r.name ? 'background:rgba(255,255,255,0.03);' : ''}"
               >
                 <td>
                   <span
                     style="display:inline-block;width:12px;height:12px;border-radius:50%;background:{swatch?.color ?? '#6E7079'};vertical-align:middle;"
                     aria-hidden="true"
-                  />
+></span>
                 </td>
                 <td style="color:#fff;">{r.name}</td>
                 <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">{r.id}</td>
@@ -415,7 +415,7 @@
           <OTPInput label="Verification code" bind:value={otpValue} />
           <div style="display:flex;gap:8px;">
             <Button variant="primary" disabled={otpValue.length < 6}>Verify</Button>
-            <Button on:click={() => (otpValue = '')}>Reset</Button>
+            <Button onclick={() => (otpValue = '')}>Reset</Button>
           </div>
         </div>
       </Card>

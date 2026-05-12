@@ -1,22 +1,43 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  export let checked: boolean = false;
-  export let indeterminate: boolean = false;
-  export let label: string | undefined = undefined;
-  export let id: string | undefined = undefined;
-  export let disabled: boolean = false;
+  interface Props {
+    checked?: boolean;
+    indeterminate?: boolean;
+    label?: string | undefined;
+    id?: string | undefined;
+    disabled?: boolean;
+    onchange?: (event: Event) => void;
+    [key: string]: unknown;
+  }
+
+  // svelte-ignore state_referenced_locally
+  // svelte-ignore state_referenced_locally
+  let {
+    checked = false,
+    indeterminate = false,
+    label = undefined,
+    id = undefined,
+    disabled = false,
+    onchange,
+    ...rest
+  }: Props = $props();
 
   const uid = `dash-ui-cb-${++counter}`;
-  $: inputId = id ?? uid;
+  let inputId = $derived(id ?? uid);
 
-  let el: HTMLInputElement;
-  $: if (el) {
-    el.checked = checked;
-    el.indeterminate = indeterminate;
-  }
+  let el = $state<HTMLInputElement | undefined>(undefined);
+
+  // Sync the imperative DOM properties to the reactive props. `$effect` reads
+  // both `checked` and `indeterminate` so it re-runs whenever either flips.
+  $effect(() => {
+    if (el) {
+      el.checked = checked;
+      el.indeterminate = indeterminate;
+    }
+  });
 </script>
 
 {#if label}
@@ -27,8 +48,8 @@
       id={inputId}
       {disabled}
       class="checkbox"
-      on:change
-      {...$$restProps}
+      {onchange}
+      {...rest}
     />
     <span>{label}</span>
   </label>
@@ -39,7 +60,7 @@
     id={inputId}
     {disabled}
     class="checkbox"
-    on:change
-    {...$$restProps}
+    {onchange}
+    {...rest}
   />
 {/if}

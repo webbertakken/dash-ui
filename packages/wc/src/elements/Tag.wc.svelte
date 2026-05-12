@@ -1,9 +1,12 @@
 <svelte:options customElement="uni-tag" />
 <script>
   import Original from '@w5-ui/svelte/components/Tag.svelte';
-  export let label = undefined;
+  let {
+    label = undefined,
+    class: className = ''
+  } = $props();
 </script>
 
-<Original {label}>
+<Original {label} class={className}>
   <slot />
 </Original>

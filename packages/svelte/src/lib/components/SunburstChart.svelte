@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface SunburstNode {
     label: string;
     value?: number;
@@ -9,8 +9,12 @@
 
 <script lang="ts">
 
-  export let root: SunburstNode;
-  export let ariaLabel: string = 'Sunburst chart';
+  interface Props {
+    root: SunburstNode;
+    ariaLabel?: string;
+  }
+
+  let { root, ariaLabel = 'Sunburst chart' }: Props = $props();
 
   const PALETTE = ['#006FFF', '#00C875', '#A78BFA', '#F5A623', '#50B8E7', '#F04949'];
   const CX = 160, CY = 160, R_HOLE = 48, R_MID = 97, R_OUTER = 142, GAP = 0.01;
@@ -24,7 +28,7 @@
   type PathData = { d: string; fill: string };
   type LabelData = { x: number; y: number; anchor: string; text: string };
 
-  $: ({ paths, labels, total } = (() => {
+  let { paths, labels, total } = $derived((() => {
     const items = root.children ?? [];
     const total = items.reduce((s, c) => s + (c.value ?? c.children?.reduce((cs, x) => cs + (x.value ?? 0), 0) ?? 0), 0);
     if (!total) return { paths: [] as PathData[], labels: [] as LabelData[], total: 0 };

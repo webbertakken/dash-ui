@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   import { writable } from 'svelte/store';
 
   export type ToastVariant = 'success' | 'info' | 'warn' | 'danger';
@@ -40,7 +40,7 @@
       <button
         type="button"
         class="toast-dismiss icon-btn"
-        on:click={() => dismiss(item.id)}
+        onclick={() => dismiss(item.id)}
         aria-label="Dismiss notification"
       >
         <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true" focusable="false">

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface ColumnDef {
     key: string;
     label: string;
@@ -10,13 +10,17 @@
   import { onMount } from 'svelte';
 
 
-  export let columns: ColumnDef[] = [];
-  export let visible: Set<string> = new Set();
-  export let onChange: (visible: Set<string>) => void = () => {};
+  interface Props {
+    columns?: ColumnDef[];
+    visible?: Set<string>;
+    onChange?: (visible: Set<string>) => void;
+  }
 
-  let open = false;
-  let btnEl: HTMLButtonElement;
-  let panelEl: HTMLDivElement;
+  let { columns = [], visible = $bindable(new Set()), onChange = () => {} }: Props = $props();
+
+  let open = $state(false);
+  let btnEl = $state<HTMLButtonElement | undefined>(undefined);
+  let panelEl = $state<HTMLDivElement | undefined>(undefined);
   const panelId = `col-toggle-${Math.random().toString(36).slice(2)}`;
 
   function close() {
@@ -60,7 +64,7 @@
     aria-haspopup="dialog"
     aria-expanded={open}
     aria-controls={panelId}
-    on:click={() => (open = !open)}
+    onclick={() => (open = !open)}
   >
     <svg viewBox="0 0 14 14" width="14" height="14" fill="none" aria-hidden="true" focusable="false">
       <rect x="1" y="2" width="3" height="10" rx="1" stroke="currentColor" stroke-width="1.3" />
@@ -87,7 +91,7 @@
                 class="col-toggle__check"
                 checked={visible.has(col.key)}
                 disabled={col.required}
-                on:change={() => { if (!col.required) toggle(col.key); }}
+                onchange={() => { if (!col.required) toggle(col.key); }}
               />
               <span>{col.label}</span>
             </label>

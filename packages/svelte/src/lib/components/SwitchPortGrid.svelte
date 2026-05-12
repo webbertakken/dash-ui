@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type SwitchPortStatus = 'up' | 'poe' | 'down';
   export interface SwitchPort {
     status: SwitchPortStatus;
@@ -13,11 +13,17 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  export let ports: SwitchPort[] = [];
-  export let columns: number = 12;
-  export let ariaLabel: string = 'Switch port panel';
-  const dispatch = createEventDispatcher<{ portclick: number }>();
+  
+  interface Props {
+    ports?: SwitchPort[];
+    columns?: number;
+    ariaLabel?: string;
+    onportclick?: (payload: number) => void;
+  }
+
+  let { ports = [], columns = 12, ariaLabel = 'Switch port panel',
+    onportclick,
+  }: Props = $props();
 </script>
 
 <ul class="spg" role="list" aria-label={ariaLabel} style="grid-template-columns: repeat({columns}, 1fr);">
@@ -30,7 +36,7 @@
         class="spg__btn"
         data-status={port.status}
         aria-label={desc}
-        on:click={() => dispatch('portclick', i)}
+        onclick={() => onportclick?.(i)}
       >
         <span class="spg__num">{n}</span>
         {#if port.speed}

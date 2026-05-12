@@ -1,18 +1,75 @@
 <script lang="ts">
-  export let value: string = '';
-  export let placeholder: string = '';
-  export let type: string = 'text';
-  let className = '';
-  export { className as class };
-  export let style: string = '';
+  interface Props {
+    value?: string;
+    placeholder?: string;
+    type?: string;
+    class?: string;
+    style?: string;
+    oninput?: (event: Event) => void;
+    onchange?: (event: Event) => void;
+    onfocus?: (event: FocusEvent) => void;
+    onblur?: (event: FocusEvent) => void;
+  }
+
+  let {
+    value = $bindable(''),
+    placeholder = '',
+    type = 'text',
+    class: className = '',
+    style = '',
+    oninput,
+    onchange,
+    onfocus,
+    onblur,
+  }: Props = $props();
 </script>
 
 {#if type === 'text'}
-  <input class="input {className}" type="text" {placeholder} bind:value {style} on:input on:change on:focus on:blur />
+  <input
+    class="input {className}"
+    type="text"
+    {placeholder}
+    bind:value
+    {style}
+    {oninput}
+    {onchange}
+    {onfocus}
+    {onblur}
+  />
 {:else if type === 'password'}
-  <input class="input {className}" type="password" {placeholder} bind:value {style} on:input on:change on:focus on:blur />
+  <input
+    class="input {className}"
+    type="password"
+    {placeholder}
+    bind:value
+    {style}
+    {oninput}
+    {onchange}
+    {onfocus}
+    {onblur}
+  />
 {:else if type === 'number'}
-  <input class="input {className}" type="number" {placeholder} bind:value {style} on:input on:change on:focus on:blur />
+  <input
+    class="input {className}"
+    type="number"
+    {placeholder}
+    bind:value
+    {style}
+    {oninput}
+    {onchange}
+    {onfocus}
+    {onblur}
+  />
 {:else}
-  <input class="input {className}" {type} {placeholder} value={value} {style} on:input on:change on:focus on:blur />
+  <input
+    class="input {className}"
+    {type}
+    {placeholder}
+    {value}
+    {style}
+    {oninput}
+    {onchange}
+    {onfocus}
+    {onblur}
+  />
 {/if}

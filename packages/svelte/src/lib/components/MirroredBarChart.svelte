@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface MirroredBarItem {
     label: string;
     left: number;
@@ -8,13 +8,25 @@
 
 <script lang="ts">
 
-  export let items: MirroredBarItem[] = [];
-  export let leftLabel: string = 'Download';
-  export let rightLabel: string = 'Upload';
-  export let leftColor: string = '#006FFF';
-  export let rightColor: string = '#00C8C8';
-  export let unit: string = '';
-  export let ariaLabel: string = 'Mirrored bar chart';
+  interface Props {
+    items?: MirroredBarItem[];
+    leftLabel?: string;
+    rightLabel?: string;
+    leftColor?: string;
+    rightColor?: string;
+    unit?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    items = [],
+    leftLabel = 'Download',
+    rightLabel = 'Upload',
+    leftColor = '#006FFF',
+    rightColor = '#00C8C8',
+    unit = '',
+    ariaLabel = 'Mirrored bar chart'
+  }: Props = $props();
 
   const VW = 340;
   const LABEL_W = 80;
@@ -24,8 +36,8 @@
   const HALF_W = (VW - LABEL_W) / 2;
   const CX = VW / 2;
 
-  $: svgH = PAD_T + items.length * ROW_H + PAD_B;
-  $: maxVal = Math.max(...items.flatMap((it) => [it.left, it.right]), 1);
+  let svgH = $derived(PAD_T + items.length * ROW_H + PAD_B);
+  let maxVal = $derived(Math.max(...items.flatMap((it) => [it.left, it.right]), 1));
 
   function bw(val: number): number {
     return (val / maxVal) * HALF_W;

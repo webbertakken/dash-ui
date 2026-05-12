@@ -1,9 +1,27 @@
 <script lang="ts">
-  export let title: string | undefined = undefined;
-  export let type: 'button' | 'submit' | 'reset' = 'button';
-  let className = '';
-  export { className as class };
-  export let style: string = '';
+  import type { Snippet } from 'svelte';
+
+  interface Props {
+    title?: string | undefined;
+    type?: 'button' | 'submit' | 'reset';
+    class?: string;
+    style?: string;
+    onclick?: (event: MouseEvent) => void;
+    children?: Snippet;
+    [key: string]: unknown;
+  }
+
+  // svelte-ignore state_referenced_locally
+  // svelte-ignore state_referenced_locally
+  let {
+    title = undefined,
+    type = 'button',
+    class: className = '',
+    style = '',
+    onclick,
+    children,
+    ...rest
+  }: Props = $props();
 </script>
 
 <button
@@ -11,9 +29,9 @@
   class="icon-btn {className}"
   {title}
   {style}
-  {...$$restProps}
-  aria-label={$$restProps['aria-label'] ?? title}
-  on:click
+  {...rest}
+  aria-label={(rest['aria-label'] as string | undefined) ?? title}
+  {onclick}
 >
-  <slot />
+  {@render children?.()}
 </button>

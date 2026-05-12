@@ -1,7 +1,9 @@
 <svelte:options customElement="uni-accordion" />
 <script>
   import Original from '@w5-ui/svelte/components/Accordion.svelte';
-  // no public props
+  let {
+    /* no public props */
+  } = $props();
 </script>
 
 <Original >

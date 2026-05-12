@@ -1,9 +1,15 @@
 <svelte:options customElement="uni-transfer-list" />
 <script>
   import Original from '@w5-ui/svelte/components/TransferList.svelte';
-  // no public props
+  let {
+    sourceLabel = 'Available',
+    targetLabel = 'Selected',
+    source = [],
+    target = [],
+    class: className = ''
+  } = $props();
 </script>
 
-<Original >
+<Original {sourceLabel} {targetLabel} {source} {target} class={className}>
   <slot />
 </Original>

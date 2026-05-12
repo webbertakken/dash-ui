@@ -1,13 +1,18 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface BreadcrumbItem { label: string; href?: string; }
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  export let items: BreadcrumbItem[] = [];
-  let className = '';
-  export { className as class };
-  const dispatch = createEventDispatcher<{ navigate: number }>();
+  
+  interface Props {
+    items?: BreadcrumbItem[];
+    class?: string;
+    onnavigate?: (payload: number) => void;
+  }
+
+  let { items = [], class: className = '',
+    onnavigate,
+  }: Props = $props();
 </script>
 
 <nav aria-label="Breadcrumb" class="breadcrumb {className}">
@@ -20,7 +25,7 @@
         {:else if item.href}
           <a href={item.href} class="breadcrumb__link">{item.label}</a>
         {:else}
-          <button type="button" class="breadcrumb__link" on:click={() => dispatch('navigate', i)}>{item.label}</button>
+          <button type="button" class="breadcrumb__link" onclick={() => onnavigate?.(i)}>{item.label}</button>
         {/if}
         {#if !isLast}
           <span aria-hidden="true" class="breadcrumb__sep">/</span>

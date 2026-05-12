@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface QuadrantPoint {
     x: number;
     y: number;
@@ -9,52 +9,69 @@
 
 <script lang="ts">
 
-  export let points: QuadrantPoint[] = [];
-  export let xThreshold: number;
-  export let yThreshold: number;
-  export let xRange: [number, number] | undefined = undefined;
-  export let yRange: [number, number] | undefined = undefined;
-  /** Labels: [top-left, top-right, bottom-left, bottom-right] */
-  export let quadrantLabels: [string, string, string, string] = ['', '', '', ''];
-  export let quadrantColors: [string, string, string, string] = [
+  
+  interface Props {
+    points?: QuadrantPoint[];
+    xThreshold: number;
+    yThreshold: number;
+    xRange?: [number, number] | undefined;
+    yRange?: [number, number] | undefined;
+    /** Labels: [top-left, top-right, bottom-left, bottom-right] */
+    quadrantLabels?: [string, string, string, string];
+    quadrantColors?: [string, string, string, string];
+    xLabel?: string | undefined;
+    yLabel?: string | undefined;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    points = [],
+    xThreshold,
+    yThreshold,
+    xRange = undefined,
+    yRange = undefined,
+    quadrantLabels = ['', '', '', ''],
+    quadrantColors = [
     'rgba(0,200,117,0.06)',
     'rgba(245,166,35,0.07)',
     'rgba(0,111,255,0.06)',
     'rgba(255,123,123,0.09)',
-  ];
-  export let xLabel: string | undefined = undefined;
-  export let yLabel: string | undefined = undefined;
-  export let height = 200;
-  export let ariaLabel = 'Quadrant chart';
+  ],
+    xLabel = undefined,
+    yLabel = undefined,
+    height = 200,
+    ariaLabel = 'Quadrant chart'
+  }: Props = $props();
 
   const VW = 360;
   const PAD = { t: 8, r: 8, b: 28, l: 36 };
 
-  $: xs = points.map((p) => p.x);
-  $: ys = points.map((p) => p.y);
-  $: x0 = xRange ? xRange[0] : Math.min(...xs, xThreshold - 1);
-  $: x1 = xRange ? xRange[1] : Math.max(...xs, xThreshold + 1);
-  $: y0 = yRange ? yRange[0] : Math.min(...ys, yThreshold - 1);
-  $: y1 = yRange ? yRange[1] : Math.max(...ys, yThreshold + 1);
-  $: xSpan = x1 - x0 || 1;
-  $: ySpan = y1 - y0 || 1;
-  $: cw = VW - PAD.l - PAD.r;
-  $: ch = height - PAD.t - PAD.b;
+  let xs = $derived(points.map((p) => p.x));
+  let ys = $derived(points.map((p) => p.y));
+  let x0 = $derived(xRange ? xRange[0] : Math.min(...xs, xThreshold - 1));
+  let x1 = $derived(xRange ? xRange[1] : Math.max(...xs, xThreshold + 1));
+  let y0 = $derived(yRange ? yRange[0] : Math.min(...ys, yThreshold - 1));
+  let y1 = $derived(yRange ? yRange[1] : Math.max(...ys, yThreshold + 1));
+  let xSpan = $derived(x1 - x0 || 1);
+  let ySpan = $derived(y1 - y0 || 1);
+  let cw = $derived(VW - PAD.l - PAD.r);
+  let ch = $derived(height - PAD.t - PAD.b);
 
   function toX(x: number) { return PAD.l + ((x - x0) / xSpan) * cw; }
   function toY(y: number) { return PAD.t + ch - ((y - y0) / ySpan) * ch; }
 
-  $: tx = toX(xThreshold);
-  $: ty = toY(yThreshold);
-  $: xTicks = [x0, xThreshold, x1];
-  $: yTicks = [y0, yThreshold, y1];
+  let tx = $derived(toX(xThreshold));
+  let ty = $derived(toY(yThreshold));
+  let xTicks = $derived([x0, xThreshold, x1]);
+  let yTicks = $derived([y0, yThreshold, y1]);
 
-  $: dots = points.map((p) => ({
+  let dots = $derived(points.map((p) => ({
     cx: toX(p.x),
     cy: toY(p.y),
     color: p.color ?? '#006FFF',
     label: p.label,
-  }));
+  })));
 </script>
 
 {#if points.length > 0}

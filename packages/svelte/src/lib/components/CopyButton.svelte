@@ -1,8 +1,12 @@
 <script lang="ts">
-  export let text: string;
-  export let label: string = 'Copy';
+  interface Props {
+    text: string;
+    label?: string;
+  }
 
-  let copied = false;
+  let { text, label = 'Copy' }: Props = $props();
+
+  let copied = $state(false);
   let timer: ReturnType<typeof setTimeout>;
 
   function handleCopy() {
@@ -18,7 +22,7 @@
   type="button"
   class="copy-btn {copied ? 'copy-btn--done' : ''}"
   aria-label={copied ? 'Copied!' : label}
-  on:click={handleCopy}
+  onclick={handleCopy}
 >
   {#if copied}
     <svg viewBox="0 0 14 14" width="14" height="14" fill="none" aria-hidden="true" focusable="false">

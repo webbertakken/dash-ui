@@ -1,9 +1,12 @@
 <svelte:options customElement="uni-timeline" />
 <script>
   import Original from '@w5-ui/svelte/components/Timeline.svelte';
-  // no public props
+  let {
+    events = undefined,
+    class: className = ''
+  } = $props();
 </script>
 
-<Original >
+<Original {events} class={className}>
   <slot />
 </Original>

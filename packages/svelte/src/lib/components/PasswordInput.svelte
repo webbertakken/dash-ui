@@ -1,26 +1,36 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let label: string | undefined = undefined;
-  export let value: string = '';
-  export let placeholder: string | undefined = undefined;
-  export let disabled: boolean = false;
-  export let autocomplete: 'current-password' | 'new-password' | 'off' = 'current-password';
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    value?: string;
+    placeholder?: string | undefined;
+    disabled?: boolean;
+    autocomplete?: 'current-password' | 'new-password' | 'off';
+    class?: string;
+    onchange?: (payload: string) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ change: string }>();
+  let {
+    label = undefined,
+    value = $bindable(''),
+    placeholder = undefined,
+    disabled = false,
+    autocomplete = 'current-password',
+    class: className = '',
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-pwd-${++counter}`;
 
-  let shown = false;
+  let shown = $state(false);
 
   function handleInput(e: Event) {
     value = (e.target as HTMLInputElement).value;
-    dispatch('change', value);
+    onchange?.(value);
   }
 </script>
 
@@ -37,7 +47,7 @@
       {placeholder}
       {disabled}
       {autocomplete}
-      on:input={handleInput}
+      oninput={handleInput}
     />
     <button
       type="button"
@@ -45,7 +55,7 @@
       aria-pressed={shown}
       aria-label={shown ? 'Hide password' : 'Show password'}
       {disabled}
-      on:click={() => (shown = !shown)}
+      onclick={() => (shown = !shown)}
     >
       {#if shown}
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">

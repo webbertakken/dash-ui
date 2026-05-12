@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface RankedItem {
     label: string;
     value: number;
@@ -9,12 +9,21 @@
 
 <script lang="ts">
 
-  export let items: RankedItem[];
-  export let unit: string | undefined = undefined;
-  export let max: number | undefined = undefined;
-  export let ariaLabel: string = 'Ranked list';
+  interface Props {
+    items: RankedItem[];
+    unit?: string | undefined;
+    max?: number | undefined;
+    ariaLabel?: string;
+  }
 
-  $: resolvedMax = max ?? Math.max(...items.map((i) => i.value), 1);
+  let {
+    items,
+    unit = undefined,
+    max = undefined,
+    ariaLabel = 'Ranked list'
+  }: Props = $props();
+
+  let resolvedMax = $derived(max ?? Math.max(...items.map((i) => i.value), 1));
 </script>
 
 <table class="rl" aria-label={ariaLabel}>

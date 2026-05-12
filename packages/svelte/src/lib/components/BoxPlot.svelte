@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface BoxSeries {
     label: string;
     q0: number;
@@ -12,25 +12,34 @@
 
 <script lang="ts">
 
-  export let series: BoxSeries[] = [];
-  export let yRange: [number, number] | undefined = undefined;
-  export let height: number = 160;
-  export let ariaLabel: string = 'Box plot';
+  interface Props {
+    series?: BoxSeries[];
+    yRange?: [number, number] | undefined;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    yRange = undefined,
+    height = 160,
+    ariaLabel = 'Box plot'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 12, r: 8, b: 28, l: 8 };
 
-  $: allVals = series.flatMap((s) => [s.q0, s.q1, s.q2, s.q3, s.q4]);
-  $: y0 = yRange ? yRange[0] : allVals.length ? Math.min(...allVals) : 0;
-  $: y1 = yRange ? yRange[1] : allVals.length ? Math.max(...allVals) : 1;
-  $: ySpan = y1 - y0 || 1;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
-  $: slotW = series.length > 0 ? chartW / series.length : chartW;
+  let allVals = $derived(series.flatMap((s) => [s.q0, s.q1, s.q2, s.q3, s.q4]));
+  let y0 = $derived(yRange ? yRange[0] : allVals.length ? Math.min(...allVals) : 0);
+  let y1 = $derived(yRange ? yRange[1] : allVals.length ? Math.max(...allVals) : 1);
+  let ySpan = $derived(y1 - y0 || 1);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let slotW = $derived(series.length > 0 ? chartW / series.length : chartW);
 
-  $: gridLines = [0.25, 0.5, 0.75, 1].map((f) => (PAD.t + (1 - f) * chartH).toFixed(1));
+  let gridLines = $derived([0.25, 0.5, 0.75, 1].map((f) => (PAD.t + (1 - f) * chartH).toFixed(1)));
 
-  $: boxes = series.map((s, i) => {
+  let boxes = $derived(series.map((s, i) => {
     const cx = PAD.l + (i + 0.5) * slotW;
     const bw = slotW * 0.4;
     const ty = (v: number) => PAD.t + chartH - ((v - y0) / ySpan) * chartH;
@@ -49,7 +58,7 @@
       boxH: (ty(s.q1) - ty(s.q3)).toFixed(1),
       medY: ty(s.q2).toFixed(1),
     };
-  });
+  }));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface BumpSeries {
     label: string;
     ranks: number[];
@@ -8,9 +8,13 @@
 
 <script lang="ts">
 
-  export let labels: string[] = [];
-  export let series: BumpSeries[] = [];
-  export let ariaLabel: string = 'Bump chart';
+  interface Props {
+    labels?: string[];
+    series?: BumpSeries[];
+    ariaLabel?: string;
+  }
+
+  let { labels = [], series = [], ariaLabel = 'Bump chart' }: Props = $props();
 
   const VW = 380;
   const PAD_L = 12;
@@ -21,10 +25,10 @@
   const DOT_R = 5;
   const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#7FB6FF', '#A878F5', '#F56342'];
 
-  $: maxRank = Math.max(...series.flatMap((s) => s.ranks), 1);
-  $: TRACK_W = VW - PAD_L - PAD_R;
-  $: svgH = PAD_T + maxRank * ROW_H + PAD_B;
-  $: rankRows = Array.from({ length: maxRank }, (_, i) => i);
+  let maxRank = $derived(Math.max(...series.flatMap((s) => s.ranks), 1));
+  let TRACK_W = $derived(VW - PAD_L - PAD_R);
+  let svgH = $derived(PAD_T + maxRank * ROW_H + PAD_B);
+  let rankRows = $derived(Array.from({ length: maxRank }, (_, i) => i));
 
   function xOf(i: number): number {
     return labels.length > 1

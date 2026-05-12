@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface CommandItem {
     id: string;
     label: string;
@@ -8,26 +8,32 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, tick } from 'svelte';
+  import { tick } from 'svelte';
   import Kbd from './Kbd.svelte';
 
-  export let open: boolean = false;
-  export let items: CommandItem[] = [];
-  export let placeholder: string = 'Search pages and actions…';
+  interface Props {
+    open?: boolean;
+    items?: CommandItem[];
+    placeholder?: string;
+    onselect?: (payload: string) => void;
+    onclose?: () => void;
+  }
 
-  const dispatch = createEventDispatcher<{ select: string; close: void }>();
-
-  let query = '';
-  let activeIdx = 0;
-  let inputEl: HTMLInputElement;
+  let { open = false, items = [], placeholder = 'Search pages and actions…',
+    onselect,
+    onclose,
+  }: Props = $props();
+  let query = $state('');
+  let activeIdx = $state(0);
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
   const listboxId = `cp-list-${Math.random().toString(36).slice(2)}`;
 
-  $: filtered =
-    query.trim() === ''
+  let filtered =
+    $derived(query.trim() === ''
       ? items
-      : items.filter((i) => i.label.toLowerCase().includes(query.toLowerCase()));
+      : items.filter((i) => i.label.toLowerCase().includes(query.toLowerCase())));
 
-  $: grouped = filtered.reduce(
+  let grouped = $derived(filtered.reduce(
     (acc, item) => {
       const g = item.group ?? '';
       const found = acc.find((a: { group: string }) => a.group === g);
@@ -36,15 +42,19 @@
       return acc;
     },
     [] as { group: string; items: CommandItem[] }[],
-  );
+  ));
 
-  $: if (open) {
-    query = '';
-    activeIdx = 0;
-    tick().then(() => inputEl?.focus());
-  }
+  $effect(() => {
+    if (open) {
+      query = '';
+      activeIdx = 0;
+      tick().then(() => inputEl?.focus());
+    }
+  });
 
-  $: if (query !== undefined) activeIdx = 0;
+  $effect(() => {
+    if (query !== undefined) activeIdx = 0;
+  });
 
   function handleKey(e: KeyboardEvent) {
     if (e.key === 'ArrowDown') {
@@ -59,24 +69,24 @@
       if (item) commit(item.id);
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      dispatch('close');
+      onclose?.();
     }
   }
 
   function commit(id: string) {
-    dispatch('select', id);
-    dispatch('close');
+    onselect?.(id);
+    onclose?.();
     query = '';
   }
 
   function handleBackdrop(e: MouseEvent) {
-    if (e.target === e.currentTarget) dispatch('close');
+    if (e.target === e.currentTarget) onclose?.();
   }
 </script>
 
 {#if open}
-  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-  <div class="cp-backdrop" role="presentation" on:click={handleBackdrop} on:keydown={handleKey}>
+  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+  <div class="cp-backdrop" role="presentation" onclick={handleBackdrop} onkeydown={handleKey}>
     <div
       role="dialog"
       aria-modal="true"
@@ -110,7 +120,7 @@
           aria-controls={listboxId}
           {placeholder}
           bind:value={query}
-          on:keydown={handleKey}
+          onkeydown={handleKey}
         />
         <span class="cp-kbd">Esc</span>
       </div>
@@ -125,15 +135,15 @@
               {/if}
               {#each groupItems as item}
                 {@const idx = filtered.indexOf(item)}
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <div
                   role="option"
                   tabindex="-1"
                   aria-selected={idx === activeIdx}
                   data-active={idx === activeIdx ? 'true' : undefined}
                   class="cp-item"
-                  on:click={() => commit(item.id)}
-                  on:mouseenter={() => (activeIdx = idx)}
+                  onclick={() => commit(item.id)}
+                  onmouseenter={() => (activeIdx = idx)}
                 >
                   {item.label}
                   {#if item.shortcut}

@@ -1,10 +1,13 @@
 <svelte:options customElement="uni-card" />
 <script>
   import Original from '@w5-ui/svelte/components/Card.svelte';
-  export let span = undefined;
-  export let style = '';
+  let {
+    span = undefined,
+    class: className = '',
+    style = ''
+  } = $props();
 </script>
 
-<Original {span} {style}>
+<Original {span} class={className} {style}>
   <slot />
 </Original>

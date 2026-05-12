@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface DualAxisSeries {
     label: string;
     color: string;
@@ -8,11 +8,21 @@
 
 <script lang="ts">
 
-  export let bars: DualAxisSeries;
-  export let line: DualAxisSeries;
-  export let labels: string[] = [];
-  export let height = 160;
-  export let ariaLabel = 'Dual axis chart';
+  interface Props {
+    bars: DualAxisSeries;
+    line: DualAxisSeries;
+    labels?: string[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    bars,
+    line,
+    labels = [],
+    height = 160,
+    ariaLabel = 'Dual axis chart'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 16, r: 44, b: 28, l: 44 };
@@ -22,32 +32,32 @@
     return String(Math.round(n));
   }
 
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
-  $: bot = PAD.t + chartH;
-  $: n = bars.values.length;
-  $: gw = n > 0 ? chartW / n : chartW;
-  $: barW = gw * 0.55;
-  $: barMax = Math.max(...bars.values, 1);
-  $: lineMin = Math.min(...line.values);
-  $: lineMax = Math.max(...line.values, lineMin + 1);
-  $: lineRange = lineMax - lineMin || 1;
-  $: gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH);
-  $: leftTicks = [0, 0.5, 1].map((f) => ({ y: PAD.t + (1 - f) * chartH, label: fmtTick(barMax * f) }));
-  $: rightTicks = [0, 0.5, 1].map((f) => ({ y: PAD.t + (1 - f) * chartH, label: fmtTick(lineMin + lineRange * f) }));
-  $: barRects = bars.values.map((v, i) => ({
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let bot = $derived(PAD.t + chartH);
+  let n = $derived(bars.values.length);
+  let gw = $derived(n > 0 ? chartW / n : chartW);
+  let barW = $derived(gw * 0.55);
+  let barMax = $derived(Math.max(...bars.values, 1));
+  let lineMin = $derived(Math.min(...line.values));
+  let lineMax = $derived(Math.max(...line.values, lineMin + 1));
+  let lineRange = $derived(lineMax - lineMin || 1);
+  let gridLines = $derived([0, 0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH));
+  let leftTicks = $derived([0, 0.5, 1].map((f) => ({ y: PAD.t + (1 - f) * chartH, label: fmtTick(barMax * f) })));
+  let rightTicks = $derived([0, 0.5, 1].map((f) => ({ y: PAD.t + (1 - f) * chartH, label: fmtTick(lineMin + lineRange * f) })));
+  let barRects = $derived(bars.values.map((v, i) => ({
     x: (PAD.l + i * gw + gw / 2 - barW / 2).toFixed(1),
     y: (bot - (v / barMax) * chartH).toFixed(1),
     w: barW.toFixed(1),
     h: ((v / barMax) * chartH).toFixed(1),
-  }));
-  $: linePoints = line.values.map((v, i) =>
+  })));
+  let linePoints = $derived(line.values.map((v, i) =>
     `${(PAD.l + (n > 1 ? (i / (n - 1)) * chartW : chartW / 2)).toFixed(1)},${(PAD.t + chartH - ((v - lineMin) / lineRange) * chartH).toFixed(1)}`
-  );
-  $: linePath = linePoints.length ? `M ${linePoints.join(' L ')}` : '';
-  $: lineArea = linePoints.length
+  ));
+  let linePath = $derived(linePoints.length ? `M ${linePoints.join(' L ')}` : '');
+  let lineArea = $derived(linePoints.length
     ? `M ${PAD.l.toFixed(1)},${bot.toFixed(1)} L ${linePoints.join(' L ')} L ${(PAD.l + (n > 1 ? chartW : 0)).toFixed(1)},${bot.toFixed(1)} Z`
-    : '';
+    : '');
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

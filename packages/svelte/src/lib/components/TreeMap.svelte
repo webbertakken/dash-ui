@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface TreeMapNode {
     label: string;
     value: number;
@@ -8,9 +8,13 @@
 
 <script lang="ts">
 
-  export let nodes: TreeMapNode[] = [];
-  export let height: number = 160;
-  export let ariaLabel: string = 'Treemap chart';
+  interface Props {
+    nodes?: TreeMapNode[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { nodes = [], height = 160, ariaLabel = 'Treemap chart' }: Props = $props();
 
   const VW = 320;
   const PAD = 4;
@@ -44,13 +48,13 @@
     return [...layout(ns.slice(0, split), x, y, w, h1), ...layout(ns.slice(split), x, y + h1 + GAP, w, Math.max(h - h1 - GAP, 0))];
   }
 
-  $: rects = (() => {
+  let rects = $derived((() => {
     if (!nodes.length) return [] as LayoutRect[];
     const sorted = [...nodes]
       .sort((a, b) => b.value - a.value)
       .map((n, i) => ({ ...n, color: n.color ?? PALETTE[i % PALETTE.length] }));
     return layout(sorted, PAD, PAD, VW - PAD * 2, height - PAD * 2);
-  })();
+  })());
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

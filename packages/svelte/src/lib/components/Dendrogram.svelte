@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface DendrogramNode {
     id: string;
     label: string;
@@ -93,12 +93,21 @@
     }));
   }
 
-  export let root: DendrogramNode;
-  export let colWidth: number = 130;
-  export let rowHeight: number = 28;
-  export let ariaLabel: string = 'Dendrogram';
+  interface Props {
+    root: DendrogramNode;
+    colWidth?: number;
+    rowHeight?: number;
+    ariaLabel?: string;
+  }
 
-  $: ({ svgW, svgH, nodes, links } = compute(root, colWidth, rowHeight));
+  let {
+    root,
+    colWidth = 130,
+    rowHeight = 28,
+    ariaLabel = 'Dendrogram'
+  }: Props = $props();
+
+  let { svgW, svgH, nodes, links } = $derived(compute(root, colWidth, rowHeight));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;overflow-x:auto">

@@ -1,17 +1,25 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let label: string | undefined = undefined;
-  export let value: string = '00:00';
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    value?: string;
+    disabled?: boolean;
+    class?: string;
+    onchange?: (payload: string) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ change: string }>();
+  let {
+    label = undefined,
+    value = $bindable('00:00'),
+    disabled = false,
+    class: className = '',
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-tp-${++counter}`;
 
   function pad(n: number): string {
@@ -26,13 +34,13 @@
     ];
   }
 
-  $: [hours, minutes] = parseTime(value);
+  let [hours, minutes] = $derived(parseTime(value));
 
-  let inputs: [HTMLInputElement | null, HTMLInputElement | null] = [null, null];
+  let inputs: [HTMLInputElement | null, HTMLInputElement | null] = $state([null, null]);
 
   function commit(h: number, m: number) {
     value = `${pad(h)}:${pad(m)}`;
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleKey(field: 0 | 1, e: KeyboardEvent) {
@@ -88,9 +96,9 @@
       {disabled}
       maxlength={2}
       class="time-picker__field"
-      on:input={(e) => handleInput(0, e)}
-      on:keydown={(e) => handleKey(0, e)}
-      on:focus={(e) => e.currentTarget.select()}
+      oninput={(e) => handleInput(0, e)}
+      onkeydown={(e) => handleKey(0, e)}
+      onfocus={(e) => e.currentTarget.select()}
     />
     <span class="time-picker__sep" aria-hidden="true">:</span>
     <input
@@ -108,9 +116,9 @@
       {disabled}
       maxlength={2}
       class="time-picker__field"
-      on:input={(e) => handleInput(1, e)}
-      on:keydown={(e) => handleKey(1, e)}
-      on:focus={(e) => e.currentTarget.select()}
+      oninput={(e) => handleInput(1, e)}
+      onkeydown={(e) => handleKey(1, e)}
+      onfocus={(e) => e.currentTarget.select()}
     />
   </div>
 </div>

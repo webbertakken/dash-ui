@@ -3,9 +3,9 @@
   import type { AreaChartSeries, MirroredBarItem, RidgelineSeries, HorizonSeries, SortableItem } from '@w5-ui/svelte';
   import { SSIDS } from '../data';
 
-  let enabled: Record<string, boolean> = Object.fromEntries(SSIDS.map((s) => [s[0], s[5] === 'active']));
-  let names: Record<string, string> = Object.fromEntries(SSIDS.map((s) => [s[0], s[0]]));
-  let ssidOrder: SortableItem[] = SSIDS.map((s) => ({ id: s[0], label: s[0], meta: s[2] }));
+  let enabled: Record<string, boolean> = $state(Object.fromEntries(SSIDS.map((s) => [s[0], s[5] === 'active'])));
+  let names: Record<string, string> = $state(Object.fromEntries(SSIDS.map((s) => [s[0], s[0]])));
+  let ssidOrder: SortableItem[] = $state(SSIDS.map((s) => ({ id: s[0], label: s[0], meta: s[2] })));
 
   const ssidTxRx: MirroredBarItem[] = [
     { label: 'Office',  left: 198, right: 42 },

@@ -1,23 +1,35 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let label: string | undefined = undefined;
-  export let length: number = 6;
-  export let value: string = '';
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    length?: number;
+    value?: string;
+    disabled?: boolean;
+    class?: string;
+    onchange?: (payload: string) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ change: string }>();
+  let {
+    label = undefined,
+    length = 6,
+    value = $bindable(''),
+    disabled = false,
+    class: className = '',
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-otp-${++counter}`;
 
-  let digits: string[] = Array.from({ length }, (_, i) => value[i] ?? '');
-  let inputs: (HTMLInputElement | null)[] = Array(length).fill(null);
+  // svelte-ignore state_referenced_locally
+  let digits: string[] = $state(Array.from({ length }, (_, i) => value[i] ?? ''));
+  // svelte-ignore state_referenced_locally
+  let inputs: (HTMLInputElement | null)[] = $state(Array(length).fill(null));
 
+  // svelte-ignore state_referenced_locally
   const half = Math.floor(length / 2);
 
   function focusAt(i: number) {
@@ -28,7 +40,7 @@
   function commit(next: string[]) {
     digits = next;
     value = next.join('');
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleInput(i: number, raw: string) {
@@ -84,10 +96,10 @@
         {disabled}
         class="otp-input__digit"
         autocomplete={i === 0 ? 'one-time-code' : 'off'}
-        on:input={(e) => handleInput(i, e.currentTarget.value)}
-        on:keydown={(e) => handleKey(i, e)}
-        on:paste={handlePaste}
-        on:focus={(e) => e.currentTarget.select()}
+        oninput={(e) => handleInput(i, e.currentTarget.value)}
+        onkeydown={(e) => handleKey(i, e)}
+        onpaste={handlePaste}
+        onfocus={(e) => e.currentTarget.select()}
       />
     {/each}
   </div>

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface TimeSeriesAnnotation {
     index: number;
     label: string;
@@ -8,23 +8,34 @@
 
 <script lang="ts">
 
-  export let data: number[] = [];
-  export let labels: string[] = [];
-  export let annotations: TimeSeriesAnnotation[] = [];
-  export let color = '#006FFF';
-  export let height = 160;
-  export let ariaLabel = 'Annotated time series';
+  interface Props {
+    data?: number[];
+    labels?: string[];
+    annotations?: TimeSeriesAnnotation[];
+    color?: string;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    data = [],
+    labels = [],
+    annotations = [],
+    color = '#006FFF',
+    height = 160,
+    ariaLabel = 'Annotated time series'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 16, r: 8, b: 28, l: 32 };
 
-  $: n = data.length;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
-  $: minV = n >= 2 ? Math.min(...data) : 0;
-  $: maxV = n >= 2 ? Math.max(...data) || 1 : 1;
-  $: range = maxV - minV || 1;
-  $: bot = PAD.t + chartH;
+  let n = $derived(data.length);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let minV = $derived(n >= 2 ? Math.min(...data) : 0);
+  let maxV = $derived(n >= 2 ? Math.max(...data) || 1 : 1);
+  let range = $derived(maxV - minV || 1);
+  let bot = $derived(PAD.t + chartH);
 
   function toX(i: number): number {
     return PAD.l + (i / (n - 1)) * chartW;
@@ -33,33 +44,33 @@
     return PAD.t + chartH - ((v - minV) / range) * chartH;
   }
 
-  $: pts = n >= 2 ? data.map((v, i) => [toX(i), toY(v)] as [number, number]) : [];
+  let pts = $derived(n >= 2 ? data.map((v, i) => [toX(i), toY(v)] as [number, number]) : []);
 
-  $: linePath = pts.length
+  let linePath = $derived(pts.length
     ? pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ')
-    : '';
+    : '');
 
-  $: areaPath = pts.length
+  let areaPath = $derived(pts.length
     ? `${linePath} L${pts[n - 1][0].toFixed(1)},${bot} L${pts[0][0].toFixed(1)},${bot} Z`
-    : '';
+    : '');
 
-  $: gridLines = [0, 0.5, 1].map((f) => ({
+  let gridLines = $derived([0, 0.5, 1].map((f) => ({
     y: PAD.t + (1 - f) * chartH,
     label: String(Math.round(minV + f * range)),
-  }));
+  })));
 
-  $: stride = n <= 8 ? 1 : Math.ceil(n / 6);
-  $: xLabels = n >= 2
+  let stride = $derived(n <= 8 ? 1 : Math.ceil(n / 6));
+  let xLabels = $derived(n >= 2
     ? data
         .map((_, i) => ({ x: toX(i), text: labels[i] ?? String(i), i }))
         .filter(({ i }) => i % stride === 0 || i === n - 1)
-    : [];
+    : []);
 
-  $: markers = annotations.map((a) => ({
+  let markers = $derived(annotations.map((a) => ({
     x: toX(Math.max(0, Math.min(n - 1, a.index))),
     label: a.label,
     color: a.color ?? '#F5A623',
-  }));
+  })));
 </script>
 
 {#if n >= 2}

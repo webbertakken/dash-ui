@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-stacked-progress" />
 <script>
   import Original from '@w5-ui/svelte/components/StackedProgress.svelte';
-  // no public props
+  let {
+    segments = undefined,
+    total = undefined,
+    ariaLabel = undefined,
+    showLegend = true
+  } = $props();
 </script>
 
-<Original >
+<Original {segments} {total} {ariaLabel} {showLegend}>
   <slot />
 </Original>

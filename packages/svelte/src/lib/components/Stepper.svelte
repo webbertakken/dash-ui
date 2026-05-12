@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface StepperStep {
     id: string;
     label: string;
@@ -6,12 +6,16 @@
 </script>
 
 <script lang="ts">
-  export let steps: StepperStep[];
-  export let active: string;
-  let className = '';
-  export { className as class };
+  interface Props {
+    steps: StepperStep[];
+    active: string;
+    class?: string;
+  }
 
-  $: activeIdx = steps.findIndex(s => s.id === active);
+  let { steps, active, class: className = '' }: Props = $props();
+  
+
+  let activeIdx = $derived(steps.findIndex(s => s.id === active));
 </script>
 
 <nav aria-label="Progress" class="stepper {className}">

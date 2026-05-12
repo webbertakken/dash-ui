@@ -1,15 +1,24 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type { JsVal } from './JsonViewerNode.svelte';
 </script>
 
 <script lang="ts">
   import JsonViewerNode from './JsonViewerNode.svelte';
   import type { JsVal } from './JsonViewerNode.svelte';
-  export let data: unknown;
-  export let label: string = 'JSON viewer';
-  export let defaultExpanded: boolean = true;
-  export let maxDepth: number = 3;
-  $: root = data as JsVal;
+  interface Props {
+    data: unknown;
+    label?: string;
+    defaultExpanded?: boolean;
+    maxDepth?: number;
+  }
+
+  let {
+    data,
+    label = 'JSON viewer',
+    defaultExpanded = true,
+    maxDepth = 3
+  }: Props = $props();
+  let root = $derived(data as JsVal);
 </script>
 
 <div class="json-viewer" role="tree" aria-label={label}>

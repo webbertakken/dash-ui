@@ -1,8 +1,18 @@
 <script lang="ts">
-  export let title: string;
-  export let description: string | undefined = undefined;
-  let className = '';
-  export { className as class };
+  interface Props {
+    title: string;
+    description?: string | undefined;
+    class?: string;
+    action?: import('svelte').Snippet;
+  }
+
+  let {
+    title,
+    description = undefined,
+    class: className = '',
+    action
+  }: Props = $props();
+  
 </script>
 
 <div role="status" aria-live="polite" class="empty-state {className}">
@@ -15,7 +25,7 @@
   {#if description}
     <p class="empty-state__desc">{description}</p>
   {/if}
-  {#if $$slots.action}
-    <div class="empty-state__action"><slot name="action" /></div>
+  {#if action}
+    <div class="empty-state__action">{@render action?.()}</div>
   {/if}
 </div>

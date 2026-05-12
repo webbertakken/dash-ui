@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface PieSlice {
     label: string;
     value: number;
@@ -8,13 +8,18 @@
 
 <script lang="ts">
 
-  export let slices: PieSlice[] = [];
-  export let size: number = 140;
-  export let ariaLabel: string = 'Pie chart';
+  interface Props {
+    slices?: PieSlice[];
+    size?: number;
+    ariaLabel?: string;
+  }
+
+  let { slices = [], size = 140, ariaLabel = 'Pie chart' }: Props = $props();
 
   const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#A878F5', '#FF6B6B', '#00C875', '#7FB6FF', '#6E7079'];
   const TAU = 2 * Math.PI;
   const START = -Math.PI / 2;
+  const LEGEND_ROW = 18;
 
   function arcPath(cx: number, cy: number, r: number, a0: number, a1: number): string {
     const x0 = cx + r * Math.cos(a0);
@@ -25,15 +30,15 @@
     return `M ${cx} ${cy} L ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
   }
 
-  $: total = slices.reduce((s, sl) => s + sl.value, 0) || 1;
-  $: cx = size / 2;
-  $: cy = size / 2;
-  $: r = (size / 2) * 0.82;
-  $: LEGEND_ROW = 18;
-  $: legendH = Math.ceil(slices.length / 2) * LEGEND_ROW + 6;
-  $: VH = size + legendH;
+  let total = $derived(slices.reduce((s, sl) => s + sl.value, 0) || 1);
+  let cx = $derived(size / 2);
+  let cy = $derived(size / 2);
+  let r = $derived((size / 2) * 0.82);
+  
+  let legendH = $derived(Math.ceil(slices.length / 2) * LEGEND_ROW + 6);
+  let VH = $derived(size + legendH);
 
-  $: segments = (() => {
+  let segments = $derived((() => {
     const result: { path: string; color: string; mid: number }[] = [];
     let angle = START;
     for (let i = 0; i < slices.length; i++) {
@@ -44,7 +49,7 @@
       angle += span;
     }
     return result;
-  })();
+  })());
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

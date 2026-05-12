@@ -1,9 +1,13 @@
 <script lang="ts">
-  export let keys: string | string[];
-  let className = '';
-  export { className as class };
+  interface Props {
+    keys: string | string[];
+    class?: string;
+  }
 
-  $: parts = typeof keys === 'string' ? keys.split('+') : keys;
+  let { keys, class: className = '' }: Props = $props();
+  
+
+  let parts = $derived(typeof keys === 'string' ? keys.split('+') : keys);
 </script>
 
 <kbd class="kbd {className}">

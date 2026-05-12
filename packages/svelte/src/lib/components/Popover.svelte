@@ -1,14 +1,25 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
   import { onMount, onDestroy, tick } from 'svelte';
 
-  export let label: string;
-  export let variant: 'ghost' | 'primary' = 'ghost';
-  export let title: string | undefined = undefined;
-  export let placement: 'bottom-start' | 'bottom-end' | 'bottom' = 'bottom-start';
+  interface Props {
+    label: string;
+    variant?: 'ghost' | 'primary';
+    title?: string | undefined;
+    placement?: 'bottom-start' | 'bottom-end' | 'bottom';
+    children?: import('svelte').Snippet;
+  }
+
+  let {
+    label,
+    variant = 'ghost',
+    title = undefined,
+    placement = 'bottom-start',
+    children
+  }: Props = $props();
 
   const uid = `dash-ui-pop-${++counter}`;
   const titleId = `${uid}-title`;
@@ -16,10 +27,10 @@
   const FOCUSABLE =
     'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
-  let open = false;
-  let rootEl: HTMLDivElement;
-  let triggerEl: HTMLButtonElement;
-  let panelEl: HTMLDivElement;
+  let open = $state(false);
+  let rootEl = $state<HTMLDivElement | undefined>(undefined);
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let panelEl = $state<HTMLDivElement | undefined>(undefined);
 
   async function toggle() {
     if (!open) {
@@ -72,7 +83,7 @@
     class="btn btn-{variant}"
     aria-haspopup="dialog"
     aria-expanded={open}
-    on:click={toggle}
+    onclick={toggle}
   >{label}</button>
   {#if open}
     <div
@@ -83,7 +94,7 @@
       tabindex="-1"
     >
       {#if title}<div id={titleId} class="popover-h">{title}</div>{/if}
-      <div class="popover-b"><slot /></div>
+      <div class="popover-b">{@render children?.()}</div>
     </div>
   {/if}
 </div>

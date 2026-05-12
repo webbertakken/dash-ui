@@ -1,9 +1,13 @@
 <svelte:options customElement="uni-menubar" />
 <script>
   import Original from '@w5-ui/svelte/components/Menubar.svelte';
-  // no public props
+  let {
+    menus = [],
+    label = 'Menu',
+    class: klass = ''
+  } = $props();
 </script>
 
-<Original >
+<Original {menus} {label} class={klass}>
   <slot />
 </Original>

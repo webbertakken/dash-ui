@@ -71,10 +71,10 @@
     { value: '24h', label: 'Last 24 h' },
   ];
 
-  let band = '5';
-  let timeRange = '1h';
-  let noiseRange: [number, number] = [-110, -60];
-  $: filteredAPS = APS.filter(([, , , noise]) => noise >= noiseRange[0] && noise <= noiseRange[1]);
+  let band = $state('5');
+  let timeRange = $state('1h');
+  let noiseRange: [number, number] = $state([-110, -60]);
+  let filteredAPS = $derived(APS.filter(([, , , noise]) => noise >= noiseRange[0] && noise <= noiseRange[1]));
 
   const apRadar: RadarSeries[] = [
     { label: 'Reception', color: '#006FFF', values: [0.83, 0.29, 0.67, 1.0, 0.70] },
@@ -233,7 +233,7 @@
           low={noiseRange[0]}
           high={noiseRange[1]}
           suffix=" dBm"
-          on:change={(e) => { noiseRange = e.detail; }}
+          onchange={(e) => { noiseRange = e; }}
         />
       </div>
     </div>

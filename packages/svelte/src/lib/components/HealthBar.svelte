@@ -1,9 +1,18 @@
 <script lang="ts">
-  export let value: number;
-  export let fillStyle: string = '';
-  export let label: string | undefined = undefined;
-  export let valueText: string | undefined = undefined;
-  $: clamped = Math.max(0, Math.min(100, value));
+  interface Props {
+    value: number;
+    fillStyle?: string;
+    label?: string | undefined;
+    valueText?: string | undefined;
+  }
+
+  let {
+    value,
+    fillStyle = '',
+    label = undefined,
+    valueText = undefined
+  }: Props = $props();
+  let clamped = $derived(Math.max(0, Math.min(100, value)));
 </script>
 
 <div

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface LollipopItem {
     label: string;
     value: number;
@@ -8,10 +8,19 @@
 
 <script lang="ts">
 
-  export let items: LollipopItem[] = [];
-  export let unit: string = '';
-  export let color: string = '#006FFF';
-  export let ariaLabel: string = 'Lollipop chart';
+  interface Props {
+    items?: LollipopItem[];
+    unit?: string;
+    color?: string;
+    ariaLabel?: string;
+  }
+
+  let {
+    items = [],
+    unit = '',
+    color = '#006FFF',
+    ariaLabel = 'Lollipop chart'
+  }: Props = $props();
 
   const VW = 340;
   const LABEL_W = 110;
@@ -24,9 +33,9 @@
   const AXIS_H = 18;
   const TICKS = 4;
 
-  $: maxVal = Math.max(...items.map((it) => it.value), 1);
-  $: svgH = PAD_T + items.length * ROW_H + AXIS_H;
-  $: ticks = Array.from({ length: TICKS + 1 }, (_, i) => Math.round((i / TICKS) * maxVal));
+  let maxVal = $derived(Math.max(...items.map((it) => it.value), 1));
+  let svgH = $derived(PAD_T + items.length * ROW_H + AXIS_H);
+  let ticks = $derived(Array.from({ length: TICKS + 1 }, (_, i) => Math.round((i / TICKS) * maxVal)));
 
   function tx(v: number): number {
     return LABEL_W + (v / maxVal) * TRACK_W;

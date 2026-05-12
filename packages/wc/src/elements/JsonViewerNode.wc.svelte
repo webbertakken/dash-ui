@@ -1,9 +1,15 @@
 <svelte:options customElement="uni-json-viewer-node" />
 <script>
   import Original from '@w5-ui/svelte/components/JsonViewerNode.svelte';
-  // no public props
+  let {
+    v = undefined,
+    k = undefined,
+    depth = 0,
+    maxDepth = 3,
+    startOpen = true
+  } = $props();
 </script>
 
-<Original >
+<Original {v} {k} {depth} {maxDepth} {startOpen}>
   <slot />
 </Original>

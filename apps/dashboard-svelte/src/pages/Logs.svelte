@@ -3,11 +3,11 @@
   import type { TimeRangeId, DateRange, LogEntry, FilterField, FilterRule } from '@w5-ui/svelte';
   import { LOG_ROWS } from '../data';
 
-  let tab = 'all';
-  let timeRange: TimeRangeId = '1h';
-  let customRange: DateRange = { start: null, end: null };
-  let filterRules: FilterRule[] = [];
-  let conjunction: 'and' | 'or' = 'and';
+  let tab = $state('all');
+  let timeRange: TimeRangeId = $state('1h');
+  let customRange: DateRange = $state({ start: null, end: null });
+  let filterRules: FilterRule[] = $state([]);
+  let conjunction: 'and' | 'or' = $state('and');
 
   const LOG_VOLUME: number[][] = [
     [12,8,5,3,2,4,18,42,67,85,92,88,74,68,71,76,83,88,79,65,52,38,24,16],
@@ -53,7 +53,7 @@
     }
   }
 
-  $: entries = (() => {
+  let entries = $derived((() => {
     const active = filterRules.filter((r) => r.value !== '');
     if (active.length === 0) return allEntries;
     return allEntries.filter((e) =>
@@ -61,15 +61,15 @@
         ? active.every((r) => matchesRule(e, r))
         : active.some((r) => matchesRule(e, r))
     );
-  })();
+  })());
 </script>
 
 <div class="ph-bar">
   <div class="ph-title">Logs</div>
   <div class="ph-actions">
     <SearchBox placeholder="Search logs…" />
-    <TimeRange value={timeRange} on:change={(e) => { timeRange = e.detail; }} />
-    <DateRangePicker value={customRange} on:change={(e) => { customRange = e.detail; }} placeholder="Custom range" />
+    <TimeRange value={timeRange} onchange={(e) => { timeRange = e; }} />
+    <DateRangePicker value={customRange} onchange={(e) => { customRange = e; }} placeholder="Custom range" />
     <Button iconOnly title="Download"><DownloadIcon /></Button>
   </div>
 </div>
@@ -101,7 +101,7 @@
       value={filterRules}
       {conjunction}
       ariaLabel="Log filters"
-      on:change={(e) => { filterRules = e.detail.rules; conjunction = e.detail.conjunction; }}
+      onchange={(e) => { filterRules = e.rules; conjunction = e.conjunction; }}
     />
     <LogViewer
       {entries}

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   const MONTHS = [
@@ -36,27 +36,34 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy, tick } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
 
-  export let value: Date | null = null;
-  export let placeholder: string = 'Pick a date';
-  export let disabled: boolean = false;
+  interface Props {
+    value?: Date | null;
+    placeholder?: string;
+    disabled?: boolean;
+    onchange?: (payload: Date) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ change: Date }>();
+  let { value = null, placeholder = 'Pick a date', disabled = false,
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-dp-${++counter}`;
   const calId = `${uid}-cal`;
   const today = new Date();
 
-  let open = false;
-  let viewYear = value?.getFullYear() ?? today.getFullYear();
-  let viewMonth = value?.getMonth() ?? today.getMonth();
-  let focusIdx = 0;
-  let triggerEl: HTMLButtonElement;
-  let calEl: HTMLDivElement;
-  let dayEls: (HTMLButtonElement | null)[] = Array(42).fill(null);
+  let open = $state(false);
+  // svelte-ignore state_referenced_locally
+  let viewYear = $state(value?.getFullYear() ?? today.getFullYear());
+  // svelte-ignore state_referenced_locally
+  let viewMonth = $state(value?.getMonth() ?? today.getMonth());
+  let focusIdx = $state(0);
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let calEl = $state<HTMLDivElement | undefined>(undefined);
+  let dayEls: (HTMLButtonElement | null)[] = $state(Array(42).fill(null));
 
-  $: grid = buildGrid(viewYear, viewMonth);
-  $: label = `${MONTHS[viewMonth]} ${viewYear}`;
+  let grid = $derived(buildGrid(viewYear, viewMonth));
+  let label = $derived(`${MONTHS[viewMonth]} ${viewYear}`);
 
   function openCal() {
     if (disabled) return;
@@ -74,7 +81,7 @@
   }
 
   function select(d: Date) {
-    dispatch('change', d);
+    onchange?.(d);
     closeCal();
   }
 
@@ -129,7 +136,7 @@
     aria-expanded={open}
     aria-controls={open ? calId : undefined}
     {disabled}
-    on:click={() => open ? closeCal() : openCal()}
+    onclick={() => open ? closeCal() : openCal()}
   >
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
       <rect x="1" y="2" width="12" height="11" rx="1.5" />
@@ -148,13 +155,13 @@
       class="dp-cal"
     >
       <div class="dp-header">
-        <button type="button" class="dp-nav" on:click={prevMonth} aria-label="Previous month">
+        <button type="button" class="dp-nav" onclick={prevMonth} aria-label="Previous month">
           <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M7 1L2 6l5 5" />
           </svg>
         </button>
         <span class="dp-month-label" aria-live="polite">{label}</span>
-        <button type="button" class="dp-nav" on:click={nextMonth} aria-label="Next month">
+        <button type="button" class="dp-nav" onclick={nextMonth} aria-label="Next month">
           <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M1 1l5 5-5 5" />
           </svg>
@@ -185,8 +192,8 @@
                     tabindex={idx === focusIdx ? 0 : -1}
                     class="dp-day{outside ? ' dp-day--outside' : ''}{isToday && !isSelected ? ' dp-day--today' : ''}{isSelected ? ' dp-day--selected' : ''}"
                     aria-label={day.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-                    on:keydown={(e) => onGridKey(e, idx)}
-                    on:click={() => select(day)}
+                    onkeydown={(e) => onGridKey(e, idx)}
+                    onclick={() => select(day)}
                   >
                     {day.getDate()}
                   </button>

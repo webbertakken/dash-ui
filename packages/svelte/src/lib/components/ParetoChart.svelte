@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface ParetoItem {
     label: string;
     value: number;
@@ -8,29 +8,40 @@
 
 <script lang="ts">
 
-  export let items: ParetoItem[] = [];
-  export let height: number = 160;
-  export let ariaLabel: string = 'Pareto chart';
-  export let barColor: string = '#006FFF';
-  export let lineColor: string = '#F5A623';
-  export let threshold: number = 0.8;
+  interface Props {
+    items?: ParetoItem[];
+    height?: number;
+    ariaLabel?: string;
+    barColor?: string;
+    lineColor?: string;
+    threshold?: number;
+  }
+
+  let {
+    items = [],
+    height = 160,
+    ariaLabel = 'Pareto chart',
+    barColor = '#006FFF',
+    lineColor = '#F5A623',
+    threshold = 0.8
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 12, r: 40, b: 28, l: 8 };
 
-  $: sorted = [...items].sort((a, b) => b.value - a.value);
-  $: total = sorted.reduce((s, it) => s + it.value, 0) || 1;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
-  $: bot = PAD.t + chartH;
-  $: maxV = sorted[0]?.value || 1;
-  $: barW = sorted.length > 0 ? chartW / sorted.length : chartW;
-  $: gap = barW * 0.15;
-  $: bw = Math.max(barW - gap * 2, 1);
+  let sorted = $derived([...items].sort((a, b) => b.value - a.value));
+  let total = $derived(sorted.reduce((s, it) => s + it.value, 0) || 1);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let bot = $derived(PAD.t + chartH);
+  let maxV = $derived(sorted[0]?.value || 1);
+  let barW = $derived(sorted.length > 0 ? chartW / sorted.length : chartW);
+  let gap = $derived(barW * 0.15);
+  let bw = $derived(Math.max(barW - gap * 2, 1));
 
-  $: gridLines = [0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH);
+  let gridLines = $derived([0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH));
 
-  $: bars = sorted.map((item, i) => {
+  let bars = $derived(sorted.map((item, i) => {
     const bh = (item.value / maxV) * chartH;
     const x = PAD.l + i * barW + gap;
     return {
@@ -42,9 +53,9 @@
       color: item.color ?? barColor,
       key: `b${i}`,
     };
-  });
+  }));
 
-  $: linePoints = (() => {
+  let linePoints = $derived((() => {
     let cumSum = 0;
     const pts: string[] = [`${PAD.l},${bot}`];
     sorted.forEach((item, i) => {
@@ -55,14 +66,14 @@
       pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
     });
     return pts.join(' ');
-  })();
+  })());
 
-  $: thresholdY = threshold > 0 ? (PAD.t + (1 - threshold) * chartH).toFixed(1) : null;
+  let thresholdY = $derived(threshold > 0 ? (PAD.t + (1 - threshold) * chartH).toFixed(1) : null);
 
-  $: pctLabels = [0, 50, 100].map((pct) => ({
+  let pctLabels = $derived([0, 50, 100].map((pct) => ({
     label: `${pct}%`,
     y: (PAD.t + (1 - pct / 100) * chartH + 3).toFixed(1),
-  }));
+  })));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

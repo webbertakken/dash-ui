@@ -1,7 +1,12 @@
 <script lang="ts">
   import CloseIcon from '../icons/CloseIcon.svelte';
-  export let variant: 'success' | 'warn' | 'danger' | 'info' = 'info';
-  export let onDismiss: (() => void) | undefined = undefined;
+  interface Props {
+    variant?: 'success' | 'warn' | 'danger' | 'info';
+    onDismiss?: (() => void) | undefined;
+    children?: import('svelte').Snippet;
+  }
+
+  let { variant = 'info', onDismiss = undefined, children }: Props = $props();
 </script>
 
 <div
@@ -10,9 +15,9 @@
   aria-live={variant === 'danger' ? 'assertive' : 'polite'}
   aria-atomic="true"
 >
-  <span class="alert-body"><slot /></span>
+  <span class="alert-body">{@render children?.()}</span>
   {#if onDismiss}
-    <button type="button" class="alert-dismiss icon-btn" on:click={onDismiss} aria-label="Dismiss alert">
+    <button type="button" class="alert-dismiss icon-btn" onclick={onDismiss} aria-label="Dismiss alert">
       <CloseIcon />
     </button>
   {/if}

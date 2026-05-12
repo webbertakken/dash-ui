@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface CirclePackItem {
     id: string;
     label: string;
@@ -9,9 +9,13 @@
 
 <script lang="ts">
 
-  export let items: CirclePackItem[];
-  export let height = 200;
-  export let ariaLabel = 'Circle packing chart';
+  interface Props {
+    items: CirclePackItem[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { items, height = 200, ariaLabel = 'Circle packing chart' }: Props = $props();
 
   const PALETTE = ['#006FFF', '#00C875', '#F5A623', '#A78BFA', '#FF7B7B', '#00C8C8', '#FB923C', '#4797FF'];
   const VW = 360;
@@ -67,7 +71,7 @@
     return pos.map(({ cx, cy }) => ({ cx, cy }));
   }
 
-  $: layout = (() => {
+  let layout = $derived((() => {
     if (!items.length) return null;
     const sorted = [...items].sort((a, b) => b.value - a.value);
     const maxV = sorted[0].value;
@@ -94,7 +98,7 @@
       const color = item.color ?? PALETTE[i % PALETTE.length];
       return { id: item.id, label: item.label, value: item.value, cx, cy, r, color };
     });
-  })();
+  })());
 </script>
 
 {#if layout}

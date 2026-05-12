@@ -1,8 +1,17 @@
 <script lang="ts">
-  export let bars: number = 36;
-  export let active: boolean = false;
-  export let seed: number = 1;
-  export let ariaLabel: string = 'Activity sparkline';
+  interface Props {
+    bars?: number;
+    active?: boolean;
+    seed?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    bars = 36,
+    active = false,
+    seed = 1,
+    ariaLabel = 'Activity sparkline'
+  }: Props = $props();
 
   function rng(s0: number) {
     let s = s0;
@@ -12,7 +21,7 @@
     };
   }
 
-  $: heights = (() => {
+  let heights = $derived((() => {
     const r = rng(seed);
     const out: number[] = [];
     let prev = 12;
@@ -22,7 +31,7 @@
       out.push(v);
     }
     return out;
-  })();
+  })());
 </script>
 
 <div class="spark" role="img" aria-label={ariaLabel}>

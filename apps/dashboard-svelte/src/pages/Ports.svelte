@@ -2,7 +2,7 @@
   import { Card, Button, Pill, Tabs, SunburstChart, RadialBarChart, MatrixChart, StackedBarChart, SwitchPortGrid, TransferList } from '@w5-ui/svelte';
   import type { SunburstNode, RadialBarItem, StackedBarSeries, SwitchPort, TransferListItem } from '@w5-ui/svelte';
   import { PORT_STATES } from '../data';
-  let tab = 'main';
+  let tab = $state('main');
 
   const portsGrid: SwitchPort[] = PORT_STATES.map(([status, speed, label]) => ({
     status: (status === 'up' ? 'up' : status === 'poe' ? 'poe' : 'down') as SwitchPort['status'],
@@ -68,15 +68,15 @@
     [21, 'NAS uplink', 'VLAN 1', 'Trunk all', 'Off', '2.5 Gbps', '118 / 46 MB/s', '#00B070', 'Connected', '#5DDB9F'],
   ];
 
-  let vlanAvailable: TransferListItem[] = [2,3,6,7,8,9,11,12,14,15,16,17,18,19,20,22,23,24].map((n) => ({
+  let vlanAvailable: TransferListItem[] = $state([2,3,6,7,8,9,11,12,14,15,16,17,18,19,20,22,23,24].map((n) => ({
     id: `p${n}`,
     label: `Port ${String(n).padStart(2, '0')}`,
     description: 'Unassigned',
-  }));
-  let vlanAssigned: TransferListItem[] = [
+  })));
+  let vlanAssigned: TransferListItem[] = $state([
     { id: 'p4', label: 'Port 04', description: 'AP · Lobby' },
     { id: 'p5', label: 'Port 05', description: 'AP · Reception' },
-  ];
+  ]);
 
   const PROTO_LABELS = ['00h', '02h', '04h', '06h', '08h', '10h', '12h', '14h', '16h', '18h', '20h', '22h'];
   const PROTO_TRAFFIC: StackedBarSeries[] = [

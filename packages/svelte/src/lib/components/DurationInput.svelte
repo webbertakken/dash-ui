@@ -1,18 +1,27 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let label: string | undefined = undefined;
-  export let value: number = 0;
-  export let maxHours: number = 99;
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    value?: number;
+    maxHours?: number;
+    disabled?: boolean;
+    class?: string;
+    onchange?: (payload: number) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ change: number }>();
+  let {
+    label = undefined,
+    value = $bindable(0),
+    maxHours = 99,
+    disabled = false,
+    class: className = '',
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-dur-${++counter}`;
 
   function toHMS(secs: number): [number, number, number] {
@@ -28,9 +37,9 @@
     return String(n).padStart(2, '0');
   }
 
-  $: [hours, minutes, seconds] = toHMS(value);
+  let [hours, minutes, seconds] = $derived(toHMS(value));
 
-  let inputs: [HTMLInputElement | null, HTMLInputElement | null, HTMLInputElement | null] = [null, null, null];
+  let inputs: [HTMLInputElement | null, HTMLInputElement | null, HTMLInputElement | null] = $state([null, null, null]);
 
   function focusAt(i: number) {
     const el = inputs[i];
@@ -39,7 +48,7 @@
 
   function commit(h: number, m: number, s: number) {
     value = fromHMS(Math.min(maxHours, h), m, s);
-    dispatch('change', value);
+    onchange?.(value);
   }
 
   function handleKey(field: number, e: KeyboardEvent) {
@@ -80,8 +89,8 @@
     { idx: 2, ariaLabel: 'Seconds' },
   ];
 
-  $: fieldVals = [hours, minutes, seconds];
-  $: fieldMaxes = [maxHours, 59, 59];
+  let fieldVals = $derived([hours, minutes, seconds]);
+  let fieldMaxes = $derived([maxHours, 59, 59]);
 </script>
 
 <div class="dur-input-wrapper {className}">
@@ -106,9 +115,9 @@
         {disabled}
         maxlength={2}
         class="dur-input__field"
-        on:input={(e) => handleInput(idx, e)}
-        on:keydown={(e) => handleKey(idx, e)}
-        on:focus={(e) => e.currentTarget.select()}
+        oninput={(e) => handleInput(idx, e)}
+        onkeydown={(e) => handleKey(idx, e)}
+        onfocus={(e) => e.currentTarget.select()}
       />
       {#if i < 2}
         <span class="dur-input__sep" aria-hidden="true">:</span>

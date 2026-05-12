@@ -8,7 +8,7 @@ import { describe, it, expect } from 'vitest'
 const SVELTE_DIR = path.resolve(__dirname, '../lib/components')
 
 describe('@w5-ui/svelte SSR compile smoke', () => {
-  it('every component compiles in generate: ssr mode', async () => {
+  it('every component compiles in generate: server mode', async () => {
     const files = (await readdir(SVELTE_DIR)).filter((f) => f.endsWith('.svelte'))
     expect(files.length).toBeGreaterThan(150)
 
@@ -19,9 +19,7 @@ describe('@w5-ui/svelte SSR compile smoke', () => {
       try {
         const { code: js } = await preprocess(src, preprocessors, { filename: file })
         const compiled = compile(js, {
-          generate: 'ssr',
-          hydratable: false,
-          css: 'none',
+          generate: 'server',
           filename: file,
         })
         expect(compiled.js.code.length).toBeGreaterThan(0)

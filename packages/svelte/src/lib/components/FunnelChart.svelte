@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface FunnelSegment {
     label: string;
     value: number;
@@ -8,24 +8,28 @@
 
 <script lang="ts">
 
-  export let segments: FunnelSegment[] = [];
-  export let height: number = 160;
-  export let ariaLabel: string = 'Funnel chart';
+  interface Props {
+    segments?: FunnelSegment[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { segments = [], height = 160, ariaLabel = 'Funnel chart' }: Props = $props();
 
   const VW = 320;
   const PAD = { t: 4, r: 8, b: 4, l: 8 };
   const SEP = 2;
   const DEFAULT_COLORS = ['#006FFF', '#0092FF', '#00B4C2', '#00C875', '#F5A623'];
 
-  $: maxVal = segments.length ? Math.max(...segments.map((s) => s.value)) : 1;
-  $: n = segments.length;
-  $: chartH = height - PAD.t - PAD.b;
-  $: slotH = n > 0 ? (chartH - SEP * (n - 1)) / n : chartH;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: cx = PAD.l + chartW / 2;
-  $: widths = segments.map((s) => (s.value / (maxVal || 1)) * chartW);
+  let maxVal = $derived(segments.length ? Math.max(...segments.map((s) => s.value)) : 1);
+  let n = $derived(segments.length);
+  let chartH = $derived(height - PAD.t - PAD.b);
+  let slotH = $derived(n > 0 ? (chartH - SEP * (n - 1)) / n : chartH);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let cx = $derived(PAD.l + chartW / 2);
+  let widths = $derived(segments.map((s) => (s.value / (maxVal || 1)) * chartW));
 
-  $: shapes = segments.map((s, i) => {
+  let shapes = $derived(segments.map((s, i) => {
     const tw = widths[i];
     const bw = i + 1 < n ? widths[i + 1] : widths[i] * 0.7;
     const y0 = PAD.t + i * (slotH + SEP);
@@ -38,7 +42,7 @@
       cx: cx.toFixed(1),
       cy: ((y0 + y1) / 2).toFixed(1),
     };
-  });
+  }));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

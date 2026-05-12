@@ -1,17 +1,34 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
 
-  export let from: number = 0;
-  export let to: number;
-  export let duration: number = 1200;
-  export let decimals: number = 0;
-  export let prefix: string = '';
-  export let suffix: string = '';
-  export let separator: string = ',';
-  let klass: string = '';
-  export { klass as class };
+  interface Props {
+    from?: number;
+    to: number;
+    duration?: number;
+    decimals?: number;
+    prefix?: string;
+    suffix?: string;
+    separator?: string;
+    class?: string;
+  }
 
-  let current = from;
+  let {
+    from = 0,
+    to,
+    duration = 1200,
+    decimals = 0,
+    prefix = '',
+    suffix = '',
+    separator = ',',
+    class: klass = ''
+  }: Props = $props();
+  
+
+  // `current` snapshots `from` once and then animates towards `to`. Live-
+  // tracking `from` would yank the animation back to the prop on every
+  // update.
+  // svelte-ignore state_referenced_locally
+  let current = $state(from);
   let rafId: number;
 
   function easeOut(t: number) { return 1 - Math.pow(1 - t, 3); }
@@ -24,8 +41,8 @@
     return dec !== undefined ? `${intFmt}.${dec}` : intFmt;
   }
 
-  $: label = `${prefix}${fmt(to)}${suffix}`;
-  $: display = `${prefix}${fmt(current)}${suffix}`;
+  let label = $derived(`${prefix}${fmt(to)}${suffix}`);
+  let display = $derived(`${prefix}${fmt(current)}${suffix}`);
 
   onMount(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

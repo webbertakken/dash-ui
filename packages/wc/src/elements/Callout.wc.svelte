@@ -1,9 +1,12 @@
 <svelte:options customElement="uni-callout" />
 <script>
   import Original from '@w5-ui/svelte/components/Callout.svelte';
-  // no public props
+  let {
+    variant = 'info',
+    title = undefined
+  } = $props();
 </script>
 
-<Original >
+<Original {variant} {title}>
   <slot />
 </Original>

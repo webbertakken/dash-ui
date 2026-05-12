@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface RadialBarItem {
     label: string;
     value: number;
@@ -10,8 +10,12 @@
 
 <script lang="ts">
 
-  export let items: RadialBarItem[] = [];
-  export let ariaLabel = 'Radial bar chart';
+  interface Props {
+    items?: RadialBarItem[];
+    ariaLabel?: string;
+  }
+
+  let { items = [], ariaLabel = 'Radial bar chart' }: Props = $props();
 
   const W = 280;
   const H = 160;
@@ -41,9 +45,9 @@
     return `M${x1},${y1} A${r},${r} 0 ${sweep > Math.PI ? 1 : 0} 1 ${x2},${y2}`;
   }
 
-  $: n = items.length;
-  $: yStart = CY - ((n - 1) * ITEM_H) / 2;
-  $: rings = items.map((item, i) => {
+  let n = $derived(items.length);
+  let yStart = $derived(CY - ((n - 1) * ITEM_H) / 2);
+  let rings = $derived(items.map((item, i) => {
     const r = MIN_R + (n - 1 - i) * (RING_W + RING_GAP);
     const frac = Math.min(item.value / (item.max || 1), 1);
     const color = item.color ?? '#006FFF';
@@ -59,7 +63,7 @@
       value: item.value,
       unit: item.unit ?? '',
     };
-  });
+  }));
 </script>
 
 {#if items.length}

@@ -1,14 +1,16 @@
 <svelte:options customElement="uni-stat" />
 <script>
   import Original from '@w5-ui/svelte/components/Stat.svelte';
-  export let label = undefined;
-  export let value = '';
-  export let unit = undefined;
-  export let sub = undefined;
-  export let delta = undefined;
-  export let deltaDir = 'neutral';
-  export let span = undefined;
-  export let color = undefined;
+  let {
+    label = undefined,
+    value = '',
+    unit = undefined,
+    sub = undefined,
+    delta = undefined,
+    deltaDir = 'neutral',
+    span = undefined,
+    color = undefined
+  } = $props();
 </script>
 
 <Original {label} {value} {unit} {sub} {delta} {deltaDir} {span} {color}>

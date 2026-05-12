@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface RadarSeries {
     label: string;
     color: string;
@@ -8,10 +8,19 @@
 
 <script lang="ts">
 
-  export let series: RadarSeries[] = [];
-  export let axes: string[] = [];
-  export let height: number = 200;
-  export let ariaLabel: string = 'Radar chart';
+  interface Props {
+    series?: RadarSeries[];
+    axes?: string[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    axes = [],
+    height = 200,
+    ariaLabel = 'Radar chart'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = 36;
@@ -24,36 +33,36 @@
     return coords.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
   }
 
-  $: n = axes.length;
-  $: cx = VW / 2;
-  $: cy = height / 2;
-  $: R = Math.min(cx, cy) - PAD;
-  $: angles = axes.map((_, i) => (2 * Math.PI * i) / n - Math.PI / 2);
+  let n = $derived(axes.length);
+  let cx = $derived(VW / 2);
+  let cy = $derived(height / 2);
+  let R = $derived(Math.min(cx, cy) - PAD);
+  let angles = $derived(axes.map((_, i) => (2 * Math.PI * i) / n - Math.PI / 2));
 
-  $: rings = n >= 3
+  let rings = $derived(n >= 3
     ? [0.25, 0.5, 0.75, 1.0].map((f) => makePts(angles.map((a) => pt(cx, cy, R * f, a))))
-    : [];
+    : []);
 
-  $: axisLines = n >= 3
+  let axisLines = $derived(n >= 3
     ? angles.map((a) => { const [x, y] = pt(cx, cy, R, a); return { x: x.toFixed(1), y: y.toFixed(1) }; })
-    : [];
+    : []);
 
-  $: axisLabels = n >= 3
+  let axisLabels = $derived(n >= 3
     ? axes.map((label, i) => {
         const [x, y] = pt(cx, cy, R + 16, angles[i]);
         const cos = Math.cos(angles[i]);
         const anchor = Math.abs(cos) < 0.3 ? 'middle' : cos < 0 ? 'end' : 'start';
         return { x: x.toFixed(1), y: y.toFixed(1), label, anchor };
       })
-    : [];
+    : []);
 
-  $: polygons = n >= 3
+  let polygons = $derived(n >= 3
     ? series.map((s) => ({
         pts: makePts(angles.map((a, i) => pt(cx, cy, R * Math.max(0, Math.min(1, s.values[i] ?? 0)), a))),
         color: s.color,
         label: s.label,
       }))
-    : [];
+    : []);
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

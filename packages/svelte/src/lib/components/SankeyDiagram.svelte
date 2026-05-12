@@ -1,14 +1,23 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface SankeyLink { source: string; target: string; value: number; }
   export interface SankeyNode { id: string; label: string; color?: string; }
 </script>
 
 <script lang="ts">
 
-  export let nodes: SankeyNode[] = [];
-  export let links: SankeyLink[] = [];
-  export let height: number = 180;
-  export let ariaLabel: string = 'Sankey diagram';
+  interface Props {
+    nodes?: SankeyNode[];
+    links?: SankeyLink[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    nodes = [],
+    links = [],
+    height = 180,
+    ariaLabel = 'Sankey diagram'
+  }: Props = $props();
 
   const VW = 320;
   const NODE_W = 10;
@@ -19,7 +28,7 @@
   interface PositionedNode { id: string; label: string; color: string; x: number; y: number; h: number; side: 'left' | 'right'; }
   interface PathData { d: string; color: string; }
 
-  $: ({ positioned, paths } = (() => {
+  let { positioned, paths } = $derived((() => {
     if (!nodes.length || !links.length) return { positioned: [] as PositionedNode[], paths: [] as PathData[] };
 
     const nodeMap = new Map(nodes.map((n, i) => [n.id, { ...n, color: n.color ?? PALETTE[i % PALETTE.length] }]));

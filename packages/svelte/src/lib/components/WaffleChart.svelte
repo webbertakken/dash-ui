@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface WaffleSegment {
     label: string;
     value: number;
@@ -8,24 +8,35 @@
 
 <script lang="ts">
 
-  export let segments: WaffleSegment[] = [];
-  export let total: number | undefined = undefined;
-  export let cols: number = 10;
-  export let rows: number = 10;
-  export let gap: number = 2;
-  export let ariaLabel: string = 'Waffle chart';
+  interface Props {
+    segments?: WaffleSegment[];
+    total?: number | undefined;
+    cols?: number;
+    rows?: number;
+    gap?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    segments = [],
+    total = undefined,
+    cols = 10,
+    rows = 10,
+    gap = 2,
+    ariaLabel = 'Waffle chart'
+  }: Props = $props();
 
   const COLORS = ['#006FFF', '#00C7A8', '#F5A623', '#FF6B6B', '#A78BFA'];
   const VW = 280;
   const LEGEND_H = 24;
 
-  $: sum = total ?? segments.reduce((s, seg) => s + seg.value, 0);
-  $: cellSize = (VW - gap * (cols - 1)) / cols;
-  $: gridH = rows * cellSize + gap * (rows - 1);
-  $: svgH = gridH + LEGEND_H + 6;
-  $: totalCells = cols * rows;
+  let sum = $derived(total ?? segments.reduce((s, seg) => s + seg.value, 0));
+  let cellSize = $derived((VW - gap * (cols - 1)) / cols);
+  let gridH = $derived(rows * cellSize + gap * (rows - 1));
+  let svgH = $derived(gridH + LEGEND_H + 6);
+  let totalCells = $derived(cols * rows);
 
-  $: cellMap = (() => {
+  let cellMap = $derived((() => {
     const map: number[] = new Array(totalCells).fill(-1);
     let cursor = 0;
     segments.forEach((seg, si) => {
@@ -35,9 +46,9 @@
       }
     });
     return map;
-  })();
+  })());
 
-  $: cells = Array.from({ length: totalCells }, (_, i) => {
+  let cells = $derived(Array.from({ length: totalCells }, (_, i) => {
     const col = i % cols;
     const row = Math.floor(i / cols);
     const x = col * (cellSize + gap);
@@ -45,15 +56,15 @@
     const si = cellMap[i];
     const fill = si >= 0 ? (segments[si].color ?? COLORS[si % COLORS.length]) : 'rgba(255,255,255,0.06)';
     return { x, y, fill, width: cellSize, height: cellSize };
-  });
+  }));
 
-  $: legendItems = segments.map((seg, si) => ({
+  let legendItems = $derived(segments.map((seg, si) => ({
     color: seg.color ?? COLORS[si % COLORS.length],
     pct: Math.round((seg.value / sum) * 100),
     label: seg.label,
     lx: si * (VW / segments.length),
     ly: gridH + 8,
-  }));
+  })));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

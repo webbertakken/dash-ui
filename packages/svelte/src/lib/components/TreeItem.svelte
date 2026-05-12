@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface TreeNode {
     id: string;
     label: string;
@@ -8,15 +8,25 @@
 </script>
 
 <script lang="ts">
+  import TreeItem from './TreeItem.svelte';
 
-  export let node: TreeNode;
-  export let expanded: Set<string>;
-  export let selected: string | undefined;
-  export let focusedId: string;
+  interface Props {
+    node: TreeNode;
+    expanded: Set<string>;
+    selected: string | undefined;
+    focusedId: string;
+  }
 
-  $: hasChildren = !!node.children?.length;
-  $: isExpanded = expanded.has(node.id);
-  $: isSelected = selected === node.id;
+  let {
+    node,
+    expanded,
+    selected,
+    focusedId
+  }: Props = $props();
+
+  let hasChildren = $derived(!!node.children?.length);
+  let isExpanded = $derived(expanded.has(node.id));
+  let isSelected = $derived(selected === node.id);
 </script>
 
 <li
@@ -52,7 +62,7 @@
   {#if hasChildren && isExpanded && node.children}
     <ul role="group" class="tree__group">
       {#each node.children as child (child.id)}
-        <svelte:self
+        <TreeItem
           node={child}
           {expanded}
           {selected}

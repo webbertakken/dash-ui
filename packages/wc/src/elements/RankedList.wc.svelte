@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-ranked-list" />
 <script>
   import Original from '@w5-ui/svelte/components/RankedList.svelte';
-  // no public props
+  let {
+    items = undefined,
+    unit = undefined,
+    max = undefined,
+    ariaLabel = 'Ranked list'
+  } = $props();
 </script>
 
-<Original >
+<Original {items} {unit} {max} {ariaLabel}>
   <slot />
 </Original>

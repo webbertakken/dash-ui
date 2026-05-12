@@ -1,11 +1,13 @@
 <svelte:options customElement="uni-gauge" />
 <script>
   import Original from '@w5-ui/svelte/components/Gauge.svelte';
-  export let value = 0;
-  export let label = '';
-  export let color = '#006FFF';
-  export let size = 120;
-  export let ariaLabel = undefined;
+  let {
+    value = 0,
+    label = '',
+    color = '#006FFF',
+    size = 120,
+    ariaLabel = undefined
+  } = $props();
 </script>
 
 <Original {value} {label} {color} {size} {ariaLabel}>

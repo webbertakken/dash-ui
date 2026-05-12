@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface SelectionToolbarAction {
     label: string;
     onClick: () => void;
@@ -10,10 +10,21 @@
   import CloseIcon from '../icons/CloseIcon.svelte';
 
 
-  export let count: number;
-  export let actions: SelectionToolbarAction[] = [];
-  export let onClear: () => void;
-  export let ariaLabel: string = 'Selection actions';
+  interface Props {
+    count: number;
+    actions?: SelectionToolbarAction[];
+    onClear: () => void;
+    ariaLabel?: string;
+    children?: import('svelte').Snippet;
+  }
+
+  let {
+    count,
+    actions = [],
+    onClear,
+    ariaLabel = 'Selection actions',
+    children
+  }: Props = $props();
 </script>
 
 {#if count > 0}
@@ -26,17 +37,17 @@
         <button
           type="button"
           class="sel-toolbar__btn{action.variant === 'danger' ? ' sel-toolbar__btn--danger' : ''}"
-          on:click={action.onClick}
+          onclick={action.onClick}
         >
           {action.label}
         </button>
       {/each}
-      <slot />
+      {@render children?.()}
     </div>
     <button
       type="button"
       class="sel-toolbar__clear icon-btn"
-      on:click={onClear}
+      onclick={onClear}
       aria-label="Clear selection"
     >
       <CloseIcon />

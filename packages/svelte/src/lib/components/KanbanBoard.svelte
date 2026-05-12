@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface KanbanCard {
     id: string;
     title: string;
@@ -16,15 +16,19 @@
 <script lang="ts">
 
 
-  export let columns: KanbanColumn[];
-  export let onCardMove: ((cardId: string, fromColId: string, toColId: string) => void) | undefined = undefined;
-  export let ariaLabel: string = 'Kanban board';
+  interface Props {
+    columns: KanbanColumn[];
+    onCardMove?: ((cardId: string, fromColId: string, toColId: string) => void) | undefined;
+    ariaLabel?: string;
+  }
 
-  let announce = '';
-  let grabbed: { cardId: string; colId: string } | null = null;
-  let dragSrc: { cardId: string; colId: string } | null = null;
-  let dragOverCol: string | null = null;
-  let cardRefs: Record<string, HTMLButtonElement> = {};
+  let { columns, onCardMove = undefined, ariaLabel = 'Kanban board' }: Props = $props();
+
+  let announce = $state('');
+  let grabbed: { cardId: string; colId: string } | null = $state(null);
+  let dragSrc: { cardId: string; colId: string } | null = $state(null);
+  let dragOverCol: string | null = $state(null);
+  let cardRefs: Record<string, HTMLButtonElement> = $state({});
 
   const announceId = `kanban-announce-${Math.random().toString(36).slice(2, 9)}`;
 
@@ -99,13 +103,13 @@
         class="kanban-col"
         class:kanban-col--over={dragOverCol === col.id}
         role="listitem"
-        on:dragover={e => handleDragOver(e, col.id)}
-        on:dragleave={() => { dragOverCol = null; }}
-        on:drop={e => handleDrop(e, col.id)}
+        ondragover={e => handleDragOver(e, col.id)}
+        ondragleave={() => { dragOverCol = null; }}
+        ondrop={e => handleDrop(e, col.id)}
       >
         <div class="kanban-col-header">
           {#if col.color}
-            <span class="kanban-col-dot" style="background:{col.color}" aria-hidden="true" />
+            <span class="kanban-col-dot" style="background:{col.color}" aria-hidden="true"></span>
           {/if}
           <span class="kanban-col-title">{col.title}</span>
           <span class="kanban-col-count" aria-label="{col.cards.length} card{col.cards.length !== 1 ? 's' : ''}">
@@ -124,9 +128,9 @@
                 draggable={true}
                 aria-pressed={isGrabbed}
                 aria-label="{card.title}{card.subtitle ? `, ${card.subtitle}` : ''}{card.meta ? `, ${card.meta}` : ''}. {isGrabbed ? 'Moving. Use arrow keys to change column, Space to drop, Escape to cancel.' : 'Press Space to move.'}"
-                on:keydown={e => handleKeyDown(e, card, col)}
-                on:dragstart={e => handleDragStart(e, card.id, col.id)}
-                on:dragend={() => { dragSrc = null; dragOverCol = null; }}
+                onkeydown={e => handleKeyDown(e, card, col)}
+                ondragstart={e => handleDragStart(e, card.id, col.id)}
+                ondragend={() => { dragSrc = null; dragOverCol = null; }}
               >
                 <span class="kanban-card-title">{card.title}</span>
                 {#if card.subtitle}<span class="kanban-card-sub">{card.subtitle}</span>{/if}

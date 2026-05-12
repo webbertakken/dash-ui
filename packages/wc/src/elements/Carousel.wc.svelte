@@ -1,10 +1,13 @@
 <svelte:options customElement="uni-carousel" />
 <script>
   import Original from '@w5-ui/svelte/components/Carousel.svelte';
-  export let slides = [];
-  export let label = undefined;
+  let {
+    slides = [],
+    label = undefined,
+    class: klass = ''
+  } = $props();
 </script>
 
-<Original {slides} {label}>
+<Original {slides} {label} class={klass}>
   <slot />
 </Original>

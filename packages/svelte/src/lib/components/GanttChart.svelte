@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface GanttTask {
     label: string;
     start: number;
@@ -9,9 +9,13 @@
 
 <script lang="ts">
 
-  export let tasks: GanttTask[] = [];
-  export let xLabels: string[] = [];
-  export let ariaLabel: string = 'Gantt chart';
+  interface Props {
+    tasks?: GanttTask[];
+    xLabels?: string[];
+    ariaLabel?: string;
+  }
+
+  let { tasks = [], xLabels = [], ariaLabel = 'Gantt chart' }: Props = $props();
 
   const VW = 340;
   const LABEL_W = 100;
@@ -22,11 +26,11 @@
   const PAD_T = 6;
   const AXIS_H = 18;
 
-  $: svgH = PAD_T + tasks.length * ROW_H + AXIS_H;
-  $: ticks = xLabels.map((lbl, i) => ({
+  let svgH = $derived(PAD_T + tasks.length * ROW_H + AXIS_H);
+  let ticks = $derived(xLabels.map((lbl, i) => ({
     x: LABEL_W + (i / (xLabels.length - 1 || 1)) * TRACK_W,
     lbl,
-  }));
+  })));
 
   function tx(v: number): number {
     return LABEL_W + v * TRACK_W;

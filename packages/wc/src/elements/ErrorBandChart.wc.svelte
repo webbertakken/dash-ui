@@ -1,9 +1,16 @@
 <svelte:options customElement="uni-error-band-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/ErrorBandChart.svelte';
-  // no public props
+  let {
+    series = [],
+    xLabels = [],
+    yRange = undefined,
+    height = 180,
+    unit = '',
+    ariaLabel = 'Error band chart'
+  } = $props();
 </script>
 
-<Original >
+<Original {series} {xLabels} {yRange} {height} {unit} {ariaLabel}>
   <slot />
 </Original>

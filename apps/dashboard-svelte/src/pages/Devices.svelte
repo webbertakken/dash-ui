@@ -2,16 +2,20 @@
   import { Button, SearchBox, Tabs, Signal, StatusIndicator, Pagination, Select, SortHeader, ActionMenu, Popover, Drawer, HoverCard, ConfirmDialog, JsonViewer, KVTable, KanbanBoard, ColumnToggle } from '@w5-ui/svelte';
   import type { ActionMenuItem, KanbanColumn, ColumnToggleDef } from '@w5-ui/svelte';
   import { DEVICES, type DeviceRow } from '../data';
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher<{ adopt: void }>();
-  let tab = 'all';
-  let page = 1;
-  let pageSize = 5;
-  let sortKey: string | null = null;
-  let sortDir: 'asc' | 'desc' = 'asc';
-  let drawerDevice: DeviceRow | null = null;
-  let drawerOpen = false;
-  let forgetDevice: DeviceRow | null = null;
+
+  interface Props {
+    onadopt?: () => void;
+  }
+  let { onadopt }: Props = $props();
+
+  let tab = $state('all');
+  let page = $state(1);
+  let pageSize = $state(5);
+  let sortKey: string | null = $state(null);
+  let sortDir: 'asc' | 'desc' = $state('asc');
+  let drawerDevice: DeviceRow | null = $state(null);
+  let drawerOpen = $state(false);
+  let forgetDevice: DeviceRow | null = $state(null);
 
   function onSort(key: string) {
     if (sortKey === key) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
@@ -19,7 +23,7 @@
     page = 1;
   }
 
-  $: sorted = sortKey
+  let sorted = $derived(sortKey
     ? [...DEVICES].sort((a, b) => {
         if (sortKey === 'name') {
           const cmp = a[0].localeCompare(b[0]);
@@ -32,9 +36,9 @@
         }
         return 0;
       })
-    : DEVICES;
+    : DEVICES);
 
-  $: rows = sorted.slice((page - 1) * pageSize, page * pageSize);
+  let rows = $derived(sorted.slice((page - 1) * pageSize, page * pageSize));
 
   const BOARD_DEFS = [
     { id: 'connected', title: 'Connected', color: '#00B070', match: (r: DeviceRow) => r[7].startsWith('Connected') },
@@ -43,12 +47,12 @@
     { id: 'offline', title: 'Offline', color: '#F03A3A', match: (r: DeviceRow) => r[7].startsWith('Offline') },
   ];
 
-  let boardCols: KanbanColumn[] = BOARD_DEFS.map(col => ({
+  let boardCols: KanbanColumn[] = $state(BOARD_DEFS.map(col => ({
     id: col.id,
     title: col.title,
     color: col.color,
     cards: DEVICES.filter(col.match).map(r => ({ id: r[2], title: r[0], subtitle: r[1], meta: r[7] })),
-  }));
+  })));
 
   function handleCardMove(cardId: string, fromColId: string, toColId: string) {
     const fromCol = boardCols.find(c => c.id === fromColId);
@@ -76,7 +80,7 @@
     { key: 'signal', label: 'Signal' },
     { key: 'status', label: 'Status' },
   ];
-  let visibleCols = new Set(deviceColumns.map(c => c.key));
+  let visibleCols = $state(new Set(deviceColumns.map(c => c.key)));
   const perPageOptions = [
     { value: '5', label: '5 per page' },
     { value: '10', label: '10 per page' },
@@ -109,12 +113,12 @@
       </fieldset>
     </Popover>
     <ColumnToggle columns={deviceColumns} visible={visibleCols} onChange={(v) => { visibleCols = v; }} />
-    <Button variant="primary" on:click={() => dispatch('adopt')}>Adopt Device</Button>
+    <Button variant="primary" onclick={() => onadopt?.()}>Adopt Device</Button>
   </div>
 </div>
 <Tabs
   bind:active={tab}
-  on:change={() => { page = 1; }}
+  onchange={() => { page = 1; }}
   items={[
     { id: 'all', label: 'All', badge: 12 },
     { id: 'gw', label: 'Gateways', badge: 1 },
@@ -135,11 +139,11 @@
     <caption class="sr-only">Devices</caption>
     <thead>
       <tr>
-        <SortHeader sortKey="name" activeKey={sortKey} dir={sortDir} on:sort={(e) => onSort(e.detail)}>Name / Model</SortHeader>
+        <SortHeader sortKey="name" activeKey={sortKey} dir={sortDir} onsort={(e) => onSort(e)}>Name / Model</SortHeader>
         {#if visibleCols.has('mac')}<th scope="col">MAC / IP</th>{/if}
         {#if visibleCols.has('site')}<th scope="col">Site</th>{/if}
         {#if visibleCols.has('uptime')}<th scope="col" style="text-align:right;">Uptime</th>{/if}
-        {#if visibleCols.has('clients')}<SortHeader sortKey="clients" activeKey={sortKey} dir={sortDir} on:sort={(e) => onSort(e.detail)}>Clients</SortHeader>{/if}
+        {#if visibleCols.has('clients')}<SortHeader sortKey="clients" activeKey={sortKey} dir={sortDir} onsort={(e) => onSort(e)}>Clients</SortHeader>{/if}
         {#if visibleCols.has('signal')}<th scope="col" style="text-align:right;">Signal</th>{/if}
         {#if visibleCols.has('status')}<th scope="col">Status</th>{/if}
         <th scope="col"><span class="sr-only">Actions</span></th>
@@ -150,23 +154,27 @@
         <tr>
           <td>
             <HoverCard placement="bottom">
-              <svelte:fragment slot="trigger">
-                <div class="name-cell">
-                  <span class="nc-thumb">{r[9]}</span>
-                  <div>
-                    <div style="font-size:13px;color:#fff;">{r[0]}</div>
-                    <div class="mac" style="font-size:10px;">{r[1]}</div>
+              {#snippet trigger()}
+                              
+                  <div class="name-cell">
+                    <span class="nc-thumb">{r[9]}</span>
+                    <div>
+                      <div style="font-size:13px;color:#fff;">{r[0]}</div>
+                      <div class="mac" style="font-size:10px;">{r[1]}</div>
+                    </div>
                   </div>
-                </div>
-              </svelte:fragment>
-              <svelte:fragment slot="content">
-                <p class="hovercard-title">{r[0]}</p>
-                <div class="hovercard-row"><span class="hc-key">Model</span><span class="hc-val">{r[1]}</span></div>
-                <div class="hovercard-row"><span class="hc-key">MAC</span><span class="hc-val mac">{r[2]}</span></div>
-                <div class="hovercard-row"><span class="hc-key">IP</span><span class="hc-val mac">{r[3]}</span></div>
-                <div class="hovercard-row"><span class="hc-key">Uptime</span><span class="hc-val">{r[4]}</span></div>
-                <div class="hovercard-row"><span class="hc-key">Status</span><span class="hc-val" style="color:{r[8]};">{r[7]}</span></div>
-              </svelte:fragment>
+                
+                              {/snippet}
+              {#snippet content()}
+                              
+                  <p class="hovercard-title">{r[0]}</p>
+                  <div class="hovercard-row"><span class="hc-key">Model</span><span class="hc-val">{r[1]}</span></div>
+                  <div class="hovercard-row"><span class="hc-key">MAC</span><span class="hc-val mac">{r[2]}</span></div>
+                  <div class="hovercard-row"><span class="hc-key">IP</span><span class="hc-val mac">{r[3]}</span></div>
+                  <div class="hovercard-row"><span class="hc-key">Uptime</span><span class="hc-val">{r[4]}</span></div>
+                  <div class="hovercard-row"><span class="hc-key">Status</span><span class="hc-val" style="color:{r[8]};">{r[7]}</span></div>
+                
+                              {/snippet}
             </HoverCard>
           </td>
           {#if visibleCols.has('mac')}
@@ -185,7 +193,7 @@
           {/if}
           {#if visibleCols.has('status')}<td><StatusIndicator color={r[6]} text={r[7]} textColor={r[8]} /></td>{/if}
           <td style="text-align:right;width:32px;">
-            <ActionMenu items={deviceActions} label="Actions for {r[0]}" on:action={(e) => { if (e.detail === 'details') { drawerDevice = r; drawerOpen = true; } if (e.detail === 'forget') { forgetDevice = r; } }} />
+            <ActionMenu items={deviceActions} label="Actions for {r[0]}" onaction={(e) => { if (e === 'details') { drawerDevice = r; drawerOpen = true; } if (e === 'forget') { forgetDevice = r; } }} />
           </td>
         </tr>
       {/each}
@@ -196,9 +204,9 @@
       label="Rows per page"
       options={perPageOptions}
       value={String(pageSize)}
-      on:change={(e) => { pageSize = Number(e.detail); page = 1; }}
+      onchange={(e) => { pageSize = Number(e); page = 1; }}
     />
-    <Pagination {page} {pageSize} total={DEVICES.length} on:change={(e) => { page = e.detail; }} />
+    <Pagination {page} {pageSize} total={DEVICES.length} onchange={(e) => { page = e; }} />
   </div>
 </div>
 {/if}

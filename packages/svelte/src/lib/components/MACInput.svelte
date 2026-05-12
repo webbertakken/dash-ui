@@ -1,17 +1,25 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let label: string | undefined = undefined;
-  export let value: string = '00:00:00:00:00:00';
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    label?: string | undefined;
+    value?: string;
+    disabled?: boolean;
+    class?: string;
+    onchange?: (payload: string) => void;
+  }
 
-  const dispatch = createEventDispatcher<{ change: string }>();
+  let {
+    label = undefined,
+    value = $bindable('00:00:00:00:00:00'),
+    disabled = false,
+    class: className = '',
+    onchange,
+  }: Props = $props();
   const uid = `dash-ui-mac-${++counter}`;
 
   const HEX_RE = /^[0-9a-fA-F]{0,2}$/;
@@ -25,8 +33,8 @@
     ];
   }
 
-  let pairs: [string, string, string, string, string, string] = parseMAC(value);
-  let inputs: (HTMLInputElement | null)[] = [null, null, null, null, null, null];
+  let pairs: [string, string, string, string, string, string] = $state(parseMAC(value));
+  let inputs: (HTMLInputElement | null)[] = $state([null, null, null, null, null, null]);
 
   function focusAt(i: number) {
     const el = inputs[i];
@@ -38,7 +46,7 @@
     pairs[i] = raw.toUpperCase();
     pairs = pairs as [string, string, string, string, string, string];
     value = pairs.join(':');
-    dispatch('change', value);
+    onchange?.(value);
     if (raw.length === 2 && i < 5) setTimeout(() => focusAt(i + 1), 0);
   }
 
@@ -63,7 +71,7 @@
       const normalized = text.replace(/-/g, ':').replace(/:/g, '').match(/.{1,2}/g)?.join(':') ?? text;
       pairs = normalized.split(':').map((p) => p.toUpperCase()) as [string, string, string, string, string, string];
       value = pairs.join(':');
-      dispatch('change', value);
+      onchange?.(value);
       setTimeout(() => focusAt(5), 0);
     }
   }
@@ -85,10 +93,10 @@
         {disabled}
         maxlength={2}
         class="mac-input__pair"
-        on:input={(e) => commitPair(i, e.currentTarget.value)}
-        on:keydown={(e) => handleKey(i, e)}
-        on:paste={handlePaste}
-        on:focus={(e) => e.currentTarget.select()}
+        oninput={(e) => commitPair(i, e.currentTarget.value)}
+        onkeydown={(e) => handleKey(i, e)}
+        onpaste={handlePaste}
+        onfocus={(e) => e.currentTarget.select()}
       />
       {#if i < 5}
         <span class="mac-input__colon" aria-hidden="true">:</span>

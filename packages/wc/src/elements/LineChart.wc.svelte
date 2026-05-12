@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-line-chart" />
 <script>
   import Original from '@w5-ui/svelte/components/LineChart.svelte';
-  // no public props
+  let {
+    series = [],
+    labels = [],
+    height = 160,
+    ariaLabel = 'Line chart'
+  } = $props();
 </script>
 
-<Original >
+<Original {series} {labels} {height} {ariaLabel}>
   <slot />
 </Original>

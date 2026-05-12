@@ -1,21 +1,25 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
 </script>
 
 <script lang="ts">
   import { onMount, onDestroy, tick } from 'svelte';
 
-  export let title: string;
-  export let body: string;
-  export let placement: 'top' | 'bottom' = 'top';
+  interface Props {
+    title: string;
+    body: string;
+    placement?: 'top' | 'bottom';
+  }
+
+  let { title, body, placement = 'top' }: Props = $props();
 
   const uid = `dash-ui-ch-${++counter}`;
   const titleId = `${uid}-title`;
 
-  let open = false;
-  let rootEl: HTMLSpanElement;
-  let triggerEl: HTMLButtonElement;
-  let panelEl: HTMLDivElement;
+  let open = $state(false);
+  let rootEl = $state<HTMLSpanElement | undefined>(undefined);
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let panelEl = $state<HTMLDivElement | undefined>(undefined);
 
   async function toggle() {
     open = !open;
@@ -56,7 +60,7 @@
     aria-label="Help"
     aria-haspopup="dialog"
     aria-expanded={open}
-    on:click={toggle}
+    onclick={toggle}
   >?</button>
   {#if open}
     <div

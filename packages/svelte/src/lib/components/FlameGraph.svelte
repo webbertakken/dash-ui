@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface FlameNode {
     label: string;
     value?: number;
@@ -9,9 +9,13 @@
 
 <script lang="ts">
 
-  export let root: FlameNode;
-  export let height = 160;
-  export let ariaLabel = 'Flame graph';
+  interface Props {
+    root: FlameNode;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let { root, height = 160, ariaLabel = 'Flame graph' }: Props = $props();
 
   const PALETTE = ['#006FFF', '#FF7B2E', '#F5A623', '#FB923C', '#F97316', '#EF4444', '#A78BFA'];
   const VW = 340;
@@ -53,9 +57,9 @@
     return cells;
   }
 
-  $: depth = treeDepth(root);
-  $: levelH = height / (depth + 1);
-  $: cells = flatten(root, 0, 0, VW, levelH, height, PALETTE[0], { n: 0 });
+  let depth = $derived(treeDepth(root));
+  let levelH = $derived(height / (depth + 1));
+  let cells = $derived(flatten(root, 0, 0, VW, levelH, height, PALETTE[0], { n: 0 }));
 </script>
 
 {#if cells.length > 0}

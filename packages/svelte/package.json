@@ -1,7 +1,7 @@
 {
   "name": "@w5-ui/svelte",
   "version": "0.1.0",
-  "description": "Svelte 4 components for the Dash UI design system - mirrors the @w5-ui/react API 1:1. Part of Webber's design systems.",
+  "description": "Svelte 5 components for the Dash UI design system - mirrors the @w5-ui/react API 1:1. Part of Webber's design systems.",
   "keywords": [
     "svelte",
     "components",
@@ -41,14 +41,14 @@
     "./components/*.svelte": "./src/lib/components/*.svelte"
   },
   "peerDependencies": {
-    "svelte": ">=4"
+    "svelte": "^5"
   },
   "dependencies": {
     "@w5-ui/assets": "workspace:*",
     "@w5-ui/tokens": "workspace:*"
   },
   "devDependencies": {
-    "svelte": "^4.2.19",
+    "svelte": "^5.43.5",
     "typescript": "^5.5.0"
   },
   "files": [

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface RidgelineSeries {
     label: string;
     values: number[];
@@ -8,10 +8,19 @@
 
 <script lang="ts">
 
-  export let series: RidgelineSeries[] = [];
-  export let xRange: [number, number] | undefined = undefined;
-  export let height: number = 180;
-  export let ariaLabel: string = 'Ridgeline plot';
+  interface Props {
+    series?: RidgelineSeries[];
+    xRange?: [number, number] | undefined;
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    xRange = undefined,
+    height = 180,
+    ariaLabel = 'Ridgeline plot'
+  }: Props = $props();
 
   const COLORS = ['#006FFF', '#00C8C8', '#F5A623', '#7FB6FF', '#A878F5', '#F56342'];
   const SQRT_TWO_PI = Math.sqrt(2 * Math.PI);
@@ -34,31 +43,31 @@
   }
 
   const VW = 380;
-  $: VH = height;
+  let VH = $derived(height);
   const PAD_L = 56;
   const PAD_R = 12;
   const PAD_T = 16;
   const PAD_B = 20;
 
-  $: TRACK_W = VW - PAD_L - PAD_R;
-  $: TRACK_H = VH - PAD_T - PAD_B;
-  $: n = series.length;
-  $: rowH = TRACK_H / n;
-  $: maxDensH = rowH * 1.6;
+  let TRACK_W = $derived(VW - PAD_L - PAD_R);
+  let TRACK_H = $derived(VH - PAD_T - PAD_B);
+  let n = $derived(series.length);
+  let rowH = $derived(TRACK_H / n);
+  let maxDensH = $derived(rowH * 1.6);
 
-  $: allVals = series.flatMap(s => s.values);
-  $: xMin = xRange ? xRange[0] : Math.min(...allVals);
-  $: xMax = xRange ? xRange[1] : Math.max(...allVals);
+  let allVals = $derived(series.flatMap(s => s.values));
+  let xMin = $derived(xRange ? xRange[0] : Math.min(...allVals));
+  let xMax = $derived(xRange ? xRange[1] : Math.max(...allVals));
 
-  $: evalPts = Array.from({ length: NUM_PTS }, (_, i) =>
+  let evalPts = $derived(Array.from({ length: NUM_PTS }, (_, i) =>
     xMin + (i / (NUM_PTS - 1)) * (xMax - xMin)
-  );
+  ));
 
   function xSvg(v: number): number {
     return PAD_L + ((v - xMin) / (xMax - xMin)) * TRACK_W;
   }
 
-  $: ridges = series.map((s, si) => {
+  let ridges = $derived(series.map((s, si) => {
     const h = bw(s.values);
     const dens = kde(s.values, h, evalPts);
     const maxD = Math.max(...dens, 1e-9);
@@ -73,14 +82,14 @@
     ].join(' ');
 
     return { d, baselineY, color, label: s.label };
-  });
+  }));
 
-  $: reversedRidges = [...ridges].reverse();
+  let reversedRidges = $derived([...ridges].reverse());
 
-  $: xTicks = [0, 0.25, 0.5, 0.75, 1].map(t => {
+  let xTicks = $derived([0, 0.25, 0.5, 0.75, 1].map(t => {
     const v = xMin + t * (xMax - xMin);
     return { v, x: xSvg(v) };
-  });
+  }));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

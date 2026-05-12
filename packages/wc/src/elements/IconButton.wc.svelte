@@ -1,11 +1,14 @@
 <svelte:options customElement="uni-icon-button" />
 <script>
   import Original from '@w5-ui/svelte/components/IconButton.svelte';
-  export let title = undefined;
-  export let type = 'button';
-  export let style = '';
+  let {
+    title = undefined,
+    type = 'button',
+    class: className = '',
+    style = ''
+  } = $props();
 </script>
 
-<Original {title} {type} {style}>
+<Original {title} {type} class={className} {style}>
   <slot />
 </Original>

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface ParallelAxis {
     label: string;
     min: number;
@@ -18,21 +18,30 @@
 
 
 
-  export let axes: ParallelAxis[] = [];
-  export let series: ParallelSeries[] = [];
-  export let height: number = 200;
-  export let ariaLabel: string = 'Parallel coordinates chart';
+  interface Props {
+    axes?: ParallelAxis[];
+    series?: ParallelSeries[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    axes = [],
+    series = [],
+    height = 200,
+    ariaLabel = 'Parallel coordinates chart'
+  }: Props = $props();
 
   const VW = 380;
-  $: VH = height;
+  let VH = $derived(height);
   const PAD_L = 28;
   const PAD_R = 28;
   const PAD_T = 32;
   const PAD_B = 20;
 
-  $: TRACK_W = VW - PAD_L - PAD_R;
-  $: TRACK_H = VH - PAD_T - PAD_B;
-  $: nAxes = axes.length;
+  let TRACK_W = $derived(VW - PAD_L - PAD_R);
+  let TRACK_H = $derived(VH - PAD_T - PAD_B);
+  let nAxes = $derived(axes.length);
 
   function axisX(i: number, tw: number, n: number): number {
     return PAD_L + (n > 1 ? i * (tw / (n - 1)) : tw / 2);
@@ -55,12 +64,12 @@
 
   const TICKS = [0, 0.5, 1];
 
-  $: paths = series.map((s, si) => ({
+  let paths = $derived(series.map((s, si) => ({
     d: seriesPath(s, TRACK_W, TRACK_H, nAxes),
     stroke: s.color ?? COLORS[si % COLORS.length],
-  }));
+  })));
 
-  $: axisData = axes.map((axis, i) => {
+  let axisData = $derived(axes.map((axis, i) => {
     const x = axisX(i, TRACK_W, nAxes);
     const ticks = TICKS.map(t => {
       const v = axis.invert
@@ -70,7 +79,7 @@
       return { t, v, y };
     });
     return { axis, x, ticks };
-  });
+  }));
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

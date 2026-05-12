@@ -1,21 +1,26 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface TabItem { id: string; label: string; badge?: string | number }
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  export let items: TabItem[] = [];
-  export let active: string;
-  export let ariaLabel: string | undefined = undefined;
-  const dispatch = createEventDispatcher<{ change: string }>();
+  
+  interface Props {
+    items?: TabItem[];
+    active: string;
+    ariaLabel?: string | undefined;
+    onchange?: (payload: string) => void;
+  }
 
-  let buttons: (HTMLButtonElement | null)[] = [];
+  let { items = [], active = $bindable(), ariaLabel = undefined,
+    onchange,
+  }: Props = $props();
+  let buttons: (HTMLButtonElement | null)[] = $state([]);
 
   function select(idx: number) {
     const next = items[(idx + items.length) % items.length];
     if (!next) return;
     active = next.id;
-    dispatch('change', next.id);
+    onchange?.(next.id);
     buttons[(idx + items.length) % items.length]?.focus();
   }
 
@@ -38,8 +43,8 @@
       aria-selected={t.id === active}
       aria-controls="tabpanel-{t.id}"
       tabindex={t.id === active ? 0 : -1}
-      on:click={() => { active = t.id; dispatch('change', t.id); }}
-      on:keydown={(e) => onKey(e, i)}
+      onclick={() => { active = t.id; onchange?.(t.id); }}
+      onkeydown={(e) => onKey(e, i)}
     >
       {t.label}
       {#if t.badge !== undefined}<span class="badge">{t.badge}</span>{/if}

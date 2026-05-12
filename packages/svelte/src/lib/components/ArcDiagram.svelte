@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface ArcNode {
     id: string;
     label: string;
@@ -15,16 +15,25 @@
 <script lang="ts">
 
 
-  export let nodes: ArcNode[];
-  export let links: ArcLink[];
-  export let height = 180;
-  export let ariaLabel = 'Arc diagram';
+  interface Props {
+    nodes: ArcNode[];
+    links: ArcLink[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    nodes,
+    links,
+    height = 180,
+    ariaLabel = 'Arc diagram'
+  }: Props = $props();
 
   const PALETTE = ['#006FFF', '#00C875', '#F5A623', '#A78BFA', '#FF7B7B', '#00C8C8', '#FB923C'];
   const VW = 400;
   const PAD = { t: 12, r: 20, b: 36, l: 20 };
 
-  $: layout = (() => {
+  let layout = $derived((() => {
     const n = nodes.length;
     if (!n) return null;
     const chartW = VW - PAD.l - PAD.r;
@@ -56,7 +65,7 @@
     });
 
     return { dots, arcs, baseY };
-  })();
+  })());
 </script>
 
 {#if layout}

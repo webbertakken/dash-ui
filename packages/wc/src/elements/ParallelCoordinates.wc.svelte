@@ -1,9 +1,14 @@
 <svelte:options customElement="uni-parallel-coordinates" />
 <script>
   import Original from '@w5-ui/svelte/components/ParallelCoordinates.svelte';
-  // no public props
+  let {
+    axes = [],
+    series = [],
+    height = 200,
+    ariaLabel = 'Parallel coordinates chart'
+  } = $props();
 </script>
 
-<Original >
+<Original {axes} {series} {height} {ariaLabel}>
   <slot />
 </Original>

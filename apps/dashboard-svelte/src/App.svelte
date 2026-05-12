@@ -44,10 +44,10 @@
 
   import { onMount, onDestroy } from 'svelte';
 
-  let activeApp = 'system';
-  let page = 'topology';
-  let adoptOpen = false;
-  let cmdOpen = false;
+  let activeApp = $state('system');
+  let page = $state('topology');
+  let adoptOpen = $state(false);
+  let cmdOpen = $state(false);
 
   const SECTIONS: SidebarSectionDef[] = [
     {
@@ -85,7 +85,7 @@
     SECTIONS.flatMap((s) => s.items).map((i) => [i.id, i.label]),
   );
 
-  $: pageLabel = PAGE_LABELS[page] ?? page;
+  let pageLabel = $derived(PAGE_LABELS[page] ?? page);
 
   const SHORTCUTS: Record<string, string> = {
     dashboard: 'G+D',
@@ -123,8 +123,8 @@
     <Sidebar sections={SECTIONS} bind:activeId={page} />
     <main class="content" id="main-content" tabindex="-1" aria-labelledby="page-title">
       <h1 id="page-title" class="sr-only">{pageLabel}</h1>
-      {#if page === 'dashboard'}<Dashboard on:adopt={() => (adoptOpen = true)} />
-      {:else if page === 'devices'}<Devices on:adopt={() => (adoptOpen = true)} />
+      {#if page === 'dashboard'}<Dashboard onadopt={() => (adoptOpen = true)} />
+      {:else if page === 'devices'}<Devices onadopt={() => (adoptOpen = true)} />
       {:else if page === 'clients'}<Clients />
       {:else if page === 'topology'}<Topology />
       {:else if page === 'alarms'}<Alarms />
@@ -146,8 +146,8 @@
   <CommandPalette
     open={cmdOpen}
     items={cmdItems}
-    on:select={(e) => { page = e.detail; cmdOpen = false; }}
-    on:close={() => (cmdOpen = false)}
+    onselect={(e) => { page = e; cmdOpen = false; }}
+    onclose={() => (cmdOpen = false)}
   />
 
   <Modal bind:open={adoptOpen} title="Adopt Device">
@@ -161,9 +161,11 @@
     </div>
     <Field label="Device name" value="AP Pro · Warehouse" />
     <Field label="Site" value="Demo cluster" />
-    <svelte:fragment slot="footer">
-      <Button on:click={() => (adoptOpen = false)}>Cancel</Button>
-      <Button variant="primary" on:click={() => (adoptOpen = false)}>Adopt</Button>
-    </svelte:fragment>
+    {#snippet footer()}
+      
+        <Button onclick={() => (adoptOpen = false)}>Cancel</Button>
+        <Button variant="primary" onclick={() => (adoptOpen = false)}>Adopt</Button>
+      
+      {/snippet}
   </Modal>
 </div>

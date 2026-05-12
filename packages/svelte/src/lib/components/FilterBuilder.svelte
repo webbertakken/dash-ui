@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface FilterField {
     key: string;
@@ -26,20 +26,28 @@
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  interface Props {
+    fields?: FilterField[];
+    value?: FilterRule[];
+    conjunction?: 'and' | 'or';
+    ariaLabel?: string;
+    onchange?: (payload: { rules: FilterRule[]; conjunction: 'and' | 'or' }) => void;
+  }
 
-  export let fields: FilterField[] = [];
-  export let value: FilterRule[] = [];
-  export let conjunction: 'and' | 'or' = 'and';
-  export let ariaLabel = 'Filter builder';
+  let {
+    fields = [],
+    value = [],
+    conjunction = 'and',
+    ariaLabel = 'Filter builder',
+    onchange,
+  }: Props = $props();
 
   const uid = `dash-ui-fb-${++counter}`;
-  const dispatch = createEventDispatcher<{ change: { rules: FilterRule[]; conjunction: 'and' | 'or' } }>();
 
   const CONJUNCTIONS = ['and', 'or'] as const;
 
   function emit(rules: FilterRule[], conj: 'and' | 'or' = conjunction) {
-    dispatch('change', { rules, conjunction: conj });
+    onchange?.({ rules, conjunction: conj });
   }
 
   function addRule() {
@@ -76,15 +84,15 @@
             type="button"
             class="fb-conj-btn{conjunction === c ? ' is-active' : ''}"
             aria-pressed={conjunction === c}
-            on:click={() => emit(value, c)}
+            onclick={() => emit(value, c)}
           >{c.toUpperCase()}</button>
         {/each}
       </div>
       <span class="fb-conj-label">conditions</span>
     {/if}
-    <button type="button" class="fb-add" on:click={addRule} aria-label="Add filter rule">+ Add rule</button>
+    <button type="button" class="fb-add" onclick={addRule} aria-label="Add filter rule">+ Add rule</button>
     {#if value.length > 0}
-      <button type="button" class="fb-clear" on:click={() => emit([])} aria-label="Clear all filters">Clear</button>
+      <button type="button" class="fb-clear" onclick={() => emit([])} aria-label="Clear all filters">Clear</button>
     {/if}
   </div>
   {#if value.length > 0}
@@ -101,7 +109,7 @@
             id={fieldId}
             class="fb-select"
             value={rule.field}
-            on:change={(e) => setField(rule.id, e.currentTarget.value)}
+            onchange={(e) => setField(rule.id, e.currentTarget.value)}
             aria-label="Rule {i + 1} field"
           >
             {#each fields as x}
@@ -113,7 +121,7 @@
             id={opId}
             class="fb-select fb-select--op"
             value={rule.op}
-            on:change={(e) => setOp(rule.id, e.currentTarget.value)}
+            onchange={(e) => setOp(rule.id, e.currentTarget.value)}
             aria-label="Rule {i + 1} operator"
           >
             {#each ops as op}
@@ -126,7 +134,7 @@
               id={valId}
               class="fb-select fb-select--val"
               value={rule.value}
-              on:change={(e) => setValue(rule.id, e.currentTarget.value)}
+              onchange={(e) => setValue(rule.id, e.currentTarget.value)}
               aria-label="Rule {i + 1} value"
             >
               <option value="">Any</option>
@@ -141,14 +149,14 @@
               type={f?.type === 'number' ? 'number' : 'text'}
               value={rule.value}
               placeholder="Value…"
-              on:input={(e) => setValue(rule.id, e.currentTarget.value)}
+              oninput={(e) => setValue(rule.id, e.currentTarget.value)}
               aria-label="Rule {i + 1} value"
             />
           {/if}
           <button
             type="button"
             class="fb-remove icon-btn"
-            on:click={() => removeRule(rule.id)}
+            onclick={() => removeRule(rule.id)}
             aria-label="Remove rule {i + 1}"
           >
             <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" fill="currentColor">

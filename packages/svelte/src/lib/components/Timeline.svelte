@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface TimelineEvent {
     id: string;
     title: string;
@@ -9,9 +9,13 @@
 </script>
 
 <script lang="ts">
-  export let events: TimelineEvent[];
-  let className = '';
-  export { className as class };
+  interface Props {
+    events: TimelineEvent[];
+    class?: string;
+  }
+
+  let { events, class: className = '' }: Props = $props();
+  
 </script>
 
 <ol class="timeline {className}" aria-label="Event timeline">

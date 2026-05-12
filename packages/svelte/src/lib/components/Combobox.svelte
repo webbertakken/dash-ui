@@ -1,43 +1,54 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface ComboboxOption { value: string; label: string; }
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
-  export let options: ComboboxOption[] = [];
-  export let value: string | undefined = undefined;
-  export let label: string | undefined = undefined;
-  export let placeholder: string = 'Search…';
-  export let id: string | undefined = undefined;
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    options?: ComboboxOption[];
+    value?: string | undefined;
+    label?: string | undefined;
+    placeholder?: string;
+    id?: string | undefined;
+    disabled?: boolean;
+    class?: string;
+    onchange?: (payload: string) => void;
+  }
+
+  let {
+    options = [],
+    value = undefined,
+    label = undefined,
+    placeholder = 'Search…',
+    id = undefined,
+    disabled = false,
+    class: className = '',
+    onchange,
+  }: Props = $props();
+  
 
   const uid = `dash-ui-cb-${++counter}`;
-  $: inputId = id ?? uid;
-  $: listboxId = `${inputId}-lb`;
+  let inputId = $derived(id ?? uid);
+  let listboxId = $derived(`${inputId}-lb`);
+  let open = $state(false);
+  let query = $state('');
+  let activeIdx = $state(-1);
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
-  const dispatch = createEventDispatcher<{ change: string }>();
+  let selectedOption = $derived(options.find((o) => o.value === value));
 
-  let open = false;
-  let query = '';
-  let activeIdx = -1;
-  let inputEl: HTMLInputElement;
-  let wrapperEl: HTMLDivElement;
-
-  $: selectedOption = options.find((o) => o.value === value);
-
-  $: filtered = query.trim() === ''
+  let filtered = $derived(query.trim() === ''
     ? options
-    : options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase()));
+    : options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase())));
 
-  $: activeOptionId = activeIdx >= 0 && filtered[activeIdx]
+  let activeOptionId = $derived(activeIdx >= 0 && filtered[activeIdx]
     ? `${listboxId}-opt-${activeIdx}`
-    : undefined;
+    : undefined);
 
-  $: displayValue = open ? query : (selectedOption?.label ?? '');
+  let displayValue = $derived(open ? query : (selectedOption?.label ?? ''));
 
   function openList() {
     if (disabled) return;
@@ -47,7 +58,7 @@
   }
 
   function pick(opt: ComboboxOption) {
-    dispatch('change', opt.value);
+    onchange?.(opt.value);
     open = false;
     query = '';
     inputEl?.focus();
@@ -99,9 +110,9 @@
       {disabled}
       {placeholder}
       value={displayValue}
-      on:input={onInputChange}
-      on:focus={openList}
-      on:keydown={onKeyDown}
+      oninput={onInputChange}
+      onfocus={openList}
+      onkeydown={onKeyDown}
       class="combobox-input"
     />
     <button
@@ -109,7 +120,7 @@
       tabindex="-1"
       aria-hidden="true"
       class="combobox-chevron-btn"
-      on:click={() => { if (open) { open = false; query = ''; } else { inputEl?.focus(); openList(); } }}
+      onclick={() => { if (open) { open = false; query = ''; } else { inputEl?.focus(); openList(); } }}
     >
       <svg class="select-chevron{open ? ' combobox-chevron-open' : ''}" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
         <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
@@ -128,8 +139,8 @@
             aria-selected={opt.value === value}
             data-active={idx === activeIdx ? 'true' : undefined}
             class="select-option"
-            on:mousedown|preventDefault={() => pick(opt)}
-            on:mouseenter={() => { activeIdx = idx; }}
+            onmousedown={(e) => { e.preventDefault(); (() => pick(opt))(); }}
+            onmouseenter={() => { activeIdx = idx; }}
           >{opt.label}</li>
         {/each}
       {/if}

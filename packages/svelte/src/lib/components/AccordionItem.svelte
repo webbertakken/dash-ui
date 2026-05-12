@@ -1,8 +1,14 @@
 <script lang="ts">
-  export let title: string;
-  export let defaultOpen = false;
+  interface Props {
+    title: string;
+    defaultOpen?: boolean;
+    children?: import('svelte').Snippet;
+  }
 
-  let open = defaultOpen;
+  let { title, defaultOpen = false, children }: Props = $props();
+
+  // svelte-ignore state_referenced_locally
+  let open = $state(defaultOpen);
   const uid = Math.random().toString(36).slice(2, 9);
   const btnId = `acc-btn-${uid}`;
   const panelId = `acc-panel-${uid}`;
@@ -16,7 +22,7 @@
       class="accordion-trigger"
       aria-expanded={open}
       aria-controls={panelId}
-      on:click={() => (open = !open)}
+      onclick={() => (open = !open)}
     >
       <span>{title}</span>
       <svg
@@ -33,7 +39,7 @@
   {#if open}
     <div id={panelId} role="region" aria-labelledby={btnId} class="accordion-panel">
       <div class="accordion-content">
-        <slot />
+        {@render children?.()}
       </div>
     </div>
   {/if}

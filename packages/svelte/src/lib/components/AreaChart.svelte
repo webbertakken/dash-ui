@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface AreaChartSeries {
     label: string;
     color: string;
@@ -8,22 +8,31 @@
 
 <script lang="ts">
 
-  export let series: AreaChartSeries[] = [];
-  export let labels: string[] = [];
-  export let height: number = 160;
-  export let ariaLabel: string = 'Area chart';
+  interface Props {
+    series?: AreaChartSeries[];
+    labels?: string[];
+    height?: number;
+    ariaLabel?: string;
+  }
+
+  let {
+    series = [],
+    labels = [],
+    height = 160,
+    ariaLabel = 'Area chart'
+  }: Props = $props();
 
   const VW = 400;
   const PAD = { t: 12, r: 8, b: 28, l: 8 };
 
-  $: n = series[0]?.values.length ?? 0;
-  $: chartW = VW - PAD.l - PAD.r;
-  $: chartH = height - PAD.t - PAD.b;
+  let n = $derived(series[0]?.values.length ?? 0);
+  let chartW = $derived(VW - PAD.l - PAD.r);
+  let chartH = $derived(height - PAD.t - PAD.b);
 
-  $: totals = Array.from({ length: n }, (_, i) =>
+  let totals = $derived(Array.from({ length: n }, (_, i) =>
     series.reduce((acc, s) => acc + (s.values[i] ?? 0), 0),
-  );
-  $: maxV = totals.length ? Math.max(...totals, 1) : 1;
+  ));
+  let maxV = $derived(totals.length ? Math.max(...totals, 1) : 1);
 
   function toX(i: number): number {
     return PAD.l + (n > 1 ? (i / (n - 1)) * chartW : chartW / 2);
@@ -32,9 +41,9 @@
     return PAD.t + chartH - (v / maxV) * chartH;
   }
 
-  $: gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH);
+  let gridLines = $derived([0, 0.25, 0.5, 0.75, 1].map((f) => PAD.t + (1 - f) * chartH));
 
-  $: areas = n > 0
+  let areas = $derived(n > 0
     ? series.map((s, j) => {
         const bottoms = Array.from({ length: n }, (_, i) =>
           series.slice(0, j).reduce((acc, sr) => acc + (sr.values[i] ?? 0), 0),
@@ -46,7 +55,7 @@
           .reverse();
         return { color: s.color, label: s.label, d: `M ${topPts.join(' L ')} L ${botPts.join(' L ')} Z` };
       })
-    : [];
+    : []);
 </script>
 
 <div role="img" aria-label={ariaLabel} style="width:100%;">

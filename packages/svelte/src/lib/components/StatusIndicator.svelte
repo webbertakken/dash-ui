@@ -1,7 +1,11 @@
 <script lang="ts">
-  export let color: string;
-  export let text: string;
-  export let textColor: string | undefined = undefined;
+  interface Props {
+    color: string;
+    text: string;
+    textColor?: string | undefined;
+  }
+
+  let { color, text, textColor = undefined }: Props = $props();
 </script>
 
 <span style="display:inline-flex;align-items:center;gap:6px;color:{textColor ?? color};font-size:12px;">

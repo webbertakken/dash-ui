@@ -1,54 +1,65 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface MultiSelectOption { value: string; label: string; }
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
-  export let options: MultiSelectOption[] = [];
-  export let value: string[] = [];
-  export let label: string | undefined = undefined;
-  export let placeholder: string = 'Select…';
-  export let id: string | undefined = undefined;
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    options?: MultiSelectOption[];
+    value?: string[];
+    label?: string | undefined;
+    placeholder?: string;
+    id?: string | undefined;
+    disabled?: boolean;
+    class?: string;
+    onchange?: (payload: string[]) => void;
+  }
+
+  let {
+    options = [],
+    value = [],
+    label = undefined,
+    placeholder = 'Select…',
+    id = undefined,
+    disabled = false,
+    class: className = '',
+    onchange,
+  }: Props = $props();
+  
 
   const uid = `dash-ui-ms-${++counter}`;
-  $: inputId = id ?? uid;
-  $: listboxId = `${inputId}-lb`;
+  let inputId = $derived(id ?? uid);
+  let listboxId = $derived(`${inputId}-lb`);
+  let open = $state(false);
+  let query = $state('');
+  let activeIdx = $state(-1);
+  let inputEl = $state<HTMLInputElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
-  const dispatch = createEventDispatcher<{ change: string[] }>();
+  let selectedSet = $derived(new Set(value));
 
-  let open = false;
-  let query = '';
-  let activeIdx = -1;
-  let inputEl: HTMLInputElement;
-  let wrapperEl: HTMLDivElement;
-
-  $: selectedSet = new Set(value);
-
-  $: filtered =
-    query.trim() === ''
+  let filtered =
+    $derived(query.trim() === ''
       ? options
-      : options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase()));
+      : options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase())));
 
-  $: activeOptionId =
-    activeIdx >= 0 && filtered[activeIdx] ? `${listboxId}-opt-${activeIdx}` : undefined;
+  let activeOptionId =
+    $derived(activeIdx >= 0 && filtered[activeIdx] ? `${listboxId}-opt-${activeIdx}` : undefined);
 
   function toggle(optValue: string) {
     const next = new Set(selectedSet);
     if (next.has(optValue)) next.delete(optValue);
     else next.add(optValue);
-    dispatch('change', Array.from(next));
+    onchange?.(Array.from(next));
   }
 
   function onKeyDown(e: KeyboardEvent) {
     if (disabled) return;
     if (e.key === 'Escape') { open = false; query = ''; return; }
     if (e.key === 'Backspace' && query === '' && value.length > 0) {
-      dispatch('change', value.slice(0, -1));
+      onchange?.(value.slice(0, -1));
       return;
     }
     if (!open) {
@@ -79,10 +90,10 @@
 
 <div class="multiselect-wrapper {className}" bind:this={wrapperEl}>
   {#if label}<label for={inputId} class="sr-only">{label}</label>{/if}
-  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+  <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
   <div
     class="multiselect-field{open ? ' multiselect-field--open' : ''}"
-    on:click={() => { if (!disabled) inputEl?.focus(); }}
+    onclick={() => { if (!disabled) inputEl?.focus(); }}
   >
     {#each value as v (v)}
       {@const opt = options.find((o) => o.value === v)}
@@ -93,7 +104,7 @@
             type="button"
             class="tag__remove"
             aria-label="Remove {opt.label} filter"
-            on:click|stopPropagation={() => toggle(v)}
+            onclick={(e) => { e.stopPropagation(); (() => toggle(v))(); }}
           >
             <svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true" focusable="false">
               <path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -116,9 +127,9 @@
       {disabled}
       placeholder={value.length === 0 ? placeholder : ''}
       value={query}
-      on:input={onInput}
-      on:focus={() => { if (!disabled) open = true; }}
-      on:keydown={onKeyDown}
+      oninput={onInput}
+      onfocus={() => { if (!disabled) open = true; }}
+      onkeydown={onKeyDown}
       class="multiselect-input"
     />
     <button
@@ -126,7 +137,7 @@
       tabindex="-1"
       aria-hidden="true"
       class="combobox-chevron-btn"
-      on:click|stopPropagation={() => { if (open) { open = false; query = ''; } else { inputEl?.focus(); open = true; } }}
+      onclick={(e) => { e.stopPropagation(); (() => { if (open) { open = false; query = ''; } else { inputEl?.focus(); open = true; } })(); }}
     >
       <svg class="select-chevron{open ? ' combobox-chevron-open' : ''}" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
         <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
@@ -139,15 +150,15 @@
         <li class="combobox-empty">No results</li>
       {:else}
         {#each filtered as opt, idx (opt.value)}
-          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <!-- svelte-ignore a11y_click_events_have_key_events -->
           <li
             id="{listboxId}-opt-{idx}"
             role="option"
             aria-selected={selectedSet.has(opt.value)}
             data-active={idx === activeIdx ? 'true' : undefined}
             class="select-option multiselect-option"
-            on:mousedown|preventDefault={() => toggle(opt.value)}
-            on:mouseenter={() => { activeIdx = idx; }}
+            onmousedown={(e) => { e.preventDefault(); (() => toggle(opt.value))(); }}
+            onmouseenter={() => { activeIdx = idx; }}
           >
             <span class="multiselect-check" aria-hidden="true">
               {#if selectedSet.has(opt.value)}

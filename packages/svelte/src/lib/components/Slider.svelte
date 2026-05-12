@@ -1,24 +1,38 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  
 
-  export let label: string | undefined = undefined;
-  export let value: number = 0;
-  export let min: number = 0;
-  export let max: number = 100;
-  export let step: number = 1;
-  export let suffix: string | undefined = undefined;
-  export let disabled: boolean = false;
-  export let id: string | undefined = undefined;
+  interface Props {
+    label?: string | undefined;
+    value?: number;
+    min?: number;
+    max?: number;
+    step?: number;
+    suffix?: string | undefined;
+    disabled?: boolean;
+    id?: string | undefined;
+    onchange?: (payload: number) => void;
+  }
+
+  let {
+    label = undefined,
+    value = $bindable(0),
+    min = 0,
+    max = 100,
+    step = 1,
+    suffix = undefined,
+    disabled = false,
+    id = undefined,
+    onchange,
+  }: Props = $props();
 
   let counter = 0;
+  // svelte-ignore state_referenced_locally
   const inputId = id ?? `slider-${counter++}`;
-  const dispatch = createEventDispatcher<{ change: number }>();
-
-  $: pct = max === min ? 0 : ((value - min) / (max - min)) * 100;
+  let pct = $derived(max === min ? 0 : ((value - min) / (max - min)) * 100);
 
   function handleChange(e: Event) {
     value = Number((e.target as HTMLInputElement).value);
-    dispatch('change', value);
+    onchange?.(value);
   }
 </script>
 
@@ -43,6 +57,6 @@
     style="--slider-fill:{pct}%"
     aria-label={label}
     aria-valuetext={suffix ? `${value} ${suffix}` : undefined}
-    on:input={handleChange}
+    oninput={handleChange}
   />
 </div>

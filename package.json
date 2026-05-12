@@ -43,9 +43,9 @@
     "prepare": "tsx scripts/dev/ensure-husky.ts"
   },
   "lint-staged": {
-    "*.{json,jsonc,md,yaml,yml,css,html}": "oxfmt --write",
+    "*.{json,jsonc,md,yaml,yml,css,html}": "oxfmt --write --no-error-on-unmatched-pattern",
     "*.{ts,tsx,js,jsx,mjs,cjs}": [
-      "oxfmt --write",
+      "oxfmt --write --no-error-on-unmatched-pattern",
       "oxlint --fix --deny-warnings --report-unused-disable-directives"
     ]
   },
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.10",
-    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@sveltejs/vite-plugin-svelte": "^4.0.4",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
@@ -73,7 +73,8 @@
     "oxlint": "^1.63.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "svelte": "^4.2.19",
+    "svelte": "^5.43.5",
+    "svelte-migrate": "^1.10",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",

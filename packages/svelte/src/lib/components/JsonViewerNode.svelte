@@ -1,29 +1,44 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type JsVal = string | number | boolean | null | JsVal[] | { [k: string]: JsVal };
 </script>
 
 <script lang="ts">
-  export let v: JsVal;
-  export let k: string | undefined = undefined;
-  export let depth = 0;
-  export let maxDepth = 3;
-  export let startOpen = true;
+  import JsonViewerNode from './JsonViewerNode.svelte';
+  interface Props {
+    v: JsVal;
+    k?: string | undefined;
+    depth?: number;
+    maxDepth?: number;
+    startOpen?: boolean;
+  }
 
-  $: isArr = Array.isArray(v);
-  $: isObj = v !== null && typeof v === 'object';
-  $: expandable = isArr || isObj;
+  let {
+    v,
+    k = undefined,
+    depth = 0,
+    maxDepth = 3,
+    startOpen = true
+  }: Props = $props();
 
-  let open = startOpen && depth < maxDepth;
+  let isArr = $derived(Array.isArray(v));
+  let isObj = $derived(v !== null && typeof v === 'object');
+  let expandable = $derived(isArr || isObj);
 
-  $: entries = isArr
+  // `open` is initialised from `startOpen`/`depth`/`maxDepth` props but is
+  // intentionally a one-shot snapshot at construction time — afterwards
+  // the user controls it via the toggle.
+  // svelte-ignore state_referenced_locally
+  let open = $state(startOpen && depth < maxDepth);
+
+  let entries = $derived(isArr
     ? (v as JsVal[]).map((item: JsVal, i: number) => ({ ek: String(i), ev: item, arrItem: true }))
     : isObj
     ? Object.entries(v as { [key: string]: JsVal }).map(([ek, ev]) => ({ ek, ev, arrItem: false }))
-    : [];
-  $: count = entries.length;
-  $: ob = isArr ? '[' : '{';
-  $: cb = isArr ? ']' : '}';
-  $: indent = depth * 14;
+    : []);
+  let count = $derived(entries.length);
+  let ob = $derived(isArr ? '[' : '{');
+  let cb = $derived(isArr ? ']' : '}');
+  let indent = $derived(depth * 14);
 </script>
 
 {#if !expandable}
@@ -39,7 +54,7 @@
     <button
       type="button"
       class="jv-toggle-row"
-      on:click={() => (open = !open)}
+      onclick={() => (open = !open)}
       aria-label="{open ? 'Collapse' : 'Expand'} {k ?? (isArr ? 'array' : 'object')}"
       style:padding-left="{indent}px"
     >
@@ -51,7 +66,7 @@
     {#if open}
       <div role="group" class="jv-children">
         {#each entries as { ek, ev, arrItem } (ek)}
-          <svelte:self v={ev} k={arrItem ? undefined : ek} depth={depth + 1} {maxDepth} {startOpen} />
+          <JsonViewerNode v={ev} k={arrItem ? undefined : ek} depth={depth + 1} {maxDepth} {startOpen} />
         {/each}
         <div class="jv-row jv-close" style:padding-left="{indent}px">
           <span class="jv-bracket">{cb}</span>

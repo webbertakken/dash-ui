@@ -1,33 +1,44 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   let counter = 0;
   export interface SelectOption { value: string; label: string; }
 </script>
 
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
-  export let options: SelectOption[] = [];
-  export let value: string | undefined = undefined;
-  export let label: string | undefined = undefined;
-  export let placeholder: string = 'Select…';
-  export let id: string | undefined = undefined;
-  export let disabled: boolean = false;
-  let className = '';
-  export { className as class };
+  interface Props {
+    options?: SelectOption[];
+    value?: string | undefined;
+    label?: string | undefined;
+    placeholder?: string;
+    id?: string | undefined;
+    disabled?: boolean;
+    class?: string;
+    onchange?: (payload: string) => void;
+  }
+
+  let {
+    options = [],
+    value = undefined,
+    label = undefined,
+    placeholder = 'Select…',
+    id = undefined,
+    disabled = false,
+    class: className = '',
+    onchange,
+  }: Props = $props();
+  
 
   const uid = `dash-ui-sel-${++counter}`;
-  $: triggerId = id ?? uid;
-  $: listboxId = `${triggerId}-lb`;
+  let triggerId = $derived(id ?? uid);
+  let listboxId = $derived(`${triggerId}-lb`);
+  let open = $state(false);
+  let activeIdx = $state(-1);
+  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let wrapperEl = $state<HTMLDivElement | undefined>(undefined);
 
-  const dispatch = createEventDispatcher<{ change: string }>();
-
-  let open = false;
-  let activeIdx = -1;
-  let triggerEl: HTMLButtonElement;
-  let wrapperEl: HTMLDivElement;
-
-  $: selected = options.find((o) => o.value === value);
-  $: displayLabel = selected?.label ?? placeholder;
+  let selected = $derived(options.find((o) => o.value === value));
+  let displayLabel = $derived(selected?.label ?? placeholder);
 
   function toggle() {
     if (disabled) return;
@@ -39,7 +50,7 @@
   }
 
   function pick(val: string) {
-    dispatch('change', val);
+    onchange?.(val);
     open = false;
     triggerEl?.focus();
   }
@@ -84,8 +95,8 @@
     aria-label={label}
     {disabled}
     class="select-trigger"
-    on:click={toggle}
-    on:keydown={onKeyDown}
+    onclick={toggle}
+    onkeydown={onKeyDown}
     type="button"
   >
     <span>{displayLabel}</span>
@@ -101,8 +112,8 @@
           aria-selected={opt.value === value}
           data-active={idx === activeIdx ? 'true' : undefined}
           class="select-option"
-          on:mousedown|preventDefault={() => pick(opt.value)}
-          on:mouseenter={() => { activeIdx = idx; }}
+          onmousedown={(e) => { e.preventDefault(); (() => pick(opt.value))(); }}
+          onmouseenter={() => { activeIdx = idx; }}
         >{opt.label}</li>
       {/each}
     </ul>
