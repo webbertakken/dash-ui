@@ -1,5 +1,4 @@
-<!-- @migration-task Error while migrating Svelte code: Can't migrate code with afterUpdate. Please migrate by hand. -->
-<script context="module" lang="ts">
+<script module lang="ts">
   export interface LogEntry {
     id?: string;
     timestamp: string;
@@ -12,17 +11,24 @@
 </script>
 
 <script lang="ts">
-  import { afterUpdate } from 'svelte';
+  interface Props {
+    entries?: LogEntry[];
+    height?: number;
+    defaultFollow?: boolean;
+    ariaLabel?: string;
+    className?: string;
+  }
 
+  let {
+    entries = [],
+    height = 360,
+    defaultFollow = true,
+    ariaLabel = 'Log entries',
+    className = '',
+  }: Props = $props();
 
-  export let entries: LogEntry[] = [];
-  export let height: number = 360;
-  export let defaultFollow: boolean = true;
-  export let ariaLabel: string = 'Log entries';
-  export let className: string = '';
-
-  let follow = defaultFollow;
-  let bodyEl: HTMLDivElement;
+  let follow = $state(defaultFollow);
+  let bodyEl = $state<HTMLDivElement | undefined>(undefined);
 
   const SEV_DOT: Record<string, string> = {
     error: '#F03A3A',
@@ -31,7 +37,11 @@
     debug: '#4A4B53',
   };
 
-  afterUpdate(() => {
+  // Replaces `afterUpdate`: `$effect` runs after every DOM commit triggered
+  // by reactive dependencies. Reading `entries` ensures we re-scroll on
+  // every new batch.
+  $effect(() => {
+    void entries.length;
     if (follow && bodyEl) bodyEl.scrollTop = bodyEl.scrollHeight;
   });
 </script>
@@ -42,7 +52,7 @@
     <button
       type="button"
       class="lv__follow{follow ? ' lv__follow--on' : ''}"
-      on:click={() => { follow = !follow; }}
+      onclick={() => { follow = !follow; }}
       aria-pressed={follow}
     >Follow</button>
   </div>
