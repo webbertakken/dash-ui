@@ -1,5 +1,21 @@
 # @w5-ui/svelte
 
+## 0.2.1
+
+### Patch Changes
+
+- [#16](https://github.com/webbertakken/dash-ui/pull/16) [`bff71e7`](https://github.com/webbertakken/dash-ui/commit/bff71e746dc631bdee61573cba0dfbcaeb951c0f) Thanks [@webbertakken](https://github.com/webbertakken)! - Fix `workspace:*` leak in published tarballs. `@w5-ui/svelte@0.2.0`,
+  `@w5-ui/react@0.2.0` and `@w5-ui/wc@0.2.0` shipped with raw
+  `workspace:*` deps on their `@w5-ui/*` siblings, which made them
+  unresolvable outside this monorepo. The release pipeline now runs
+  `scripts/release/substitute-workspace-deps.ts` between `changeset
+version` and `changeset publish`, rewriting `workspace:*` /
+  `workspace:^` / `workspace:~` to concrete `^X.Y.Z` ranges before
+  the tarballs are packed.
+- Updated dependencies [[`bff71e7`](https://github.com/webbertakken/dash-ui/commit/bff71e746dc631bdee61573cba0dfbcaeb951c0f)]:
+  - @w5-ui/assets@0.2.1
+  - @w5-ui/tokens@0.2.1
+
 ## 0.2.0
 
 ### Minor Changes

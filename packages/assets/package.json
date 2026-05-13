@@ -1,6 +1,6 @@
 {
   "name": "@w5-ui/assets",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Brand assets (mark, wordmark, app-rail icons) for the Dash UI design system, by Webber's design systems.",
   "keywords": [
     "svg",
