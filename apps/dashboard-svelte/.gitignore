@@ -1,0 +1,7 @@
+# Vite
+dist/
+node_modules/
+
+# Playwright transient artefacts (snapshots/baselines are kept on purpose).
+test-results/
+playwright-report/
