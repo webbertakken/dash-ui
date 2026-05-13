@@ -39,7 +39,7 @@
     "format:check": "oxfmt --check",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "yarn build && changeset publish",
+    "release": "yarn build && tsx scripts/release/substitute-workspace-deps.ts && changeset publish",
     "prepare": "tsx scripts/dev/ensure-husky.ts"
   },
   "lint-staged": {
