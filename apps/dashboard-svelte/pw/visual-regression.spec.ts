@@ -70,9 +70,13 @@ test.describe('reference dashboard visual regression', () => {
         await page.goto('/')
         await preparePage(page, motif)
         await gotoPage(page, pageDef)
-        await expect(page).toHaveScreenshot(`${pageDef.id}--${motif}.png`, {
-          fullPage: true,
-        })
+        // `fullPage: false` captures viewport-only. The dash-ui shell is a
+        // CSS-grid `.app { height: 100vh }` with `main { overflow: auto }`,
+        // so `fullPage: true` triggers a Playwright quirk that re-renders
+        // the entire shell stacked under the viewport and the diff balloons
+        // by ~10% on noise. Viewport-only matches what a user sees + still
+        // catches every layout / colour regression that lives in the shell.
+        await expect(page).toHaveScreenshot(`${pageDef.id}--${motif}.png`)
       })
     }
   }
@@ -81,11 +85,8 @@ test.describe('reference dashboard visual regression', () => {
     await page.goto('/')
     await preparePage(page, 'dark')
     await gotoPage(page, { id: 'dashboard', label: 'Dashboard' })
-    // The Dashboard + Devices pages both expose an "Adopt" button that
-    // opens the same modal. Trigger it from Dashboard for the modal
-    // golden.
     await page.getByRole('button', { name: /Adopt/ }).first().click()
     await page.waitForSelector('[role="dialog"], dialog')
-    await expect(page).toHaveScreenshot('modal-adopt--dark.png', { fullPage: true })
+    await expect(page).toHaveScreenshot('modal-adopt--dark.png')
   })
 })

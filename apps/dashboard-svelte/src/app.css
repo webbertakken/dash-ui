@@ -13,6 +13,12 @@
 
 @import 'tailwindcss';
 @import '@w5-ui/tokens/tailwind.css';
-@import '@w5-ui/svelte/styles.css';
+
+/* The legacy `dashboard.css` ships with global selectors (`button { border:
+ * none }`, `a { color: inherit }`, ...) that would otherwise outrank
+ * Tailwind utilities. Import it into the `base` cascade layer so Tailwind
+ * utilities (which live in `@layer utilities`) always win. Removed entirely
+ * once every component is migrated. */
+@import '@w5-ui/svelte/styles.css' layer(base);
 
 @source '../../../packages/svelte/src/lib/components';

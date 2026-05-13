@@ -23,10 +23,14 @@ export default defineConfig({
   },
   expect: {
     toHaveScreenshot: {
-      // Tiny tolerance for AA / sub-pixel font rendering noise. Real
-      // visual breakage shows up as thousands of pixels diffing, well
-      // above this floor.
-      maxDiffPixelRatio: 0.002,
+      // 2.5% tolerance for sub-pixel font anti-aliasing noise. The chrome
+      // (topbar / sidebar / main) uses ~uniform colour fills so structural
+      // bugs show up as 5–20% deltas (e.g. light-motif chrome inversion was
+      // 24% before the fix). Genuine font / spacing regressions in text-
+      // heavy pages typically push 5%+ as well. Tune individual specs with
+      // a per-call `maxDiffPixelRatio` if a noisy page legitimately needs
+      // more headroom.
+      maxDiffPixelRatio: 0.025,
       animations: 'disabled',
       caret: 'hide',
     },

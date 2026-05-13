@@ -53,11 +53,13 @@
   // Status-ring colour mapping. We pre-compose the Tailwind class strings here
   // (rather than inline) so the consumer's Tailwind compiler picks them up
   // unambiguously via static-string scanning.
+  // Ring background opacities chosen to match dashboard.css exactly
+  // (`.status-ring { background: rgba(<colour>, 0.18) }`).
   const RING_BG: Record<TopbarStatus, string> = {
-    ok: 'bg-status-success/20',
-    warn: 'bg-status-warning/20',
-    danger: 'bg-status-danger/20',
-    neutral: 'bg-status-neutral/20',
+    ok: 'bg-status-success/18',
+    warn: 'bg-status-warning/18',
+    danger: 'bg-status-danger/18',
+    neutral: 'bg-status-neutral/18',
   };
   const RING_DOT: Record<TopbarStatus, string> = {
     ok: 'bg-status-success',
@@ -72,8 +74,16 @@
   let ringDotClass = $derived(`h-2 w-2 rounded-full ${RING_DOT[status]}`);
 </script>
 
+<!--
+  The chrome (topbar + sidebar + main) keeps the original dashboard.css
+  intent: ALWAYS dark, independent of `data-motif`. The baseline screenshots
+  at `bff71e7` hardcode `#0a0a0b` / `#fff` / `#a4a7b5`; this component
+  reproduces those values directly via the fixed `neutral-*` ramp + literal
+  `white`. A future redesign can introduce a `surface-chrome-*` motif-aware
+  token set if we ever want to support a true light chrome.
+-->
 <header
-  class="flex h-12 shrink-0 items-center gap-0 border-b border-border-1 bg-bg-page px-2"
+  class="flex h-12 shrink-0 items-center gap-0 border-b border-white/[0.06] bg-neutral-10 px-2"
 >
   {#if siteSwitchable}
     <button
@@ -83,13 +93,13 @@
       aria-haspopup="menu"
     >
       <span class={ringWrapClass}><span class={ringDotClass}></span></span>
-      <span class="text-13 font-medium text-text-1" aria-hidden="true">{siteName}</span>
-      <CaretIcon class="h-3.5 w-3.5 text-text-3" />
+      <span class="text-13 font-medium text-white" aria-hidden="true">{siteName}</span>
+      <CaretIcon class="h-3.5 w-3.5 text-neutral-04" />
     </button>
   {:else}
     <div class="flex items-center gap-2 px-2.5 py-1.5" role="presentation">
       <span class={ringWrapClass}><span class={ringDotClass}></span></span>
-      <span class="text-13 font-medium text-text-1">{siteName}</span>
+      <span class="text-13 font-medium text-white">{siteName}</span>
     </div>
   {/if}
 
@@ -97,10 +107,10 @@
     {#each apps as a (a.id)}
       <button
         type="button"
-        class="flex h-12 w-16 cursor-pointer flex-col items-center justify-center border-0 border-b-2 bg-transparent py-1.5 transition-colors duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05
+        class="flex h-12 w-16 cursor-pointer flex-col items-center justify-center border-b-2 bg-transparent py-1.5 transition-colors duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05
           {a.id === activeApp
-            ? 'border-b-brand-05 text-text-1'
-            : 'border-b-transparent text-text-3 hover:text-text-1'}"
+            ? 'border-b-brand-05 text-white'
+            : 'border-b-transparent text-neutral-04 hover:text-white'}"
         aria-current={a.id === activeApp ? 'page' : undefined}
         onclick={() => { activeApp = a.id; onappchange?.(a.id); }}
       >
@@ -138,7 +148,7 @@
         {#if notificationCount > 0}
           <span
             aria-hidden="true"
-            class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border-[1.5px] border-bg-page bg-status-danger"
+            class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border-[1.5px] border-neutral-10 bg-status-danger"
           ></span>
         {/if}
       </IconButton>

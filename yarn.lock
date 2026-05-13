@@ -3731,6 +3731,7 @@ __metadata:
     "@w5-ui/assets": "workspace:*"
     "@w5-ui/svelte": "workspace:*"
     "@w5-ui/tokens": "workspace:*"
+    pngjs: "npm:^7.0.0"
     svelte: "npm:^5.43.5"
     svelte-check: "npm:^4.3.4"
     svelte-preprocess: "npm:^6.0.0"
@@ -7135,6 +7136,13 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: 10c0/714ad76d85b4865d7e43c0012f9039800c1485373388973ed39d79339cee5ad467052d1e2f1eaeca107a1cb6e65342186a8578a4c3504853d84c3a691250d5db
+  languageName: node
+  linkType: hard
+
+"pngjs@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "pngjs@npm:7.0.0"
+  checksum: 10c0/0d4c7a0fd476a9c33df7d0a2a73e1d56537628a668841f6995c2bca070cf30819f9254a64363266bc14ef2fee47659dd3b4f2b18eec7ab65143015139f497b38
   languageName: node
   linkType: hard
 
