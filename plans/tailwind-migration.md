@@ -51,28 +51,28 @@ Flow:
 - [x] 0a.1 Pre-migration commit identified: **`bff71e7`** — confirmed by operator via reference
       dashboard + storybook at that commit.
 - [x] 0a.2 Playwright installed in `apps/dashboard-svelte` + chromium browser.
-- [x] 0a.3 Goldens captured at `bff71e7` for every reference-dashboard page × motif (14 routes × 2
-      + adopt modal = 29 PNGs). Storybook-story-level goldens deferred; per-page diffs covered the
+- [x] 0a.3 Goldens captured at `bff71e7` for every reference-dashboard page × motif (14 routes × 2 +
+      adopt modal = 29 PNGs). Storybook-story-level goldens deferred; per-page diffs covered the
       migrated components in their real composition.
 - [x] 0a.4 Images stashed at `~/Repositories/.dash-ui-visual-baselines/bff71e7/` with filename
       convention `<page>--<motif>-chromium-linux.png`.
 - [x] 0a.5 Back on the feature branch, baselines committed to
       `apps/dashboard-svelte/pw/visual-regression.spec.ts-snapshots/`.
-- [x] 0a.6 Regression spec + scripts (`yarn workspace dashboard-svelte pw` / `pw:update`) landed
-      in PR #19.
+- [x] 0a.6 Regression spec + scripts (`yarn workspace dashboard-svelte pw` / `pw:update`) landed in
+      PR #19.
 - [x] 0a.7 Diff fails surfaced + fixed: (a) active-app-tab underline missing (legacy
       `button { border: none }` reset outranked Tailwind utilities; fixed by importing
-      `dashboard.css` into `@layer base`). (b) Light-motif chrome inversion at 24% (Topbar /
-      Sidebar / Avatar / IconButton / Pill switched from motif-aware tokens to the fixed neutral
-      ramp). (c) Storybook had no Tailwind wiring at all — fixed by adding `@tailwindcss/vite` +
-      `preview.css` composing tokens + `@source`. (d) Topbar fixture used `activeApp: 'network'`
-      which didn't match any DEFAULT_APP — fixed to `'system'` / `'instances'`. 27 of 29 page
-      diffs now under the 5% threshold.
-- [x] 0a.8 Tagged as standing pre-condition for every future component migration. Phase 2 /
-      Phase 4 entries below now require golden capture before the migration starts.
+      `dashboard.css` into `@layer base`). (b) Light-motif chrome inversion at 24% (Topbar / Sidebar
+      / Avatar / IconButton / Pill switched from motif-aware tokens to the fixed neutral ramp). (c)
+      Storybook had no Tailwind wiring at all — fixed by adding `@tailwindcss/vite` + `preview.css`
+      composing tokens + `@source`. (d) Topbar fixture used `activeApp: 'network'` which didn't
+      match any DEFAULT_APP — fixed to `'system'` / `'instances'`. 27 of 29 page diffs now under the
+      5% threshold.
+- [x] 0a.8 Tagged as standing pre-condition for every future component migration. Phase 2 / Phase 4
+      entries below now require golden capture before the migration starts.
 - [ ] 0a.9 `vpn :: dark` + `vpn :: light` still ~6% — the VPN funnel-chart visualisation in
-      `apps/dashboard-svelte/src/pages/Vpn.svelte` renders meaningfully larger than baseline.
-      Bug in the page, not in any migrated component; tracked here so it doesn't get lost.
+      `apps/dashboard-svelte/src/pages/Vpn.svelte` renders meaningfully larger than baseline. Bug in
+      the page, not in any migrated component; tracked here so it doesn't get lost.
 
 ### Phase 0 — infrastructure (DONE)
 
