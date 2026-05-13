@@ -20,7 +20,7 @@
     error = undefined,
     required = false,
     hint = undefined,
-    children
+    children,
   }: Props = $props();
   // svelte-ignore state_referenced_locally
   const inputId = id ?? `dash-ui-field-${++counter}`;
@@ -29,18 +29,18 @@
   let describedBy = $derived([hintId, errorId].filter(Boolean).join(' ') || undefined);
 </script>
 
-<div class="field">
-  <label for={inputId}>
-    {label}{#if required}<span class="req" aria-hidden="true"> *</span>{/if}
+<div class="mb-3 flex flex-col gap-1.5">
+  <label for={inputId} class="text-12 font-medium text-neutral-04">
+    {label}{#if required}<span class="text-status-danger" aria-hidden="true"> *</span>{/if}
   </label>
   {#if hint}
-    <div class="field-hint" id={hintId}>{hint}</div>
+    <div class="text-12 text-neutral-04" id={hintId}>{hint}</div>
   {/if}
   {#if children}
     {@render children?.()}
   {:else}
     <input
-      class="input"
+      class="h-[34px] w-full rounded-md border border-white/10 bg-neutral-10 px-3 text-13 text-white outline-none transition-[border-color] duration-100 focus:border-brand-05 focus:[box-shadow:0_0_0_2px_rgba(0,111,255,0.2)] aria-[invalid='true']:border-status-danger aria-[invalid='true']:focus:[box-shadow:0_0_0_2px_rgba(240,58,58,0.12)]"
       id={inputId}
       bind:value
       {required}
@@ -49,6 +49,6 @@
     />
   {/if}
   {#if error}
-    <div class="field-error" id={errorId} role="alert">{error}</div>
+    <div class="text-12 text-status-danger" id={errorId} role="alert">{error}</div>
   {/if}
 </div>

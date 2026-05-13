@@ -29,6 +29,17 @@
     onclick,
     children,
   }: Props = $props();
+
+  // Pre-compose variant strings so Tailwind's static scanner picks them up.
+  // Values match dashboard.css exactly:
+  //   primary: #006fff bg / #fff text / hover #4797ff (brand-05 / brand-06)
+  //   ghost:   transparent / #c8c9d0 / rgba(255,255,255,0.1) border / hover bg-white/[0.04]
+  //   danger:  #ff7b7b text / rgba(240,58,58,0.3) border
+  const VARIANT: Record<NonNullable<Props['variant']>, string> = {
+    primary: 'bg-brand-05 text-white hover:bg-brand-06 border-transparent',
+    ghost: 'bg-transparent text-[#c8c9d0] border-white/10 hover:bg-white/[0.04] hover:text-white',
+    danger: 'bg-transparent text-[#ff7b7b] border-status-danger/30',
+  };
 </script>
 
 <button
@@ -36,7 +47,10 @@
   {title}
   aria-label={ariaLabel}
   {onclick}
-  class="btn btn-{variant} {iconOnly ? 'btn-icon' : ''} {className}"
+  class="inline-flex h-[30px] cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-md border px-3 text-13 font-medium transition-all duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 disabled:cursor-not-allowed disabled:opacity-55
+    {VARIANT[variant]}
+    {iconOnly ? 'w-[30px] justify-center p-0' : ''}
+    {className}"
   {style}
   disabled={disabled || loading}
   aria-busy={loading ? true : undefined}
