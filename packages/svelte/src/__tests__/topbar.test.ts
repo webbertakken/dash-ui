@@ -14,16 +14,16 @@ describe('Topbar', () => {
     })
     expect(getByLabelText('Switch site: Demo')).toBeTruthy()
     // The status ring wrapper carries the bg-status-success utility class.
-    const ring = container.querySelector('.bg-status-success\\/20')
+    const ring = container.querySelector('.bg-status-success\\/18')
     expect(ring).toBeTruthy()
   })
 
   it('switches the status ring colour per status prop', () => {
     for (const [status, cls] of [
-      ['ok', 'bg-status-success/20'],
-      ['warn', 'bg-status-warning/20'],
-      ['danger', 'bg-status-danger/20'],
-      ['neutral', 'bg-status-neutral/20'],
+      ['ok', 'bg-status-success/18'],
+      ['warn', 'bg-status-warning/18'],
+      ['danger', 'bg-status-danger/18'],
+      ['neutral', 'bg-status-neutral/18'],
     ] as const) {
       const { container, unmount: u } = render(Topbar, {
         props: { siteName: 'Demo', activeApp: 'system', status },

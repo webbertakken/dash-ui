@@ -44,24 +44,25 @@
 <svelte:window onkeydown={onKeydown} />
 
 <div
-  class="drawer-overlay {open ? 'show' : ''}"
+  class="fixed inset-0 z-[60] bg-black/40 {open ? 'block' : 'hidden'}"
   onclick={() => (open = false)}
   aria-hidden="true"
   role="presentation"
 ></div>
 <div
   bind:this={panelEl}
-  class="drawer-panel {open ? 'show' : ''}"
+  class="fixed right-0 top-0 z-[61] flex h-full w-[380px] max-w-[90vw] flex-col border-l border-white/10 bg-neutral-09 transition-transform duration-200 ease-out [box-shadow:-24px_0_64px_rgba(0,0,0,0.6)]
+    {open ? 'translate-x-0' : 'translate-x-full'}"
   role="dialog"
   aria-modal="true"
   aria-labelledby={titleId}
   tabindex="-1"
 >
-  <div class="drawer-h">
-    <h2 id={titleId}>{title}</h2>
+  <div class="flex shrink-0 items-center justify-between border-b border-white/[0.06] px-5 py-4">
+    <h2 id={titleId} class="m-0 text-16 font-semibold">{title}</h2>
     <IconButton title="Close" onclick={() => (open = false)}>
       <CloseIcon />
     </IconButton>
   </div>
-  <div class="drawer-b">{@render children?.()}</div>
+  <div class="flex-1 overflow-y-auto px-5 py-4">{@render children?.()}</div>
 </div>

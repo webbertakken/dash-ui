@@ -1,3 +1,26 @@
+/* Storybook preview pipeline for @w5-ui/svelte.
+ *
+ * Order matches apps/dashboard-svelte/src/app.css so what you see in
+ * Storybook is what consumers ship in production:
+ *   1. Tailwind core
+ *   2. w5-ui tokens + Tailwind bridge (@theme inline + dark/light variants)
+ *   3. legacy @w5-ui/svelte/styles.css imported INTO @layer base so
+ *      Tailwind utilities outrank the unlayered button/input/etc resets
+ *      that ship with dashboard.css.
+ *   4. @source pointing at the migrated component sources so Tailwind
+ *      emits every utility class string baked into them. The
+ *      `@w5-ui/svelte` package is consumed via the workspace symlink, so
+ *      the relative path walks up out of storybook-svelte and back down
+ *      into the packages.
+ */
+
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind.css';
+@import '@w5-ui/svelte/styles.css' layer(base);
+
+@source '../../../packages/svelte/src/lib/components';
+@source '../src';
+
 :root,
 html,
 body,

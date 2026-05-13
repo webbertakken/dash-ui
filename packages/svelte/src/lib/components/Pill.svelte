@@ -20,12 +20,15 @@
   }: Props = $props();
 
   // Pre-compose so Tailwind's static scanner picks up every variant.
+  // Backgrounds use the literal 14% opacity from `dashboard.css`; text
+  // colours match the hand-tuned values that were unique to each variant
+  // (and are NOT motif-aware in baseline either).
   const PILL: Record<PillVariant, string> = {
-    success: 'bg-status-success/15 text-[#5ddb9f]',
-    warn: 'bg-status-warning/15 text-[#f5c26b]',
-    danger: 'bg-status-danger/15 text-[#ff7b7b]',
-    info: 'bg-status-info/15 text-[#7fb6ff]',
-    neutral: 'bg-white/[0.06] text-text-3',
+    success: 'bg-status-success/14 text-[#5ddb9f]',
+    warn: 'bg-status-warning/14 text-[#f5c26b]',
+    danger: 'bg-status-danger/14 text-[#ff7b7b]',
+    info: 'bg-status-info/14 text-[#7fb6ff]',
+    neutral: 'bg-white/[0.06] text-neutral-04',
   };
   const DOT: Record<PillVariant, string> = {
     success: 'bg-status-success',

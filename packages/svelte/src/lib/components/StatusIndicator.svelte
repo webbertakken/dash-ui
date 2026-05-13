@@ -8,7 +8,14 @@
   let { color, text, textColor = undefined }: Props = $props();
 </script>
 
-<span style="display:inline-flex;align-items:center;gap:6px;color:{textColor ?? color};font-size:12px;">
-  <span aria-hidden="true" style="width:6px;height:6px;border-radius:50%;background:{color};"></span>
+<span
+  class="inline-flex items-center gap-1.5 text-12"
+  style="color:{textColor ?? color};"
+>
+  <span
+    class="h-1.5 w-1.5 rounded-full"
+    aria-hidden="true"
+    style="background:{color};"
+  ></span>
   {text}
 </span>

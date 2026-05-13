@@ -41,6 +41,10 @@ apps/
 - Merge to main opens auto Version Packages PR
 - GH Releases fire only on `X.0.0` where X >= 1
 
+## Rules
+
+- Every Vite app + storybook wires Tailwind v4
+
 ## Source of truth
 
 - Component-category mapping (12 sidebar groups): `packages/storybook-meta/src/categories.ts`

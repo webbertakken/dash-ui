@@ -117,45 +117,7 @@ a {
   color: #6e7079;
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 30px;
-  padding: 0 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 100ms;
-  border: 1px solid transparent;
-  white-space: nowrap;
-}
-.btn-primary {
-  background: #006fff;
-  color: #fff;
-}
-.btn-primary:hover {
-  background: #4797ff;
-}
-.btn-ghost {
-  background: transparent;
-  color: #c8c9d0;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: #fff;
-}
-.btn-icon {
-  width: 30px;
-  padding: 0;
-  justify-content: center;
-}
-.btn-danger {
-  color: #ff7b7b;
-  border-color: rgba(240, 58, 58, 0.3);
-}
+/* Button CSS removed: see scoped Tailwind utilities in Button.svelte. */
 
 .grid {
   display: grid;
@@ -163,16 +125,10 @@ a {
   gap: 12px;
   padding: 16px 24px;
 }
-.card {
-  background: #141415;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-}
+/* Card root CSS removed: see scoped Tailwind utilities in Card.svelte.
+ * The `.card h3` consumer-slot rules below stay until every page that
+ * puts an `<h3>` inside a Card has migrated those headings to Tailwind
+ * utilities of its own. */
 .card h3 {
   margin: 0;
   font-size: 12px;
@@ -187,31 +143,7 @@ a {
   cursor: pointer;
   color: #6e7079;
 }
-.stat {
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
-  color: #fff;
-}
-.stat .unit {
-  font-size: 13px;
-  color: #6e7079;
-  font-weight: 400;
-  margin-left: 4px;
-}
-.submeta {
-  font-size: 11px;
-  color: #6e7079;
-  font-variant-numeric: tabular-nums;
-}
-.delta-up {
-  color: #00b070;
-}
-.delta-down {
-  color: #f03a3a;
-}
+/* Stat CSS removed: see scoped Tailwind utilities in Stat.svelte. */
 
 /* Pill CSS removed: see scoped Tailwind utilities in Pill.svelte. */
 
@@ -313,82 +245,9 @@ tbody tr:hover td {
   background: #2a2a2c;
 }
 
-.tabs {
-  display: flex;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 0 24px;
-  gap: 0;
-  overflow-x: auto;
-}
-.tab {
-  padding: 11px 14px;
-  font-size: 13px;
-  color: #a4a7b5;
-  cursor: pointer;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  line-height: 1;
-  white-space: nowrap;
-  user-select: none;
-  background: transparent;
-  font: inherit;
-  font-size: 13px;
-}
-.tab:hover {
-  color: #fff;
-}
-.tab.active {
-  color: #fff;
-  border-bottom-color: #006fff;
-}
-.tab:focus-visible {
-  outline: 2px solid #006fff;
-  outline-offset: -2px;
-}
-.tab .badge {
-  margin-left: 6px;
-  color: #6e7079;
-  font-variant-numeric: tabular-nums;
-}
+/* Tabs CSS removed: see scoped Tailwind utilities in Tabs.svelte. */
 
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(8px);
-  z-index: 60;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-.backdrop.show {
-  display: flex;
-}
-.modal {
-  width: 520px;
-  max-width: 90vw;
-  background: #141415;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
-  overflow: hidden;
-}
-.modal-h {
-  padding: 18px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.modal-h h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-}
-.modal-b {
-  padding: 18px 20px;
-}
+/* Modal CSS removed: see scoped Tailwind utilities in Modal.svelte. */
 .modal-f {
   padding: 14px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -397,98 +256,10 @@ tbody tr:hover td {
   gap: 8px;
   background: #0f0f10;
 }
-.drawer-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 60;
-  display: none;
-}
-.drawer-overlay.show {
-  display: block;
-}
-.drawer-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 380px;
-  max-width: 90vw;
-  background: #141415;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: -24px 0 64px rgba(0, 0, 0, 0.6);
-  z-index: 61;
-  display: flex;
-  flex-direction: column;
-  transform: translateX(100%);
-  transition: transform 220ms ease;
-}
-.drawer-panel.show {
-  transform: none;
-}
-.drawer-h {
-  padding: 18px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-}
-.drawer-h h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-}
-.drawer-b {
-  padding: 18px 20px;
-  flex: 1;
-  overflow-y: auto;
-}
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.field label {
-  font-size: 12px;
-  color: #a4a7b5;
-  font-weight: 500;
-}
-.field label .req {
-  color: var(--status-danger);
-}
-.input {
-  height: 34px;
-  padding: 0 12px;
-  border-radius: 6px;
-  background: #0a0a0b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  font-size: 13px;
-  outline: none;
-  transition: border-color 100ms;
-  width: 100%;
-}
-.input:focus {
-  border-color: #006fff;
-  box-shadow: 0 0 0 2px rgba(0, 111, 255, 0.2);
-}
-.input[aria-invalid='true'] {
-  border-color: var(--status-danger);
-}
-.input[aria-invalid='true']:focus {
-  border-color: var(--status-danger);
-  box-shadow: 0 0 0 2px var(--status-danger-bg);
-}
-.field-hint {
-  font-size: 12px;
-  color: var(--neutral-04);
-}
-.field-error {
-  font-size: 12px;
-  color: var(--status-danger);
-}
+/* Drawer CSS removed: see scoped Tailwind utilities in Drawer.svelte. */
+/* Field + Input CSS removed: see scoped Tailwind utilities in
+ * Field.svelte and Input.svelte (which exports a shared INPUT_CLASSES
+ * string so both render identically). */
 
 /* Topology */
 .topo {
@@ -957,77 +728,9 @@ tbody tr:hover td {
   background: linear-gradient(90deg, #006fff, #4797ff);
 }
 
-.pb {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.pb-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-}
-.pb-label {
-  color: #c8c9d0;
-}
-.pb-value {
-  color: #a4a7b5;
-  font-family: 'JetBrains Mono', monospace;
-}
-.pb-track {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.pb-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.3s ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  .pb-fill {
-    transition: none;
-  }
-}
+/* ProgressBar CSS removed: see scoped Tailwind utilities in ProgressBar.svelte. */
 
-.toggle-track {
-  width: 32px;
-  height: 18px;
-  border-radius: 9999px;
-  position: relative;
-  display: inline-block;
-  flex-shrink: 0;
-  transition: background-color 150ms;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  border: 0;
-  padding: 0;
-  font: inherit;
-  color: inherit;
-}
-.toggle-track .knob {
-  position: absolute;
-  top: 2px;
-  width: 14px;
-  height: 14px;
-  background: #fff;
-  border-radius: 50%;
-  transition: left 150ms;
-}
-.toggle-track.on {
-  background: #006fff;
-}
-.toggle-track.on .knob {
-  left: 16px;
-}
-.toggle-track.off {
-  background: #2a2a2c;
-}
-.toggle-track.off .knob {
-  left: 2px;
-}
+/* Toggle CSS removed: see scoped Tailwind utilities in Toggle.svelte. */
 
 .row-toggle {
   display: flex;
@@ -1092,44 +795,16 @@ tbody tr:hover td {
   }
 }
 
-/* ===== Spinner (loading indicator) ===== */
-.spinner {
-  display: inline-block;
-  border: 2px solid rgba(255, 255, 255, 0.18);
-  border-top-color: currentColor;
-  border-radius: 50%;
-  animation: spinner-spin 0.65s linear infinite;
-  flex-shrink: 0;
-}
-.spinner.sm {
-  width: 10px;
-  height: 10px;
-  border-width: 1.5px;
-}
-.spinner.md {
-  width: 14px;
-  height: 14px;
-}
-.spinner.lg {
-  width: 20px;
-  height: 20px;
-}
-@keyframes spinner-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation-duration: 10s;
-  }
-}
+/* Spinner CSS removed: see scoped Tailwind utilities in Spinner.svelte
+ * (Tailwind's `animate-spin` covers the keyframe; arbitrary-value
+ * `[animation-duration:0.65s]` matches dashboard.css's 0.65s tempo). */
 
 /* ===== Focus ring (WCAG 2.4.7 Focus Visible) ===== */
 /* Focus ring rules for migrated components (icon-btn, sb-item, app-tab,
  * site-switch) moved into the components themselves via Tailwind's
  * focus-visible: variant. The remaining classes still need this fallback. */
-.btn:focus-visible,
+/* Button focus-visible moved into Button.svelte (Tailwind
+ * focus-visible: variant). Remaining unmigrated classes still need this. */
 .toggle-track:focus-visible,
 .node:focus-visible {
   outline: 2px solid #006fff;
@@ -1140,26 +815,7 @@ tbody tr:hover td {
   box-shadow: 0 0 0 2px rgba(0, 111, 255, 0.2);
 }
 
-/* ===== Skip link (WCAG 2.4.1 Bypass Blocks) ===== */
-.skip-link {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 8px 12px;
-  background: #006fff;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 0 0 6px 0;
-  text-decoration: none;
-  transform: translateY(-100%);
-  z-index: 100;
-}
-.skip-link:focus {
-  transform: translateY(0);
-  outline: 2px solid #fff;
-  outline-offset: -4px;
-}
+/* SkipLink CSS removed: see scoped Tailwind utilities in SkipLink.svelte. */
 
 /* ===== Visually-hidden utility (WCAG 2.4.6 Headings and Labels) =====
    Hides content visually while keeping it available to assistive tech. */
@@ -1195,45 +851,7 @@ tbody tr:hover td {
 }
 
 /* ===== Alert / Banner (WCAG 4.1.3 Status Messages) ===== */
-.alert {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border-left: 3px solid;
-  font-size: 13px;
-  line-height: 1.4;
-}
-.alert-body {
-  flex: 1;
-}
-.alert-dismiss {
-  margin-left: auto;
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-}
-.alert-success {
-  background: rgba(0, 176, 112, 0.1);
-  border-color: #00b070;
-  color: #5ddb9f;
-}
-.alert-warn {
-  background: rgba(245, 166, 35, 0.1);
-  border-color: #f5a623;
-  color: #f5c26b;
-}
-.alert-danger {
-  background: rgba(240, 58, 58, 0.1);
-  border-color: #f03a3a;
-  color: #ff7b7b;
-}
-.alert-info {
-  background: rgba(0, 111, 255, 0.1);
-  border-color: #006fff;
-  color: #7fb6ff;
-}
+/* Alert CSS removed: see scoped Tailwind utilities in Alert.svelte. */
 
 /* ===== Callout (WAI-ARIA role=note, WCAG 1.3.1) ===== */
 .callout {
@@ -1299,55 +917,7 @@ tbody tr:hover td {
   color: #c8e8ff;
 }
 
-/* ===== Tooltip (WCAG 1.3.1 / 4.1.3) ===== */
-.tooltip-wrapper {
-  position: relative;
-  display: inline-flex;
-}
-.tooltip-content {
-  position: absolute;
-  z-index: 9999;
-  background: #1e2028;
-  color: #c8c9d0;
-  font-size: 11px;
-  line-height: 1.3;
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 100ms;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.tooltip-wrapper:hover .tooltip-content,
-.tooltip-wrapper:focus-within .tooltip-content {
-  opacity: 1;
-}
-.tooltip-top .tooltip-content {
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-}
-.tooltip-bottom .tooltip-content {
-  top: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-}
-.tooltip-left .tooltip-content {
-  right: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%);
-}
-.tooltip-right .tooltip-content {
-  left: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%);
-}
-@media (prefers-reduced-motion: reduce) {
-  .tooltip-content {
-    transition: none;
-  }
-}
+/* Tooltip CSS removed: see scoped Tailwind utilities in Tooltip.svelte. */
 
 /* ===== Checkbox (WCAG 1.3.1 / 4.1.2) ===== */
 .checkbox {
@@ -1714,26 +1284,7 @@ tbody tr:hover td {
   }
 }
 
-/* ===== Textarea (WCAG 1.3.1 / 4.1.2) ===== */
-.textarea {
-  height: auto;
-  min-height: 80px;
-  padding: 8px 12px;
-  resize: vertical;
-  line-height: 1.5;
-  font-family: inherit;
-}
-.textarea:focus {
-  border-color: #006fff;
-  box-shadow: 0 0 0 2px rgba(0, 111, 255, 0.2);
-}
-.textarea[aria-invalid='true'] {
-  border-color: var(--status-danger);
-}
-.textarea[aria-invalid='true']:focus {
-  border-color: var(--status-danger);
-  box-shadow: 0 0 0 2px var(--status-danger-bg);
-}
+/* Textarea CSS removed: see scoped Tailwind utilities in Textarea.svelte. */
 
 /* ===== Slider (native range, WCAG 2.1.1 / 4.1.2) ===== */
 .slider {
@@ -2304,38 +1855,7 @@ tr:hover .action-menu-trigger,
   }
 }
 
-/* ===== EmptyState (WCAG 4.1.3 role=status) ===== */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 48px 24px;
-  text-align: center;
-}
-.empty-state__icon {
-  width: 48px;
-  height: 48px;
-  color: #3e3e45;
-  flex-shrink: 0;
-}
-.empty-state__title {
-  font-size: 14px;
-  font-weight: 500;
-  color: #a4a7b5;
-  margin: 0;
-}
-.empty-state__desc {
-  font-size: 12px;
-  color: #6e7079;
-  margin: 0;
-  max-width: 280px;
-  line-height: 1.5;
-}
-.empty-state__action {
-  margin-top: 6px;
-}
+/* EmptyState CSS removed: see scoped Tailwind utilities in EmptyState.svelte. */
 
 /* ===== Toaster/Toast (WCAG 4.1.3 role=status/alert + aria-live) ===== */
 .toaster {
@@ -3202,42 +2722,7 @@ tr:hover .action-menu-trigger,
   font-variant-numeric: tabular-nums;
 }
 
-/* ===== Kbd (keyboard shortcut display, semantic <kbd>) ===== */
-.kbd {
-  display: inline-flex;
-  align-items: center;
-  gap: 1px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 1;
-  flex-shrink: 0;
-}
-.kbd__segment {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-}
-.kbd__key {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-bottom-width: 2px;
-  border-radius: 4px;
-  padding: 2px 5px;
-  color: #9899a6;
-  font: inherit;
-  min-width: 18px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-}
-.kbd__plus {
-  color: #6e7079;
-  font-family: var(--font-sans);
-  font-size: 10px;
-  padding: 0 1px;
-  line-height: 1;
-}
+/* Kbd CSS removed: see scoped Tailwind utilities in Kbd.svelte. */
 .cp-item-shortcut {
   margin-left: auto;
   flex-shrink: 0;
@@ -5471,10 +4956,9 @@ tr:hover .action-menu-trigger,
   }
 }
 /* Badge */
-.badge-wrapper {
-  position: relative;
-  display: inline-flex;
-}
+/* Badge CSS removed: see scoped Tailwind utilities in Badge.svelte.
+ * The selectors below stay for OTHER consumers (`.badge` is used by
+ * `.tab .badge` etc.) until those components migrate too. */
 .badge {
   position: absolute;
   top: -4px;

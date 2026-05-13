@@ -37,8 +37,10 @@
     away: 'bg-status-warning',
   };
 
+  // Hardcoded neutral chrome to match dashboard.css's literal #4a4b53 / #fff,
+  // independent of motif. See the comment in Topbar.svelte for rationale.
   let rootClass = $derived(
-    `relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-neutral-06 font-semibold text-text-1 ${SIZE[size]} ${className}`,
+    `relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-neutral-06 font-semibold text-white ${SIZE[size]} ${className}`,
   );
 </script>
 
@@ -50,7 +52,7 @@
   {/if}
   {#if status}
     <span
-      class="absolute bottom-0 right-0 h-2 w-2 rounded-full border-[1.5px] border-bg-page {STATUS_BG[status]}"
+      class="absolute bottom-0 right-0 h-2 w-2 rounded-full border-[1.5px] border-neutral-10 {STATUS_BG[status]}"
       aria-hidden="true"
     ></span>
   {/if}

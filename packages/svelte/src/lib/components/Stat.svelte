@@ -29,18 +29,32 @@
   }: Props = $props();
 
   let deltaClass = $derived(
-    deltaDir === 'up' ? 'delta-up' : deltaDir === 'down' ? 'delta-down' : '',
+    deltaDir === 'up'
+      ? 'text-status-success'
+      : deltaDir === 'down'
+        ? 'text-status-danger'
+        : '',
   );
 </script>
 
 <Card {span}>
+  <!--
+    `.card h3` rules in dashboard.css still target this <h3> for now;
+    leaving them there until every Card consumer migrates its heading
+    too. Stat's value + submeta are Tailwind utilities below.
+  -->
   <h3>{label}</h3>
-  <div class="stat" style={color ? `color:${color};` : ''}>
-    {#if valueSlot}{@render valueSlot()}{:else}{value}{/if}{#if unit}<span class="unit">{unit}</span>{/if}
+  <div
+    class="text-[28px] font-semibold leading-[1.05] tracking-[-0.01em] tabular-nums text-white"
+    style={color ? `color:${color};` : ''}
+  >
+    {#if valueSlot}{@render valueSlot()}{:else}{value}{/if}{#if unit}<span
+        class="ml-1 text-13 font-normal text-neutral-05"
+      >{unit}</span>{/if}
   </div>
   {#if sub || delta}
-    <div class="submeta">
-      {#if sub}{sub}{/if}{#if sub && delta} · {/if}{#if delta}<span class="sr-only">Trend: </span><span class={deltaClass}>{delta}</span>{/if}
+    <div class="text-[11px] tabular-nums text-neutral-05">
+      {#if sub}{sub}{/if}{#if sub && delta} \u00b7 {/if}{#if delta}<span class="sr-only">Trend: </span><span class={deltaClass}>{delta}</span>{/if}
     </div>
   {/if}
 </Card>

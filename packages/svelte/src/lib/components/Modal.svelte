@@ -72,8 +72,15 @@
 
 <svelte:window onkeydown={onKeydown} />
 
+<!--
+  Modal chrome matches dashboard.css literal values for cross-motif
+  consistency: backdrop is solid 55% black with 8px blur, modal panel is
+  bg #141415 (neutral-09) with rgba(255,255,255,0.1) border, header +
+  footer separators at rgba(255,255,255,0.06), footer surface at #0f0f10.
+-->
 <div
-  class="backdrop {open ? 'show' : ''}"
+  class="fixed inset-0 z-[60] items-center justify-center bg-black/55 backdrop-blur-lg
+    {open ? 'flex' : 'hidden'}"
   onmousedown={(e) => (downOnBackdrop = e.target === e.currentTarget)}
   onclick={(e) => {
     if (downOnBackdrop && e.target === e.currentTarget) open = false;
@@ -83,21 +90,23 @@
 >
   <div
     bind:this={modalEl}
-    class="modal"
+    class="w-[520px] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-neutral-09 shadow-modal"
     role="dialog"
     aria-modal="true"
     aria-labelledby={titleId}
     tabindex="-1"
   >
-    <div class="modal-h">
-      <h2 id={titleId}>{title}</h2>
+    <div class="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
+      <h2 id={titleId} class="m-0 text-16 font-semibold">{title}</h2>
       <IconButton title="Close" onclick={() => (open = false)}>
         <CloseIcon />
       </IconButton>
     </div>
-    <div class="modal-b">{@render children?.()}</div>
+    <div class="px-5 py-4">{@render children?.()}</div>
     {#if footer}
-      <div class="modal-f">{@render footer?.()}</div>
+      <div
+        class="flex justify-end gap-2 border-t border-white/[0.06] bg-[#0f0f10] px-5 py-3.5"
+      >{@render footer?.()}</div>
     {/if}
   </div>
 </div>

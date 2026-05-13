@@ -13,16 +13,36 @@ type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',
-  args: { siteName: 'HQ', activeApp: 'network' },
+  args: { siteName: 'HQ', activeApp: 'system' },
 }
 
 export const Variant1: Story = {
   name: 'with apps',
   args: {
     siteName: 'HQ',
-    activeApp: 'network',
+    activeApp: 'instances',
     onAppChange: () => {},
     initials: 'WB',
     notificationCount: 5,
   },
+}
+
+export const Variant2: Story = {
+  name: 'status=warn',
+  args: { siteName: 'HQ', activeApp: 'system', status: 'warn' },
+}
+
+export const Variant3: Story = {
+  name: 'status=danger',
+  args: { siteName: 'HQ', activeApp: 'system', status: 'danger' },
+}
+
+export const Variant4: Story = {
+  name: 'status=neutral',
+  args: { siteName: 'HQ', activeApp: 'system', status: 'neutral' },
+}
+
+export const Variant5: Story = {
+  name: 'siteSwitchable=false',
+  args: { siteName: 'HQ', activeApp: 'system', siteSwitchable: false },
 }

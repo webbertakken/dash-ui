@@ -3,7 +3,6 @@
 </script>
 
 <script lang="ts">
-  
   interface Props {
     items?: TabItem[];
     active: string;
@@ -11,7 +10,10 @@
     onchange?: (payload: string) => void;
   }
 
-  let { items = [], active = $bindable(), ariaLabel = undefined,
+  let {
+    items = [],
+    active = $bindable(),
+    ariaLabel = undefined,
     onchange,
   }: Props = $props();
   let buttons: (HTMLButtonElement | null)[] = $state([]);
@@ -32,12 +34,19 @@
   }
 </script>
 
-<div class="tabs" role="tablist" aria-label={ariaLabel}>
+<div
+  class="flex gap-0 overflow-x-auto border-b border-white/[0.06] px-6"
+  role="tablist"
+  aria-label={ariaLabel}
+>
   {#each items as t, i (t.id)}
     <button
       bind:this={buttons[i]}
       type="button"
-      class="tab {t.id === active ? 'active' : ''}"
+      class="-mb-px cursor-pointer select-none whitespace-nowrap border-0 border-b-2 bg-transparent px-3.5 py-[11px] text-13 leading-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-05
+        {t.id === active
+          ? 'border-b-brand-05 text-white'
+          : 'border-b-transparent text-neutral-04 hover:text-white'}"
       role="tab"
       id="tab-{t.id}"
       aria-selected={t.id === active}
@@ -47,7 +56,9 @@
       onkeydown={(e) => onKey(e, i)}
     >
       {t.label}
-      {#if t.badge !== undefined}<span class="badge">{t.badge}</span>{/if}
+      {#if t.badge !== undefined}
+        <span class="ml-1.5 tabular-nums text-neutral-05">{t.badge}</span>
+      {/if}
     </button>
   {/each}
 </div>

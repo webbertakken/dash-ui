@@ -10,22 +10,31 @@
     title,
     description = undefined,
     class: className = '',
-    action
+    action,
   }: Props = $props();
-  
 </script>
 
-<div role="status" aria-live="polite" class="empty-state {className}">
-  <svg class="empty-state__icon" viewBox="0 0 48 48" fill="none" aria-hidden="true" focusable="false">
+<div
+  role="status"
+  aria-live="polite"
+  class="flex flex-col items-center justify-center gap-2.5 px-6 py-12 text-center {className}"
+>
+  <svg
+    class="h-12 w-12 shrink-0 text-[#3e3e45]"
+    viewBox="0 0 48 48"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+  >
     <rect x="6" y="11" width="36" height="28" rx="4" stroke="currentColor" stroke-width="1.5"/>
     <path d="M6 30h10l3 5h10l3-5h10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
     <path d="M15 20h18M15 25h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
   </svg>
-  <p class="empty-state__title">{title}</p>
+  <p class="m-0 text-14 font-medium text-neutral-04">{title}</p>
   {#if description}
-    <p class="empty-state__desc">{description}</p>
+    <p class="m-0 max-w-[280px] text-12 leading-[1.5] text-neutral-05">{description}</p>
   {/if}
   {#if action}
-    <div class="empty-state__action">{@render action?.()}</div>
+    <div class="mt-1.5">{@render action?.()}</div>
   {/if}
 </div>

@@ -12,7 +12,9 @@
     "build": "vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "typecheck": "svelte-check --tsconfig ./tsconfig.json",
-    "preview": "vite preview --port 5174"
+    "preview": "vite preview --port 5174",
+    "pw": "playwright test",
+    "pw:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@w5-ui/assets": "workspace:*",
@@ -21,8 +23,10 @@
     "svelte": "^5.43.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.4",
     "@tsconfig/svelte": "^5.0.0",
+    "pngjs": "^7.0.0",
     "svelte-check": "^4.3.4",
     "svelte-preprocess": "^6.0.0",
     "typescript": "^5.5.0",
