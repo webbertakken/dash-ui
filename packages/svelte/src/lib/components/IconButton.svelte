@@ -12,7 +12,6 @@
   }
 
   // svelte-ignore state_referenced_locally
-  // svelte-ignore state_referenced_locally
   let {
     title = undefined,
     type = 'button',
@@ -26,7 +25,7 @@
 
 <button
   {type}
-  class="icon-btn {className}"
+  class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-text-3 hover:bg-white/[0.04] hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 {className}"
   {title}
   {style}
   {...rest}
