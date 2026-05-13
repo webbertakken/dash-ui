@@ -1605,23 +1605,26 @@ export const BUNDLES: Record<string, Bundle[]> = {
   ],
   Tooltip: [{ name: 'default', props: { label: 't' }, slot: 'x' }],
   Topbar: [
-    { name: 'default', props: { siteName: 'HQ', activeApp: 'network' } },
+    // activeApp must match one of DEFAULT_APPS ('system' / 'instances' /
+    // 'agents'); otherwise no tab renders as `aria-current="page"` and the
+    // active-tab underline never shows in the story.
+    { name: 'default', props: { siteName: 'HQ', activeApp: 'system' } },
     {
       name: 'with apps',
       props: {
         siteName: 'HQ',
-        activeApp: 'network',
+        activeApp: 'instances',
         onAppChange: noop,
         initials: 'WB',
         notificationCount: 5,
       },
     },
-    { name: 'status=warn', props: { siteName: 'HQ', activeApp: 'network', status: 'warn' } },
-    { name: 'status=danger', props: { siteName: 'HQ', activeApp: 'network', status: 'danger' } },
-    { name: 'status=neutral', props: { siteName: 'HQ', activeApp: 'network', status: 'neutral' } },
+    { name: 'status=warn', props: { siteName: 'HQ', activeApp: 'system', status: 'warn' } },
+    { name: 'status=danger', props: { siteName: 'HQ', activeApp: 'system', status: 'danger' } },
+    { name: 'status=neutral', props: { siteName: 'HQ', activeApp: 'system', status: 'neutral' } },
     {
       name: 'siteSwitchable=false',
-      props: { siteName: 'HQ', activeApp: 'network', siteSwitchable: false },
+      props: { siteName: 'HQ', activeApp: 'system', siteSwitchable: false },
     },
   ],
   TransferList: [

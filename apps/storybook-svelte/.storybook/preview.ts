@@ -1,7 +1,9 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
 import type { Preview } from '@storybook/svelte'
-import '@w5-ui/tokens/tokens.css'
-import '@w5-ui/svelte/styles.css'
+// preview.css is the single CSS entry: it composes Tailwind + w5-ui
+// tokens + the legacy dashboard.css (layered into @layer base) and tells
+// Tailwind to @source the component package. Importing the raw tokens.css
+// or styles.css here would skip the Tailwind pipeline entirely.
 import './preview.css'
 
 const preview: Preview = {
