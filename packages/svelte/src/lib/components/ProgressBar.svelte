@@ -10,22 +10,22 @@
     value,
     label = undefined,
     valueText = undefined,
-    color = '#006FFF'
+    color = '#006FFF',
   }: Props = $props();
   let clamped = $derived(Math.max(0, Math.min(100, value)));
   let displayed = $derived(valueText ?? `${Math.round(clamped)}%`);
   let hasHeader = $derived(label !== undefined || valueText !== undefined);
 </script>
 
-<div class="pb">
+<div class="flex flex-col gap-1">
   {#if hasHeader}
-    <div class="pb-header">
-      {#if label}<span class="pb-label">{label}</span>{/if}
-      <span class="pb-value">{displayed}</span>
+    <div class="flex justify-between text-12">
+      {#if label}<span class="text-[#c8c9d0]">{label}</span>{/if}
+      <span class="font-mono text-neutral-04">{displayed}</span>
     </div>
   {/if}
   <div
-    class="pb-track"
+    class="h-1.5 overflow-hidden rounded-[3px] bg-white/[0.06]"
     role="progressbar"
     aria-valuenow={Math.round(clamped)}
     aria-valuemin={0}
@@ -33,6 +33,9 @@
     aria-label={label}
     aria-valuetext={displayed}
   >
-    <div class="pb-fill" style="width:{clamped}%;background:{color};"></div>
+    <div
+      class="h-full rounded-[3px] transition-[width] duration-300 ease-out motion-reduce:transition-none"
+      style="width:{clamped}%;background:{color};"
+    ></div>
   </div>
 </div>
