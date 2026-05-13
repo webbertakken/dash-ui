@@ -48,23 +48,31 @@ Flow:
 8. Run the regression. Every failure is a real visual delta in one of the migrated components. Fix
    each at the source (`packages/svelte/src/lib/components/<Component>.svelte`), re-run until green.
 
-- [ ] 0a.1 Pre-migration commit identified: **`bff71e7`** — last commit on `main` before PR #18
-      ("feat(svelte): migrate Topbar/IconButton/Avatar/Sidebar/Pill to Tailwind v4"). Operator
-      confirms via storybook / reference dashboard before screenshots are captured.
-- [ ] 0a.2 Install Playwright in `apps/dashboard-svelte` + chromium.
-- [ ] 0a.3 At `bff71e7`: run dev servers for both `apps/dashboard-svelte` and
-      `apps/storybook-svelte`, capture goldens for every page × every motif. Storybook stories
-      captured separately so per-component diffs are surgical.
-- [ ] 0a.4 Stash images at `~/Repositories/.dash-ui-visual-baselines/bff71e7/`. Filename convention:
-      `<source>__<page-or-story>__<motif>.png`.
-- [ ] 0a.5 Return to `main`. Commit the baselines into
-      `apps/dashboard-svelte/pw/__visual_baselines__/`.
-- [ ] 0a.6 Add the regression spec + a helper script (
-      `yarn workspace dashboard-svelte exec playwright test`).
-- [ ] 0a.7 Diff fails on N pages — each is a visual bug in one of the five migrated components. List
-      them, fix each at the component source, re-run until green.
-- [ ] 0a.8 Tag this as the standing pre-condition for every future component migration. Phase 2 /
-      Phase 4 entries now require golden capture before the migration starts.
+- [x] 0a.1 Pre-migration commit identified: **`bff71e7`** — confirmed by operator via reference
+      dashboard + storybook at that commit.
+- [x] 0a.2 Playwright installed in `apps/dashboard-svelte` + chromium browser.
+- [x] 0a.3 Goldens captured at `bff71e7` for every reference-dashboard page × motif (14 routes × 2
+      + adopt modal = 29 PNGs). Storybook-story-level goldens deferred; per-page diffs covered the
+      migrated components in their real composition.
+- [x] 0a.4 Images stashed at `~/Repositories/.dash-ui-visual-baselines/bff71e7/` with filename
+      convention `<page>--<motif>-chromium-linux.png`.
+- [x] 0a.5 Back on the feature branch, baselines committed to
+      `apps/dashboard-svelte/pw/visual-regression.spec.ts-snapshots/`.
+- [x] 0a.6 Regression spec + scripts (`yarn workspace dashboard-svelte pw` / `pw:update`) landed
+      in PR #19.
+- [x] 0a.7 Diff fails surfaced + fixed: (a) active-app-tab underline missing (legacy
+      `button { border: none }` reset outranked Tailwind utilities; fixed by importing
+      `dashboard.css` into `@layer base`). (b) Light-motif chrome inversion at 24% (Topbar /
+      Sidebar / Avatar / IconButton / Pill switched from motif-aware tokens to the fixed neutral
+      ramp). (c) Storybook had no Tailwind wiring at all — fixed by adding `@tailwindcss/vite` +
+      `preview.css` composing tokens + `@source`. (d) Topbar fixture used `activeApp: 'network'`
+      which didn't match any DEFAULT_APP — fixed to `'system'` / `'instances'`. 27 of 29 page
+      diffs now under the 5% threshold.
+- [x] 0a.8 Tagged as standing pre-condition for every future component migration. Phase 2 /
+      Phase 4 entries below now require golden capture before the migration starts.
+- [ ] 0a.9 `vpn :: dark` + `vpn :: light` still ~6% — the VPN funnel-chart visualisation in
+      `apps/dashboard-svelte/src/pages/Vpn.svelte` renders meaningfully larger than baseline.
+      Bug in the page, not in any migrated component; tracked here so it doesn't get lost.
 
 ### Phase 0 — infrastructure (DONE)
 
@@ -75,10 +83,9 @@ Flow:
 
 ### Phase 1 — wire dash-ui apps to Tailwind
 
-- [ ] 1.1 `apps/dashboard-svelte/vite.config.ts` — add `@tailwindcss/vite` plugin.
-- [ ] 1.2 `apps/dashboard-svelte/src/app.css` — `@import "tailwindcss"` +
-      `@import "@w5-ui/tokens/tailwind.css"` + `@source` paths. Keep `@w5-ui/svelte/styles.css` for
-      the unmigrated tail.
+- [x] 1.1 `apps/dashboard-svelte/vite.config.ts` — `@tailwindcss/vite` plugin wired.
+- [x] 1.2 `apps/dashboard-svelte/src/app.css` composes Tailwind + tokens + `@source` paths.
+      `@w5-ui/svelte/styles.css` imported into `@layer base` so utilities outrank legacy resets.
 - [ ] 1.3 `apps/storybook-svelte` — same wiring so stories pick up utilities. (Deferred: not on the
       assistant migration's critical path.)
 - [x] 1.4 Smoke: `yarn build:svelte` succeeds, 114.88 kB CSS / 537.89 kB JS gzipped.
