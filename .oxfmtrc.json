@@ -22,6 +22,7 @@
     "**/node_modules/**",
     "**/storybook-static/**",
     "**/.changeset/**",
+    "**/CHANGELOG.md",
     "yarn.lock"
   ]
 }
