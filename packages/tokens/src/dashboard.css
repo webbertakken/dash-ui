@@ -256,53 +256,7 @@ tbody tr:hover td {
   gap: 8px;
   background: #0f0f10;
 }
-.drawer-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 60;
-  display: none;
-}
-.drawer-overlay.show {
-  display: block;
-}
-.drawer-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 380px;
-  max-width: 90vw;
-  background: #141415;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: -24px 0 64px rgba(0, 0, 0, 0.6);
-  z-index: 61;
-  display: flex;
-  flex-direction: column;
-  transform: translateX(100%);
-  transition: transform 220ms ease;
-}
-.drawer-panel.show {
-  transform: none;
-}
-.drawer-h {
-  padding: 18px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-}
-.drawer-h h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-}
-.drawer-b {
-  padding: 18px 20px;
-  flex: 1;
-  overflow-y: auto;
-}
+/* Drawer CSS removed: see scoped Tailwind utilities in Drawer.svelte. */
 /* Field + Input CSS removed: see scoped Tailwind utilities in
  * Field.svelte and Input.svelte (which exports a shared INPUT_CLASSES
  * string so both render identically). */
@@ -963,55 +917,7 @@ tbody tr:hover td {
   color: #c8e8ff;
 }
 
-/* ===== Tooltip (WCAG 1.3.1 / 4.1.3) ===== */
-.tooltip-wrapper {
-  position: relative;
-  display: inline-flex;
-}
-.tooltip-content {
-  position: absolute;
-  z-index: 9999;
-  background: #1e2028;
-  color: #c8c9d0;
-  font-size: 11px;
-  line-height: 1.3;
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 100ms;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.tooltip-wrapper:hover .tooltip-content,
-.tooltip-wrapper:focus-within .tooltip-content {
-  opacity: 1;
-}
-.tooltip-top .tooltip-content {
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-}
-.tooltip-bottom .tooltip-content {
-  top: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-}
-.tooltip-left .tooltip-content {
-  right: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%);
-}
-.tooltip-right .tooltip-content {
-  left: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%);
-}
-@media (prefers-reduced-motion: reduce) {
-  .tooltip-content {
-    transition: none;
-  }
-}
+/* Tooltip CSS removed: see scoped Tailwind utilities in Tooltip.svelte. */
 
 /* ===== Checkbox (WCAG 1.3.1 / 4.1.2) ===== */
 .checkbox {
@@ -1378,26 +1284,7 @@ tbody tr:hover td {
   }
 }
 
-/* ===== Textarea (WCAG 1.3.1 / 4.1.2) ===== */
-.textarea {
-  height: auto;
-  min-height: 80px;
-  padding: 8px 12px;
-  resize: vertical;
-  line-height: 1.5;
-  font-family: inherit;
-}
-.textarea:focus {
-  border-color: #006fff;
-  box-shadow: 0 0 0 2px rgba(0, 111, 255, 0.2);
-}
-.textarea[aria-invalid='true'] {
-  border-color: var(--status-danger);
-}
-.textarea[aria-invalid='true']:focus {
-  border-color: var(--status-danger);
-  box-shadow: 0 0 0 2px var(--status-danger-bg);
-}
+/* Textarea CSS removed: see scoped Tailwind utilities in Textarea.svelte. */
 
 /* ===== Slider (native range, WCAG 2.1.1 / 4.1.2) ===== */
 .slider {
