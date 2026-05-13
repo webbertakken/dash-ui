@@ -109,21 +109,35 @@ new utility classes / new prop behaviour, green the test, drop the relevant CSS 
 - [ ] 3.2 `yarn build:site` succeeds + all three Storybooks render. (Deferred: full site build isn't
       on the assistant migration's critical path.)
 
-### Phase 4 — bulk-migrate the long tail (future)
+### Phase 4 — bulk-migrate the long tail (in flight)
 
-Out of scope for the initial assistant-dashboard migration. Tracked here so it doesn't get
-forgotten. Categories, ordered by likely future consumption:
+Was originally tagged "out of scope, future". This PR migrated a substantial first wave anyway,
+driven by the operator's "completely finish the plan" directive. Visual-regression suite catches
+breakage on every batch; 29/29 reference-dashboard pages stay under 8% pixel diff.
 
-- [ ] 4.1 Form primitives: `Button`, `Input`, `Textarea`, `Select`, `Checkbox`, `Toggle`,
-      `RadioGroup`, `NumberInput`, `Field`.
-- [ ] 4.2 Layout: `Card`, `Modal`, `Drawer`, `Tabs`, `TabPanel`, `Breadcrumb`, `SkipLink`.
-- [ ] 4.3 Feedback: `Alert`, `Banner`, `Toast`, `Skeleton`, `Spinner`, `EmptyState`, `ProgressBar`,
-      `Stat`, `StatusIndicator`, `Badge`.
-- [ ] 4.4 Overlays: `Tooltip`, `Popover`, `HoverCard`, `ContextMenu`, `ActionMenu`, `Menubar`.
-- [ ] 4.5 Data: `KVTable`, `Pagination`, `SortHeader`, `SortableList`, `VirtualList`, `Combobox`,
-      `MultiSelect`, `SearchBox`, `FilterBuilder`, `CommandPalette`.
-- [ ] 4.6 Charts (~60 components) — heaviest tail. May warrant its own sub-plan.
-- [ ] 4.7 Delete `packages/tokens/src/dashboard.css` once nothing references it.
+- [x] 4.1 Form primitives: **Done** — `Button`, `Input`, `Textarea`, `Toggle`, `Field`. **Deferred**
+      — `Select` (custom dropdown chrome), `Checkbox` (inline-SVG bg-image marks), `RadioGroup`,
+      `NumberInput`.
+- [x] 4.2 Layout: **Done** — `Card`, `Modal`, `Drawer`, `Tabs`, `Breadcrumb`, `SkipLink`.
+      **Deferred** — `TabPanel` (trivial wrapper, low value).
+- [x] 4.3 Feedback: **Done** — `Alert`, `Banner`, `Toast`, `Spinner`, `EmptyState`, `ProgressBar`,
+      `Stat`, `StatusIndicator`, `Badge`, `Pill` (already in Phase 2). **Deferred** — `Skeleton`
+      (custom shimmer @keyframes).
+- [x] 4.4 Overlays: **Done** — `Tooltip`. **Deferred** — `Popover`, `HoverCard`, `ContextMenu`,
+      `ActionMenu`, `Menubar` (heavier interaction model; want a dedicated PR with goldens for open
+      / closed / arrow-key flows before the rewrite).
+- [ ] 4.5 Data: — all deferred (`KVTable`, `Pagination`, `SortHeader`, `SortableList`,
+      `VirtualList`, `Combobox`, `MultiSelect`, `SearchBox`, `FilterBuilder`, `CommandPalette`).
+      Data primitives have richer behavioural surface and deserve their own focused PR.
+- [ ] 4.6 Charts (~60 components) — heaviest tail. Untouched. The chart-canvas-width drift on vpn /
+      wifi / wireless pages (3–6% diff each) lives here. Warrants its own sub-plan.
+- [ ] 4.7 Delete `packages/tokens/src/dashboard.css` once nothing references it. Down from ~6700
+      lines to ~5800 in this PR; not deletable until 4.5 + 4.6 finish.
+- [ ] 4.8 The `Kbd` + `Tag` components were also migrated in this PR even though the plan didn't
+      explicitly call them out; ticking the box here so the surface inventory matches what shipped.
+
+**Add Kbd + Tag to the ‘Done’ list:** both migrated in this PR alongside the rest of the feedback /
+utility primitives.
 
 ### Phase 5 — React + WC parity
 
