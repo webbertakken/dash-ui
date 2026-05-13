@@ -32,6 +32,7 @@
     ".": "./src/tokens.ts",
     "./css": "./src/tokens.css",
     "./tokens.css": "./src/tokens.css",
+    "./tailwind.css": "./src/tailwind.css",
     "./dashboard.css": "./src/dashboard.css"
   },
   "files": [

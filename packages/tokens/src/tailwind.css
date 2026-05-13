@@ -1,0 +1,162 @@
+/* =========================================================================
+ * Dash UI ↔ Tailwind v4 bridge.
+ *
+ * Imports the raw CSS variables from tokens.css and exposes them to
+ * Tailwind via `@theme inline { ... }`. The `inline` modifier means
+ * Tailwind references the existing CSS variables instead of re-emitting
+ * their values — single source of truth, no drift.
+ *
+ * Usage in a consumer:
+ *
+ *   @import "tailwindcss";
+ *   @import "@w5-ui/tokens/tailwind.css";
+ *   @source "../path/to/your/templates";
+ *
+ * After this, every w5-ui design token is a first-class Tailwind utility:
+ *
+ *   bg-brand-05            background: var(--brand-05)
+ *   text-status-success    color:      var(--status-success)
+ *   rounded-md             border-radius: var(--radius-md)
+ *   font-mono              font-family: var(--font-mono)
+ *   gap-3                  gap: calc(var(--spacing) * 3)   (12px)
+ *
+ * The `dark:` Tailwind variant is wired to our `data-motif="dark"` attribute
+ * via `@custom-variant`, so motif toggling drives dark utilities without
+ * resorting to `prefers-color-scheme`.
+ * ========================================================================= */
+
+@import './tokens.css';
+
+@theme inline {
+  /* ---- Brand ramp ---- */
+  --color-brand-01: var(--brand-01);
+  --color-brand-02: var(--brand-02);
+  --color-brand-03: var(--brand-03);
+  --color-brand-04: var(--brand-04);
+  --color-brand-05: var(--brand-05);
+  --color-brand-06: var(--brand-06);
+  --color-brand-07: var(--brand-07);
+  --color-brand-08: var(--brand-08);
+  --color-brand-09: var(--brand-09);
+
+  /* ---- Status ---- */
+  --color-status-success: var(--status-success);
+  --color-status-warning: var(--status-warning);
+  --color-status-danger: var(--status-danger);
+  --color-status-info: var(--status-info);
+  --color-status-neutral: var(--status-neutral);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-info-bg: var(--status-info-bg);
+
+  /* ---- Neutral ramp ---- */
+  --color-neutral-00: var(--neutral-00);
+  --color-neutral-01: var(--neutral-01);
+  --color-neutral-02: var(--neutral-02);
+  --color-neutral-03: var(--neutral-03);
+  --color-neutral-04: var(--neutral-04);
+  --color-neutral-05: var(--neutral-05);
+  --color-neutral-06: var(--neutral-06);
+  --color-neutral-07: var(--neutral-07);
+  --color-neutral-08: var(--neutral-08);
+  --color-neutral-09: var(--neutral-09);
+  --color-neutral-10: var(--neutral-10);
+
+  /* ---- Semantic motif tokens (resolve per data-motif) ---- */
+  --color-bg-page: var(--bg-page);
+  --color-bg-0: var(--depthBg-0);
+  --color-bg-1: var(--depthBg-1);
+  --color-bg-2: var(--depthBg-2);
+  --color-bg-3: var(--depthBg-3);
+
+  --color-text-1: var(--text-1);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-text-4: var(--text-4);
+  --color-text-link: var(--text-link);
+
+  --color-border-1: var(--border-1);
+  --color-border-2: var(--border-2);
+  --color-border-3: var(--border-3);
+  --color-divider: var(--divider);
+
+  --color-row-hover: var(--row-hover);
+  --color-row-active: var(--row-active);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-press: var(--primary-press);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-twotone-bg: var(--primary-twotone-bg);
+
+  /* ---- Spacing scale ----
+   *
+   * Tailwind v4 derives every numeric spacing utility (`p-3`, `gap-2`, `m-6`,
+   * …) from `--spacing`. We pin to 4px to match the existing 4px grid.
+   *   p-1  -> 4px      gap-3 -> 12px     m-6  -> 24px
+   */
+  --spacing: 4px;
+
+  /* ---- Radii ---- */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-app: var(--radius-app);
+  --radius-pill: var(--radius-pill);
+
+  /* ---- Type ---- */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --text-11: var(--fs-11);
+  --text-12: var(--fs-12);
+  --text-13: var(--fs-13);
+  --text-14: var(--fs-14);
+  --text-15: var(--fs-15);
+  --text-16: var(--fs-16);
+  --text-18: var(--fs-18);
+  --text-20: var(--fs-20);
+  --text-24: var(--fs-24);
+  --text-30: var(--fs-30);
+  --text-38: var(--fs-38);
+  --text-48: var(--fs-48);
+  --text-64: var(--fs-64);
+
+  --font-weight-regular: var(--fw-regular);
+  --font-weight-medium: var(--fw-medium);
+  --font-weight-semibold: var(--fw-semibold);
+  --font-weight-bold: var(--fw-bold);
+  --font-weight-extrabold: var(--fw-extrabold);
+
+  --leading-tight: var(--lh-tight);
+  --leading-snug: var(--lh-snug);
+  --leading-normal: var(--lh-normal);
+  --leading-relaxed: var(--lh-relaxed);
+
+  --tracking-display: var(--tracking-display);
+  --tracking-normal: var(--tracking-normal);
+  --tracking-eyebrow: var(--tracking-eyebrow);
+
+  /* ---- Motion ---- */
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+  --duration-fast: var(--dur-fast);
+  --duration-base: var(--dur-base);
+  --duration-slow: var(--dur-slow);
+
+  /* ---- Shadows ---- */
+  --shadow-card: var(--shadow-card);
+  --shadow-modal: var(--shadow-modal);
+  --shadow-popover: var(--shadow-popover);
+}
+
+/* ---- Variants ----
+ *
+ * The `dark:` variant is driven by `data-motif="dark"` on (or above) the
+ * element, NOT by `prefers-color-scheme`. The `:where(...)` wrap keeps
+ * specificity 0 so consumers can override without `!important` gymnastics.
+ */
+@custom-variant dark (&:where([data-motif='dark'], [data-motif='dark'] *));
+@custom-variant light (&:where([data-motif='light'], [data-motif='light'] *));

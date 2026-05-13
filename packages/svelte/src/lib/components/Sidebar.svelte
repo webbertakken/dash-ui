@@ -14,34 +14,50 @@
 </script>
 
 <script lang="ts">
-  
   interface Props {
     sections?: SidebarSectionDef[];
     activeId: string;
     onchange?: (payload: string) => void;
   }
 
-  let { sections = [], activeId = $bindable(),
-    onchange,
-  }: Props = $props();
+  let { sections = [], activeId = $bindable(), onchange }: Props = $props();
 </script>
 
-<nav class="sidebar" aria-label="Primary">
+<nav
+  class="overflow-auto border-r border-border-1 bg-bg-page py-2"
+  aria-label="Primary"
+>
   {#each sections as sec (sec.title)}
-    <h2 class="sb-section">{sec.title}</h2>
-    <ul class="sb-list">
+    <h2
+      class="m-0 px-4 pb-1.5 pt-3.5 text-[10px] font-semibold uppercase leading-[1.4] tracking-[0.06em] text-text-4"
+    >{sec.title}</h2>
+    <ul class="m-0 flex list-none flex-col gap-px px-2">
       {#each sec.items as it (it.id)}
         <li>
           <button
             type="button"
-            class="sb-item {it.id === activeId ? 'active' : ''}"
+            class="flex w-full cursor-pointer select-none items-center gap-2.5 rounded-md border-0 bg-transparent px-2.5 py-1.5 text-left font-[inherit] text-13 leading-[18px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05
+              {it.id === activeId
+                ? '[&_.sb-ico]:text-brand-05 bg-white/[0.06] text-text-1'
+                : 'text-text-2 hover:bg-white/[0.04] hover:text-text-1'}"
             aria-current={it.id === activeId ? 'page' : undefined}
             onclick={() => { activeId = it.id; onchange?.(it.id); }}
           >
-            <span class="sb-ico"><it.icon /></span>
+            <span class="sb-ico shrink-0 text-text-3 [&_svg]:h-4 [&_svg]:w-4"
+              ><it.icon /></span>
             {it.label}
-            {#if it.count !== undefined}<span class="sb-count">{it.count}</span>{/if}
-            {#if it.pill !== undefined}<span class="sb-pill">{it.pill}<span class="sr-only"> alert{it.pill !== 1 ? 's' : ''}</span></span>{/if}
+            {#if it.count !== undefined}
+              <span
+                class="ml-auto text-[11px] tabular-nums {it.id === activeId
+                  ? 'text-text-3'
+                  : 'text-text-4'}"
+              >{it.count}</span>
+            {/if}
+            {#if it.pill !== undefined}
+              <span
+                class="ml-auto rounded-full bg-brand-05 px-1.5 py-px text-[10px] font-semibold text-primary-fg"
+              >{it.pill}<span class="sr-only"> alert{it.pill !== 1 ? 's' : ''}</span></span>
+            {/if}
           </button>
         </li>
       {/each}

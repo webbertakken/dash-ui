@@ -1,0 +1,18 @@
+/* Reference dashboard for the Svelte build of @w5-ui.
+ *
+ * Order:
+ *   1. Tailwind core
+ *   2. w5-ui tokens + Tailwind bridge (CSS vars + @theme inline + dark variant)
+ *   3. @w5-ui/svelte/styles.css — pulls the legacy dashboard.css so any
+ *      not-yet-migrated component still has its layout. Each migrated
+ *      component drops its block from dashboard.css; once empty, we can
+ *      delete the import.
+ *   4. @source the local component sources so Tailwind emits utilities used
+ *      inside them.
+ */
+
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind.css';
+@import '@w5-ui/svelte/styles.css';
+
+@source '../../../packages/svelte/src/lib/components';

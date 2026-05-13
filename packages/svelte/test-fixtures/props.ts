@@ -1616,6 +1616,13 @@ export const BUNDLES: Record<string, Bundle[]> = {
         notificationCount: 5,
       },
     },
+    { name: 'status=warn', props: { siteName: 'HQ', activeApp: 'network', status: 'warn' } },
+    { name: 'status=danger', props: { siteName: 'HQ', activeApp: 'network', status: 'danger' } },
+    { name: 'status=neutral', props: { siteName: 'HQ', activeApp: 'network', status: 'neutral' } },
+    {
+      name: 'siteSwitchable=false',
+      props: { siteName: 'HQ', activeApp: 'network', siteSwitchable: false },
+    },
   ],
   TransferList: [
     { name: 'default', props: {} },
