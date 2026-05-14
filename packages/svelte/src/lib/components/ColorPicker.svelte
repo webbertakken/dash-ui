@@ -35,7 +35,7 @@
     value = $bindable(COLOR_SWATCHES[0].value),
     swatches = COLOR_SWATCHES,
     disabled = false,
-    onChange = undefined
+    onChange = undefined,
   }: Props = $props();
 
   const groupId = `dash-ui-cp-${++counter}`;
@@ -48,8 +48,7 @@
     const idx = cells.findIndex((c) => c.value === value);
     let next = idx;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % cells.length;
-    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp')
-      next = (idx - 1 + cells.length) % cells.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (idx - 1 + cells.length) % cells.length;
     else if (e.key === 'Home') next = 0;
     else if (e.key === 'End') next = cells.length - 1;
     else return;
@@ -62,28 +61,29 @@
   let hasMatch = $derived(swatches.some((s) => s.value === value));
 </script>
 
-<div class="color-picker{disabled ? ' color-picker--disabled' : ''}">
-  <div id="{groupId}-label" class="color-picker__label{srOnlyLabel ? ' sr-only' : ''}"
-    >{label}</div
-  >
+<div
+  data-disabled={disabled ? 'true' : undefined}
+  class="inline-flex flex-col gap-1.5 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+>
+  <div id="{groupId}-label" class={srOnlyLabel ? 'sr-only' : 'text-12 text-[#6e7079]'}>{label}</div>
   <div
     role="radiogroup"
     aria-labelledby="{groupId}-label"
-    class="color-picker__grid"
-    tabindex="-1"
+    class="flex flex-wrap gap-1.5"
+    tabindex={-1}
     onkeydown={handleKeyDown}
   >
     {#each swatches as sw, i}
       {@const checked = sw.value === value}
       {@const tabIdx = checked || (i === 0 && !hasMatch) ? 0 : -1}
-      <label class="color-picker__swatch" title={sw.label}>
+      <label class="group/sw inline-flex cursor-pointer" title={sw.label}>
         <input
           type="radio"
           name={groupId}
           value={sw.value}
           {checked}
           {disabled}
-          class="sr-only"
+          class="peer sr-only"
           tabindex={tabIdx}
           aria-label={sw.label}
           onchange={() => {
@@ -92,10 +92,10 @@
           }}
         />
         <span
-          class="color-picker__circle{checked ? ' color-picker__circle--selected' : ''}"
+          class="inline-block h-5 w-5 rounded-full transition-[transform,box-shadow] duration-100 hover:scale-110 motion-reduce:hover:scale-100 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand-05 {checked ? 'shadow-[0_0_0_2px_#0a0a0b,0_0_0_4px_#fff]' : ''}"
           style="background:{sw.color}"
           aria-hidden="true"
-></span>
+        ></span>
       </label>
     {/each}
   </div>

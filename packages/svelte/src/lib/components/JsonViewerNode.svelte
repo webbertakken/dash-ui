@@ -4,6 +4,7 @@
 
 <script lang="ts">
   import JsonViewerNode from './JsonViewerNode.svelte';
+
   interface Props {
     v: JsVal;
     k?: string | undefined;
@@ -12,64 +13,66 @@
     startOpen?: boolean;
   }
 
-  let {
-    v,
-    k = undefined,
-    depth = 0,
-    maxDepth = 3,
-    startOpen = true
-  }: Props = $props();
+  let { v, k = undefined, depth = 0, maxDepth = 3, startOpen = true }: Props = $props();
 
   let isArr = $derived(Array.isArray(v));
   let isObj = $derived(v !== null && typeof v === 'object');
   let expandable = $derived(isArr || isObj);
 
-  // `open` is initialised from `startOpen`/`depth`/`maxDepth` props but is
-  // intentionally a one-shot snapshot at construction time — afterwards
-  // the user controls it via the toggle.
   // svelte-ignore state_referenced_locally
   let open = $state(startOpen && depth < maxDepth);
 
-  let entries = $derived(isArr
-    ? (v as JsVal[]).map((item: JsVal, i: number) => ({ ek: String(i), ev: item, arrItem: true }))
-    : isObj
-    ? Object.entries(v as { [key: string]: JsVal }).map(([ek, ev]) => ({ ek, ev, arrItem: false }))
-    : []);
+  let entries = $derived(
+    isArr
+      ? (v as JsVal[]).map((item: JsVal, i: number) => ({ ek: String(i), ev: item, arrItem: true }))
+      : isObj
+        ? Object.entries(v as { [key: string]: JsVal }).map(([ek, ev]) => ({ ek, ev, arrItem: false }))
+        : [],
+  );
   let count = $derived(entries.length);
   let ob = $derived(isArr ? '[' : '{');
   let cb = $derived(isArr ? ']' : '}');
   let indent = $derived(depth * 14);
+
+  const KEY = 'text-[#9cdcfe]';
+  const COLON = 'text-[#6e7079]';
+  const NULL = 'text-[#6e7079] italic';
+  const STR = 'text-[#ce9178]';
+  const NUM = 'text-[#b5cea8]';
+  const BOOL = 'text-[#569cd6]';
+  const BRACKET = 'text-[#c8c9d0]';
+  const COUNT = 'text-[#6e7079] tabular-nums px-1';
 </script>
 
 {#if !expandable}
-  <div role="treeitem" aria-selected="false" class="jv-row" style:padding-left="{indent}px">
-    {#if k != null}<span class="jv-key">"{k}"</span><span class="jv-colon">: </span>{/if}
-    {#if v === null}<span class="jv-null">null</span>
-    {:else if typeof v === 'string'}<span class="jv-string">"{v}"</span>
-    {:else if typeof v === 'number'}<span class="jv-number">{v}</span>
-    {:else}<span class="jv-boolean">{String(v)}</span>{/if}
+  <div role="treeitem" aria-selected="false" class="px-3 py-px" style:padding-left="{indent + 12}px">
+    {#if k != null}<span class={KEY}>"{k}"</span><span class={COLON}>: </span>{/if}
+    {#if v === null}<span class={NULL}>null</span>
+    {:else if typeof v === 'string'}<span class={STR}>"{v}"</span>
+    {:else if typeof v === 'number'}<span class={NUM}>{v}</span>
+    {:else}<span class={BOOL}>{String(v)}</span>{/if}
   </div>
 {:else}
-  <div role="treeitem" aria-selected="false" aria-expanded={open} class="jv-node">
+  <div role="treeitem" aria-selected="false" aria-expanded={open} class="block">
     <button
       type="button"
-      class="jv-toggle-row"
-      onclick={() => (open = !open)}
-      aria-label="{open ? 'Collapse' : 'Expand'} {k ?? (isArr ? 'array' : 'object')}"
+      aria-label={`${open ? 'Collapse' : 'Expand'} ${k ?? (isArr ? 'array' : 'object')}`}
+      class="flex w-full cursor-pointer items-baseline border-0 bg-transparent px-3 py-px text-left font-mono text-12 leading-[1.8] hover:bg-white/[0.03] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
       style:padding-left="{indent}px"
+      onclick={() => (open = !open)}
     >
-      <span class="jv-caret" aria-hidden="true">{open ? '▾' : '▸'}</span>
-      {#if k != null}<span class="jv-key">"{k}"</span><span class="jv-colon">: </span>{/if}
-      <span class="jv-bracket">{ob}</span>
-      {#if !open}<span class="jv-count">&thinsp;{count}&thinsp;</span><span class="jv-bracket">{cb}</span>{/if}
+      <span class="mr-1 inline-block w-3 text-[#6e7079]" aria-hidden="true">{open ? '▾' : '▸'}</span>
+      {#if k != null}<span class={KEY}>"{k}"</span><span class={COLON}>: </span>{/if}
+      <span class={BRACKET}>{ob}</span>
+      {#if !open}<span class={COUNT}>&thinsp;{count}&thinsp;</span><span class={BRACKET}>{cb}</span>{/if}
     </button>
     {#if open}
-      <div role="group" class="jv-children">
+      <div role="group" class="block">
         {#each entries as { ek, ev, arrItem } (ek)}
           <JsonViewerNode v={ev} k={arrItem ? undefined : ek} depth={depth + 1} {maxDepth} {startOpen} />
         {/each}
-        <div class="jv-row jv-close" style:padding-left="{indent}px">
-          <span class="jv-bracket">{cb}</span>
+        <div class="px-3 py-px" style:padding-left="{indent + 12}px">
+          <span class={BRACKET}>{cb}</span>
         </div>
       </div>
     {/if}

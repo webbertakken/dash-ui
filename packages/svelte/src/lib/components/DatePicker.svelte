@@ -37,6 +37,7 @@
 
 <script lang="ts">
   import { onMount, onDestroy, tick } from 'svelte';
+  import Button from './Button.svelte';
 
   interface Props {
     value?: Date | null;
@@ -45,7 +46,10 @@
     onchange?: (payload: Date) => void;
   }
 
-  let { value = null, placeholder = 'Pick a date', disabled = false,
+  let {
+    value = null,
+    placeholder = 'Pick a date',
+    disabled = false,
     onchange,
   }: Props = $props();
   const uid = `dash-ui-dp-${++counter}`;
@@ -58,7 +62,7 @@
   // svelte-ignore state_referenced_locally
   let viewMonth = $state(value?.getMonth() ?? today.getMonth());
   let focusIdx = $state(0);
-  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let triggerEl = $state<HTMLElement | undefined>(undefined);
   let calEl = $state<HTMLDivElement | undefined>(undefined);
   let dayEls: (HTMLButtonElement | null)[] = $state(Array(42).fill(null));
 
@@ -125,25 +129,25 @@
 
   onMount(() => document.addEventListener('mousedown', handleOutside));
   onDestroy(() => document.removeEventListener('mousedown', handleOutside));
+
+  function dayCls(outside: boolean, isToday: boolean, isSelected: boolean) {
+    let cls = 'flex h-8 w-8 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-12 leading-none transition-colors duration-100 hover:bg-white/[0.06] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
+    if (outside) cls += ' text-[#4a4b53]';
+    else cls += ' text-[#c8c9d0]';
+    if (isToday && !isSelected) cls += ' ring-1 ring-inset ring-brand-05';
+    if (isSelected) cls += ' bg-brand-05 text-white hover:bg-brand-06';
+    return cls;
+  }
 </script>
 
-<div class="dp-root">
-  <button
-    bind:this={triggerEl}
-    type="button"
-    class="btn dp-trigger"
-    aria-haspopup="dialog"
-    aria-expanded={open}
-    aria-controls={open ? calId : undefined}
-    {disabled}
-    onclick={() => open ? closeCal() : openCal()}
-  >
+<div class="relative inline-block" bind:this={triggerEl}>
+  <Button variant="ghost" aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? calId : undefined} disabled={disabled} onclick={() => open ? closeCal() : openCal()}>
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
       <rect x="1" y="2" width="12" height="11" rx="1.5" />
       <path d="M1 6h12M4 1v2M10 1v2" />
     </svg>
     {value ? formatDate(value) : placeholder}
-  </button>
+  </Button>
 
   {#if open}
     <div
@@ -152,27 +156,27 @@
       role="dialog"
       aria-modal="true"
       aria-label={`Choose date, ${label}`}
-      class="dp-cal"
+      class="absolute left-0 top-[calc(100%+4px)] z-[9100] rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-2 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
     >
-      <div class="dp-header">
-        <button type="button" class="dp-nav" onclick={prevMonth} aria-label="Previous month">
+      <div class="flex items-center justify-between px-1 py-1">
+        <button type="button" class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05" onclick={prevMonth} aria-label="Previous month">
           <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M7 1L2 6l5 5" />
           </svg>
         </button>
-        <span class="dp-month-label" aria-live="polite">{label}</span>
-        <button type="button" class="dp-nav" onclick={nextMonth} aria-label="Next month">
+        <span class="text-13 font-medium text-white" aria-live="polite">{label}</span>
+        <button type="button" class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05" onclick={nextMonth} aria-label="Next month">
           <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M1 1l5 5-5 5" />
           </svg>
         </button>
       </div>
 
-      <table role="grid" class="dp-grid" aria-label={label}>
+      <table role="grid" class="mt-1 border-collapse" aria-label={label}>
         <thead>
           <tr>
             {#each DAYS as d}
-              <th scope="col" abbr={d}>{d}</th>
+              <th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-[#6e7079]">{d}</th>
             {/each}
           </tr>
         </thead>
@@ -185,12 +189,12 @@
                 {@const outside = day.getMonth() !== viewMonth}
                 {@const isToday = isSameDay(day, today)}
                 {@const isSelected = value ? isSameDay(day, value) : false}
-                <td role="gridcell" aria-selected={isSelected}>
+                <td role="gridcell" aria-selected={isSelected} class="p-0">
                   <button
                     bind:this={dayEls[idx]}
                     type="button"
                     tabindex={idx === focusIdx ? 0 : -1}
-                    class="dp-day{outside ? ' dp-day--outside' : ''}{isToday && !isSelected ? ' dp-day--today' : ''}{isSelected ? ' dp-day--selected' : ''}"
+                    class={dayCls(outside, isToday, isSelected)}
                     aria-label={day.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                     onkeydown={(e) => onGridKey(e, idx)}
                     onclick={() => select(day)}

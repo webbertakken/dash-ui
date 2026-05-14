@@ -3,8 +3,6 @@
 </script>
 
 <script lang="ts">
-  
-
   interface Props {
     label?: string | undefined;
     value?: string;
@@ -73,13 +71,21 @@
     field === 0 ? commit(clamped, minutes) : commit(hours, clamped);
     if (raw.length === 2 && field === 0) setTimeout(() => inputs[1]?.focus(), 0);
   }
+
+  const FIELD_CLS =
+    'w-9 border-0 bg-transparent p-0 text-center font-mono text-13 text-white outline-none';
 </script>
 
-<div class="time-picker-wrapper {className}">
+<div class={className}>
   {#if label}
-    <label for="{uid}-h" class="time-picker__label">{label}</label>
+    <label for="{uid}-h" class="text-12 text-[#6e7079]">{label}</label>
   {/if}
-  <div class="time-picker{disabled ? ' time-picker--disabled' : ''}" role="group" aria-label={label ?? 'Time'}>
+  <div
+    role="group"
+    aria-label={label ?? 'Time'}
+    data-disabled={disabled ? 'true' : undefined}
+    class="inline-flex h-[34px] items-center gap-0.5 rounded-md border border-white/10 bg-[#0a0a0b] px-2 transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+  >
     <input
       bind:this={inputs[0]}
       id="{uid}-h"
@@ -95,12 +101,12 @@
       value={pad(hours)}
       {disabled}
       maxlength={2}
-      class="time-picker__field"
+      class={FIELD_CLS}
       oninput={(e) => handleInput(0, e)}
       onkeydown={(e) => handleKey(0, e)}
       onfocus={(e) => e.currentTarget.select()}
     />
-    <span class="time-picker__sep" aria-hidden="true">:</span>
+    <span aria-hidden="true" class="select-none text-13 leading-none text-[#6e7079]">:</span>
     <input
       bind:this={inputs[1]}
       type="text"
@@ -115,7 +121,7 @@
       value={pad(minutes)}
       {disabled}
       maxlength={2}
-      class="time-picker__field"
+      class={FIELD_CLS}
       oninput={(e) => handleInput(1, e)}
       onkeydown={(e) => handleKey(1, e)}
       onfocus={(e) => e.currentTarget.select()}

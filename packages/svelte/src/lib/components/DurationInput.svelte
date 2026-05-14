@@ -3,8 +3,6 @@
 </script>
 
 <script lang="ts">
-  
-
   interface Props {
     label?: string | undefined;
     value?: number;
@@ -39,7 +37,9 @@
 
   let [hours, minutes, seconds] = $derived(toHMS(value));
 
-  let inputs: [HTMLInputElement | null, HTMLInputElement | null, HTMLInputElement | null] = $state([null, null, null]);
+  let inputs: [HTMLInputElement | null, HTMLInputElement | null, HTMLInputElement | null] = $state([
+    null, null, null,
+  ]);
 
   function focusAt(i: number) {
     const el = inputs[i];
@@ -91,13 +91,21 @@
 
   let fieldVals = $derived([hours, minutes, seconds]);
   let fieldMaxes = $derived([maxHours, 59, 59]);
+
+  const FIELD_CLS =
+    'w-9 border-0 bg-transparent p-0 text-center font-mono text-13 text-white outline-none';
 </script>
 
-<div class="dur-input-wrapper {className}">
+<div class={className}>
   {#if label}
-    <label for="{uid}-h" class="dur-input__label">{label}</label>
+    <label for="{uid}-h" class="text-12 text-[#6e7079]">{label}</label>
   {/if}
-  <div class="dur-input{disabled ? ' dur-input--disabled' : ''}" role="group" aria-label={label ?? 'Duration'}>
+  <div
+    role="group"
+    aria-label={label ?? 'Duration'}
+    data-disabled={disabled ? 'true' : undefined}
+    class="inline-flex h-[34px] items-center gap-0.5 rounded-md border border-white/10 bg-[#0a0a0b] px-2 transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+  >
     {#each FIELDS as { idx, ariaLabel }, i}
       <input
         bind:this={inputs[idx]}
@@ -114,13 +122,13 @@
         value={pad(fieldVals[idx])}
         {disabled}
         maxlength={2}
-        class="dur-input__field"
+        class={FIELD_CLS}
         oninput={(e) => handleInput(idx, e)}
         onkeydown={(e) => handleKey(idx, e)}
         onfocus={(e) => e.currentTarget.select()}
       />
       {#if i < 2}
-        <span class="dur-input__sep" aria-hidden="true">:</span>
+        <span aria-hidden="true" class="select-none text-13 leading-none text-[#6e7079]">:</span>
       {/if}
     {/each}
   </div>

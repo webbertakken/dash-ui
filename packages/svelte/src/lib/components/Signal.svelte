@@ -8,9 +8,10 @@
 </script>
 
 <span
-  class="signal {weak ? 'weak' : ''}"
+  data-weak={weak ? 'true' : undefined}
+  class="inline-flex h-3 items-end gap-px [&>i]:block [&>i]:w-0.5 [&>i]:rounded-[0.5px] [&>i]:bg-status-success data-[weak=true]:[&>i:nth-child(3)]:bg-[#2a2a2c] data-[weak=true]:[&>i:nth-child(4)]:bg-[#2a2a2c]"
   role="img"
   aria-label={label ?? (weak ? 'Signal: weak' : 'Signal: strong')}
 >
-  <i></i><i></i><i></i><i></i>
+  <i class="h-[3px]"></i><i class="h-1.5"></i><i class="h-[9px]"></i><i class="h-3"></i>
 </span>

@@ -3,8 +3,6 @@
 </script>
 
 <script lang="ts">
-  
-
   interface Props {
     label?: string | undefined;
     value?: string;
@@ -34,15 +32,18 @@
   }
 </script>
 
-<div class="pwd-input-wrapper {className}">
+<div class={className}>
   {#if label}
-    <label for={uid} class="pwd-input__label">{label}</label>
+    <label for={uid} class="text-12 text-[#6e7079]">{label}</label>
   {/if}
-  <div class="pwd-input{disabled ? ' pwd-input--disabled' : ''}">
+  <div
+    data-disabled={disabled ? 'true' : undefined}
+    class="flex h-[34px] items-stretch overflow-hidden rounded-md border border-white/10 bg-[#0a0a0b] transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+  >
     <input
       id={uid}
       type={shown ? 'text' : 'password'}
-      class="pwd-input__field"
+      class="min-w-0 flex-1 border-0 bg-transparent px-3 text-13 text-white outline-none placeholder:text-[#6e7079]"
       {value}
       {placeholder}
       {disabled}
@@ -51,10 +52,10 @@
     />
     <button
       type="button"
-      class="pwd-input__toggle"
       aria-pressed={shown}
       aria-label={shown ? 'Hide password' : 'Show password'}
       {disabled}
+      class="inline-flex h-full w-9 shrink-0 cursor-pointer items-center justify-center border-0 border-l border-l-white/[0.08] bg-transparent text-[#6e7079] transition-colors duration-100 hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
       onclick={() => (shown = !shown)}
     >
       {#if shown}

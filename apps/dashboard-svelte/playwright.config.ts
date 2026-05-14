@@ -23,16 +23,14 @@ export default defineConfig({
   },
   expect: {
     toHaveScreenshot: {
-      // 8% tolerance for sub-pixel font anti-aliasing + tiny vertical
-      // shifts (1–3px) that come from minor metric differences between the
-      // legacy dashboard.css preflight + Tailwind v4's preflight, plus the
-      // chart canvases on vpn/wifi/wireless pages that compute widths from
-      // their parent container (3–6px parent drift propagates to dramatic
-      // diffs in their drawn paths). Genuine structural bugs still show
-      // up well above this floor (the light-motif chrome inversion was
-      // 24% before the fix). Tighten back down per-spec once the chart
-      // components themselves move to Tailwind.
-      maxDiffPixelRatio: 0.08,
+      // 0.5% tolerance — the long-term floor after Phase 4.9 recaptured
+      // baselines at post-Tailwind HEAD. The original 8% allowance was a
+      // debt note for Tailwind preflight drift against the pre-migration
+      // `bff71e7` baseline; that's resolved now that goldens reflect the
+      // post-migration world. Genuine regressions in chrome, layout, or
+      // colour will show up well above 0.5%; subpixel font AA noise stays
+      // under it.
+      maxDiffPixelRatio: 0.005,
       animations: 'disabled',
       caret: 'hide',
     },

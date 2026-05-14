@@ -1,6 +1,9 @@
 <script module lang="ts">
   let counter = 0;
-  export interface ComboboxOption { value: string; label: string; }
+  export interface ComboboxOption {
+    value: string;
+    label: string;
+  }
 </script>
 
 <script lang="ts">
@@ -27,7 +30,6 @@
     class: className = '',
     onchange,
   }: Props = $props();
-  
 
   const uid = `dash-ui-cb-${++counter}`;
   let inputId = $derived(id ?? uid);
@@ -40,13 +42,15 @@
 
   let selectedOption = $derived(options.find((o) => o.value === value));
 
-  let filtered = $derived(query.trim() === ''
-    ? options
-    : options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase())));
+  let filtered = $derived(
+    query.trim() === ''
+      ? options
+      : options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase())),
+  );
 
-  let activeOptionId = $derived(activeIdx >= 0 && filtered[activeIdx]
-    ? `${listboxId}-opt-${activeIdx}`
-    : undefined);
+  let activeOptionId = $derived(
+    activeIdx >= 0 && filtered[activeIdx] ? `${listboxId}-opt-${activeIdx}` : undefined,
+  );
 
   let displayValue = $derived(open ? query : (selectedOption?.label ?? ''));
 
@@ -93,9 +97,9 @@
   onDestroy(() => document.removeEventListener('mousedown', handleOutside));
 </script>
 
-<div class="combobox-wrapper {className}" bind:this={wrapperEl}>
+<div class="relative block {className}" bind:this={wrapperEl}>
   {#if label}<label for={inputId} class="sr-only">{label}</label>{/if}
-  <div class="combobox-field">
+  <div class="relative flex items-center">
     <input
       bind:this={inputEl}
       id={inputId}
@@ -113,24 +117,34 @@
       oninput={onInputChange}
       onfocus={openList}
       onkeydown={onKeyDown}
-      class="combobox-input"
+      class="box-border h-[34px] w-full rounded-md border border-white/10 bg-[#0a0a0b] py-0 pl-3 pr-9 text-13 leading-none text-white transition-colors duration-100 hover:border-white/20 focus:border-brand-05 focus:outline-none focus:shadow-[0_0_0_2px_rgba(0,111,255,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
     />
     <button
       type="button"
-      tabindex="-1"
+      tabindex={-1}
       aria-hidden="true"
-      class="combobox-chevron-btn"
+      class="absolute right-2 flex cursor-pointer items-center border-0 bg-transparent p-0.5 leading-none text-[#6e7079]"
       onclick={() => { if (open) { open = false; query = ''; } else { inputEl?.focus(); openList(); } }}
     >
-      <svg class="select-chevron{open ? ' combobox-chevron-open' : ''}" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <svg
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        focusable="false"
+        class="h-3.5 w-3.5 transition-transform duration-100 motion-reduce:transition-none {open ? 'rotate-180' : ''}"
+      >
         <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
       </svg>
     </button>
   </div>
   {#if open}
-    <ul id={listboxId} role="listbox" aria-label={label} class="select-listbox combobox-listbox">
+    <ul
+      id={listboxId}
+      role="listbox"
+      aria-label={label}
+      class="absolute left-0 top-[calc(100%+4px)] z-[9000] m-0 max-h-60 min-w-full list-none overflow-y-auto rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+    >
       {#if filtered.length === 0}
-        <li class="combobox-empty">No results</li>
+        <li class="list-none p-2.5 text-center text-13 text-[#6e7079]">No results</li>
       {:else}
         {#each filtered as opt, idx (opt.value)}
           <li
@@ -138,7 +152,7 @@
             role="option"
             aria-selected={opt.value === value}
             data-active={idx === activeIdx ? 'true' : undefined}
-            class="select-option"
+            class="flex cursor-pointer items-center rounded-[5px] px-2.5 py-1.5 text-13 text-[#c8c9d0] hover:bg-white/[0.06] hover:text-white data-[active=true]:bg-white/[0.06] data-[active=true]:text-white aria-selected:font-medium aria-selected:text-brand-05"
             onmousedown={(e) => { e.preventDefault(); (() => pick(opt))(); }}
             onmouseenter={() => { activeIdx = idx; }}
           >{opt.label}</li>

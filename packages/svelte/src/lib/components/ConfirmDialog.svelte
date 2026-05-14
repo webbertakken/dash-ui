@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
+  import Button from './Button.svelte';
 
   interface Props {
     open?: boolean;
@@ -26,10 +27,17 @@
   const FOCUSABLE =
     'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
-  const VARIANT_CLASS: Record<string, string> = {
-    danger: 'btn cd-confirm cd-confirm--danger',
-    warning: 'btn cd-confirm cd-confirm--warning',
-    info: 'btn cd-confirm cd-confirm--info',
+  // Map confirm-variant to the migrated `Button` variants. `warning` doesn't
+  // exist on `Button`, so we mark it as primary + override colours inline.
+  const CONFIRM_VARIANT: Record<NonNullable<Props['variant']>, 'primary' | 'danger'> = {
+    danger: 'danger',
+    warning: 'primary',
+    info: 'primary',
+  };
+  const CONFIRM_EXTRA: Record<NonNullable<Props['variant']>, string> = {
+    danger: '!bg-status-danger !text-white hover:!bg-[#ff5e5e] !border-status-danger',
+    warning: '!bg-status-warning !text-neutral-00 hover:!bg-[#ffba42] !border-status-warning',
+    info: '',
   };
 
   let dialogEl = $state<HTMLDivElement | undefined>(undefined);
@@ -59,8 +67,6 @@
     }
   }
 
-  // Replaces the old `$: if (open) { ... }` + `afterUpdate` combo. `$effect`
-  // runs after the DOM commits, so `dialogEl` is bound before we query it.
   $effect(() => {
     if (open) {
       prev = document.activeElement as HTMLElement | null;
@@ -86,7 +92,7 @@
 </script>
 
 <div
-  class="backdrop {open ? 'show' : ''}"
+  class="fixed inset-0 z-[60] items-center justify-center bg-black/55 backdrop-blur-lg {open ? 'flex' : 'hidden'}"
   role="presentation"
   onclick={(e) => {
     if (e.target === e.currentTarget) onCancel();
@@ -94,22 +100,22 @@
 >
   <div
     bind:this={dialogEl}
-    class="modal cd-dialog"
+    class="w-[400px] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-neutral-09 shadow-modal"
     role="alertdialog"
     aria-modal="true"
     aria-labelledby="cd-title"
     aria-describedby={description ? 'cd-desc' : undefined}
-    tabindex="-1"
+    tabindex={-1}
   >
-    <div class="modal-h">
-      <h2 id="cd-title">{title}</h2>
+    <div class="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
+      <h2 id="cd-title" class="m-0 text-16 font-semibold">{title}</h2>
     </div>
     {#if description}
-      <div id="cd-desc" class="cd-body">{description}</div>
+      <div id="cd-desc" class="px-5 py-3.5 text-13 leading-[1.5] text-text-3">{description}</div>
     {/if}
-    <div class="modal-f">
-      <button type="button" class="btn btn-ghost" onclick={onCancel}>{cancelLabel}</button>
-      <button type="button" class={VARIANT_CLASS[variant]} onclick={onConfirm}>{confirmLabel}</button>
+    <div class="flex justify-end gap-2 border-t border-white/[0.06] bg-[#0f0f10] px-5 py-3.5">
+      <Button variant="ghost" onclick={onCancel}>{cancelLabel}</Button>
+      <Button variant={CONFIRM_VARIANT[variant]} class={CONFIRM_EXTRA[variant]} onclick={onConfirm}>{confirmLabel}</Button>
     </div>
   </div>
 </div>

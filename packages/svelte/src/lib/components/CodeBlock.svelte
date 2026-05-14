@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
+
   interface Props {
     code?: string;
     label?: string;
@@ -11,9 +12,8 @@
     code = '',
     label = 'Code block',
     language = '',
-    class: className = ''
+    class: className = '',
   }: Props = $props();
-  
 
   let copied = $state(false);
   let timer: ReturnType<typeof setTimeout> | null = null;
@@ -29,17 +29,18 @@
   onDestroy(() => { if (timer) clearTimeout(timer); });
 </script>
 
-<div role="region" aria-label={label} class="code-block {className}">
-  <div class="code-block__header">
+<div role="region" aria-label={label} class="overflow-hidden rounded-lg border border-white/10 bg-[#0a0a0b] {className}">
+  <div class="flex min-h-8 items-center justify-between border-b border-white/[0.07] bg-[#111113] py-1.5 pl-3 pr-2">
     {#if language}
-      <span class="code-block__lang">{language}</span>
+      <span class="font-mono text-11 uppercase tracking-[0.05em] text-[#6e7079]">{language}</span>
     {:else}
       <span></span>
     {/if}
     <button
       type="button"
-      class="copy-btn{copied ? ' copy-btn--done' : ''}"
+      data-copied={copied ? 'true' : undefined}
       aria-label={copied ? 'Copied!' : 'Copy code'}
+      class="inline-flex h-[22px] w-[22px] shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] transition-[color,background-color] duration-100 hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 data-[copied=true]:text-status-success data-[copied=true]:hover:bg-status-success/10 data-[copied=true]:hover:text-[#5ddb9f]"
       onclick={handleCopy}
     >
       {#if copied}
@@ -54,5 +55,5 @@
       {/if}
     </button>
   </div>
-  <pre class="code-block__pre"><code class="code-block__code">{code}</code></pre>
+  <pre class="m-0 overflow-x-auto px-3.5 py-3"><code class="whitespace-pre font-mono text-12 leading-[1.6] text-[#c8c9d0]">{code}</code></pre>
 </div>

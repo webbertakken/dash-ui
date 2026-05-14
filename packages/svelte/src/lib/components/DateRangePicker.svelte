@@ -42,6 +42,7 @@
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
+  import Button from './Button.svelte';
 
   interface Props {
     value?: DateRange;
@@ -50,7 +51,10 @@
     onchange?: (payload: DateRange) => void;
   }
 
-  let { value = { start: null, end: null }, placeholder = 'Select date range', disabled = false,
+  let {
+    value = { start: null, end: null },
+    placeholder = 'Select date range',
+    disabled = false,
     onchange,
   }: Props = $props();
   const uid = `dash-ui-drp-${++counter}`;
@@ -62,7 +66,7 @@
   let hoverDate: Date | null = $state(null);
   let viewYear = $state(today.getFullYear());
   let viewMonth = $state(today.getMonth());
-  let triggerEl = $state<HTMLButtonElement | undefined>(undefined);
+  let triggerEl = $state<HTMLDivElement | undefined>(undefined);
   let dlgEl = $state<HTMLDivElement | undefined>(undefined);
 
   let rightMonth = $derived(viewMonth === 11 ? 0 : viewMonth + 1);
@@ -90,7 +94,6 @@
       hoverDate = null;
       onchange?.({ start: s, end: e });
       open = false;
-      triggerEl?.focus();
     }
   }
 
@@ -128,55 +131,59 @@
 
   onMount(() => document.addEventListener('mousedown', handleOutside));
   onDestroy(() => document.removeEventListener('mousedown', handleOutside));
+
+  function dayCls(outside: boolean, isTodayDay: boolean, start: boolean, end: boolean, inRange: boolean) {
+    let cls = 'flex h-8 w-8 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-12 leading-none transition-colors duration-100 hover:bg-white/[0.06] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
+    if (outside) cls += ' text-[#4a4b53]';
+    else cls += ' text-[#c8c9d0]';
+    if (isTodayDay && !start && !end) cls += ' ring-1 ring-inset ring-brand-05';
+    if (start || end) cls += ' bg-brand-05 text-white hover:bg-brand-06';
+    else if (inRange) cls += ' bg-brand-05/20 text-white';
+    return cls;
+  }
+
+  const NAV_BTN =
+    'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
 </script>
 
-<div class="drp-root">
-  <button
-    bind:this={triggerEl}
-    type="button"
-    class="btn dp-trigger"
-    aria-haspopup="dialog"
-    aria-expanded={open}
-    aria-controls={open ? dlgId : undefined}
-    {disabled}
-    onclick={() => { if (open) { open = false; picking = null; } else open = true; }}
-  >
+<div class="relative inline-block" bind:this={triggerEl}>
+  <Button variant="ghost" aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? dlgId : undefined} disabled={disabled} onclick={() => { if (open) { open = false; picking = null; } else open = true; }}>
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
       <rect x="1" y="2" width="12" height="11" rx="1.5" />
       <path d="M1 6h12M4 1v2M10 1v2" />
     </svg>
     {formatRange() ?? placeholder}
-  </button>
+  </Button>
 
   {#if open}
-    <!-- svelte-ignore a11y_no_noninteractive_element_interactions - dialog uses keyboard listener for Escape -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
     <div
       id={dlgId}
       bind:this={dlgEl}
       role="dialog"
       aria-modal="true"
       aria-label="Select date range"
-      tabindex="-1"
-      class="drp-cal"
+      tabindex={-1}
+      class="absolute left-0 top-[calc(100%+4px)] z-[9100] rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-2 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
       onkeydown={(e) => {
-        if (e.key === 'Escape') { e.preventDefault(); open = false; picking = null; triggerEl?.focus(); }
+        if (e.key === 'Escape') { e.preventDefault(); open = false; picking = null; }
       }}
     >
-      <div class="drp-months">
+      <div class="flex gap-3">
         <!-- Left calendar -->
-        <div class="drp-month">
-          <div class="dp-header">
-            <button type="button" class="dp-nav" onclick={prevMonth} aria-label="Previous month">
+        <div>
+          <div class="flex items-center justify-between px-1 py-1">
+            <button type="button" class={NAV_BTN} onclick={prevMonth} aria-label="Previous month">
               <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <path d="M7 1L2 6l5 5" />
               </svg>
             </button>
-            <span class="dp-month-label" aria-live="polite">{MONTHS[viewMonth]} {viewYear}</span>
-            <span style="width:28px;display:inline-block;" aria-hidden="true"></span>
+            <span class="text-13 font-medium text-white" aria-live="polite">{MONTHS[viewMonth]} {viewYear}</span>
+            <span class="inline-block w-7" aria-hidden="true"></span>
           </div>
-          <table role="grid" class="dp-grid" aria-label="{MONTHS[viewMonth]} {viewYear}">
+          <table role="grid" class="mt-1 border-collapse" aria-label={`${MONTHS[viewMonth]} ${viewYear}`}>
             <thead>
-              <tr>{#each DAYS as d}<th scope="col" abbr={d}>{d}</th>{/each}</tr>
+              <tr>{#each DAYS as d}<th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-[#6e7079]">{d}</th>{/each}</tr>
             </thead>
             <tbody>
               {#each Array(6) as _, row}
@@ -189,10 +196,10 @@
                     {@const start = isStart(day)}
                     {@const end = isEnd(day)}
                     {@const inRange = isInRange(day)}
-                    <td role="gridcell" aria-selected={start || end}>
+                    <td role="gridcell" aria-selected={start || end} class="p-0">
                       <button
                         type="button"
-                        class="dp-day{outside ? ' dp-day--outside' : ''}{isTodayDay && !start && !end ? ' dp-day--today' : ''}{start ? ' dp-day--start' : ''}{end ? ' dp-day--end' : ''}{inRange ? ' dp-day--in-range' : ''}"
+                        class={dayCls(outside, isTodayDay, start, end, inRange)}
                         aria-label={day.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                         onclick={() => handleDayClick(day)}
                         onmouseenter={() => { if (picking) hoverDate = day; }}
@@ -206,19 +213,19 @@
           </table>
         </div>
         <!-- Right calendar -->
-        <div class="drp-month">
-          <div class="dp-header">
-            <span style="width:28px;display:inline-block;" aria-hidden="true"></span>
-            <span class="dp-month-label" aria-live="polite">{MONTHS[rightMonth]} {rightYear}</span>
-            <button type="button" class="dp-nav" onclick={nextMonth} aria-label="Next month">
+        <div>
+          <div class="flex items-center justify-between px-1 py-1">
+            <span class="inline-block w-7" aria-hidden="true"></span>
+            <span class="text-13 font-medium text-white" aria-live="polite">{MONTHS[rightMonth]} {rightYear}</span>
+            <button type="button" class={NAV_BTN} onclick={nextMonth} aria-label="Next month">
               <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <path d="M1 1l5 5-5 5" />
               </svg>
             </button>
           </div>
-          <table role="grid" class="dp-grid" aria-label="{MONTHS[rightMonth]} {rightYear}">
+          <table role="grid" class="mt-1 border-collapse" aria-label={`${MONTHS[rightMonth]} ${rightYear}`}>
             <thead>
-              <tr>{#each DAYS as d}<th scope="col" abbr={d}>{d}</th>{/each}</tr>
+              <tr>{#each DAYS as d}<th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-[#6e7079]">{d}</th>{/each}</tr>
             </thead>
             <tbody>
               {#each Array(6) as _, row}
@@ -231,10 +238,10 @@
                     {@const start = isStart(day)}
                     {@const end = isEnd(day)}
                     {@const inRange = isInRange(day)}
-                    <td role="gridcell" aria-selected={start || end}>
+                    <td role="gridcell" aria-selected={start || end} class="p-0">
                       <button
                         type="button"
-                        class="dp-day{outside ? ' dp-day--outside' : ''}{isTodayDay && !start && !end ? ' dp-day--today' : ''}{start ? ' dp-day--start' : ''}{end ? ' dp-day--end' : ''}{inRange ? ' dp-day--in-range' : ''}"
+                        class={dayCls(outside, isTodayDay, start, end, inRange)}
                         aria-label={day.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                         onclick={() => handleDayClick(day)}
                         onmouseenter={() => { if (picking) hoverDate = day; }}
@@ -249,7 +256,7 @@
         </div>
       </div>
       {#if picking}
-        <p class="drp-hint" aria-live="polite">Pick the end date</p>
+        <p class="mt-2 px-1 text-12 text-[#7fb6ff]" aria-live="polite">Pick the end date</p>
       {/if}
     </div>
   {/if}

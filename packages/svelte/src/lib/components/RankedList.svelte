@@ -8,7 +8,6 @@
 </script>
 
 <script lang="ts">
-
   interface Props {
     items: RankedItem[];
     unit?: string | undefined;
@@ -16,17 +15,12 @@
     ariaLabel?: string;
   }
 
-  let {
-    items,
-    unit = undefined,
-    max = undefined,
-    ariaLabel = 'Ranked list'
-  }: Props = $props();
+  let { items, unit = undefined, max = undefined, ariaLabel = 'Ranked list' }: Props = $props();
 
   let resolvedMax = $derived(max ?? Math.max(...items.map((i) => i.value), 1));
 </script>
 
-<table class="rl" aria-label={ariaLabel}>
+<table class="w-full border-collapse text-13" aria-label={ariaLabel}>
   <caption class="sr-only">{ariaLabel}</caption>
   <thead class="sr-only">
     <tr>
@@ -38,22 +32,22 @@
   </thead>
   <tbody>
     {#each items as item, i}
-      <tr class="rl-row">
-        <td class="rl-rank">{i + 1}</td>
-        <td class="rl-label-cell">
-          <div class="rl-label">{item.label}</div>
-          {#if item.sublabel}<div class="rl-sublabel">{item.sublabel}</div>{/if}
+      <tr class="border-b border-white/[0.04] last:border-b-0">
+        <td class="w-8 py-1.5 text-12 text-[#6e7079] tabular-nums">{i + 1}</td>
+        <td class="py-1.5 pr-3">
+          <div class="text-[#c8c9d0]">{item.label}</div>
+          {#if item.sublabel}<div class="text-11 text-[#6e7079]">{item.sublabel}</div>{/if}
         </td>
-        <td class="rl-bar-col" aria-hidden="true">
-          <div class="rl-bar-track">
+        <td class="w-1/3 py-1.5 pr-3" aria-hidden="true">
+          <div class="h-1.5 w-full overflow-hidden rounded-sm bg-white/[0.06]">
             <div
-              class="rl-bar-fill"
+              class="h-full rounded-sm"
               style="width:{((item.value / resolvedMax) * 100).toFixed(1)}%;background:{item.color ?? '#006FFF'}"
             ></div>
           </div>
         </td>
-        <td class="rl-val">
-          {item.value.toLocaleString()}{#if unit}<span class="rl-unit"> {unit}</span>{/if}
+        <td class="py-1.5 text-right font-medium text-white tabular-nums">
+          {item.value.toLocaleString()}{#if unit}<span class="ml-1 text-11 text-[#6e7079]"> {unit}</span>{/if}
         </td>
       </tr>
     {/each}

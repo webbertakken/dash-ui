@@ -14,7 +14,7 @@
     height = 400,
     label = undefined,
     overscan = 3,
-    children
+    children,
   }: Props = $props();
 
   let scrollTop = $state(0);
@@ -22,27 +22,30 @@
   let totalHeight = $derived(items.length * itemHeight);
   let firstVisible = $derived(Math.floor(scrollTop / itemHeight));
   let startIndex = $derived(Math.max(0, firstVisible - overscan));
-  let endIndex = $derived(Math.min(items.length, firstVisible + Math.ceil(height / itemHeight) + overscan + 1));
-  let visible = $derived(items.slice(startIndex, endIndex).map((item, i) => ({ item, index: startIndex + i })));
+  let endIndex = $derived(
+    Math.min(items.length, firstVisible + Math.ceil(height / itemHeight) + overscan + 1),
+  );
+  let visible = $derived(
+    items.slice(startIndex, endIndex).map((item, i) => ({ item, index: startIndex + i })),
+  );
 </script>
 
 <div
   role="list"
   aria-label={label}
-  class="vl"
+  class="relative overflow-y-auto"
   style:height="{height}px"
-  style:overflow-y="auto"
   onscroll={(e) => (scrollTop = e.currentTarget.scrollTop)}
 >
-  <div style:height="{totalHeight}px" style:position="relative">
-    <div style:position="absolute" style:top="{startIndex * itemHeight}px" style:width="100%">
+  <div class="relative" style:height="{totalHeight}px">
+    <div class="absolute left-0 right-0" style:top="{startIndex * itemHeight}px">
       {#each visible as { item, index } (index)}
         <div
           role="listitem"
+          class="overflow-hidden"
           style:height="{itemHeight}px"
-          style:overflow="hidden"
         >
-          {@render children?.({ item, index, })}
+          {@render children?.({ item, index })}
         </div>
       {/each}
     </div>
