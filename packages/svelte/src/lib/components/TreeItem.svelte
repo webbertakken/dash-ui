@@ -17,12 +17,7 @@
     focusedId: string;
   }
 
-  let {
-    node,
-    expanded,
-    selected,
-    focusedId
-  }: Props = $props();
+  let { node, expanded, selected, focusedId }: Props = $props();
 
   let hasChildren = $derived(!!node.children?.length);
   let isExpanded = $derived(expanded.has(node.id));
@@ -35,15 +30,18 @@
   aria-selected={isSelected}
   tabindex={focusedId === node.id ? 0 : -1}
   data-tree-id={node.id}
-  class="tree__item"
+  class="list-none"
 >
-  <div class="tree__row{isSelected ? ' tree__row--selected' : ''}">
+  <div
+    data-selected={isSelected ? 'true' : undefined}
+    class="flex items-center gap-2 rounded px-2 py-1 text-13 text-[#c8c9d0] hover:bg-white/[0.04] data-[selected=true]:bg-brand-05/[0.18] data-[selected=true]:text-white"
+  >
     {#if hasChildren}
       <svg
-        class="tree__chevron{isExpanded ? ' tree__chevron--open' : ''}"
         viewBox="0 0 12 12"
         fill="none"
         aria-hidden="true"
+        class="h-3 w-3 shrink-0 text-[#6e7079] transition-transform duration-100 motion-reduce:transition-none {isExpanded ? 'rotate-90' : ''}"
       >
         <path
           d="M4 2l4 4-4 4"
@@ -54,13 +52,13 @@
         />
       </svg>
     {:else}
-      <span class="tree__indent" aria-hidden="true"></span>
+      <span class="inline-block w-3 shrink-0" aria-hidden="true"></span>
     {/if}
-    <span class="tree__label">{node.label}</span>
-    {#if node.meta}<span class="tree__meta">{node.meta}</span>{/if}
+    <span class="flex-1 truncate">{node.label}</span>
+    {#if node.meta}<span class="text-11 text-[#6e7079]">{node.meta}</span>{/if}
   </div>
   {#if hasChildren && isExpanded && node.children}
-    <ul role="group" class="tree__group">
+    <ul role="group" class="m-0 list-none pl-4">
       {#each node.children as child (child.id)}
         <TreeItem
           node={child}

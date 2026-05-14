@@ -7,7 +7,6 @@
 </script>
 
 <script lang="ts">
-
   interface Props {
     items?: SortableItem[];
     onChange?: (items: SortableItem[]) => void;
@@ -22,8 +21,8 @@
 
   function reorder(fromId: string, toId: string) {
     if (fromId === toId) return;
-    const from = items.findIndex(i => i.id === fromId);
-    const to = items.findIndex(i => i.id === toId);
+    const from = items.findIndex((i) => i.id === fromId);
+    const to = items.findIndex((i) => i.id === toId);
     const arr = [...items];
     const [item] = arr.splice(from, 1);
     arr.splice(to, 0, item);
@@ -32,7 +31,7 @@
   }
 
   function move(id: string, dir: -1 | 1) {
-    const idx = items.findIndex(i => i.id === id);
+    const idx = items.findIndex((i) => i.id === id);
     const next = idx + dir;
     if (next < 0 || next >= items.length) return;
     const arr = [...items];
@@ -53,25 +52,25 @@
   }
 </script>
 
-<ol class="sortable-list" aria-label={ariaLabel}>
+<ol class="m-0 flex list-none flex-col gap-1 p-0" aria-label={ariaLabel}>
   {#each items as item, idx (item.id)}
     <li
-      class="sortable-list__item"
-      class:is-grabbed={grabbed === item.id}
-      class:is-drag-over={dragOver === item.id}
+      data-grabbed={grabbed === item.id ? 'true' : undefined}
+      data-dragover={dragOver === item.id ? 'true' : undefined}
       draggable="true"
-      ondragstart={e => { e.dataTransfer?.setData('text/plain', item.id); if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; dragSrc = item.id; }}
+      class="flex items-center gap-2 rounded-md border border-white/[0.06] bg-white/[0.02] px-2 py-1.5 transition-colors duration-100 data-[grabbed=true]:border-brand-05 data-[grabbed=true]:bg-brand-05/[0.08] data-[dragover=true]:border-brand-05"
+      ondragstart={(e) => { e.dataTransfer?.setData('text/plain', item.id); if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; dragSrc = item.id; }}
       ondragend={() => { dragSrc = null; dragOver = null; }}
-      ondragover={e => { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'move'; dragOver = item.id; }}
+      ondragover={(e) => { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'move'; dragOver = item.id; }}
       ondragleave={() => { dragOver = null; }}
-      ondrop={e => { e.preventDefault(); if (dragSrc) reorder(dragSrc, item.id); dragSrc = null; dragOver = null; }}
+      ondrop={(e) => { e.preventDefault(); if (dragSrc) reorder(dragSrc, item.id); dragSrc = null; dragOver = null; }}
     >
       <button
         type="button"
-        class="sortable-list__handle"
-        aria-label="{grabbed === item.id ? 'Release' : 'Grab'} {item.label}. Use arrow keys to reorder."
+        aria-label={`${grabbed === item.id ? 'Release' : 'Grab'} ${item.label}. Use arrow keys to reorder.`}
         aria-pressed={grabbed === item.id}
-        onkeydown={e => handleKeyDown(e, item.id)}
+        class="flex h-6 w-6 cursor-grab items-center justify-center rounded border-0 bg-transparent p-0 text-[#6e7079] hover:bg-white/[0.04] hover:text-white active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+        onkeydown={(e) => handleKeyDown(e, item.id)}
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true" focusable="false">
           <rect x="3" y="2" width="2" height="2" rx="1" />
@@ -82,13 +81,13 @@
           <rect x="9" y="10" width="2" height="2" rx="1" />
         </svg>
       </button>
-      <span class="sortable-list__content">
-        <span class="sortable-list__label">{item.label}</span>
+      <span class="flex min-w-0 flex-1 flex-col">
+        <span class="truncate text-13 text-white">{item.label}</span>
         {#if item.meta}
-          <span class="sortable-list__meta">{item.meta}</span>
+          <span class="truncate text-11 text-[#6e7079]">{item.meta}</span>
         {/if}
       </span>
-      <span class="sortable-list__index" aria-hidden="true">{idx + 1}</span>
+      <span class="shrink-0 text-11 text-[#6e7079] tabular-nums" aria-hidden="true">{idx + 1}</span>
     </li>
   {/each}
 </ol>

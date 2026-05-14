@@ -19,7 +19,10 @@
     onclose?: () => void;
   }
 
-  let { open = false, items = [], placeholder = 'Search pages and actions…',
+  let {
+    open = false,
+    items = [],
+    placeholder = 'Search pages and actions…',
     onselect,
     onclose,
   }: Props = $props();
@@ -28,21 +31,24 @@
   let inputEl = $state<HTMLInputElement | undefined>(undefined);
   const listboxId = `cp-list-${Math.random().toString(36).slice(2)}`;
 
-  let filtered =
-    $derived(query.trim() === ''
+  let filtered = $derived(
+    query.trim() === ''
       ? items
-      : items.filter((i) => i.label.toLowerCase().includes(query.toLowerCase())));
+      : items.filter((i) => i.label.toLowerCase().includes(query.toLowerCase())),
+  );
 
-  let grouped = $derived(filtered.reduce(
-    (acc, item) => {
-      const g = item.group ?? '';
-      const found = acc.find((a: { group: string }) => a.group === g);
-      if (found) found.items.push(item);
-      else acc.push({ group: g, items: [item] });
-      return acc;
-    },
-    [] as { group: string; items: CommandItem[] }[],
-  ));
+  let grouped = $derived(
+    filtered.reduce(
+      (acc, item) => {
+        const g = item.group ?? '';
+        const found = acc.find((a: { group: string }) => a.group === g);
+        if (found) found.items.push(item);
+        else acc.push({ group: g, items: [item] });
+        return acc;
+      },
+      [] as { group: string; items: CommandItem[] }[],
+    ),
+  );
 
   $effect(() => {
     if (open) {
@@ -86,16 +92,21 @@
 
 {#if open}
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-  <div class="cp-backdrop" role="presentation" onclick={handleBackdrop} onkeydown={handleKey}>
+  <div
+    class="fixed inset-0 z-[9300] flex items-start justify-center bg-black/60 pt-[15vh] backdrop-blur-md"
+    role="presentation"
+    onclick={handleBackdrop}
+    onkeydown={handleKey}
+  >
     <div
       role="dialog"
       aria-modal="true"
       aria-label="Command palette"
-      class="cp-panel"
+      class="w-[520px] max-w-[90vw] overflow-hidden rounded-xl border border-white/[0.12] bg-[#141415] shadow-[0_24px_64px_rgba(0,0,0,0.6)]"
     >
-      <div class="cp-search">
+      <div class="flex items-center gap-2.5 border-b border-white/[0.06] px-4 py-3">
         <svg
-          class="cp-search-icon"
+          class="shrink-0 text-[#6e7079]"
           width="16"
           height="16"
           viewBox="0 0 16 16"
@@ -112,7 +123,6 @@
         </svg>
         <input
           bind:this={inputEl}
-          class="cp-input"
           type="text"
           role="combobox"
           aria-expanded={filtered.length > 0}
@@ -121,33 +131,39 @@
           {placeholder}
           bind:value={query}
           onkeydown={handleKey}
+          class="min-w-0 flex-1 border-0 bg-transparent text-[15px] leading-none text-white outline-none placeholder:text-[#6e7079]"
         />
-        <span class="cp-kbd">Esc</span>
+        <span class="shrink-0 whitespace-nowrap rounded border border-white/10 bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-[#6e7079]">Esc</span>
       </div>
-      <ul id={listboxId} role="listbox" aria-label="Results" class="cp-list">
+      <ul
+        id={listboxId}
+        role="listbox"
+        aria-label="Results"
+        class="m-0 max-h-[360px] list-none overflow-y-auto p-1.5"
+      >
         {#if filtered.length === 0}
-          <li class="cp-empty">No results for &ldquo;{query}&rdquo;</li>
+          <li class="list-none p-6 text-center text-13 text-[#6e7079]">No results for &ldquo;{query}&rdquo;</li>
         {:else}
           {#each grouped as { group, items: groupItems }}
             <li role="presentation">
               {#if group}
-                <div class="cp-group-label">{group}</div>
+                <div class="px-2.5 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.06em] text-[#6e7079]">{group}</div>
               {/if}
               {#each groupItems as item}
                 {@const idx = filtered.indexOf(item)}
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <div
                   role="option"
-                  tabindex="-1"
+                  tabindex={-1}
                   aria-selected={idx === activeIdx}
                   data-active={idx === activeIdx ? 'true' : undefined}
-                  class="cp-item"
+                  class="flex cursor-pointer list-none items-center gap-2.5 rounded-md px-2.5 py-2 text-13 text-[#c8c9d0] outline-none data-[active=true]:bg-brand-05/15 data-[active=true]:text-white"
                   onclick={() => commit(item.id)}
                   onmouseenter={() => (activeIdx = idx)}
                 >
                   {item.label}
                   {#if item.shortcut}
-                    <span class="cp-item-shortcut" aria-label={item.shortcut.replace(/\+/g, ' then ')}>
+                    <span class="ml-auto shrink-0" aria-label={item.shortcut.replace(/\+/g, ' then ')}>
                       <Kbd keys={item.shortcut} />
                     </span>
                   {/if}

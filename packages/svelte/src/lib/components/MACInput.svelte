@@ -3,8 +3,6 @@
 </script>
 
 <script lang="ts">
-  
-
   interface Props {
     label?: string | undefined;
     value?: string;
@@ -75,31 +73,39 @@
       setTimeout(() => focusAt(5), 0);
     }
   }
+
+  const PAIR_CLS =
+    'w-6 border-0 bg-transparent p-0 text-center font-mono text-13 uppercase text-white outline-none';
 </script>
 
-<div class="mac-input-wrapper {className}">
+<div class={className}>
   {#if label}
-    <label for="{uid}-0" class="mac-input__label">{label}</label>
+    <label for="{uid}-0" class="text-12 text-[#6e7079]">{label}</label>
   {/if}
-  <div class="mac-input{disabled ? ' mac-input--disabled' : ''}" role="group" aria-label={label ?? 'MAC address'}>
+  <div
+    role="group"
+    aria-label={label ?? 'MAC address'}
+    data-disabled={disabled ? 'true' : undefined}
+    class="inline-flex h-[34px] items-center gap-0.5 rounded-md border border-white/10 bg-[#0a0a0b] px-2 transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+  >
     {#each pairs as pair, i}
       <input
         bind:this={inputs[i]}
         id={i === 0 ? `${uid}-0` : undefined}
         type="text"
         inputmode="text"
-        aria-label="Byte {i + 1} of 6"
+        aria-label={`Byte ${i + 1} of 6`}
         value={pair}
         {disabled}
         maxlength={2}
-        class="mac-input__pair"
+        class={PAIR_CLS}
         oninput={(e) => commitPair(i, e.currentTarget.value)}
         onkeydown={(e) => handleKey(i, e)}
         onpaste={handlePaste}
         onfocus={(e) => e.currentTarget.select()}
       />
       {#if i < 5}
-        <span class="mac-input__colon" aria-hidden="true">:</span>
+        <span aria-hidden="true" class="select-none text-13 leading-none text-[#6e7079]">:</span>
       {/if}
     {/each}
   </div>

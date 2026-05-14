@@ -150,6 +150,37 @@
   --shadow-card: var(--shadow-card);
   --shadow-modal: var(--shadow-modal);
   --shadow-popover: var(--shadow-popover);
+
+  /* ---- Component animations ----
+   *
+   * These keyframes back specific component-private animations (Skeleton
+   * shimmer, HarnessIcon live-indicator pulse). Components reference them
+   * via `animate-<name>` utilities; Tailwind v4 wires `--animate-*` to its
+   * `animate-*` namespace automatically.
+   */
+  --animate-shimmer: shimmer 1.4s ease-in-out infinite;
+  --animate-harness-pulse: harness-pulse 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes harness-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
 }
 
 /* ---- Variants ----

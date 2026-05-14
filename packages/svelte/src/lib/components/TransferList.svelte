@@ -107,22 +107,30 @@
       moveLeft(selTgt);
     }
   }
+
+  const PANEL_CLS = 'flex min-w-0 flex-1 flex-col gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] p-2';
+  const HEADER_CLS = 'flex items-center justify-between px-1 text-12 font-semibold uppercase tracking-[0.05em] text-text-3';
+  const COUNT_CLS = 'rounded bg-white/[0.06] px-1.5 py-0.5 text-11 text-[#6e7079] tabular-nums';
+  const LIST_CLS = 'm-0 flex max-h-[240px] list-none flex-col gap-0.5 overflow-y-auto p-0 focus:outline-none';
+  const ITEM_CLS = 'flex cursor-pointer flex-col items-start gap-0 rounded px-2 py-1.5 text-13 text-[#c8c9d0] hover:bg-white/[0.04] aria-selected:bg-brand-05/[0.18] aria-selected:text-white focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
+  const EMPTY_CLS = 'rounded px-2 py-3 text-center text-11 text-[#6e7079]';
+  const BTN_CLS = 'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border border-white/10 bg-transparent text-13 text-text-3 hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
 </script>
 
-<div class="tl {className}">
-  <div class="tl__panel">
-    <div class="tl__header">
-      {sourceLabel} <span class="tl__count">{source.length}</span>
+<div class="flex items-start gap-3 {className}">
+  <div class={PANEL_CLS}>
+    <div class={HEADER_CLS}>
+      {sourceLabel} <span class={COUNT_CLS}>{source.length}</span>
     </div>
     <ul
       role="listbox"
       aria-label={sourceLabel}
       aria-multiselectable="true"
-      class="tl__list"
+      class={LIST_CLS}
       onkeydown={srcKey}
     >
       {#if source.length === 0}
-        <li class="tl__empty" role="option" aria-selected="false" aria-disabled="true">Empty</li>
+        <li class={EMPTY_CLS} role="option" aria-selected="false" aria-disabled="true">Empty</li>
       {:else}
         {#each source as item, i (item.id)}
           <li
@@ -130,46 +138,46 @@
             role="option"
             aria-selected={selSrc.has(item.id)}
             tabindex={i === focSrc ? 0 : -1}
-            class="tl__item{selSrc.has(item.id) ? ' tl__item--sel' : ''}"
+            class={ITEM_CLS}
             onclick={() => { focSrc = i; toggleSrc(item.id); }}
             onkeydown={(e) => { if (e.key === ' ') { e.preventDefault(); focSrc = i; toggleSrc(item.id); } }}
           >
-            <span class="tl__item-label">{item.label}</span>
-            {#if item.description}<span class="tl__item-desc">{item.description}</span>{/if}
+            <span>{item.label}</span>
+            {#if item.description}<span class="text-11 text-[#6e7079]">{item.description}</span>{/if}
           </li>
         {/each}
       {/if}
     </ul>
   </div>
 
-  <div class="tl__controls" role="group" aria-label="Transfer controls">
-    <button type="button" class="tl__btn" aria-label="Move all to {targetLabel}"
+  <div class="flex flex-col items-center gap-1 pt-7" role="group" aria-label="Transfer controls">
+    <button type="button" class={BTN_CLS} aria-label={`Move all to ${targetLabel}`}
       disabled={source.length === 0}
       onclick={() => moveRight(new Set(source.map((i) => i.id)))}>»</button>
-    <button type="button" class="tl__btn" aria-label="Move selected to {targetLabel}"
+    <button type="button" class={BTN_CLS} aria-label={`Move selected to ${targetLabel}`}
       disabled={selSrc.size === 0}
       onclick={() => moveRight(selSrc)}>›</button>
-    <button type="button" class="tl__btn" aria-label="Move selected back to {sourceLabel}"
+    <button type="button" class={BTN_CLS} aria-label={`Move selected back to ${sourceLabel}`}
       disabled={selTgt.size === 0}
       onclick={() => moveLeft(selTgt)}>‹</button>
-    <button type="button" class="tl__btn" aria-label="Move all back to {sourceLabel}"
+    <button type="button" class={BTN_CLS} aria-label={`Move all back to ${sourceLabel}`}
       disabled={target.length === 0}
       onclick={() => moveLeft(new Set(target.map((i) => i.id)))}>«</button>
   </div>
 
-  <div class="tl__panel">
-    <div class="tl__header">
-      {targetLabel} <span class="tl__count">{target.length}</span>
+  <div class={PANEL_CLS}>
+    <div class={HEADER_CLS}>
+      {targetLabel} <span class={COUNT_CLS}>{target.length}</span>
     </div>
     <ul
       role="listbox"
       aria-label={targetLabel}
       aria-multiselectable="true"
-      class="tl__list"
+      class={LIST_CLS}
       onkeydown={tgtKey}
     >
       {#if target.length === 0}
-        <li class="tl__empty" role="option" aria-selected="false" aria-disabled="true">Empty</li>
+        <li class={EMPTY_CLS} role="option" aria-selected="false" aria-disabled="true">Empty</li>
       {:else}
         {#each target as item, i (item.id)}
           <li
@@ -177,12 +185,12 @@
             role="option"
             aria-selected={selTgt.has(item.id)}
             tabindex={i === focTgt ? 0 : -1}
-            class="tl__item{selTgt.has(item.id) ? ' tl__item--sel' : ''}"
+            class={ITEM_CLS}
             onclick={() => { focTgt = i; toggleTgt(item.id); }}
             onkeydown={(e) => { if (e.key === ' ') { e.preventDefault(); focTgt = i; toggleTgt(item.id); } }}
           >
-            <span class="tl__item-label">{item.label}</span>
-            {#if item.description}<span class="tl__item-desc">{item.description}</span>{/if}
+            <span>{item.label}</span>
+            {#if item.description}<span class="text-11 text-[#6e7079]">{item.description}</span>{/if}
           </li>
         {/each}
       {/if}

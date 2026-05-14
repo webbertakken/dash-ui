@@ -36,9 +36,20 @@
       root?.querySelector<HTMLButtonElement>('button[tabindex="0"]')?.focus();
     }
   }
+
+  const BTN_BASE =
+    'flex-shrink-0 grow-0 inline-flex h-7 cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-md border-0 bg-transparent px-3 text-12 font-medium leading-none text-text-3 transition-[background-color,color] duration-100 hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
+  const BTN_ACTIVE = 'bg-[#1f2433] text-white shadow-[0_1px_3px_rgba(0,0,0,0.4)]';
 </script>
 
-<div bind:this={root} role="radiogroup" aria-label={label} class="seg-ctrl" tabindex="-1" onkeydown={handleKeyDown}>
+<div
+  bind:this={root}
+  role="radiogroup"
+  aria-label={label}
+  class="inline-flex gap-px rounded-lg bg-white/[0.04] p-0.5"
+  tabindex={-1}
+  onkeydown={handleKeyDown}
+>
   {#each options as opt (opt.value)}
     <button
       type="button"
@@ -46,7 +57,7 @@
       aria-checked={value === opt.value}
       disabled={opt.disabled}
       tabindex={value === opt.value ? 0 : -1}
-      class="seg-ctrl__btn{value === opt.value ? ' seg-ctrl__btn--active' : ''}"
+      class="{BTN_BASE} {value === opt.value ? BTN_ACTIVE : ''}"
       onclick={() => { value = opt.value; }}
     >
       {opt.label}

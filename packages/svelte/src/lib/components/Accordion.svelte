@@ -6,6 +6,6 @@
   let { children }: Props = $props();
 </script>
 
-<div class="accordion">
+<div class="flex flex-col">
   {@render children?.()}
 </div>

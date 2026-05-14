@@ -3,8 +3,6 @@
 </script>
 
 <script lang="ts">
-  
-
   interface Props {
     label?: string | undefined;
     value?: string;
@@ -97,13 +95,23 @@
       setTimeout(() => focusAt(4), 0);
     }
   }
+
+  const OCTET_CLS =
+    'w-9 border-0 bg-transparent p-0 text-center font-mono text-13 text-white outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none';
+  const PREFIX_CLS =
+    'w-7 border-0 bg-transparent p-0 text-center font-mono text-13 text-white outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none';
 </script>
 
-<div class="cidr-input-wrapper {className}">
+<div class={className}>
   {#if label}
-    <label for="{uid}-0" class="cidr-input__label">{label}</label>
+    <label for="{uid}-0" class="text-12 text-[#6e7079]">{label}</label>
   {/if}
-  <div class="cidr-input{disabled ? ' cidr-input--disabled' : ''}" role="group" aria-label={label ?? 'CIDR'}>
+  <div
+    role="group"
+    aria-label={label ?? 'CIDR'}
+    data-disabled={disabled ? 'true' : undefined}
+    class="inline-flex h-[34px] items-center gap-0.5 rounded-md border border-white/10 bg-[#0a0a0b] px-2 transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+  >
     {#each [0, 1, 2, 3] as i (i)}
       <input
         bind:this={inputs[i]}
@@ -112,20 +120,20 @@
         inputmode="numeric"
         pattern="[0-9]*"
         role="spinbutton"
-        aria-label="Octet {i + 1} of 4"
+        aria-label={`Octet ${i + 1} of 4`}
         aria-valuenow={fields[i] === '' ? 0 : Number(fields[i])}
         aria-valuemin={0}
         aria-valuemax={255}
         value={fields[i]}
         {disabled}
         maxlength={3}
-        class="cidr-input__octet"
+        class={OCTET_CLS}
         oninput={(e) => commitOctet(i, e.currentTarget.value)}
         onkeydown={(e) => handleKey(i, e)}
         onpaste={handlePaste}
         onfocus={(e) => e.currentTarget.select()}
       />
-      <span class="cidr-input__dot" aria-hidden="true">{i < 3 ? '.' : '/'}</span>
+      <span aria-hidden="true" class="select-none text-13 leading-none text-[#6e7079]">{i < 3 ? '.' : '/'}</span>
     {/each}
     <input
       bind:this={inputs[4]}
@@ -140,7 +148,7 @@
       value={fields[4]}
       {disabled}
       maxlength={2}
-      class="cidr-input__prefix"
+      class={PREFIX_CLS}
       oninput={(e) => commitPrefix(e.currentTarget.value)}
       onkeydown={(e) => handleKey(4, e)}
       onpaste={handlePaste}

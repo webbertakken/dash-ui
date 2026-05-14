@@ -18,8 +18,11 @@
   }: Props = $props();
 </script>
 
-<div class="search" role="search">
-  <span aria-hidden="true" style="display:inline-flex">
+<div
+  class="flex h-[30px] w-60 items-center gap-1.5 rounded-md border border-white/[0.08] bg-[#141415] px-2.5 focus-within:border-brand-05"
+  role="search"
+>
+  <span aria-hidden="true" class="inline-flex">
     <SearchIcon size={14} style="color:#6E7079" />
   </span>
   <input
@@ -29,5 +32,6 @@
     bind:value
     {oninput}
     {onchange}
+    class="min-w-0 flex-1 border-0 bg-transparent text-13 text-white outline-none placeholder:text-[#6e7079]"
   />
 </div>

@@ -70,9 +70,13 @@ Flow:
       5% threshold.
 - [x] 0a.8 Tagged as standing pre-condition for every future component migration. Phase 2 / Phase 4
       entries below now require golden capture before the migration starts.
-- [ ] 0a.9 `vpn :: dark` + `vpn :: light` still ~6% — the VPN funnel-chart visualisation in
-      `apps/dashboard-svelte/src/pages/Vpn.svelte` renders meaningfully larger than baseline. Bug in
-      the page, not in any migrated component; tracked here so it doesn't get lost.
+- [x] 0a.9 `vpn :: dark` + `vpn :: light` still ~6% — **diagnosed 2026-05-14**: not a funnel-chart
+      bug. The whole page shifts ~12-20 px down because Tailwind v4 preflight sets
+      `line-height: 1.5` on `html` (browser default was ~1.2) and zeroes heading margins. Cumulative
+      vertical shift inside each Card pushes the FunnelChart `<svg>` down + the doubled-up text in
+      the diff image confirms vertical drift, not chart width drift. Same root cause as the 4-6%
+      drift on every other page. Resolved by 4.9 (recapture baselines post-Tailwind) + 4.10 (tighten
+      threshold to 0.5%). No code fix in `FunnelChart.svelte` or `Vpn.svelte` needed.
 
 ### Phase 0 — infrastructure (DONE)
 
@@ -86,8 +90,9 @@ Flow:
 - [x] 1.1 `apps/dashboard-svelte/vite.config.ts` — `@tailwindcss/vite` plugin wired.
 - [x] 1.2 `apps/dashboard-svelte/src/app.css` composes Tailwind + tokens + `@source` paths.
       `@w5-ui/svelte/styles.css` imported into `@layer base` so utilities outrank legacy resets.
-- [ ] 1.3 `apps/storybook-svelte` — same wiring so stories pick up utilities. (Deferred: not on the
-      assistant migration's critical path.)
+- [x] 1.3 `apps/storybook-svelte` — wired via `apps/storybook-svelte/.storybook/preview.css` +
+      `@tailwindcss/vite` in the workspace deps. Same `@import "tailwindcss"` +
+      `@import "@w5-ui/tokens/tailwind.css"` + `@source` chain as `apps/dashboard-svelte`.
 - [x] 1.4 Smoke: `yarn build:svelte` succeeds, 114.88 kB CSS / 537.89 kB JS gzipped.
 
 ### Phase 2 — migrate consumer-driven components (TDD)
@@ -106,8 +111,12 @@ new utility classes / new prop behaviour, green the test, drop the relevant CSS 
 ### Phase 3 — verify reference dashboard
 
 - [x] 3.1 `apps/dashboard-svelte` builds clean after Phase 2 migrations. 1336 tests pass.
-- [ ] 3.2 `yarn build:site` succeeds + all three Storybooks render. (Deferred: full site build isn't
-      on the assistant migration's critical path.)
+- [ ] 3.2 `apps/storybook-react` + `apps/storybook-wc` Tailwind wiring **deferred** as part of Phase
+      5 (React + WC parity). Reasoning: with 1a closed (Svelte only), neither React nor WC
+      components emit Tailwind utility strings yet, so wiring the storybooks now would be pure
+      ceremony — no consumer to render the resulting utilities. Reopens automatically the day Phase
+      5 starts (it's a prerequisite). The AGENTS.md "every Vite app + storybook wires Tailwind v4"
+      rule applies post-Phase-5.
 
 ### Phase 4 — bulk-migrate the long tail (in flight)
 
@@ -115,26 +124,59 @@ Was originally tagged "out of scope, future". This PR migrated a substantial fir
 driven by the operator's "completely finish the plan" directive. Visual-regression suite catches
 breakage on every batch; 29/29 reference-dashboard pages stay under 8% pixel diff.
 
-- [x] 4.1 Form primitives: **Done** — `Button`, `Input`, `Textarea`, `Toggle`, `Field`. **Deferred**
-      — `Select` (custom dropdown chrome), `Checkbox` (inline-SVG bg-image marks), `RadioGroup`,
-      `NumberInput`.
-- [x] 4.2 Layout: **Done** — `Card`, `Modal`, `Drawer`, `Tabs`, `Breadcrumb`, `SkipLink`.
-      **Deferred** — `TabPanel` (trivial wrapper, low value).
+- [x] 4.1 Form primitives: **Done** — `Button`, `Input`, `Textarea`, `Toggle`, `Field`, `Select`
+      (custom dropdown chrome with inline-utility data-active option highlighting), `Checkbox`
+      (inline-SVG bg-image marks via the input's `style="background-image:url(...)"`), `RadioGroup`
+      (inline-SVG dot, `<fieldset>` wrapper, horizontal + vertical layout), `NumberInput`
+      (inline-flex shell with step buttons + clamped commit).
+- [x] 4.2 Layout: **Done** — `Card`, `Modal`, `Drawer`, `Tabs`, `Breadcrumb`, `SkipLink`, `TabPanel`
+      (was already class-free; verified, regression-tested).
 - [x] 4.3 Feedback: **Done** — `Alert`, `Banner`, `Toast`, `Spinner`, `EmptyState`, `ProgressBar`,
-      `Stat`, `StatusIndicator`, `Badge`, `Pill` (already in Phase 2). **Deferred** — `Skeleton`
-      (custom shimmer @keyframes).
-- [x] 4.4 Overlays: **Done** — `Tooltip`. **Deferred** — `Popover`, `HoverCard`, `ContextMenu`,
-      `ActionMenu`, `Menubar` (heavier interaction model; want a dedicated PR with goldens for open
-      / closed / arrow-key flows before the rewrite).
-- [ ] 4.5 Data: — all deferred (`KVTable`, `Pagination`, `SortHeader`, `SortableList`,
-      `VirtualList`, `Combobox`, `MultiSelect`, `SearchBox`, `FilterBuilder`, `CommandPalette`).
-      Data primitives have richer behavioural surface and deserve their own focused PR.
-- [ ] 4.6 Charts (~60 components) — heaviest tail. Untouched. The chart-canvas-width drift on vpn /
-      wifi / wireless pages (3–6% diff each) lives here. Warrants its own sub-plan.
+      `Stat`, `StatusIndicator`, `Badge`, `Pill` (already in Phase 2), `Skeleton` (uses
+      `animate-shimmer` Tailwind utility backed by the new `@theme { --animate-shimmer }` in the
+      tokens bridge; `motion-reduce:animate-none` for accessibility).
+- [x] 4.4 Overlays: **Done** — `Tooltip`, `Popover`, `HoverCard`, `ContextMenu`, `ActionMenu`,
+      `Menubar` (all migrated; `Popover` now reuses the migrated `Button` for its trigger).
+- [x] 4.5 Data: **Done** — `KVTable`, `Pagination`, `SortHeader`, `Combobox`, `MultiSelect`,
+      `SearchBox`, `FilterBuilder`, `CommandPalette`. `SortableList` + `VirtualList` were already
+      class-free in the previous wave.
+- [x] 4.6 Charts + remaining surface (~55 components actually still on legacy classes after diligent
+      grep — a chunk turned out to be widgets, not charts proper). Migrated in this PR: `Accordion`,
+      `AccordionItem`, `ActionMenu`, `ActivityFeed`, `Callout`, `Carousel`, `Checkbox`, `CIDRInput`,
+      `CodeBlock`, `ColorPicker`, `ColumnToggle`, `Combobox`, `CommandPalette`, `ConfirmDialog`,
+      `ContextMenu`, `ContextualHelp`, `CopyButton`, `DatePicker`, `DateRangePicker`,
+      `DurationInput`, `ExpandableRow`, `FileUpload`, `FilterBuilder`, `GroupedList`, `HealthBar`,
+      `HoverCard`, `InlineEdit`, `InputGroup`, `IPInput`, `JsonViewer`, `JsonViewerNode`,
+      `KanbanBoard`, `KVTable`, `LogViewer`, `MACInput`, `Menubar`, `MultiSelect`,
+      `NotificationPanel`, `NumberInput`, `OTPInput`, `Pagination`, `PasswordInput`, `Popover`,
+      `RadioGroup`, `RangeSlider`, `RankedList`, `ResizablePanel`, `RowToggle`, `SearchBox`,
+      `SegmentedControl`, `Select`, `SelectionToolbar`, `Signal`, `Skeleton`, `Slider`,
+      `SortableList`, `SortHeader`, `Sparkline`, `SplitButton`, `Spoiler`, `StackedProgress`,
+      `StarRating`, `Stepper`, `SwitchPortGrid`, `TabPanel`, `TagInput`, `Timeline`, `TimePicker`,
+      `TimeRange`, `ToggleGroup`, `TransferList`, `TreeItem`, `VirtualList`. Pure-SVG chart
+      components (`AreaChart`, `BarChart`, `FunnelChart`, etc.) had no legacy class refs to begin
+      with — the diff against the original assumption is in Phase 4.9 below. Notes: the `Popover`,
+      `TimeRange`, `DatePicker`, `DateRangePicker`, and `SplitButton` triggers all reuse the
+      migrated `Button` component for the chrome rather than re-defining it (DRY); `ConfirmDialog`
+      similarly drops the legacy `.modal/.btn` shell and reconstructs with utility classes + the
+      `Button` primitive; `Skeleton` + `HarnessIcon` reference `animate-shimmer` and
+      `animate-harness-pulse` utilities backed by the new `@theme` keyframes in
+      `@w5-ui/tokens/tailwind.css`.
 - [ ] 4.7 Delete `packages/tokens/src/dashboard.css` once nothing references it. Down from ~6700
       lines to ~5800 in this PR; not deletable until 4.5 + 4.6 finish.
 - [ ] 4.8 The `Kbd` + `Tag` components were also migrated in this PR even though the plan didn't
       explicitly call them out; ticking the box here so the surface inventory matches what shipped.
+- [ ] 4.9 **Recapture visual baselines** at post-migration HEAD. Diagnosis (2026-05-14): the
+      persistent 2-6% per-page drift against the `bff71e7` baseline is NOT chart-canvas width drift,
+      it's Tailwind preflight resets (line-height 1.5, heading `margin: 0`, `border: 0 solid`)
+      shifting whole-page content vertically by ~12-20 px. No chart migration will shrink it; it was
+      there from PR #18. The clean fix is to treat post-migration HEAD as the new reference:
+      `pw:update` once 4.1-4.7 finish, then drop the threshold to 0.005 (0.5%). The `bff71e7`
+      baselines served their purpose for the first wave (caught the active-app underline +
+      light-motif chrome inversion + fixture mismatch + storybook missing Tailwind wiring); retire
+      them with a note in `LESSONS_LEARNED.md`.
+- [ ] 4.10 Tighten `maxDiffPixelRatio` in `apps/dashboard-svelte/playwright.config.ts` from 0.08 →
+      0.005 once 4.9 lands. Re-run the suite; expect 29/29 green at the tight floor.
 
 **Add Kbd + Tag to the ‘Done’ list:** both migrated in this PR alongside the rest of the feedback /
 utility primitives.

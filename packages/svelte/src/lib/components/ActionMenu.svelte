@@ -1,6 +1,11 @@
 <script module lang="ts">
   let counter = 0;
-  export interface ActionMenuItem { id: string; label: string; danger?: boolean; disabled?: boolean; }
+  export interface ActionMenuItem {
+    id: string;
+    label: string;
+    danger?: boolean;
+    disabled?: boolean;
+  }
 </script>
 
 <script lang="ts">
@@ -12,9 +17,7 @@
     onaction?: (payload: string) => void;
   }
 
-  let { items = [], label = 'Actions',
-    onaction,
-  }: Props = $props();
+  let { items = [], label = 'Actions', onaction }: Props = $props();
   const uid = `dash-ui-am-${++counter}`;
   const menuId = `${uid}-menu`;
 
@@ -64,15 +67,15 @@
   onDestroy(() => document.removeEventListener('mousedown', handleOutside));
 </script>
 
-<div class="action-menu-root" bind:this={wrapperEl}>
+<div class="group/am relative inline-block" bind:this={wrapperEl}>
   <button
     bind:this={triggerEl}
     type="button"
-    class="icon-btn action-menu-trigger"
     aria-label={label}
     aria-haspopup="menu"
     aria-expanded={open}
     aria-controls={open ? menuId : undefined}
+    class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md bg-transparent text-text-3 opacity-0 transition-opacity duration-100 hover:bg-white/[0.04] hover:text-white focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 aria-expanded:opacity-100 group-hover/am:opacity-100 motion-reduce:transition-none"
     onclick={toggle}
     onkeydown={onKeyDown}
   >
@@ -83,15 +86,20 @@
     </svg>
   </button>
   {#if open}
-    <ul id={menuId} role="menu" aria-label={label} class="action-menu">
+    <ul
+      id={menuId}
+      role="menu"
+      aria-label={label}
+      class="absolute right-0 top-[calc(100%+4px)] z-[9100] m-0 min-w-[148px] list-none rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+    >
       {#each items as item, idx (item.id)}
         <li
           role="menuitem"
-          tabindex="-1"
+          tabindex={-1}
           aria-disabled={item.disabled}
           data-active={idx === activeIdx ? 'true' : undefined}
           data-danger={item.danger ? 'true' : undefined}
-          class="action-menu-item"
+          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-2.5 py-1.5 text-13 text-[#c8c9d0] outline-none hover:bg-white/[0.06] hover:text-white data-[active=true]:bg-white/[0.06] data-[active=true]:text-white data-[danger=true]:text-status-danger data-[danger=true]:hover:bg-status-danger/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
           onmouseenter={() => { activeIdx = idx; }}
           onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(item.id); })(); }}
         >{item.label}</li>

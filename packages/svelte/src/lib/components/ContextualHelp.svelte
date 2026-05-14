@@ -50,16 +50,21 @@
     window.removeEventListener('keydown', onKey);
     document.removeEventListener('pointerdown', onPointer);
   });
+
+  const PLACEMENT: Record<NonNullable<Props['placement']>, string> = {
+    top: 'bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2',
+    bottom: 'top-[calc(100%+8px)] left-1/2 -translate-x-1/2',
+  };
 </script>
 
-<span class="ch-root" bind:this={rootEl}>
+<span class="relative inline-flex items-center" bind:this={rootEl}>
   <button
     bind:this={triggerEl}
     type="button"
-    class="ch-trigger"
     aria-label="Help"
     aria-haspopup="dialog"
     aria-expanded={open}
+    class="inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-transparent p-0 text-[10px] font-bold leading-none text-[#6e7079] transition-[border-color,color] duration-100 hover:border-white/45 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
     onclick={toggle}
   >?</button>
   {#if open}
@@ -67,11 +72,11 @@
       bind:this={panelEl}
       role="dialog"
       aria-labelledby={titleId}
-      class="ch-panel ch-panel--{placement}"
-      tabindex="-1"
+      class="absolute z-[9200] min-w-[220px] max-w-[300px] rounded-[10px] border border-white/[0.12] bg-[#1a1a1c] shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none {PLACEMENT[placement]}"
+      tabindex={-1}
     >
-      <div id={titleId} class="ch-title">{title}</div>
-      <div class="ch-body">{body}</div>
+      <div id={titleId} class="border-b border-white/[0.06] px-3.5 pb-2 pt-2.5 text-12 font-semibold text-[#c8c9d0]">{title}</div>
+      <div class="px-3.5 py-2.5 text-12 leading-[1.5] text-text-3">{body}</div>
     </div>
   {/if}
 </span>

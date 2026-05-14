@@ -33,10 +33,12 @@
   let menuEl = $state<HTMLUListElement | undefined>(undefined);
   let activeIdx = $state(0);
 
-  let actionItems = $derived(items.reduce<ContextMenuItem[]>((acc, e) => {
-    if (!('separator' in e)) acc.push(e);
-    return acc;
-  }, []));
+  let actionItems = $derived(
+    items.reduce<ContextMenuItem[]>((acc, e) => {
+      if (!('separator' in e)) acc.push(e);
+      return acc;
+    }, []),
+  );
 
   const menuW = 168;
   let menuH = $derived(items.length * 30 + 8);
@@ -92,28 +94,26 @@
     bind:this={menuEl}
     role="menu"
     aria-label={label}
-    tabindex="-1"
-    class="ctx-menu"
+    tabindex={-1}
+    class="fixed z-[9200] m-0 min-w-[168px] list-none rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)] focus:outline-none"
     style="left:{cx}px;top:{cy}px"
     onkeydown={handleKeyDown}
   >
     {#each items as entry, i (i)}
       {#if 'separator' in entry}
-        <li role="separator" class="ctx-menu-sep"></li>
+        <li role="separator" class="my-1 h-px bg-white/[0.08]"></li>
       {:else}
         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <li
           role="menuitem"
-          tabindex="-1"
+          tabindex={-1}
           aria-disabled={entry.disabled || undefined}
           data-active={actionIndex(entry) === activeIdx ? 'true' : undefined}
           data-danger={entry.danger || undefined}
-          class="ctx-menu-item"
+          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-3 py-1.5 text-13 text-[#c8c9d0] outline-none hover:bg-white/[0.06] hover:text-white data-[active=true]:bg-white/[0.06] data-[active=true]:text-white data-[danger=true]:text-status-danger data-[danger=true]:hover:bg-status-danger/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
           onmouseenter={() => (activeIdx = actionIndex(entry))}
           onmousedown={(e) => { e.preventDefault(); (() => { if (!entry.disabled) activate(entry.id); })(); }}
-        >
-          {entry.label}
-        </li>
+        >{entry.label}</li>
       {/if}
     {/each}
   </ul>

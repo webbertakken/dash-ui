@@ -28,46 +28,52 @@
 
   let endEl = $state<HTMLDivElement | undefined>(undefined);
 
-  // Replaces `afterUpdate`. Reading `items.length` makes the effect depend
-  // on the visible list so we re-scroll whenever an item is appended.
   $effect(() => {
     void items.length;
     if (autoScroll && endEl) endEl.scrollIntoView({ block: 'nearest' });
   });
+
+  const SEVERITY_DOT: Record<ActivitySeverity, string> = {
+    info: 'bg-brand-05',
+    success: 'bg-status-success',
+    warn: 'bg-status-warning',
+    error: 'bg-status-danger',
+    neutral: 'bg-white/30',
+  };
 </script>
 
 <div
   role="feed"
   aria-label={label}
   aria-busy={busy}
-  class="activity-feed"
+  class="flex flex-col gap-1 overflow-y-auto"
   style:max-height="{maxHeight}px"
-  style:overflow-y="auto"
 >
   {#each items as item, i (item.id)}
-    <!-- svelte-ignore a11y_no_noninteractive_tabindex - navigable feed item for keyboard users -->
+    {@const sev = item.severity ?? 'neutral'}
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <article
-      class="af-item af-item--{item.severity ?? 'neutral'}"
       aria-labelledby="af-title-{item.id}"
       aria-describedby={item.description ? `af-desc-${item.id}` : undefined}
       aria-posinset={i + 1}
       aria-setsize={items.length}
-      tabindex="0"
+      tabindex={0}
+      class="flex items-start gap-2 rounded-md px-2 py-1.5 text-13 hover:bg-white/[0.03] focus-visible:bg-white/[0.05] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
     >
-      <div class="af-dot" aria-hidden="true"></div>
-      <div class="af-body">
-        <div class="af-header">
-          <span id="af-title-{item.id}" class="af-title">{item.title}</span>
-          <span class="af-time">{item.time}</span>
+      <div class="mt-1.5 h-2 w-2 shrink-0 rounded-full {SEVERITY_DOT[sev]}" aria-hidden="true"></div>
+      <div class="min-w-0 flex-1">
+        <div class="flex items-baseline justify-between gap-2">
+          <span id="af-title-{item.id}" class="truncate font-medium text-white">{item.title}</span>
+          <span class="shrink-0 text-11 text-[#6e7079] tabular-nums">{item.time}</span>
         </div>
         {#if item.description}
-          <p id="af-desc-{item.id}" class="af-desc">{item.description}</p>
+          <p id="af-desc-{item.id}" class="m-0 mt-0.5 text-12 text-text-3">{item.description}</p>
         {/if}
       </div>
     </article>
   {/each}
   {#if items.length === 0}
-    <div class="af-empty" role="status">No activity</div>
+    <div class="py-6 text-center text-12 text-[#6e7079]" role="status">No activity</div>
   {/if}
   <div bind:this={endEl}></div>
 </div>

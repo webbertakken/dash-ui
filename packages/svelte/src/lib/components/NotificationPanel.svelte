@@ -15,8 +15,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
 
-
-
   interface Props {
     open?: boolean;
     notifications?: Notification[];
@@ -30,7 +28,7 @@
     notifications = [],
     onClose = () => {},
     onMarkRead = undefined,
-    onMarkAllRead = undefined
+    onMarkAllRead = undefined,
   }: Props = $props();
 
   let filter: 'all' | NotifType = $state('all');
@@ -51,7 +49,9 @@
     update: 'Update',
   };
 
-  function setFilter(f: string) { filter = f as 'all' | NotifType; }
+  function setFilter(f: string) {
+    filter = f as 'all' | NotifType;
+  }
 
   let unread = $derived(notifications.filter((n) => !n.read).length);
   let filtered = $derived(filter === 'all' ? notifications : notifications.filter((n) => n.type === filter));
@@ -95,46 +95,56 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
-  class="np-overlay{open ? ' np-overlay--show' : ''}"
+  data-open={open ? 'true' : undefined}
+  class="fixed inset-0 z-[9100] hidden bg-black/45 backdrop-blur-sm data-[open=true]:block"
   onclick={onClose}
   aria-hidden="true"
 ></div>
 <div
   bind:this={panelEl}
-  class="np-panel{open ? ' np-panel--show' : ''}"
+  data-open={open ? 'true' : undefined}
+  class="fixed right-0 top-0 z-[9200] flex h-full w-[380px] max-w-[90vw] translate-x-full flex-col overflow-hidden border-l border-white/[0.08] bg-neutral-09 shadow-[0_0_40px_rgba(0,0,0,0.6)] transition-transform duration-200 data-[open=true]:translate-x-0 motion-reduce:transition-none"
   role="dialog"
   aria-modal="true"
   aria-labelledby={titleId}
-  tabindex="-1"
+  tabindex={-1}
 >
-  <div class="np-header">
-    <div class="np-title-row">
-      <h2 id={titleId} class="np-title">
+  <div class="border-b border-white/[0.06] px-4 py-3">
+    <div class="flex items-center justify-between gap-2">
+      <h2 id={titleId} class="m-0 flex items-center gap-2 text-15 font-semibold text-white">
         Notifications
         {#if unread > 0}
-          <span class="np-badge" aria-label="{unread} unread">{unread}</span>
+          <span class="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand-05 px-1.5 text-11 font-bold text-white tabular-nums" aria-label={`${unread} unread`}>{unread}</span>
         {/if}
       </h2>
-      <div class="np-header-actions">
+      <div class="flex items-center gap-1.5">
         {#if unread > 0 && onMarkAllRead}
-          <button type="button" class="np-mark-all" onclick={onMarkAllRead}>
-            Mark all read
-          </button>
+          <button
+            type="button"
+            class="cursor-pointer rounded border-0 bg-transparent px-1.5 py-0.5 text-11 text-brand-05 hover:text-[#7fb6ff] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+            onclick={onMarkAllRead}
+          >Mark all read</button>
         {/if}
-        <button type="button" class="icon-btn" onclick={onClose} aria-label="Close notifications">
+        <button
+          type="button"
+          aria-label="Close notifications"
+          class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+          onclick={onClose}
+        >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
             <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"/>
           </svg>
         </button>
       </div>
     </div>
-    <div class="np-filters" role="tablist" aria-label="Filter by type">
+    <div class="mt-2 flex gap-1" role="tablist" aria-label="Filter by type">
       {#each ['all', 'alarm', 'system', 'update'] as f}
         <button
           type="button"
           role="tab"
           aria-selected={filter === f}
-          class="np-filter{filter === f ? ' np-filter--active' : ''}"
+          data-active={filter === f ? 'true' : undefined}
+          class="cursor-pointer rounded border border-white/10 bg-transparent px-2.5 py-0.5 text-11 text-text-3 hover:bg-white/[0.04] hover:text-white data-[active=true]:border-brand-05 data-[active=true]:bg-brand-05/[0.10] data-[active=true]:text-brand-05 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
           onclick={() => setFilter(f)}
         >
           {TYPE_LABEL[f] ?? f}
@@ -143,39 +153,42 @@
     </div>
   </div>
   <div
-    class="np-list"
+    class="flex-1 overflow-y-auto"
     role="log"
     aria-live="polite"
     aria-label="Notifications"
     aria-relevant="additions"
   >
     {#if filtered.length === 0}
-      <div class="np-empty">No notifications</div>
+      <div class="p-6 text-center text-13 text-[#6e7079]">No notifications</div>
     {:else}
       {#each filtered as n (n.id)}
-        <div class="np-item{n.read ? ' np-item--read' : ''}">
+        <div
+          data-read={n.read ? 'true' : undefined}
+          class="flex items-start gap-2 border-b border-white/[0.04] px-4 py-3 last:border-b-0 data-[read=true]:opacity-60"
+        >
           <span
-            class="np-dot"
+            class="mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full"
             style="background:{SEV_COLOR[n.severity ?? 'info']};"
             aria-hidden="true"
           ></span>
-          <div class="np-item-body">
-            <div class="np-item-top">
-              <span class="np-item-title">{n.title}</span>
-              <span class="np-item-time">{n.time}</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="truncate text-13 font-medium text-white">{n.title}</span>
+              <span class="shrink-0 text-11 text-[#6e7079] tabular-nums">{n.time}</span>
             </div>
             {#if n.description}
-              <p class="np-item-desc">{n.description}</p>
+              <p class="m-0 mt-0.5 text-12 text-text-3">{n.description}</p>
             {/if}
-            <span class="np-type-badge">{TYPE_LABEL[n.type]}</span>
+            <span class="mt-1 inline-block rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.05em] text-[#6e7079]">{TYPE_LABEL[n.type]}</span>
           </div>
           {#if !n.read && onMarkRead}
             <button
               type="button"
-              class="np-read-btn"
-              onclick={() => onMarkRead?.(n.id)}
-              aria-label="Mark as read: {n.title}"
+              aria-label={`Mark as read: ${n.title}`}
               title="Mark as read"
+              class="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-status-success hover:bg-status-success/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+              onclick={() => onMarkRead?.(n.id)}
             >&#10003;</button>
           {/if}
         </div>

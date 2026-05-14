@@ -3,8 +3,6 @@
 </script>
 
 <script lang="ts">
-  
-
   interface Props {
     label?: string | undefined;
     length?: number;
@@ -73,16 +71,24 @@
     commit(next);
     setTimeout(() => focusAt(Math.min(text.length, length - 1)), 0);
   }
+
+  const DIGIT_CLS =
+    'h-9 w-9 rounded-md border border-white/10 bg-[#0a0a0b] text-center font-mono text-15 text-white outline-none transition-colors duration-100 focus:border-brand-05 focus:shadow-[0_0_0_2px_rgba(0,111,255,0.2)]';
 </script>
 
-<div class="otp-input-wrapper {className}">
+<div class={className}>
   {#if label}
-    <label for="{uid}-0" class="otp-input__label">{label}</label>
+    <label for="{uid}-0" class="text-12 text-[#6e7079]">{label}</label>
   {/if}
-  <div class="otp-input{disabled ? ' otp-input--disabled' : ''}" role="group" aria-label={label ?? 'One-time password'}>
+  <div
+    role="group"
+    aria-label={label ?? 'One-time password'}
+    data-disabled={disabled ? 'true' : undefined}
+    class="inline-flex items-center gap-1.5 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+  >
     {#each digits as d, i}
       {#if i === half}
-        <span class="otp-input__separator" aria-hidden="true">&ndash;</span>
+        <span aria-hidden="true" class="select-none text-13 text-[#6e7079]">&ndash;</span>
       {/if}
       <input
         bind:this={inputs[i]}
@@ -91,10 +97,10 @@
         inputmode="numeric"
         pattern="[0-9]*"
         maxlength={1}
-        aria-label="Digit {i + 1} of {length}"
+        aria-label={`Digit ${i + 1} of ${length}`}
         value={d}
         {disabled}
-        class="otp-input__digit"
+        class={DIGIT_CLS}
         autocomplete={i === 0 ? 'one-time-code' : 'off'}
         oninput={(e) => handleInput(i, e.currentTarget.value)}
         onkeydown={(e) => handleKey(i, e)}
