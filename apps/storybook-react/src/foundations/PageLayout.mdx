@@ -120,14 +120,17 @@ no nesting:
 />
 ```
 
-For richer tiles, compose inside `<Card>`. The `.card h3` rule already sets the title size, colour
-and flex layout — don't restyle the heading:
+For richer tiles, compose inside `<Card>` and use the typed `<CardTitle>` primitive — it renders the
+same `<h3>` the `.card h3` CSS rule expects, so the title size, colour and flex layout come for free
+without any hand-rolled markup:
 
 ```tsx
-<Card span={4}>
-  <h3>
+import { Card, CardTitle, Pill, Sparkline } from '@w5-ui/react'
+
+;<Card span={4}>
+  <CardTitle>
     Internet <Pill variant="success">Online</Pill>
-  </h3>
+  </CardTitle>
   <Sparkline />
 </Card>
 ```
@@ -145,7 +148,7 @@ hand-rolled coloured spans.
 | Cards bleed into the header       | The page root is `display: flex; gap: …` adding extra space      | Don't gap-stack. Render `<Banner>`, `<PageHeader>`, and `<div className="grid">` as siblings — the components already own their separation |
 | Tile widths don't line up         | Mixed `span` values that don't sum to 12 per row                 | Use 4/6/8/12 (and combinations)                                                                                                            |
 | Tile padding looks wrong          | Re-implementing `.card` with a custom `<div>`                    | Use `<Card>` from `@w5-ui/react`                                                                                                           |
-| Title font too small / colour off | `<h3>` rendered outside a `<Card>`                               | The `.card h3` rule only applies inside `<Card>` — keep titles inside                                                                      |
+| Title font too small / colour off | `<h3>` rendered outside a `<Card>`                               | Use `<CardTitle>` inside `<Card>` — the `.card h3` rule only applies inside the card shell                                                 |
 
 ## CSS hooks userland can rely on
 
