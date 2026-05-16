@@ -102,6 +102,19 @@ html[data-motif='light'] {
   line-height: var(--lh-snug);
   margin: 20px 0 8px;
 }
+/* First-heading top-margin reset: every MDX foundation page starts with an
+   `# Page Title` H1 (immediately after the `<Meta />` directive, which emits
+   no DOM). Storybook's `.sbdocs-content` already provides the page-top
+   gutter, so the 24/28/24/20px top margins above stack on top of it and
+   push the page title visibly below where the eye expects it. Reset top
+   margin only when the heading is the first visible child of its container
+   — section breaks between sibling H2/H3s keep their breathing room. */
+.sbdocs h1:first-child,
+.sbdocs h2:first-child,
+.sbdocs h3:first-child,
+.sbdocs h4:first-child {
+  margin-top: 0;
+}
 
 /* MDX body prose + lists: dashboard.css `html, body { font-size: 13px }` for
    dashboard-chrome density cascades into Storybook Docs, so paragraphs,
