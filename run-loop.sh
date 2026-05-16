@@ -13,6 +13,7 @@
 #   --timeout <sec>                     # same as positional ITER_TIMEOUT
 #   --model <name>                      # override the default (sonnet 4.6)
 #   --effort <level>                    # low | medium | high | xhigh | max
+#   --continue                          # resume: skip existing iter-NNN.log files
 #
 # Env overrides (flags win over env):
 #   CLAUDE_MODEL=claude-opus-4-7        # override the default (sonnet 4.6)
@@ -46,6 +47,7 @@ CLI_ITERATIONS=""
 CLI_TIMEOUT=""
 CLI_MODEL=""
 CLI_EFFORT=""
+CONTINUE=0
 POSITIONAL=()
 
 require_value() {
@@ -68,6 +70,7 @@ while [[ $# -gt 0 ]]; do
     --model=*)     CLI_MODEL="${1#--model=}";                                   shift   ;;
     --effort)      require_value "--effort"     "${2:-}"; CLI_EFFORT="$2";     shift 2 ;;
     --effort=*)    CLI_EFFORT="${1#--effort=}";                                 shift   ;;
+    --continue)    CONTINUE=1;                                                  shift   ;;
     --)
       shift
       while [[ $# -gt 0 ]]; do POSITIONAL+=("$1"); shift; done
@@ -158,11 +161,30 @@ if [[ -n "${CLAUDE_EFFORT:-}" ]]; then
   esac
 fi
 
+START_IDX=1
+if [[ ${CONTINUE} -eq 1 ]]; then
+  # Resume from NNN+1 where NNN is the highest iter-NNN.log that is non-empty.
+  # Zero-byte logs (e.g. cut off mid-write by Ctrl-C) are treated as incomplete
+  # and will be redone.
+  LAST=$(find "${LOG_DIR}" -maxdepth 1 -type f -name 'iter-[0-9][0-9][0-9].log' -size +0c 2>/dev/null \
+           | sed -n 's@.*/iter-\([0-9]\{3\}\)\.log$@\1@p' \
+           | sort -n | tail -n 1 || true)
+  if [[ -n "${LAST}" ]]; then
+    # 10# forces base-10 so leading zeros don't trigger octal parsing.
+    START_IDX=$(( 10#${LAST} + 1 ))
+  fi
+  if [[ ${START_IDX} -gt ${ITERATIONS} ]]; then
+    echo "→ --continue: ${LAST} already at or past ITERATIONS=${ITERATIONS}, nothing to do"
+    exit 0
+  fi
+  echo "→ --continue: resuming at iter ${START_IDX} (last completed: ${LAST:-none})"
+fi
+
 START_EPOCH=$(date +%s)
-echo "→ starting ${ITERATIONS} iterations on ${BRANCH} (timeout ${ITER_TIMEOUT}s each)"
+echo "→ running iters ${START_IDX}..${ITERATIONS} on ${BRANCH} (timeout ${ITER_TIMEOUT}s each)"
 echo "→ logs: ${LOG_DIR}/iter-NNN.log"
 
-for i in $(seq 1 "${ITERATIONS}"); do
+for i in $(seq "${START_IDX}" "${ITERATIONS}"); do
   IDX=$(printf '%03d' "${i}")
   LOG="${LOG_DIR}/iter-${IDX}.log"
   STAMP=$(date -Iseconds)
