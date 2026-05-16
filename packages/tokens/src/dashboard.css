@@ -332,7 +332,78 @@ a {
   color: #6e7079;
 }
 
-/* Button CSS removed: see scoped Tailwind utilities in Button.svelte. */
+/* Button chrome (tokens): mirror the Tailwind utilities baked into
+   Button.svelte/IconButton.svelte so React + userland render the same
+   button without needing Tailwind. Values match Svelte exactly. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 100ms;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--brand-05);
+  outline-offset: 2px;
+}
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.btn-primary {
+  background: var(--brand-05);
+  color: #fff;
+  border-color: transparent;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--brand-06);
+}
+.btn-ghost {
+  background: transparent;
+  color: #c8c9d0;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.btn-danger {
+  background: transparent;
+  color: #ff7b7b;
+  border-color: rgba(240, 58, 58, 0.3);
+}
+.btn-icon {
+  width: 30px;
+  padding: 0;
+  justify-content: center;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  color: var(--neutral-04);
+  background: transparent;
+  cursor: pointer;
+}
+.icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.icon-btn:focus-visible {
+  outline: 2px solid var(--brand-05);
+  outline-offset: 2px;
+}
 
 .grid {
   display: grid;
