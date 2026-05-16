@@ -208,6 +208,10 @@
     "tag": "uni-dendrogram"
   },
   {
+    "name": "Display1",
+    "tag": "uni-display1"
+  },
+  {
     "name": "Display2",
     "tag": "uni-display2"
   },
