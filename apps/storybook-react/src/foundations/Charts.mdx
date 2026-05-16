@@ -11,10 +11,10 @@ Every chart is a regular component. Drop it inside a `<Card>` (or a `<Stat>` for
 the page-level rhythm just works:
 
 ```tsx
-import { Card, LineChart } from '@w5-ui/react'
+import { Card, CardTitle, LineChart } from '@w5-ui/react'
 
 ;<Card span={8}>
-  <h3>Throughput</h3>
+  <CardTitle>Throughput</CardTitle>
   <LineChart series={...} />
 </Card>
 ```
@@ -22,6 +22,10 @@ import { Card, LineChart } from '@w5-ui/react'
 No chart owns its own padding or its own title. The card supplies both. Sizing follows the grid: a
 `span={4}` card gives you a third-width chart, `span={8}` a two-thirds, `span={12}` a full row. See
 **Foundations / Page layout** for the grid math.
+
+> The typed `<CardTitle>` primitive renders the exact `<h3>` the `.card h3` rule already styles —
+> use it so userland tracks every future title tweak for free. Plain `<h3>` still works as the
+> documented CSS-hook escape hatch.
 
 ## Pick by question
 
@@ -181,7 +185,7 @@ respects these contracts gets pixel parity with the Dashboard story automaticall
 | Symptom                                       | Likely cause                                                | Fix                                                                                |
 | --------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | Chart looks crammed                           | Wrapped in a `<div>` with its own padding inside `<Card>`   | Render the chart directly inside `<Card>` — the card owns padding                  |
-| Title font / colour doesn't match dashboard   | Custom `<h2>` instead of `<h3>` inside the card             | The `.card h3` rule sets the title. Use `<h3>` and the chart sits below           |
+| Title font / colour doesn't match dashboard   | Custom `<h2>` instead of `<CardTitle>` inside the card      | Use `<CardTitle>` (renders the `<h3>` `.card h3` styles); chart sits below it     |
 | Two charts side-by-side don't line up        | Different `span` or one wrapped in an extra container       | Use the same `span`. No wrappers between `.grid` and `<Card>`                      |
 | Pie slices are unreadable                     | Too many slices (>6) on `Donut` / `PieChart`                | Switch to `TreeMap`, `BarChart`, or roll the small slices into an "Other" bucket   |
 | Time-series flickers on refresh               | `animate` left on with sub-second polling                   | Pass `animate={false}` once polling is faster than ~3s                             |
