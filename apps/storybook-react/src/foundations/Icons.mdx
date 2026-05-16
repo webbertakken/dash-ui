@@ -69,11 +69,11 @@ That gives you a single rule for userland: **drop the icon in, don't restyle it.
 the icon is the accessible name (see below) or you need a non-default size.
 
 ```tsx
-import { DevicesIcon } from '@w5-ui/react'
+import { Button, DevicesIcon } from '@w5-ui/react'
 
-;<button className="btn btn-ghost">
+;<Button variant="ghost">
   <DevicesIcon /> Devices
-</button>
+</Button>
 ```
 
 ## Sizing
@@ -108,10 +108,10 @@ the entire colour contract — don't pass `stroke` or `color` props.
   <ClientsIcon /> 124 active
 </Muted>
 
-{/* Inherits danger red from .btn-danger */}
-<button className="btn btn-danger">
+{/* Inherits danger red from <Button variant="danger"> */}
+<Button variant="danger">
   <CloseIcon /> Remove
-</button>
+</Button>
 ```
 
 The typed `<Muted>` primitive from `@w5-ui/react` (`<uni-muted>` in WC) wraps the canonical
@@ -191,6 +191,7 @@ the right reach.
 | Empty-state illustration looks lost / lonely                     | `<DevicesIcon />` at default 16 in a big card               | Size up explicitly: `<DevicesIcon size={32} />` (the only place to deviate from 16)          |
 | Sidebar icons announce twice ("Devices… Devices")                | Both `<DevicesIcon aria-label="Devices" />` and link text  | Drop the icon's label; the link text is the accessible name                                  |
 | Random emoji glyph (📊, ⚠️) shows up in the reference dashboard | Stand-in while the right `@w5-ui` icon wasn't picked         | Swap the emoji for the named icon. Emojis ship colour and won't track the motif              |
+| Hand-rolled `<button>` for icon + label drifts vs the rest of the dashboard | Bespoke trigger built around the icon instead of typed primitive | Reach for `<Button variant>` (icon + label) or `<IconButton aria-label>` (icon-only). `.btn` / `.icon-btn` are the underlying CSS hooks |
 
 ## Where the icons live
 
