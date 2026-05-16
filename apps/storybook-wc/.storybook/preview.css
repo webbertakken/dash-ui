@@ -137,3 +137,29 @@ html[data-motif='light'] {
 .sbdocs ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* MDX blockquotes: foundation pages use `> ...` as standalone callouts for
+   key insights ("Reach for the named component every time.", "If you didn't
+   set data-motif, you didn't pick a motif."). Storybook's default renders
+   them as italic prose with no visual hierarchy, so they blend into the
+   surrounding paragraphs. Promote them to a tinted left-bar callout that
+   actually reads as a callout in both motifs. */
+.sbdocs blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--neutral-08);
+  border-left: 3px solid var(--text-link);
+  border-radius: 0 6px 6px 0;
+  color: var(--text-1);
+  font-style: normal;
+}
+.sbdocs blockquote > :first-child {
+  margin-top: 0;
+}
+.sbdocs blockquote > :last-child {
+  margin-bottom: 0;
+}
+.sbdocs blockquote p {
+  margin: 0;
+  color: var(--text-1);
+}
