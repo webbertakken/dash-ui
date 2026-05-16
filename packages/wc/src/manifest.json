@@ -364,6 +364,10 @@
     "tag": "uni-macinput"
   },
   {
+    "name": "Mac",
+    "tag": "uni-mac"
+  },
+  {
     "name": "MarimekkoChart",
     "tag": "uni-marimekko-chart"
   },

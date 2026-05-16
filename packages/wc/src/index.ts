@@ -92,6 +92,7 @@ import './elements/LineChart.wc.svelte'
 import './elements/LogViewer.wc.svelte'
 import './elements/LollipopChart.wc.svelte'
 import './elements/MACInput.wc.svelte'
+import './elements/Mac.wc.svelte'
 import './elements/MarimekkoChart.wc.svelte'
 import './elements/MatrixChart.wc.svelte'
 import './elements/Menubar.wc.svelte'
@@ -273,6 +274,7 @@ export const REGISTERED_TAGS = [
   'uni-log-viewer',
   'uni-lollipop-chart',
   'uni-macinput',
+  'uni-mac',
   'uni-marimekko-chart',
   'uni-matrix-chart',
   'uni-menubar',

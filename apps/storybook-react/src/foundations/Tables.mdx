@@ -170,8 +170,8 @@ and the focus ring on the pager buttons would get cut off otherwise.
 
 ## CSS hooks userland can rely on
 
-- `.table-shell` — rounded, bordered wrapper for any full-width table on a page
-- `.mac` — monospace cell for MACs, IPs, SKUs
+- `.table-shell` — rounded, bordered wrapper for any full-width table on a page. Use through `<TableShell>`
+- `.mac` — monospace cell for MACs, IPs, SKUs. Use through `<Mac>` (or apply the class directly to a `<td>`)
 - `.name-cell`, `.nc-thumb` — avatar + label layout for the first column
 
 Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values. See
