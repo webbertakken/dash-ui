@@ -101,21 +101,7 @@ export function Topbar({
               style={{ position: 'relative' }}
             >
               <BellIcon />
-              {notificationCount > 0 && (
-                <span
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    top: 6,
-                    right: 6,
-                    width: 6,
-                    height: 6,
-                    background: '#F03A3A',
-                    borderRadius: '50%',
-                    border: '1.5px solid #0A0A0B',
-                  }}
-                />
-              )}
+              {notificationCount > 0 && <span aria-hidden="true" className="topbar-notif-dot" />}
             </IconButton>
             <IconButton aria-label="Help" title="Help">
               <HelpIcon />

@@ -56,8 +56,138 @@ a {
   grid-template-rows: 48px 1fr;
   height: 100vh;
 }
-/* Topbar / IconButton / Avatar / AvatarGroup CSS removed: see scoped
- * Tailwind utilities in the corresponding .svelte files. */
+/* ===== Topbar ===== *
+ * Mirrors the Tailwind utilities baked into Topbar.svelte so the React
+ * Topbar (and any non-Tailwind userland) renders with the same chrome.
+ * The chrome is intentionally ALWAYS dark, independent of `data-motif`. */
+.topbar {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  flex-shrink: 0;
+  gap: 0;
+  padding: 0 var(--space-2);
+  background: var(--neutral-10);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.topbar .site-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+.topbar .site-switch:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.topbar .site-switch:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+.topbar .status-ring {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: rgba(0, 176, 112, 0.18);
+  align-items: center;
+  justify-content: center;
+}
+.topbar .status-ring::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--status-success);
+}
+.topbar .site-name {
+  font-size: var(--fs-13);
+  font-weight: var(--fw-medium);
+  color: var(--neutral-00);
+}
+.topbar .caret {
+  width: 14px;
+  height: 14px;
+  color: var(--neutral-04);
+}
+.topbar .app-tabs {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  gap: 2px;
+  margin-left: 14px;
+}
+.topbar .app-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 64px;
+  padding: 6px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--neutral-04);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.topbar .app-tab:hover {
+  color: var(--neutral-00);
+}
+.topbar .app-tab.active {
+  color: var(--neutral-00);
+  border-bottom-color: var(--brand-05);
+}
+.topbar .app-tab img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.65;
+  filter: brightness(1);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    filter var(--dur-base) var(--ease-out);
+}
+.topbar .app-tab:hover img {
+  opacity: 0.9;
+  filter: brightness(1.4);
+}
+.topbar .app-tab.active img {
+  opacity: 1;
+  filter: brightness(1.6);
+}
+.topbar .app-tab .label {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: var(--fw-medium);
+  line-height: 1;
+}
+.topbar .app-tab:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+.topbar-spacer {
+  flex: 1;
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding-right: var(--space-2);
+}
+/* Bell-icon notification dot. Token-driven so userland can theme via
+ * --status-danger / --neutral-10 instead of patching component markup. */
+.topbar-notif-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  background: var(--status-danger);
+  border-radius: 9999px;
+  border: 1.5px solid var(--neutral-10);
+}
 
 /* ===== Workspace ===== */
 .workspace {
