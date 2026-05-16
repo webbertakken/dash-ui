@@ -7,11 +7,11 @@
     alt = undefined,
     size = 'md',
     status = undefined,
-    className = '',
+    class: className = '',
     style = ''
   } = $props();
 </script>
 
-<Original {initials} {src} {alt} {size} {status} {className} {style}>
+<Original {initials} {src} {alt} {size} {status} class={className} {style}>
   <slot />
 </Original>

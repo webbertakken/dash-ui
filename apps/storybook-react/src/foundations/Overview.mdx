@@ -17,6 +17,12 @@ packages.
 | `@w5-ui/svelte` | 168 Svelte components (mirrored API)               |
 | `@w5-ui/wc`     | Web Components compiled from the Svelte source     |
 
+This Storybook documents the React variant. The Svelte variant lives at `/svelte/`, and the Web
+Components variant lives at `/wc/`. Each sibling storybook ships its own **Foundations / Overview**
+with a framework-specific userland recipe and a **Common mistakes** table for the four pitfalls
+unique to that framework (Svelte snippet props, WC side-effect register, ...) — start there if you
+are wiring Svelte or WC userland.
+
 ## Visual identity
 
 - **Brand blue**: `#006FFF` (the only saturated colour in the dashboard motif)
@@ -28,12 +34,81 @@ Two motifs ship in `tokens.css`:
 
 ```html
 <html data-motif="dark">
-  <!-- the default -->
-  <html data-motif="light"></html>
+  <!-- the default; swap to data-motif="light" to flip surfaces, text and borders -->
 </html>
 ```
 
-## Sidebar layout
+## Where to start
 
-Components are grouped into 12 categories (max), the same set as the Svelte and Web Components
-Storybooks at `/svelte/` and `/wc/`.
+Userland renders the dashboard correctly when **three** things are in place: the styles import, the
+`data-motif` attribute, and the canonical `AppLayout` → `PageHeader` → `.grid` → `Card` shell. If a
+new userland app looks "almost right but the spacing is off", one of those three is missing.
+
+Pick the entry point that matches your situation:
+
+| Situation                                                   | Read first                                  |
+| ----------------------------------------------------------- | ------------------------------------------- |
+| Wiring a fresh React or Svelte app                          | **Foundations / Setup**                     |
+| Already importing `styles.css`, page chrome still looks off | **Foundations / Page layout**               |
+| Userland already uses Tailwind v4                           | **Foundations / Setup §7** + **Motifs**     |
+| Light/dark toggle flashes the wrong motif on refresh        | **Foundations / Motifs**                    |
+| Spacing between cards / sections looks wrong                | **Foundations / Spacing** + **Page layout** |
+| Hand-rolling a status colour or hex                         | **Foundations / Colours**                   |
+| Want a complete copy-paste page template to start from      | **Foundations / Recipes**                   |
+| Userland looks "almost right" — fast symptom-to-fix index   | **Foundations / Troubleshooting**           |
+| Briefing an LLM / coding agent on the contract              | **Foundations / For agents**                |
+
+Reproduce the recipe in **Setup** and the skeleton in **Page layout** verbatim — spacing, rhythm,
+and contrast then match the Dashboard story without hand-tuning.
+
+## Foundations index
+
+Each page is a self-contained picker: when to reach for which primitive, the canonical recipe, and
+the pitfalls that drag a userland app away from the reference look.
+
+| Page                  | What it covers                                                              |
+| --------------------- | --------------------------------------------------------------------------- |
+| **Setup**             | End-to-end install, entry file, motif attribute, fonts, Tailwind, checklist |
+| **Page layout**       | `AppLayout` shell + `Banner` → `PageHeader` → `.grid` → `Card` skeleton     |
+| **Recipes**           | Complete copy-paste page templates: dashboard / list+table / settings form  |
+| **Motifs**            | `data-motif`, runtime toggle, Tailwind `dark:` variant, anti-FOUC           |
+| **Colours**           | Surface / text / border / status tokens + Tailwind class names              |
+| **Type**              | 13-size scale, 5 weights, `.dash-ui-*` semantic classes, Inter + Mono       |
+| **Spacing**           | 12-token spacing scale and the canonical page rhythm                        |
+| **Icons**             | 23-icon set, sizing, colour, accessibility defaults                         |
+| **Actions**           | Button / IconButton / SplitButton / ActionMenu / Toggle / Segmented         |
+| **Navigation**        | Topbar / Sidebar / Tabs / Menubar / Breadcrumb / Stepper                    |
+| **Overlays**          | Modal / Drawer / Popover / ConfirmDialog / CommandPalette                   |
+| **Forms**             | Field / Input / Select / Checkbox / Toggle / `.field-stack` rhythm          |
+| **Tables**            | Table primitives, header rows, `.mac` / `.name-cell` helpers                |
+| **Cards**             | `Card` and `Stat` contract: `span`, title rhythm, when to compose           |
+| **Status & feedback** | Pill / Badge / Banner / Callout / Alert / Toast / Skeleton                  |
+| **Data display**      | KVTable / RankedList / Timeline / ActivityFeed / LogViewer / JsonViewer     |
+| **Charts**            | Chart families, sizing, the bottom-panel clearance token                    |
+| **Chart gallery**     | One tile per chart, grouped by category — visual picker for the ~80 shapes  |
+| **Troubleshooting**   | Symptom → fix index for the most common userland drift cases                |
+| **For agents**        | Paste-into-userland AGENTS.md brief + 10-point self-check for LLM coders    |
+
+## Userland recipe in one screen
+
+```tsx
+// src/main.tsx
+import '@w5-ui/react/styles.css' // tokens + dashboard.css in one import
+import { AppLayout, Topbar, Sidebar, PageHeader, Grid, Card, Stat } from '@w5-ui/react'
+
+<AppLayout pageLabel="Dashboard" topbar={<Topbar siteName="HQ" />} sidebar={<Sidebar … />}>
+  <PageHeader title="Dashboard" />
+  <Grid>
+    <Stat span={4} label="Internet" value="847" unit="Mbps" />
+    <Card span={8}>…</Card>
+  </Grid>
+</AppLayout>
+```
+
+`<Grid>` renders the canonical `<div className="grid">` (12-column, 12 px gap, 16 × 24 px padding) —
+prefer the typed primitive so userland tracks every future tweak without copy-paste. The raw class
+hook stays interchangeable for hand-rolled markup.
+
+Add `data-motif="dark"` to `<html>` and that single snippet is the whole contract. Anything else
+(custom paddings, ad-hoc wrappers, raw hex colours) is what drags userland away from the reference.
+See **Foundations / Setup** for the full walkthrough.

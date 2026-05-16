@@ -1,0 +1,191 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Status & feedback" />
+
+# Status & feedback
+
+Half the spacing drift in userland comes from picking the wrong status component. A `Banner` where a
+`Pill` should sit will push the whole page down a row. A toast that's really a banner will hide
+behind the topbar on small viewports. Pick the right one and the rhythm of the dashboard story falls
+out for free.
+
+This page is the decision tree. Every component on it ships in `@w5-ui/react` (and mirrors in
+`@w5-ui/svelte` / `@w5-ui/wc`) with the WCAG 2.2 contrast and ARIA live-region wiring already done.
+
+## Pick by question
+
+Start from where the message lives, not from what it looks like.
+
+| The message…                                                         | Reach for         |
+| -------------------------------------------------------------------- | ----------------- |
+| Labels the current state of one item (online / warning / critical)   | `Pill`            |
+| Sits next to an icon or avatar as a tiny count or dot                | `Badge`           |
+| Is a single coloured dot + word inside a table cell or chart legend  | `StatusIndicator` |
+| Is page-level and stays put until the user acts                      | `Banner`          |
+| Sits inline inside body copy (note, tip, gotcha)                     | `Callout`         |
+| Is a transient acknowledgement after an action (saved, copied, …)    | `toast.show(...)` |
+| Is a destructive confirmation the user must answer before continuing | `ConfirmDialog`   |
+| Is a long-running progress signal with a known total                 | `ProgressBar`     |
+| Is a long-running progress signal without a known total              | `Spinner`         |
+| Is a placeholder while content is loading                            | `Skeleton`        |
+| Is the "nothing here yet" state of a card, table, or list            | `EmptyState`      |
+| Is a form-field error attached to one input                          | `Field` (`error`) |
+
+If the message changes value over time (latency, signal, throughput trend) reach for a chart
+primitive first — see **Foundations / Charts**.
+
+## Same colour, different role
+
+The four status colours (`info`, `success`, `warn`, `danger`) carry the same meaning across every
+component on this page. Once you pick the component, the variant is obvious:
+
+- `info` — neutral status, "FYI" copy, default for callouts
+- `success` — confirmation, healthy, online, completed
+- `warn` — degraded, attention required, soft-fail
+- `danger` — outage, error, destructive action
+
+`Pill` adds `neutral` for "no signal, just a label". `Callout` adds `tip` for documentation prose.
+`Badge` adds `neutral` for plain counts. Nothing else has extra colours — if you find yourself
+reaching for "pink" or "purple", you're misusing the component.
+
+## Inline vs page-level vs ephemeral
+
+The three failure modes for status UI in userland are: putting an inline thing at page level (huge
+banner where a pill belonged), putting a page-level thing inline (banner squashed into a card), and
+putting an ephemeral thing somewhere persistent (toast jammed into the layout).
+
+| Scope        | Lifetime                  | Component(s)                       | Where it lives                                          |
+| ------------ | ------------------------- | ---------------------------------- | ------------------------------------------------------- |
+| Inline label | Persistent, no dismiss    | `Pill`, `Badge`, `StatusIndicator` | Inside `<CardTitle>`, table cell, list row, legend      |
+| Inline block | Persistent, dismissable   | `Callout`, `Alert`                 | Inside body copy, inside a `<Card>`, inside a `Field`   |
+| Page-level   | Persistent until acted on | `Banner`                           | Direct child of the page root, above `<PageHeader>`     |
+| Ephemeral    | Auto-dismisses            | `toast.show(...)` + `<Toaster />`  | Bottom-right of the viewport, controlled by `<Toaster>` |
+
+Mixing these up is the most common drift versus the Dashboard story. The reference firmware notice
+sits in a `Banner`. The "Online" labels next to card titles sit in `Pill`. The "saved" toast pops on
+the bottom-right.
+
+## Pill vs Badge vs StatusIndicator
+
+These three look superficially similar — a coloured dot with text — but their jobs are different.
+
+| Component         | Shape                              | Use when                                                                   |
+| ----------------- | ---------------------------------- | -------------------------------------------------------------------------- |
+| `Pill`            | Capsule with optional leading dot  | Standalone label for one entity's state ("Online", "Adopting", "Critical") |
+| `Badge`           | Number/dot superimposed on a child | Counts on icons, avatars, tabs ("3 unread", "9+", red dot)                 |
+| `StatusIndicator` | Coloured dot + label, no chrome    | Cells in tables, chart legends, anywhere chrome would be visual noise      |
+
+If a row in a table already says "Online" in green and "Offline" in grey, that's `StatusIndicator`.
+If the title of a `<Card>` reads `Internet <Pill variant="success">Online</Pill>`, that's a pill. If
+a button has a "3" floating over its top-right corner, that's a badge. They are not interchangeable.
+
+## Banner vs Callout vs Alert vs Toast
+
+All four can render the same coloured strip with a message. Their lifetime, scope, and live-region
+behaviour differ.
+
+| Component | Scope          | Lives until            | ARIA                                               |
+| --------- | -------------- | ---------------------- | -------------------------------------------------- |
+| `Banner`  | Whole page     | User dismisses or acts | `role="status"` (urgent variants → `role="alert"`) |
+| `Callout` | Block in body  | Page navigates         | None — it's prose, not a live region               |
+| `Alert`   | Block in body  | User dismisses         | `role="status"` / `role="alert"` for danger        |
+| `Toast`   | Viewport-fixed | Auto-dismiss (3–5s)    | `role="status"` / `role="alert"` for danger        |
+
+Rules of thumb:
+
+- `Banner` only at the top of a page. One per page, max. Renders flush with the page chrome.
+- `Callout` inside docs-style copy or inside a card. Never page-level.
+- `Alert` is the dismissible cousin of `Callout`. Use it when the message is response to a user
+  action that doesn't warrant a toast (e.g. "Settings saved, but two devices were skipped").
+- `Toast` for transient acknowledgements only. Never use it for errors the user must read — those
+  belong in a `Banner` or `ConfirmDialog`. Toasts auto-dismiss.
+
+## Loading states
+
+Three components, picked by what you know about the operation:
+
+- `Skeleton` — you know the shape of the result. Render the skeleton in the slot the real content
+  will fill, with the same dimensions. The page doesn't reflow when data arrives.
+- `Spinner` — you don't know the result's shape, or the operation is brief. Centre it in a card or
+  next to a button label. Don't reserve more space than the spinner needs.
+- `ProgressBar` — you know the total. Show the percentage. For unknown-total operations use
+  `Spinner` instead — an indeterminate progress bar is rarely worth the extra DOM.
+
+## Empty states
+
+Every list, table, and chart needs an empty state. `EmptyState` ships a title, description, and
+optional action — drop it inside the `<Card>` or `.table-shell` that would otherwise be empty:
+
+```tsx
+import { Card, CardTitle, EmptyState } from '@w5-ui/react'
+;<Card span={6}>
+  <CardTitle>Recent alarms</CardTitle>
+  {alarms.length === 0 ? (
+    <EmptyState title="No alarms" description="Everything checked out in the last 24 hours." />
+  ) : (
+    <AlarmsList rows={alarms} />
+  )}
+</Card>
+```
+
+Don't render the card empty, don't render "—", and don't hide the card entirely — the grid will
+shift and userland loses the dashboard rhythm.
+
+## Form-field errors
+
+For per-field validation errors do **not** drop a `Banner` or `Alert` at the top of the form. Use
+`Field`'s `error` prop — it wires the error message to the input via `aria-describedby` and
+`aria-invalid` for free, and it keeps the message attached to the field as the user scrolls. See
+**Foundations / Forms** for the full recipe.
+
+```tsx
+<Field label="Hostname" error={errors.hostname}>
+  <Input value={hostname} onChange={setHostname} />
+</Field>
+```
+
+Page-level form summaries (e.g. "5 errors found") are fine in a `Banner` _in addition_ to the
+field-level errors — never instead of them.
+
+## Confirmations and destructive actions
+
+For destructive flows (delete, reboot, factory-reset) use `ConfirmDialog`. It traps focus, wires the
+danger variant to the primary button, and returns a promise so userland can `await` the answer.
+Don't fake a confirm with a `Banner` plus a button — the dialog's modal semantics matter for screen
+readers.
+
+## Common mistakes (and the fix)
+
+| Symptom                                        | Likely cause                                                   | Fix                                                                                                           |
+| ---------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Page drifts down a row vs Dashboard story      | `Banner` used for a single-item status that should be a `Pill` | Move the status into the `<CardTitle>` of the relevant card as a `<Pill>`                                     |
+| "Online" / "Offline" cell looks heavy          | `Pill` used inside a dense table column                        | Switch to `StatusIndicator` for table cells                                                                   |
+| Toast shows but never disappears               | Used as an error users must read                               | Switch to `Banner` (page-level) or `ConfirmDialog`                                                            |
+| Toast doesn't render at all                    | `<Toaster />` not mounted at the app root                      | Mount `<Toaster />` once inside `AppLayout`'s children                                                        |
+| Banner pushes header below the fold            | `Banner` rendered _inside_ a `<Card>` or `.grid`               | Render `Banner` as a direct sibling of `PageHeader` and `.grid` — never inside them                           |
+| Spinner is huge and ugly                       | Custom CSS on `Spinner`                                        | Don't override size — drop it in a flex container with `gap: 8` next to its label                             |
+| Skeleton causes layout shift on data arrival   | Skeleton dimensions don't match the real content               | Match width/height to the real component. For `Stat`, use `<Skeleton variant="stat" />`                       |
+| Two banners on one page                        | Each warning got its own banner                                | Combine into a single banner with a list of items, or move per-item warnings into `Pill` on the relevant card |
+| Field error and page banner say the same thing | Page-level error duplicates field-level error                  | Page banner should say "Fix 3 errors below"; field errors carry the specifics                                 |
+| Pill colour clashes with chart series          | Hand-picked colour matched a `--chart-n`                       | Use the variant tokens (`success` / `warn` / `danger` / `info` / `neutral`) — never raw hex                   |
+| Empty state looks like an error                | Used `Banner variant="danger"` for "no data yet"               | Use `EmptyState` — it carries a calm tone and an action                                                       |
+
+## ARIA recap
+
+You almost never need to add ARIA attributes yourself. The components above already set the right
+`role` and `aria-live` based on variant:
+
+- `Banner`, `Alert`, `Toast`: `role="status"` by default, `role="alert"` for `danger`/`warn`
+- `Pill`, `Badge`, `StatusIndicator`: visual chrome only — they don't announce. If the status is
+  meaningful to screen-reader users, the surrounding text already carries it ("Internet **Online**")
+- `Field` error: wires `aria-invalid` and `aria-describedby` to the input
+- `ConfirmDialog`: traps focus, restores it on close, labels itself
+
+If you find yourself sprinkling `role="alert"` or `aria-live` on raw `<div>`s, you're rebuilding one
+of these primitives by hand — use the component instead.
+
+## See also
+
+- **Foundations / Page layout** — where `Banner` sits in the page skeleton
+- **Foundations / Forms** — `Field` errors and validation patterns
+- **Foundations / Colours** — `--status-*` tokens and the four-variant palette

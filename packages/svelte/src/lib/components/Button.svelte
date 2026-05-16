@@ -12,6 +12,14 @@
     class?: string;
     style?: string;
     'aria-label'?: string | undefined;
+    /** ARIA popup trigger: `'dialog'` for popover-style buttons that open
+     * an inline calendar / picker; mirrors the React `<Button>` API and the
+     * actual prop usage in DatePicker / DateRangePicker / TimeRange. */
+    'aria-haspopup'?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid' | boolean | undefined;
+    /** Expanded state for popup triggers. */
+    'aria-expanded'?: boolean | undefined;
+    /** ID of the controlled popup/dialog. */
+    'aria-controls'?: string | undefined;
     onclick?: (event: MouseEvent) => void;
     children?: Snippet;
   }
@@ -26,6 +34,9 @@
     class: className = '',
     style = '',
     'aria-label': ariaLabel = undefined,
+    'aria-haspopup': ariaHasPopup = undefined,
+    'aria-expanded': ariaExpanded = undefined,
+    'aria-controls': ariaControls = undefined,
     onclick,
     children,
   }: Props = $props();
@@ -46,6 +57,9 @@
   {type}
   {title}
   aria-label={ariaLabel}
+  aria-haspopup={ariaHasPopup}
+  aria-expanded={ariaExpanded}
+  aria-controls={ariaControls}
   {onclick}
   class="inline-flex h-[30px] cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-md border px-3 text-13 font-medium transition-all duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 disabled:cursor-not-allowed disabled:opacity-55
     {VARIANT[variant]}

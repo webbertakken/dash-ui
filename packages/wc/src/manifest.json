@@ -20,6 +20,10 @@
     "tag": "uni-annotated-time-series"
   },
   {
+    "name": "AppLayout",
+    "tag": "uni-app-layout"
+  },
+  {
     "name": "ArcDiagram",
     "tag": "uni-arc-diagram"
   },
@@ -50,6 +54,14 @@
   {
     "name": "BeeswarmChart",
     "tag": "uni-beeswarm-chart"
+  },
+  {
+    "name": "Body",
+    "tag": "uni-body"
+  },
+  {
+    "name": "BodyLg",
+    "tag": "uni-body-lg"
   },
   {
     "name": "BoxPlot",
@@ -92,8 +104,20 @@
     "tag": "uni-candlestick-chart"
   },
   {
+    "name": "Caption",
+    "tag": "uni-caption"
+  },
+  {
     "name": "Card",
     "tag": "uni-card"
+  },
+  {
+    "name": "CardMore",
+    "tag": "uni-card-more"
+  },
+  {
+    "name": "CardTitle",
+    "tag": "uni-card-title"
   },
   {
     "name": "Carousel",
@@ -110,6 +134,10 @@
   {
     "name": "CirclePacking",
     "tag": "uni-circle-packing"
+  },
+  {
+    "name": "Code",
+    "tag": "uni-code"
   },
   {
     "name": "CodeBlock",
@@ -172,8 +200,20 @@
     "tag": "uni-date-range-picker"
   },
   {
+    "name": "Delta",
+    "tag": "uni-delta"
+  },
+  {
     "name": "Dendrogram",
     "tag": "uni-dendrogram"
+  },
+  {
+    "name": "Display1",
+    "tag": "uni-display1"
+  },
+  {
+    "name": "Display2",
+    "tag": "uni-display2"
   },
   {
     "name": "Donut",
@@ -212,8 +252,16 @@
     "tag": "uni-expandable-row"
   },
   {
+    "name": "Eyebrow",
+    "tag": "uni-eyebrow"
+  },
+  {
     "name": "Field",
     "tag": "uni-field"
+  },
+  {
+    "name": "FieldStack",
+    "tag": "uni-field-stack"
   },
   {
     "name": "FileUpload",
@@ -232,6 +280,14 @@
     "tag": "uni-force-graph"
   },
   {
+    "name": "FormActions",
+    "tag": "uni-form-actions"
+  },
+  {
+    "name": "FormRow",
+    "tag": "uni-form-row"
+  },
+  {
     "name": "FunnelChart",
     "tag": "uni-funnel-chart"
   },
@@ -244,8 +300,28 @@
     "tag": "uni-gauge"
   },
   {
+    "name": "Grid",
+    "tag": "uni-grid"
+  },
+  {
     "name": "GroupedList",
     "tag": "uni-grouped-list"
+  },
+  {
+    "name": "H1",
+    "tag": "uni-h1"
+  },
+  {
+    "name": "H2",
+    "tag": "uni-h2"
+  },
+  {
+    "name": "H3",
+    "tag": "uni-h3"
+  },
+  {
+    "name": "H4",
+    "tag": "uni-h4"
   },
   {
     "name": "HealthBar",
@@ -316,6 +392,10 @@
     "tag": "uni-kbd"
   },
   {
+    "name": "Label",
+    "tag": "uni-label"
+  },
+  {
     "name": "LineChart",
     "tag": "uni-line-chart"
   },
@@ -330,6 +410,10 @@
   {
     "name": "MACInput",
     "tag": "uni-macinput"
+  },
+  {
+    "name": "Mac",
+    "tag": "uni-mac"
   },
   {
     "name": "MarimekkoChart",
@@ -352,12 +436,28 @@
     "tag": "uni-modal"
   },
   {
+    "name": "Mono",
+    "tag": "uni-mono"
+  },
+  {
     "name": "MultiSelect",
     "tag": "uni-multi-select"
   },
   {
+    "name": "Muted",
+    "tag": "uni-muted"
+  },
+  {
+    "name": "NameCell",
+    "tag": "uni-name-cell"
+  },
+  {
     "name": "NightingaleChart",
     "tag": "uni-nightingale-chart"
+  },
+  {
+    "name": "NotifDot",
+    "tag": "uni-notif-dot"
   },
   {
     "name": "NotificationPanel",
@@ -370,6 +470,10 @@
   {
     "name": "OTPInput",
     "tag": "uni-otpinput"
+  },
+  {
+    "name": "PageHeader",
+    "tag": "uni-page-header"
   },
   {
     "name": "Pagination",
@@ -524,6 +628,10 @@
     "tag": "uni-spoiler"
   },
   {
+    "name": "SrOnly",
+    "tag": "uni-sr-only"
+  },
+  {
     "name": "StackedBarChart",
     "tag": "uni-stacked-bar-chart"
   },
@@ -540,8 +648,16 @@
     "tag": "uni-stat"
   },
   {
+    "name": "StatNumber",
+    "tag": "uni-stat-number"
+  },
+  {
     "name": "StatusIndicator",
     "tag": "uni-status-indicator"
+  },
+  {
+    "name": "StatusRing",
+    "tag": "uni-status-ring"
   },
   {
     "name": "StepChart",
@@ -560,6 +676,10 @@
     "tag": "uni-stripe-chart"
   },
   {
+    "name": "Submeta",
+    "tag": "uni-submeta"
+  },
+  {
     "name": "SunburstChart",
     "tag": "uni-sunburst-chart"
   },
@@ -570,6 +690,14 @@
   {
     "name": "TabPanel",
     "tag": "uni-tab-panel"
+  },
+  {
+    "name": "TablePager",
+    "tag": "uni-table-pager"
+  },
+  {
+    "name": "TableShell",
+    "tag": "uni-table-shell"
   },
   {
     "name": "Tabs",
@@ -624,6 +752,10 @@
     "tag": "uni-topbar"
   },
   {
+    "name": "TopbarActions",
+    "tag": "uni-topbar-actions"
+  },
+  {
     "name": "TransferList",
     "tag": "uni-transfer-list"
   },
@@ -634,6 +766,10 @@
   {
     "name": "TreeView",
     "tag": "uni-tree-view"
+  },
+  {
+    "name": "Unit",
+    "tag": "uni-unit"
   },
   {
     "name": "UptimeTimeline",

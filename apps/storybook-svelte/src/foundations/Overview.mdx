@@ -4,7 +4,8 @@ import { Meta } from '@storybook/blocks'
 
 # Dash UI - Svelte
 
-The same 168 components as `@w5-ui/react`, exposed as native Svelte 4 components.
+The same 168 components as `@w5-ui/react`, exposed as native Svelte 5 components with snippet props,
+runes, and the same canonical CSS hooks.
 
 | Package         | Description                                        |
 | --------------- | -------------------------------------------------- |
@@ -13,3 +14,61 @@ The same 168 components as `@w5-ui/react`, exposed as native Svelte 4 components
 | `@w5-ui/svelte` | 168 Svelte components                              |
 
 The React variant lives at the root of this static site; the Web Components variant lives at `/wc/`.
+
+## Where to start
+
+Svelte userland renders the dashboard correctly when **three** things are in place: the styles
+import, the `data-motif` attribute, and the canonical `AppLayout` -> `PageHeader` -> `Grid` ->
+`Card` shell. If a Svelte app looks "almost right but the spacing is off", one of those three is
+missing.
+
+The full foundations index (Setup, Spacing, Colours, Type, Page layout, Recipes, Charts,
+Troubleshooting, For agents, ...) lives in the React storybook at the root of this site. Every page
+applies to Svelte verbatim: the tokens, the `.app`/`.grid`/`.card` CSS hooks, and the typed
+primitive contracts are framework-agnostic. Only the import path changes (`@w5-ui/svelte` instead of
+`@w5-ui/react`) and the component syntax (Svelte 5 snippets instead of React children).
+
+## Userland recipe in one screen
+
+```svelte
+<script lang="ts">
+  import '@w5-ui/svelte/styles.css' // tokens + dashboard.css in one import
+  import { AppLayout, Topbar, Sidebar, PageHeader, Grid, Card, Stat } from '@w5-ui/svelte'
+</script>
+
+<AppLayout pageLabel="Dashboard">
+  {#snippet topbar()}<Topbar siteName="HQ" />{/snippet}
+  {#snippet sidebar()}<Sidebar sections={SECTIONS} bind:activeId={page} />{/snippet}
+
+  <PageHeader title="Dashboard" />
+  <Grid>
+    <Stat span={4} label="Internet" value="847" unit="Mbps" />
+    <Card span={8}>...</Card>
+  </Grid>
+</AppLayout>
+```
+
+`<Grid>` renders the canonical `<div class="grid">` (12-column, 12px gap, 16x24px padding) - prefer
+the typed primitive so userland tracks every future tweak without copy-paste. The raw `.grid` /
+`.card` class hooks stay interchangeable for hand-rolled markup.
+
+Add `data-motif="dark"` to `<html>` and that single snippet is the whole contract. Anything else
+(custom paddings, ad-hoc wrappers, raw hex colours) is what drags Svelte userland away from the
+reference. See the React storybook's **Foundations / Setup** for the full walkthrough - every step
+applies here, swap `@w5-ui/react` for `@w5-ui/svelte`.
+
+## Common mistakes (Svelte-specific)
+
+The React storybook's **Foundations / Troubleshooting** covers the framework-agnostic drift cases
+(missing `dashboard.css`, custom `gap` overrides, hardcoded hex). The four pitfalls below are unique
+to Svelte userland - they don't appear in React, so the React troubleshooting page can't flag them.
+
+| Symptom in Svelte userland                                     | Cause                                                                                  | Fix                                                                          |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `Topbar`/`Sidebar` render as empty slots inside `AppLayout`    | Passed as children (`<AppLayout><Topbar /></AppLayout>`) instead of via snippet props  | Use `{#snippet topbar()}<Topbar ... />{/snippet}` - they are `Snippet` props |
+| Topbar app-switcher caret never highlights the active app      | Forgot `bind:` on `activeApp` - it is a `$bindable()` prop, not plain                  | `<Topbar bind:activeApp ... />`                                              |
+| Tokens load but `.app`/`.grid`/`.card` rules are missing       | Imported `@w5-ui/tokens/tokens.css` only; `dashboard.css` is a separate file in Svelte | Use the one-liner `import '@w5-ui/svelte/styles.css'` - it bundles both      |
+| `class` prop on a primitive does nothing / triggers a TS error | Wrote `class:my-class` (Svelte directive) instead of forwarding a string `class` prop  | Pass a string: `<Card class="my-extra" ...>` - every primitive forwards it   |
+
+The four cases above plus the React **Foundations / Troubleshooting** 30-second triage cover every
+drift case we have seen in Svelte userland to date.

@@ -4,15 +4,100 @@ import { Meta } from '@storybook/blocks'
 
 # Dash UI - Web Components
 
-Each `uni-*` custom element wraps the equivalent `@w5-ui/svelte` component. Importing `@w5-ui/wc`
-registers all 166 elements as a side effect.
+The same 166 components as `@w5-ui/svelte`, compiled to framework-agnostic custom elements. Drop
+them into vanilla HTML, React, Vue, Angular, or any framework that renders DOM - the chrome,
+spacing, motif tokens, and CSS hooks are identical to the React/Svelte builds.
 
-```html
-<script type="module" src="https://cdn.example/@w5-ui/wc"></script>
-<link rel="stylesheet" href="https://cdn.example/@w5-ui/wc/styles.css" />
-
-<uni-button variant="primary">Save</uni-button>
-<uni-pill variant="success">Online</uni-pill>
-```
+| Package         | Description                                            |
+| --------------- | ------------------------------------------------------ |
+| `@w5-ui/tokens` | CSS variables (light + dark motifs) + JS token map     |
+| `@w5-ui/assets` | Brand SVG logos + product marks                        |
+| `@w5-ui/wc`     | 166 `uni-*` custom elements (side-effect registration) |
 
 The React variant lives at the root of this static site; the Svelte variant lives at `/svelte/`.
+
+## Where to start
+
+Web Components userland renders the dashboard correctly when **three** things are in place: the
+styles import, the side-effect register, and the `data-motif` attribute. If a WC app looks "almost
+right but spacing/colours are off, or the elements render as empty boxes", one of those three is
+missing.
+
+```html
+<!doctype html>
+<html lang="en" data-motif="dark">
+  <head>
+    <link rel="stylesheet" href="@w5-ui/wc/styles.css" />
+    <script type="module">
+      import '@w5-ui/wc' // registers all 166 uni-* elements as a side effect
+    </script>
+  </head>
+  <body>
+    <!-- uni-* elements are available everywhere from here on -->
+  </body>
+</html>
+```
+
+The full foundations index (Setup, Spacing, Colours, Type, Page layout, Recipes, Charts,
+Troubleshooting, For agents, ...) lives in the React storybook at the root of this site. Every page
+applies to Web Components verbatim: the tokens, the `.app`/`.grid`/`.card` CSS hooks, and the typed
+primitive contracts are framework-agnostic. Only the element name changes (`uni-card` for `Card`)
+and prop assignment (set as JS properties for complex values, see below).
+
+## Userland recipe in one screen
+
+```html
+<div class="app">
+  <uni-topbar id="topbar"></uni-topbar>
+  <div class="workspace">
+    <uni-sidebar id="sidebar"></uni-sidebar>
+    <main class="content" id="main-content" tabindex="-1">
+      <uni-page-header title="Dashboard"></uni-page-header>
+      <div class="grid">
+        <uni-stat span="4" label="Internet" value="847" unit="Mbps"></uni-stat>
+        <uni-card span="8">...</uni-card>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script type="module">
+  import '@w5-ui/wc'
+  // Complex props (objects, arrays, callbacks) must be set as JS properties,
+  // not HTML attributes - attributes only serialise to strings.
+  const topbar = document.querySelector('#topbar')
+  topbar.siteName = 'HQ'
+  topbar.activeApp = 'system'
+  topbar.apps = APPS
+
+  document.querySelector('#sidebar').sections = SECTIONS
+</script>
+```
+
+The shell (`.app` / `.workspace` / `.content` / `.grid`) is plain HTML using the canonical CSS hooks
+from `@w5-ui/wc/styles.css`. The `uni-app-layout` element accepts a single default slot only (no
+named `topbar` / `sidebar` slots, since custom elements cannot forward Svelte 5 snippets across the
+element boundary) - in WC userland, compose the shell directly with the class hooks and nest
+`uni-topbar` / `uni-sidebar` at the matching positions.
+
+Add `data-motif="dark"` to `<html>` and that single snippet is the whole contract. Anything else
+(custom paddings, ad-hoc wrappers, raw hex colours) is what drags WC userland away from the
+reference. See the React storybook's **Foundations / Setup** for the full walkthrough - every step
+applies here, swap `<Component>` for `<uni-component>`.
+
+## Common mistakes (WC-specific)
+
+The React storybook's **Foundations / Troubleshooting** covers the framework-agnostic drift cases
+(missing `dashboard.css`, custom `gap` overrides, hardcoded hex). The four pitfalls below are unique
+to Web Components userland - they do not appear in React or Svelte, so the React troubleshooting
+page cannot flag them.
+
+| Symptom in WC userland                                           | Cause                                                                                          | Fix                                                                                        |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `uni-button` (or any `uni-*`) renders as an empty inline element | Forgot the side-effect import; the browser falls back to `HTMLUnknownElement`                  | Add `import '@w5-ui/wc'` at the entry; it registers all 166 elements                       |
+| Topbar app-switcher shows `[object Object]` or never highlights  | Set complex props (`apps`, `onAppChange`) as HTML attributes - attributes serialise to strings | Set as JS properties after `createElement` / `querySelector`: `el.apps = [...]`            |
+| `uni-app-layout` renders topbar/sidebar inside the main content  | WC wrapper exposes only the default `<slot />`; Svelte snippets do not cross the boundary      | Build the shell with raw `.app` / `.workspace` / `.content` CSS hooks; nest `uni-*` inside |
+| Tokens load but `.app` / `.grid` / `.card` rules are missing     | Imported `@w5-ui/tokens/tokens.css` only; `dashboard.css` is a separate file in WC             | Use the one-liner `@w5-ui/wc/styles.css` - it bundles both                                 |
+
+The four cases above plus the React **Foundations / Troubleshooting** 30-second triage cover every
+drift case we have seen in WC userland to date.

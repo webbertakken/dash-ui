@@ -62,6 +62,14 @@
   --space-11: 80px;
   --space-12: 96px;
 
+  /* ---- Bottom-panel clearance ---------------------------------------- *
+   * Reserved height under .grid for fixed bottom bars (SelectionToolbar,
+   * CommandPalette footer, mobile sticky toolbars). Defaults to 0; the
+   * `:root:has(.sel-toolbar)` rule in dashboard.css lifts it automatically
+   * when SelectionToolbar is mounted. Userland can also set it manually:
+   *   document.documentElement.style.setProperty('--bottom-panel-h', '76px') */
+  --bottom-panel-h: 0px;
+
   /* ---- Radii --------------------------------------------------------- */
   --radius-sm: 4px;
   --radius-md: 6px; /* default — buttons, inputs, dashboard cards */

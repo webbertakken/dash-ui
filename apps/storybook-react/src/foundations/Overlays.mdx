@@ -1,0 +1,212 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Overlays" />
+
+# Overlays
+
+Modals, drawers, popovers, confirm dialogs, and the command palette all share one job: pull a
+focused task above the page without losing the user's place. They are also the part of the design
+system that userland most commonly re-rolls from scratch — and that's where focus traps break,
+scroll locks leak, spacing drifts and the dialogs stop feeling like the rest of the dashboard.
+
+> Reach for the named component every time. The chrome (border, radius, header/body/footer rhythm,
+> backdrop, focus trap, scroll lock, escape handling) is already wired up — userland never has to
+> own that surface area.
+
+## Pick the right overlay
+
+| You need to…                                                                | Reach for          | Why                                                                                  |
+| --------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------ |
+| Confirm a destructive or irreversible action with one short sentence        | `<ConfirmDialog>`  | `role="alertdialog"`, danger/warn/info variant, no body content beyond a description |
+| Take a small structured input (form, settings) without leaving the page     | `<Modal>`          | 520 px centred sheet with header + body + optional footer slot                       |
+| Show a detail panel for the currently selected row / device / client        | `<Drawer>`         | 380 px right-edge panel; preserves the table behind it for fast row-to-row scanning  |
+| Offer a contextual control next to a trigger (filter, view options, picker) | `<Popover>`        | Anchored under the trigger, no backdrop, returns focus to the trigger on close       |
+| Let users jump to a page or run an action by name (Cmd-K)                   | `<CommandPalette>` | Top-anchored search list with grouped items, arrow-key navigation, fuzzy match       |
+
+If two answers look right, default to the **smaller** surface: Popover before Modal, Modal before
+Drawer, Drawer before a full new page. Each step up consumes more attention.
+
+## Anatomy and rhythm
+
+The reference dashboards use these exact dimensions. Userland that overrides them — wider modals,
+custom paddings — is the second biggest source of visual drift after page-grid gutters.
+
+| Overlay          | Width / height        | Header padding  | Body padding | Footer padding | Radius            |
+| ---------------- | --------------------- | --------------- | ------------ | -------------- | ----------------- |
+| `Modal`          | `520px` × auto        | `20px 20px`     | `16px 20px`  | `14px 20px`    | `--radius-lg`     |
+| `ConfirmDialog`  | `520px` × auto        | `20px 20px`     | `16px 20px`  | `14px 20px`    | `--radius-lg`     |
+| `Drawer`         | `380px` × full height | `20px 20px`     | `16px 20px`  | —              | none (full bleed) |
+| `Popover`        | `200–320px` × auto    | `10px 14px 8px` | `12px 14px`  | —              | `10px`            |
+| `CommandPalette` | `640px` × auto        | input row       | scroll list  | hint row       | `--radius-lg`     |
+
+All overlays trap focus, restore it to the previously-focused element on close, close on `Escape`,
+and lock body scroll where appropriate. Don't reimplement any of that — it ships free with the
+component.
+
+## ConfirmDialog (alertdialog)
+
+Use it for "are you sure?" moments where the only outcome is **confirm** or **cancel**. Don't
+squeeze forms or long copy in here.
+
+```tsx
+import { ConfirmDialog } from '@w5-ui/react'
+;<ConfirmDialog
+  open={open}
+  variant="danger"
+  title="Delete site HQ?"
+  description="Devices, clients and historical data will be removed. This cannot be undone."
+  confirmLabel="Delete site"
+  cancelLabel="Cancel"
+  onConfirm={remove}
+  onCancel={() => setOpen(false)}
+/>
+```
+
+- `variant="danger"` paints the confirm button red — pair it with a verb in the label
+  (`Delete site`), never a generic `Confirm`.
+- `description` is rendered as the dialog's `aria-describedby` body; keep it to one or two short
+  sentences.
+- `aria-labelledby` is wired up automatically — don't render an extra `<h2>` in `description`.
+
+## Modal
+
+Use it for short tasks: invite a user, rename a thing, edit one settings group. Reach for a page
+instead if the form has more than ~8 fields or needs tabs of its own.
+
+```tsx
+import { Modal, Field, Input, Button } from '@w5-ui/react'
+;<Modal
+  open={open}
+  title="Invite admin"
+  onClose={() => setOpen(false)}
+  footer={
+    <>
+      <Button variant="ghost" onClick={() => setOpen(false)}>
+        Cancel
+      </Button>
+      <Button variant="primary" onClick={invite}>
+        Send invite
+      </Button>
+    </>
+  }
+>
+  <Field label="Email">
+    <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+  </Field>
+</Modal>
+```
+
+- Title comes from the `title` prop and becomes the dialog's accessible name — don't render a second
+  heading inside `children`.
+- The body padding already matches `--space-4`/`--space-5`; **don't wrap `children` in another
+  `<div style={{ padding }}>`**.
+- Action buttons go in `footer`, separated by the built-in `gap: 8px`. Primary action goes last
+  (right-most), `ghost` cancel on its left.
+- Backdrop click closes the modal, but only if the mousedown started on the backdrop — clicks that
+  begin inside the modal and drag out (selecting text, etc.) don't dismiss it.
+
+## Drawer
+
+Use it for "the detail view of the currently selected row." The table or list behind it stays
+visible, so the user can scan from row to row without losing their place.
+
+```tsx
+import { Drawer, KVTable } from '@w5-ui/react'
+;<Drawer open={!!device} title={device?.name ?? ''} onClose={() => setDevice(null)}>
+  <KVTable rows={device ? toRows(device) : []} />
+</Drawer>
+```
+
+- The panel is `380px` wide and full-height. Don't override the width — wider drawers start to feel
+  like half a page.
+- Drawers don't ship a footer slot. If you need a save action, put it as a sticky bar inside
+  `children` using `--space-4` vertical padding.
+- The body is the only scrolling region. Don't add a second scroll container inside.
+
+## Popover
+
+Use it for short controls anchored to a trigger button: filters, view toggles, sort options, column
+toggles, colour pickers.
+
+```tsx
+import { Popover, ToggleGroup } from '@w5-ui/react'
+;<Popover label="View" placement="bottom-end" title="View">
+  <ToggleGroup
+    label="Density"
+    options={[
+      { value: 'cosy', label: 'Cosy' },
+      { value: 'compact', label: 'Compact' },
+    ]}
+    values={[density]}
+    onChange={([v]) => v && setDensity(v)}
+  />
+</Popover>
+```
+
+- Popovers are anchored, not portalled — keep the trigger and panel inside the same overflow context
+  so the panel isn't clipped.
+- `title` becomes the popover's accessible name and renders as the uppercase header strip. Skip it
+  for single-purpose popovers; the trigger label already tells the user what they're opening.
+- Use `placement="bottom-end"` for triggers in the right side of a toolbar so the panel doesn't
+  spill off-screen.
+- Popovers don't lock body scroll — wheel scrolling closes the popover. That's intentional; switch
+  to a Modal if you need the user to stay put.
+
+## CommandPalette
+
+Cmd-K style launcher. One per app, mounted at the root.
+
+```tsx
+import { CommandPalette } from '@w5-ui/react'
+;<CommandPalette
+  open={open}
+  onClose={() => setOpen(false)}
+  items={[
+    { id: 'devices', label: 'Devices', group: 'Pages', shortcut: 'G D' },
+    { id: 'invite', label: 'Invite admin…', group: 'Actions' },
+  ]}
+  onSelect={(id) => {
+    setOpen(false)
+    run(id)
+  }}
+/>
+```
+
+- Wire the global `Cmd/Ctrl + K` shortcut at the app level — the component owns the chrome, not the
+  keybinding.
+- `group` partitions items under headers (`Pages`, `Actions`, `Settings`). Keep groups short and
+  predictable; users learn the order.
+- `shortcut` renders as a `<Kbd>` row on the right. Use it for navigation hotkeys, not for
+  describing the action.
+
+## Common mistakes (and the fix)
+
+| Symptom                                                   | Likely cause                                               | Fix                                                                                                      |
+| --------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Modal body has a double border or extra inner padding     | Wrapping `children` in a card or styled `<div>`            | Render content directly inside `<Modal>`; the body already pads `16px 20px`                              |
+| Buttons in the footer hug the right edge with no gap      | Custom `<div style={{ display: 'flex' }}>` inside `footer` | Drop the wrapper. The footer is already `flex`, `justify-end`, `gap: 8px`                                |
+| Modal feels too narrow / too wide                         | Userland sets `width` on the modal panel                   | Don't. `520px` is the standard. If the form needs more, it isn't a modal — make it a page                |
+| Drawer overlaps the topbar instead of slotting under it   | Drawer rendered inside the page instead of the app root    | Mount drawers near the root, outside `<main>`. The fixed positioning takes care of layering              |
+| Body scroll bleeds behind the backdrop                    | Custom modal without `document.body.style.overflow` lock   | Use `<Modal>` / `<ConfirmDialog>`. The lock and restore is built in                                      |
+| Tab key escapes the dialog and focuses elements behind it | Reimplementing the dialog, not using the component         | Use the shipped overlay. Focus trap is wired up in `useEffect`                                           |
+| Popover clipped by a parent `overflow: hidden`            | Trigger sits inside a card or scroll container             | Move the `<Popover>` out of the clipping container, or render the trigger inside the page-header actions |
+| Confirm dialog with a long form inside                    | Misuse of `<ConfirmDialog>`                                | Switch to `<Modal>`. ConfirmDialog is for yes/no only                                                    |
+| Two modals open at once                                   | No mutex on `open` state                                   | Close the active overlay before opening another; nesting modals breaks focus restoration                 |
+| Backdrop click closes mid-text-selection                  | Custom `onClick` handler closes on any backdrop event      | Use `<Modal>`; it tracks `mousedown` on the backdrop and only closes on a true outside click             |
+
+## CSS hooks userland can rely on
+
+These class names ship with `@w5-ui/tokens/dashboard.css` and are used by the overlay components.
+Lean on them if you need to extend an overlay; don't replace them with bespoke selectors.
+
+- `.backdrop`, `.backdrop.show` — full-page dim + blur layer used by Modal / ConfirmDialog
+- `.modal`, `.modal-h`, `.modal-b`, `.modal-f` — modal panel and its header / body / footer slots
+- `.cd-dialog`, `.cd-body`, `.cd-confirm--{danger|warning|info}` — ConfirmDialog variants
+- `.drawer-overlay`, `.drawer-panel`, `.drawer-h`, `.drawer-b` — drawer scrim and panel slots
+- `.popover-root`, `.popover`, `.popover-bottom-{start|end}`, `.popover-h`, `.popover-b` — popover
+  anchor + panel
+- `.cp-backdrop`, `.cmd-*` — command palette chrome
+
+See **Foundations / Spacing** for the underlying `--space-*` and `--radius-*` tokens these classes
+consume, and **Foundations / Page layout** for where overlays sit relative to the rest of the page
+skeleton.

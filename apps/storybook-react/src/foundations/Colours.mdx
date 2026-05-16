@@ -4,46 +4,163 @@ import { Meta } from '@storybook/blocks'
 
 # Colours
 
-The dashboard uses a small, restrained palette. Brand blue `#006FFF` is the only saturated colour.
-Greys, status colours and series colours are sampled from the original Dash tokens.
+The dashboard runs on a deliberately small palette: **one** saturated colour (brand blue), four
+status colours, and an eleven-step neutral ramp. Every surface, line, and label resolves through
+semantic tokens that flip automatically between dark and light motifs. Userland that reaches for raw
+hex (or for Tailwind's default `gray-*` / `slate-*` / `blue-*` palettes) is the second biggest
+source of visual drift from the reference dashboards, right after free-typed pixel spacing.
 
-<div
-  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}
->
-  {[
-    { name: 'Brand', value: '#006FFF' },
-    { name: 'OK', value: '#00B070' },
-    { name: 'Warn', value: '#F5A623' },
-    { name: 'Critical', value: '#F03A3A' },
-    { name: 'BG', value: 'var(--bg)' },
-    { name: 'Surface', value: 'var(--surface)' },
-    { name: 'Card', value: 'var(--card)' },
-    { name: 'Text', value: 'var(--text)' },
-    { name: 'Muted', value: 'var(--text-muted)' },
-    { name: 'Border', value: 'var(--border)' },
-  ].map((c) => (
-    <div
-      key={c.name}
-      style={{
-        borderRadius: 8,
-        overflow: 'hidden',
-        background: 'var(--card)',
-        border: '1px solid var(--border)',
-      }}
-    >
-      <div style={{ height: 60, background: c.value }} />
-      <div style={{ padding: 8 }}>
-        <div style={{ fontWeight: 600 }}>{c.name}</div>
-        <div
-          style={{
-            color: 'var(--text-muted)',
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: 12,
-          }}
-        >
-          {c.value}
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
+> If you typed a hex, you got it wrong. The palette is fixed; pick a token.
+
+## How the layers fit together
+
+```text
+@w5-ui/tokens/tokens.css      ← raw ramps (--brand-*, --status-*, --neutral-*)
+                              ← motif-resolved tokens (--bg-page, --text-1, --border-1, …)
+        │
+        └─ @w5-ui/tokens/tailwind.css  ← exposes every token as a Tailwind v4 utility
+                                           (bg-bg-1, text-text-2, border-border-2, …)
+```
+
+Import `@w5-ui/react/styles.css` (or `@w5-ui/svelte/styles.css`) once at the app entry and you get
+both files transitively. From there: pick **semantic tokens** in component CSS, pick **Tailwind
+utilities** in markup. The raw ramps (`--brand-*`, `--neutral-*`) are for the design system itself —
+userland should rarely reach for them directly.
+
+## Motif: dark by default
+
+The dashboard motif is dark. Light is the marketing/store/onboarding surface only. Toggle by setting
+`data-motif="dark"` or `data-motif="light"` on `<html>` (or any ancestor); every semantic token
+resolves at that subtree.
+
+```html
+<html data-motif="dark">
+  <!-- the default; do this at the root -->
+</html>
+```
+
+```html
+<section data-motif="light"><!-- a light marketing strip inside the dashboard --></section>
+```
+
+Tailwind's `dark:` variant is wired to `data-motif="dark"` via `@custom-variant`, so `dark:bg-bg-1`
+works without `prefers-color-scheme` involvement.
+
+## Pick the right token
+
+### Surfaces (page → card → modal layering)
+
+| Where it lives                             | Token (CSS)   | Tailwind class |
+| ------------------------------------------ | ------------- | -------------- |
+| Outermost page background                  | `--bg-page`   | `bg-bg-page`   |
+| Same value, named for layering math        | `--depthBg-0` | `bg-bg-0`      |
+| Default card / tile body                   | `--depthBg-1` | `bg-bg-1`      |
+| Inset surface inside a card (code, KV row) | `--depthBg-2` | `bg-bg-2`      |
+| Highest pop — popovers, drawers, menus     | `--depthBg-3` | `bg-bg-3`      |
+
+Layer in order: `0 → 1 → 2 → 3`. A modal on top of `--depthBg-1` lands at `--depthBg-3`. Reaching
+across two steps in a single nesting (`0` → `2`) is almost always a bug — there's no card in the
+middle.
+
+### Text (always paired with a surface)
+
+| Use case                                | Token         | Tailwind class   |
+| --------------------------------------- | ------------- | ---------------- |
+| Primary headings, KPI numbers           | `--text-1`    | `text-text-1`    |
+| Body copy, table cells, default labels  | `--text-2`    | `text-text-2`    |
+| Secondary metadata, captions, icon idle | `--text-3`    | `text-text-3`    |
+| Disabled controls, placeholder text     | `--text-4`    | `text-text-4`    |
+| Hyperlinks                              | `--text-link` | `text-text-link` |
+
+The four-step ramp is the entire text vocabulary. Anything else — including `var(--neutral-04)` on a
+label "because that's the colour in Figma" — defeats motif resolution.
+
+### Borders and dividers
+
+| Use case                                | Token        | Tailwind class    |
+| --------------------------------------- | ------------ | ----------------- |
+| Default card / input outline            | `--border-1` | `border-border-1` |
+| Emphasised border (focus-within, hover) | `--border-2` | `border-border-2` |
+| High-contrast border (selected row)     | `--border-3` | `border-border-3` |
+| Horizontal rule between rows in a list  | `--divider`  | `border-divider`  |
+
+`--border-1` is what the reference cards, tables, and inputs use. Reach for `--divider` only when
+you need a hairline between rows that share a surface (table rows, settings list items).
+
+### Primary (brand actions)
+
+| Use case                                          | Token                  | Tailwind class                |
+| ------------------------------------------------- | ---------------------- | ----------------------------- |
+| Primary button fill, focus ring, slider track     | `--primary`            | `bg-primary` / `ring-primary` |
+| Primary button hover state                        | `--primary-hover`      | `bg-primary-hover`            |
+| Primary button active / press state               | `--primary-press`      | `bg-primary-press`            |
+| Foreground on a primary fill                      | `--primary-fg`         | `text-primary-fg`             |
+| Two-tone primary tint (selected, active row tint) | `--primary-twotone-bg` | `bg-primary-twotone-bg`       |
+
+This is the **only** saturated colour in the dashboard. If you find yourself adding a second brand
+colour for a feature, that's a design fork — surface it before shipping.
+
+### Status (success / warning / danger / info)
+
+| Use case                           | Foreground token   | Background token      | Tailwind (fg / bg)                             |
+| ---------------------------------- | ------------------ | --------------------- | ---------------------------------------------- |
+| Success — OK, healthy, online      | `--status-success` | `--status-success-bg` | `text-status-success` / `bg-status-success-bg` |
+| Warning — degraded, attention      | `--status-warning` | `--status-warning-bg` | `text-status-warning` / `bg-status-warning-bg` |
+| Danger — failed, offline, alert    | `--status-danger`  | `--status-danger-bg`  | `text-status-danger` / `bg-status-danger-bg`   |
+| Info — neutral notice, in-progress | `--status-info`    | `--status-info-bg`    | `text-status-info` / `bg-status-info-bg`       |
+| Neutral / unknown / N/A            | `--status-neutral` | —                     | `text-status-neutral`                          |
+
+`*-bg` is the 12% tinted background already wired to pair correctly with its foreground at AA
+contrast. Don't roll your own tint with `opacity-12` — it composites against the wrong base in light
+motif.
+
+### Row interactions (tables, lists, menus)
+
+| State                 | Token          | Tailwind class  |
+| --------------------- | -------------- | --------------- |
+| Row hover             | `--row-hover`  | `bg-row-hover`  |
+| Selected / active row | `--row-active` | `bg-row-active` |
+
+These are translucent overlays — they compose correctly on top of any `--depthBg-*`, so a hovered
+row inside a popover lights up the same way as a hovered row inside a card.
+
+## Common mistakes (and the fix)
+
+| Symptom                                                | Likely cause                                                    | Fix                                                                                          |
+| ------------------------------------------------------ | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Card body is the wrong shade of grey                   | `bg-neutral-900` or `bg-zinc-800` instead of a semantic token   | `bg-bg-1` (`var(--depthBg-1)`). Tailwind's default greys ignore the motif                    |
+| Body copy looks too bright / too dim                   | `text-white` or `text-neutral-400` instead of a text token      | `text-text-1` for headings, `text-text-2` for body, `text-text-3` for metadata               |
+| Page goes blank when motif switches                    | Hardcoded `#0a0a0b` (or any hex) on a background                | Replace with `var(--bg-page)` or `bg-bg-page`. Hex doesn't motif-flip                        |
+| Borders disappear in light motif                       | `border-white/10` or `rgba(255,255,255,0.1)` baked into a class | Use `border-border-1`; it resolves to a black-tinted hairline in light motif                 |
+| Status pill colour clashes with its background         | Custom `bg-red-500/10` + `text-red-500`                         | Use the matched pair `bg-status-danger-bg` + `text-status-danger`                            |
+| Primary button on hover stays the same colour          | Hardcoded `bg-[#006fff]` with no `hover:`                       | Use `bg-primary hover:bg-primary-hover active:bg-primary-press`                              |
+| Selected table row tint looks too vivid in light motif | `bg-blue-500/20` baked in                                       | Use `bg-row-active`; it's already the right tint per motif                                   |
+| Two cards next to each other have different greys      | One uses `bg-bg-1`, the other inherits `bg-bg-2` from a parent  | Cards always sit on `--depthBg-1`. Don't nest cards inside `--depthBg-2` panels              |
+| Focus ring is invisible on a primary button            | Overriding `outline` to `none` without `:focus-visible`         | Don't override. Components ship `:focus-visible` rings using `--focus-ring` (2px brand-05)   |
+| Icon stroke colour doesn't match surrounding text      | Hardcoded `stroke="#fff"` on an SVG                             | Drop the attribute. Dash icons inherit `currentColor`, which already tracks the text token   |
+| New brand colour appears for a feature                 | Designer added a second hue                                     | Stop. Status / primary cover every signalling need. Surface as a design fork before shipping |
+
+## Contrast & accessibility
+
+The semantic tokens are tuned to pass **WCAG 2.2 AA** (4.5:1 for body text, 3:1 for large text and
+non-text UI) at every pair the dashboard actually uses. Specifically:
+
+- `--text-1` / `--text-2` on `--depthBg-0` → `--depthBg-3` — body text passes AA.
+- `--text-3` is the caption / metadata floor. It passes AA on `--depthBg-0` and `--depthBg-1`; if
+  you put it on `--depthBg-3` it sits closer to 4.0:1 — keep it for non-essential text only.
+- `--text-4` is intentionally below AA — it's a disabled / placeholder colour, never primary copy.
+- Status foregrounds on their matched `*-bg` tints pass AA at 14px+.
+
+If you swap any pair (e.g. brand foreground on a custom background), re-check contrast. Don't ship
+"close enough" — focus rings, error messages, and chart legends regress fast when the foreground
+slides one step.
+
+## The take-away
+
+- **Surfaces** ladder `bg-page → bg-1 → bg-2 → bg-3`. Default card is `bg-1`.
+- **Text** is a four-step ramp `text-1 → text-4`. Default body is `text-2`.
+- **One primary**. One. Use `--primary*` for actions, never as decoration.
+- **Status comes in pairs.** `text-status-X` + `bg-status-X-bg`. Don't roll your own tint.
+- **Tailwind defaults are wrong.** `gray-*`, `slate-*`, `blue-*`, `red-*` ignore the motif and
+  ignore the ramps. Stick to the Dash UI utilities (`bg-bg-1`, `text-text-2`, …) and your page will
+  track every future motif and palette tweak for free.

@@ -15,7 +15,35 @@ const preview: Preview = {
       // Storybook 8 requires this to be a literal
       storySort: {
         order: [
+          // Foundation pages get an explicit reading order: alphabetical sort
+          // buries Overview behind 'Actions' and 'Cards', and drops the
+          // Troubleshooting reference into the middle of the conceptual lane.
+          // Reorder so the entry path reads Overview -> Setup -> For agents
+          // -> Recipes (paste-into-userland), then visual primitives, then
+          // component groups, then chart picker, then Troubleshooting last.
           'Foundations',
+          [
+            'Overview',
+            'Setup',
+            'For agents',
+            'Recipes',
+            'Page layout',
+            'Type',
+            'Colours',
+            'Motifs',
+            'Spacing',
+            'Icons',
+            'Cards',
+            'Tables',
+            'Forms',
+            'Actions',
+            'Navigation',
+            'Overlays',
+            'Status & feedback',
+            'Data display',
+            'Charts',
+            'Troubleshooting',
+          ],
           'Dashboard',
           'Layout',
           'Inputs',

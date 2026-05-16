@@ -6,6 +6,7 @@ import './elements/ActionMenu.wc.svelte'
 import './elements/ActivityFeed.wc.svelte'
 import './elements/Alert.wc.svelte'
 import './elements/AnnotatedTimeSeries.wc.svelte'
+import './elements/AppLayout.wc.svelte'
 import './elements/ArcDiagram.wc.svelte'
 import './elements/AreaChart.wc.svelte'
 import './elements/Avatar.wc.svelte'
@@ -14,6 +15,8 @@ import './elements/Badge.wc.svelte'
 import './elements/Banner.wc.svelte'
 import './elements/BarChart.wc.svelte'
 import './elements/BeeswarmChart.wc.svelte'
+import './elements/Body.wc.svelte'
+import './elements/BodyLg.wc.svelte'
 import './elements/BoxPlot.wc.svelte'
 import './elements/Breadcrumb.wc.svelte'
 import './elements/BubbleChart.wc.svelte'
@@ -24,11 +27,15 @@ import './elements/CIDRInput.wc.svelte'
 import './elements/CalendarHeatmap.wc.svelte'
 import './elements/Callout.wc.svelte'
 import './elements/CandlestickChart.wc.svelte'
+import './elements/Caption.wc.svelte'
 import './elements/Card.wc.svelte'
+import './elements/CardMore.wc.svelte'
+import './elements/CardTitle.wc.svelte'
 import './elements/Carousel.wc.svelte'
 import './elements/Checkbox.wc.svelte'
 import './elements/ChordDiagram.wc.svelte'
 import './elements/CirclePacking.wc.svelte'
+import './elements/Code.wc.svelte'
 import './elements/CodeBlock.wc.svelte'
 import './elements/ColorPicker.wc.svelte'
 import './elements/ColumnToggle.wc.svelte'
@@ -44,7 +51,10 @@ import './elements/CountUp.wc.svelte'
 import './elements/CumulativeDistribution.wc.svelte'
 import './elements/DatePicker.wc.svelte'
 import './elements/DateRangePicker.wc.svelte'
+import './elements/Delta.wc.svelte'
 import './elements/Dendrogram.wc.svelte'
+import './elements/Display1.wc.svelte'
+import './elements/Display2.wc.svelte'
 import './elements/Donut.wc.svelte'
 import './elements/DotPlot.wc.svelte'
 import './elements/Drawer.wc.svelte'
@@ -54,15 +64,24 @@ import './elements/DurationInput.wc.svelte'
 import './elements/EmptyState.wc.svelte'
 import './elements/ErrorBandChart.wc.svelte'
 import './elements/ExpandableRow.wc.svelte'
+import './elements/Eyebrow.wc.svelte'
 import './elements/Field.wc.svelte'
+import './elements/FieldStack.wc.svelte'
 import './elements/FileUpload.wc.svelte'
 import './elements/FilterBuilder.wc.svelte'
 import './elements/FlameGraph.wc.svelte'
 import './elements/ForceGraph.wc.svelte'
+import './elements/FormActions.wc.svelte'
+import './elements/FormRow.wc.svelte'
 import './elements/FunnelChart.wc.svelte'
 import './elements/GanttChart.wc.svelte'
 import './elements/Gauge.wc.svelte'
+import './elements/Grid.wc.svelte'
 import './elements/GroupedList.wc.svelte'
+import './elements/H1.wc.svelte'
+import './elements/H2.wc.svelte'
+import './elements/H3.wc.svelte'
+import './elements/H4.wc.svelte'
 import './elements/HealthBar.wc.svelte'
 import './elements/HeatMap.wc.svelte'
 import './elements/HexbinChart.wc.svelte'
@@ -80,20 +99,27 @@ import './elements/JsonViewerNode.wc.svelte'
 import './elements/KVTable.wc.svelte'
 import './elements/KanbanBoard.wc.svelte'
 import './elements/Kbd.wc.svelte'
+import './elements/Label.wc.svelte'
 import './elements/LineChart.wc.svelte'
 import './elements/LogViewer.wc.svelte'
 import './elements/LollipopChart.wc.svelte'
 import './elements/MACInput.wc.svelte'
+import './elements/Mac.wc.svelte'
 import './elements/MarimekkoChart.wc.svelte'
 import './elements/MatrixChart.wc.svelte'
 import './elements/Menubar.wc.svelte'
 import './elements/MirroredBarChart.wc.svelte'
 import './elements/Modal.wc.svelte'
+import './elements/Mono.wc.svelte'
 import './elements/MultiSelect.wc.svelte'
+import './elements/Muted.wc.svelte'
+import './elements/NameCell.wc.svelte'
 import './elements/NightingaleChart.wc.svelte'
+import './elements/NotifDot.wc.svelte'
 import './elements/NotificationPanel.wc.svelte'
 import './elements/NumberInput.wc.svelte'
 import './elements/OTPInput.wc.svelte'
+import './elements/PageHeader.wc.svelte'
 import './elements/Pagination.wc.svelte'
 import './elements/ParallelCoordinates.wc.svelte'
 import './elements/ParetoChart.wc.svelte'
@@ -132,18 +158,24 @@ import './elements/SparklineMatrix.wc.svelte'
 import './elements/Spinner.wc.svelte'
 import './elements/SplitButton.wc.svelte'
 import './elements/Spoiler.wc.svelte'
+import './elements/SrOnly.wc.svelte'
 import './elements/StackedBarChart.wc.svelte'
 import './elements/StackedProgress.wc.svelte'
 import './elements/StarRating.wc.svelte'
 import './elements/Stat.wc.svelte'
+import './elements/StatNumber.wc.svelte'
 import './elements/StatusIndicator.wc.svelte'
+import './elements/StatusRing.wc.svelte'
 import './elements/StepChart.wc.svelte'
 import './elements/Stepper.wc.svelte'
 import './elements/StreamGraph.wc.svelte'
 import './elements/StripeChart.wc.svelte'
+import './elements/Submeta.wc.svelte'
 import './elements/SunburstChart.wc.svelte'
 import './elements/SwitchPortGrid.wc.svelte'
 import './elements/TabPanel.wc.svelte'
+import './elements/TablePager.wc.svelte'
+import './elements/TableShell.wc.svelte'
 import './elements/Tabs.wc.svelte'
 import './elements/Tag.wc.svelte'
 import './elements/TagInput.wc.svelte'
@@ -157,9 +189,11 @@ import './elements/Toggle.wc.svelte'
 import './elements/ToggleGroup.wc.svelte'
 import './elements/Tooltip.wc.svelte'
 import './elements/Topbar.wc.svelte'
+import './elements/TopbarActions.wc.svelte'
 import './elements/TransferList.wc.svelte'
 import './elements/TreeMap.wc.svelte'
 import './elements/TreeView.wc.svelte'
+import './elements/Unit.wc.svelte'
 import './elements/UptimeTimeline.wc.svelte'
 import './elements/VennDiagram.wc.svelte'
 import './elements/ViolinPlot.wc.svelte'
@@ -174,6 +208,7 @@ export const REGISTERED_TAGS = [
   'uni-activity-feed',
   'uni-alert',
   'uni-annotated-time-series',
+  'uni-app-layout',
   'uni-arc-diagram',
   'uni-area-chart',
   'uni-avatar',
@@ -182,6 +217,8 @@ export const REGISTERED_TAGS = [
   'uni-banner',
   'uni-bar-chart',
   'uni-beeswarm-chart',
+  'uni-body',
+  'uni-body-lg',
   'uni-box-plot',
   'uni-breadcrumb',
   'uni-bubble-chart',
@@ -192,11 +229,15 @@ export const REGISTERED_TAGS = [
   'uni-calendar-heatmap',
   'uni-callout',
   'uni-candlestick-chart',
+  'uni-caption',
   'uni-card',
+  'uni-card-more',
+  'uni-card-title',
   'uni-carousel',
   'uni-checkbox',
   'uni-chord-diagram',
   'uni-circle-packing',
+  'uni-code',
   'uni-code-block',
   'uni-color-picker',
   'uni-column-toggle',
@@ -212,7 +253,10 @@ export const REGISTERED_TAGS = [
   'uni-cumulative-distribution',
   'uni-date-picker',
   'uni-date-range-picker',
+  'uni-delta',
   'uni-dendrogram',
+  'uni-display1',
+  'uni-display2',
   'uni-donut',
   'uni-dot-plot',
   'uni-drawer',
@@ -222,15 +266,24 @@ export const REGISTERED_TAGS = [
   'uni-empty-state',
   'uni-error-band-chart',
   'uni-expandable-row',
+  'uni-eyebrow',
   'uni-field',
+  'uni-field-stack',
   'uni-file-upload',
   'uni-filter-builder',
   'uni-flame-graph',
   'uni-force-graph',
+  'uni-form-actions',
+  'uni-form-row',
   'uni-funnel-chart',
   'uni-gantt-chart',
   'uni-gauge',
+  'uni-grid',
   'uni-grouped-list',
+  'uni-h1',
+  'uni-h2',
+  'uni-h3',
+  'uni-h4',
   'uni-health-bar',
   'uni-heat-map',
   'uni-hexbin-chart',
@@ -248,20 +301,27 @@ export const REGISTERED_TAGS = [
   'uni-kvtable',
   'uni-kanban-board',
   'uni-kbd',
+  'uni-label',
   'uni-line-chart',
   'uni-log-viewer',
   'uni-lollipop-chart',
   'uni-macinput',
+  'uni-mac',
   'uni-marimekko-chart',
   'uni-matrix-chart',
   'uni-menubar',
   'uni-mirrored-bar-chart',
   'uni-modal',
+  'uni-mono',
   'uni-multi-select',
+  'uni-muted',
+  'uni-name-cell',
   'uni-nightingale-chart',
+  'uni-notif-dot',
   'uni-notification-panel',
   'uni-number-input',
   'uni-otpinput',
+  'uni-page-header',
   'uni-pagination',
   'uni-parallel-coordinates',
   'uni-pareto-chart',
@@ -300,18 +360,24 @@ export const REGISTERED_TAGS = [
   'uni-spinner',
   'uni-split-button',
   'uni-spoiler',
+  'uni-sr-only',
   'uni-stacked-bar-chart',
   'uni-stacked-progress',
   'uni-star-rating',
   'uni-stat',
+  'uni-stat-number',
   'uni-status-indicator',
+  'uni-status-ring',
   'uni-step-chart',
   'uni-stepper',
   'uni-stream-graph',
   'uni-stripe-chart',
+  'uni-submeta',
   'uni-sunburst-chart',
   'uni-switch-port-grid',
   'uni-tab-panel',
+  'uni-table-pager',
+  'uni-table-shell',
   'uni-tabs',
   'uni-tag',
   'uni-tag-input',
@@ -325,9 +391,11 @@ export const REGISTERED_TAGS = [
   'uni-toggle-group',
   'uni-tooltip',
   'uni-topbar',
+  'uni-topbar-actions',
   'uni-transfer-list',
   'uni-tree-map',
   'uni-tree-view',
+  'uni-unit',
   'uni-uptime-timeline',
   'uni-venn-diagram',
   'uni-violin-plot',

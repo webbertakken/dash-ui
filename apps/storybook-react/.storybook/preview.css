@@ -24,8 +24,14 @@ html[data-motif='light'] {
   color-scheme: light;
 }
 
+/* Canvas-view stories: Storybook's addons panel (Controls/Actions/etc.) docks
+   along the bottom of the iframe. With only 16px padding, the last bit of a
+   tall chart sits flush against the iframe edge and gets visually clipped by
+   the panel handle / resize gutter — you have to nudge-scroll the iframe to
+   see the chart's baseline. Add a generous bottom gutter so the whole graph
+   stays visible even when the addons panel is open. */
 #storybook-root {
-  padding: 16px;
+  padding: 16px 16px 96px;
   min-height: 100vh;
 }
 
@@ -49,9 +55,378 @@ html[data-motif='light'] {
 .sbdocs th {
   color: var(--text-1);
 }
+
+/* MDX heading scale: dashboard.css sets `html, body { font-size: 13px }` for
+   the dashboard chrome density, so Storybook Docs headings fall back to
+   em-based browser defaults computed off a 13px root — h3 caps at ~15px and
+   h4 lands at exactly 13px, indistinguishable from body prose. Pin explicit
+   sizes from the dash-ui typography scale so `# / ## / ### / ####` markers in
+   foundation pages render with a real visual hierarchy. */
+.sbdocs h1 {
+  font-size: var(--fs-30);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-display);
+  margin: 24px 0 12px;
+}
+.sbdocs h2 {
+  font-size: var(--fs-24);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  margin: 28px 0 12px;
+}
+.sbdocs h3 {
+  font-size: var(--fs-18);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  margin: 24px 0 8px;
+}
+.sbdocs h4 {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  margin: 20px 0 8px;
+}
+/* First-heading top-margin reset: every MDX foundation page starts with an
+   `# Page Title` H1 (immediately after the `<Meta />` directive, which emits
+   no DOM). Storybook's `.sbdocs-content` already provides the page-top
+   gutter, so the 24/28/24/20px top margins above stack on top of it and
+   push the page title visibly below where the eye expects it. Reset top
+   margin only when the heading is the first visible child of its container
+   — section breaks between sibling H2/H3s keep their breathing room. */
+.sbdocs h1:first-child,
+.sbdocs h2:first-child,
+.sbdocs h3:first-child,
+.sbdocs h4:first-child {
+  margin-top: 0;
+}
+
+/* MDX body prose + lists: dashboard.css `html, body { font-size: 13px }` for
+   dashboard-chrome density cascades into Storybook Docs, so paragraphs,
+   bullets, and numbered steps in foundation pages render at 13px — too
+   small for prose meant to be read top-to-bottom. Pin a proper docs body
+   size + line-height so foundation pages read like documentation, not
+   like a dense data-table caption. */
+.sbdocs p,
+.sbdocs li {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.sbdocs p {
+  margin: 12px 0;
+}
+.sbdocs ul,
+.sbdocs ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+.sbdocs li {
+  margin: 4px 0;
+}
+.sbdocs li > p {
+  margin: 4px 0;
+}
+/* MDX list markers (bullets + numbers): browser-default `::marker` inherits
+   `<li>` colour, so bullets render at full --text-1 intensity and visually
+   outweigh the item content — especially on label-style lists like
+   `- **Term**: description` where the bullet competes with the bold term for
+   first-glance attention. Mute markers to --text-3 (same affordance React
+   docs / Tailwind docs use) so the bullet recedes and the list content reads
+   first. */
+.sbdocs li::marker {
+  color: var(--text-3);
+}
+/* MDX prose measure (line length): Storybook's .sbdocs-content runs at
+   ~1000px, which at our 14px body size yields ~120 characters per line —
+   well past the 45–75 char comfortable-reading range (React docs / Tailwind
+   docs / MDN all cap at ~65–75 ch). Constrain only the prose elements; let
+   tables, code blocks, and headings keep the full width so lookup tables
+   and code samples don't get clipped. */
+.sbdocs p,
+.sbdocs ul,
+.sbdocs ol,
+.sbdocs blockquote {
+  max-width: 72ch;
+}
+.sbdocs td p,
+.sbdocs td ul,
+.sbdocs td ol,
+.sbdocs th p,
+.sbdocs th ul,
+.sbdocs th ol {
+  max-width: none;
+}
+
+/* MDX inline code chips: the chip background is --depthBg-2, which is also
+   the background of .sbdocs th, .sbdocs pre and .sbdocs blockquote — so inline
+   `code` inside table headers (e.g. `--space-1`, `<Card>`) and blockquote
+   callouts renders as plain text on a same-colour surface and disappears. Add
+   a thin token-driven border so chips stay demarcated on every surface, and
+   pin the mono font + a slightly smaller em size so chips don't visually
+   outweigh surrounding prose. --depthBg-2 (not --neutral-08) so the surface
+   actually flips between dark and light motif — --neutral-08 is fixed at
+   #1c1c1e in both motifs, so in light mode the chip/pre/th/blockquote
+   surface stayed near-black against near-black --text-1 / --text-2 and
+   failed WCAG 1.4.3 contrast. */
 .sbdocs code {
   color: var(--text-2);
-  background: var(--neutral-08);
+  background: var(--depthBg-2);
+  border: 1px solid var(--border-2);
   padding: 1px 4px;
   border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+/* MDX prose links: dashboard.css resets `a { color: inherit; text-decoration: none }`
+   for app chrome, which makes links inside MDX docs visually indistinguishable from
+   surrounding prose (fails WCAG 1.4.1 use-of-colour). Restore the docs link
+   affordance: --text-link colour + underline by default, drop underline on hover. */
+.sbdocs a,
+.sbdocs a:link,
+.sbdocs a:visited {
+  color: var(--text-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sbdocs a:hover,
+.sbdocs a:focus-visible {
+  text-decoration: none;
+}
+/* MDX heading anchor icons: Storybook wraps every MDX heading with an
+   `OcticonAnchor` (styled.a { color: inherit }) link icon for in-page
+   jump-to-section. Our `.sbdocs a` rule above wins on specificity and tints
+   the icon `--text-link` + adds an underline, painting a visible blue/orange
+   underlined link-icon to the left of every foundation page heading. Reset
+   the icon back to inheriting the heading colour and drop the underline so
+   the chrome stops competing with the heading text. The icon stays
+   click-able (and keeps its aria-hidden for SR users). */
+.sbdocs h1 > a,
+.sbdocs h2 > a,
+.sbdocs h3 > a,
+.sbdocs h4 > a,
+.sbdocs h5 > a,
+.sbdocs h6 > a {
+  color: inherit;
+  text-decoration: none;
+}
+.sbdocs h1 > a:hover,
+.sbdocs h2 > a:hover,
+.sbdocs h3 > a:hover,
+.sbdocs h4 > a:hover,
+.sbdocs h5 > a:hover,
+.sbdocs h6 > a:hover {
+  text-decoration: none;
+}
+
+/* MDX code blocks: dashboard.css doesn't style <pre>, and the inline-chip rule
+   above bleeds into <pre><code>, making fenced code blocks render as a single
+   dark chip with no padding or scroll. Reset <pre><code> back to a real code
+   block, and repaint the surface with the Dracula palette so syntax
+   highlighting reads the same in both motifs (Dracula is dark-only by design;
+   keeping it consistent across light + dark motif means foundation pages
+   never flicker between two code-block themes when motif toggles). */
+.sbdocs pre {
+  background: #282a36;
+  color: #f8f8f2;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 1px solid #44475a;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 16px 0;
+}
+.sbdocs pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  font-size: inherit;
+  font-family: inherit;
+}
+/* Storybook 8 wraps the outer <pre> with a `<div class="docblock-source">`
+   that paints its own surface via emotion; without re-pinning the Dracula
+   bg here the wrapper bleeds back through and the inner Prism <pre> looks
+   like a token island. */
+.sbdocs pre .docblock-source,
+.sbdocs .docblock-source {
+  background: #282a36;
+}
+.sbdocs pre.prismjs {
+  background: #282a36;
+  color: #f8f8f2;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Dracula token palette (https://draculatheme.com/prism). Applied to Prism's
+   token spans inside every MDX code fence so HTML/TSX/CSS/JSON/YAML/bash all
+   highlight with the same six-colour vocabulary (pink keywords / purple
+   literals / green strings / yellow callables / cyan keywords / orange
+   regex). Selectors are prefixed with `.sbdocs pre` (4 classes) so they
+   outrank Storybook's emotion-injected `.css-XXX * .token.X` rules (3
+   classes) which would otherwise win on later cascade order. Scoped under
+   `.sbdocs pre` so dashboard chrome outside MDX docs (real app stories,
+   any tokenised source not inside a `<pre>`) is untouched. */
+.sbdocs pre .token.comment,
+.sbdocs pre .token.prolog,
+.sbdocs pre .token.cdata {
+  color: #6272a4;
+}
+.sbdocs pre .token.punctuation {
+  color: #f8f8f2;
+}
+.sbdocs pre .token.namespace {
+  opacity: 0.7;
+}
+.sbdocs pre .token.property,
+.sbdocs pre .token.tag,
+.sbdocs pre .token.constant,
+.sbdocs pre .token.symbol,
+.sbdocs pre .token.deleted {
+  color: #ff79c6;
+}
+.sbdocs pre .token.boolean,
+.sbdocs pre .token.number {
+  color: #bd93f9;
+}
+.sbdocs pre .token.selector,
+.sbdocs pre .token.attr-name,
+.sbdocs pre .token.string,
+.sbdocs pre .token.char,
+.sbdocs pre .token.builtin,
+.sbdocs pre .token.inserted {
+  color: #50fa7b;
+}
+.sbdocs pre .token.operator,
+.sbdocs pre .token.entity,
+.sbdocs pre .token.url,
+.sbdocs pre .language-css .token.string,
+.sbdocs pre .style .token.string,
+.sbdocs pre .token.variable {
+  color: #f8f8f2;
+}
+.sbdocs pre .token.atrule,
+.sbdocs pre .token.attr-value,
+.sbdocs pre .token.function,
+.sbdocs pre .token.class-name {
+  color: #f1fa8c;
+}
+.sbdocs pre .token.keyword {
+  color: #8be9fd;
+}
+.sbdocs pre .token.regex,
+.sbdocs pre .token.important {
+  color: #ffb86c;
+}
+.sbdocs pre .token.important,
+.sbdocs pre .token.bold {
+  font-weight: bold;
+}
+.sbdocs pre .token.italic {
+  font-style: italic;
+}
+.sbdocs pre .token.entity {
+  cursor: help;
+}
+
+/* MDX tables: dashboard.css globally styles table/th/td for dashboard data
+   tables (sticky header, uppercase 10px caps, hardcoded #141415 bg). Those
+   rules leak into MDX docs tables and make them look like data grids. Reset
+   for the docs context. */
+.sbdocs table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.sbdocs th,
+.sbdocs td {
+  border: 1px solid var(--border-2);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  text-transform: none;
+  letter-spacing: 0;
+  height: auto;
+  position: static;
+}
+.sbdocs th {
+  background: var(--depthBg-2);
+  color: var(--text-1);
+  font-weight: 600;
+  font-size: 13px;
+}
+.sbdocs td {
+  color: var(--text-1);
+}
+/* Zebra rhythm: foundation lookup tables (ForAgents Tailwind-drift cheat
+   sheet, Troubleshooting symptom map) run 25–80 rows of left-vs-right pairs.
+   Plain MDX tables make the eye lose its place mid-row. --row-hover is the
+   same token the dashboard uses for table-row tint (rgba 0.04 in both
+   motifs) so the rhythm is visible without competing with the row contents. */
+.sbdocs tbody tr:nth-child(even) td {
+  background: var(--row-hover);
+}
+/* MDX table hover: dashboard.css `tbody tr:hover td { background: rgba(255,
+   255, 255, 0.02) }` exists to signal row-clickability on interactive data
+   grids — but MDX docs tables (ForAgents Tailwind-drift cheat sheet,
+   Troubleshooting symptom map) are static lookup grids, so the hover
+   affordance is misleading: it pulls the eye toward "the row I'm hovering"
+   instead of letting it read left-vs-right pairs at its own pace. Drop the
+   leak on docs tables, but re-apply --row-hover on even rows so the zebra
+   rhythm survives a hover pass. */
+.sbdocs tbody tr:hover td {
+  background: transparent;
+}
+.sbdocs tbody tr:nth-child(even):hover td {
+  background: var(--row-hover);
+}
+
+/* MDX scrollbars: dashboard.css ::-webkit-scrollbar-thumb/track use hardcoded
+   dark colours (#2a2a2c / #0a0a0b) so MDX code-block scrollbars look out of
+   place in light-motif docs. Rebind to tokens inside .sbdocs so both motifs
+   render consistently. */
+.sbdocs ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.sbdocs ::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+  border-radius: 6px;
+  border: 2px solid var(--bg-page);
+}
+.sbdocs ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* MDX blockquotes: foundation pages use `> ...` as standalone callouts for
+   key insights ("Reach for the named component every time.", "If you didn't
+   set data-motif, you didn't pick a motif."). Storybook's default renders
+   them as italic prose with no visual hierarchy, so they blend into the
+   surrounding paragraphs. Promote them to a tinted left-bar callout that
+   actually reads as a callout in both motifs. */
+.sbdocs blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--depthBg-2);
+  border-left: 3px solid var(--text-link);
+  border-radius: 0 6px 6px 0;
+  color: var(--text-1);
+  font-style: normal;
+}
+.sbdocs blockquote > :first-child {
+  margin-top: 0;
+}
+.sbdocs blockquote > :last-child {
+  margin-bottom: 0;
+}
+.sbdocs blockquote p {
+  margin: 0;
+  color: var(--text-1);
 }

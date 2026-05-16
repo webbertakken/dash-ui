@@ -56,8 +56,156 @@ a {
   grid-template-rows: 48px 1fr;
   height: 100vh;
 }
-/* Topbar / IconButton / Avatar / AvatarGroup CSS removed: see scoped
- * Tailwind utilities in the corresponding .svelte files. */
+/* ===== Topbar ===== *
+ * Mirrors the Tailwind utilities baked into Topbar.svelte so the React
+ * Topbar (and any non-Tailwind userland) renders with the same chrome.
+ * The chrome is intentionally ALWAYS dark, independent of `data-motif`. */
+.topbar {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  flex-shrink: 0;
+  gap: 0;
+  padding: 0 var(--space-2);
+  background: var(--neutral-10);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.topbar .site-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+.topbar .site-switch:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.topbar .site-switch:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+.status-ring {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: rgba(0, 176, 112, 0.18);
+  align-items: center;
+  justify-content: center;
+}
+.status-ring::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--status-success);
+}
+.status-ring--warn {
+  background: rgba(245, 166, 35, 0.18);
+}
+.status-ring--warn::after {
+  background: var(--status-warning);
+}
+.status-ring--danger {
+  background: rgba(240, 58, 58, 0.18);
+}
+.status-ring--danger::after {
+  background: var(--status-danger);
+}
+.status-ring--neutral {
+  background: rgba(110, 112, 121, 0.18);
+}
+.status-ring--neutral::after {
+  background: var(--status-neutral);
+}
+.topbar .site-name {
+  font-size: var(--fs-13);
+  font-weight: var(--fw-medium);
+  color: var(--neutral-00);
+}
+.topbar .caret {
+  width: 14px;
+  height: 14px;
+  color: var(--neutral-04);
+}
+.topbar .app-tabs {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  gap: 2px;
+  margin-left: 14px;
+}
+.topbar .app-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 64px;
+  padding: 6px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--neutral-04);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.topbar .app-tab:hover {
+  color: var(--neutral-00);
+}
+.topbar .app-tab.active {
+  color: var(--neutral-00);
+  border-bottom-color: var(--brand-05);
+}
+.topbar .app-tab img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.65;
+  filter: brightness(1);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    filter var(--dur-base) var(--ease-out);
+}
+.topbar .app-tab:hover img {
+  opacity: 0.9;
+  filter: brightness(1.4);
+}
+.topbar .app-tab.active img {
+  opacity: 1;
+  filter: brightness(1.6);
+}
+.topbar .app-tab .label {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: var(--fw-medium);
+  line-height: 1;
+}
+.topbar .app-tab:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+.topbar-spacer {
+  flex: 1;
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding-right: var(--space-2);
+}
+/* Bell-icon notification dot. Token-driven so userland can theme via
+ * --status-danger / --neutral-10 instead of patching component markup. */
+.topbar-notif-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  background: var(--status-danger);
+  border-radius: 9999px;
+  border: 1.5px solid var(--neutral-10);
+}
 
 /* ===== Workspace ===== */
 .workspace {
@@ -65,7 +213,92 @@ a {
   grid-template-columns: 220px 1fr;
   min-height: 0;
 }
-/* Sidebar CSS removed: see scoped Tailwind utilities in Sidebar.svelte. */
+/* ===== Sidebar =====
+ * Mirrors the Tailwind utilities baked into Sidebar.svelte so the React
+ * Sidebar (and any non-Tailwind userland) renders with the same chrome.
+ * Chrome stays dark regardless of `data-motif`, matching Topbar. */
+.sidebar {
+  overflow: auto;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--neutral-10);
+  padding: var(--space-2) 0;
+}
+.sidebar .sb-section {
+  margin: 0;
+  padding: 14px var(--space-4) 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  color: var(--neutral-05);
+}
+.sidebar .sb-list {
+  margin: 0;
+  padding: 0 var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  list-style: none;
+}
+.sidebar .sb-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: #c8c9d0;
+  font: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+}
+.sidebar .sb-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.sidebar .sb-item.active {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+.sidebar .sb-item.active .sb-ico {
+  color: var(--brand-05);
+}
+.sidebar .sb-item:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+.sidebar .sb-ico {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--neutral-04);
+}
+.sidebar .sb-ico svg {
+  width: 16px;
+  height: 16px;
+}
+.sidebar .sb-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--neutral-05);
+}
+.sidebar .sb-item.active .sb-count {
+  color: var(--neutral-04);
+}
+.sidebar .sb-pill {
+  margin-left: auto;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  background: var(--brand-05);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+}
 
 /* ===== Content ===== */
 .content {
@@ -117,18 +350,103 @@ a {
   color: #6e7079;
 }
 
-/* Button CSS removed: see scoped Tailwind utilities in Button.svelte. */
+/* Button chrome (tokens): mirror the Tailwind utilities baked into
+   Button.svelte/IconButton.svelte so React + userland render the same
+   button without needing Tailwind. Values match Svelte exactly. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 100ms;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--brand-05);
+  outline-offset: 2px;
+}
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.btn-primary {
+  background: var(--brand-05);
+  color: #fff;
+  border-color: transparent;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--brand-06);
+}
+.btn-ghost {
+  background: transparent;
+  color: #c8c9d0;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.btn-danger {
+  background: transparent;
+  color: #ff7b7b;
+  border-color: rgba(240, 58, 58, 0.3);
+}
+.btn-icon {
+  width: 30px;
+  padding: 0;
+  justify-content: center;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  color: var(--neutral-04);
+  background: transparent;
+  cursor: pointer;
+}
+.icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.icon-btn:focus-visible {
+  outline: 2px solid var(--brand-05);
+  outline-offset: 2px;
+}
 
 .grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 12px;
-  padding: 16px 24px;
+  padding: 16px 24px calc(16px + var(--bottom-panel-h, 0px));
 }
-/* Card root CSS removed: see scoped Tailwind utilities in Card.svelte.
- * The `.card h3` consumer-slot rules below stay until every page that
- * puts an `<h3>` inside a Card has migrated those headings to Tailwind
- * utilities of its own. */
+/* When a fixed bottom bar is mounted, lift --bottom-panel-h so .grid
+   reserves room for it. Userland gets correct clearance for free. */
+:root:has(.sel-toolbar) {
+  --bottom-panel-h: 76px;
+}
+/* Card chrome (tokens): mirror the Tailwind utilities baked into
+   Card.svelte so React + userland render the same tile without
+   needing Tailwind. Motif-blind on purpose (matches Svelte). */
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: var(--space-2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--neutral-09);
+  padding: 14px var(--space-4);
+}
 .card h3 {
   margin: 0;
   font-size: 12px;
@@ -143,7 +461,36 @@ a {
   cursor: pointer;
   color: #6e7079;
 }
-/* Stat CSS removed: see scoped Tailwind utilities in Stat.svelte. */
+/* Stat hero rhythm (tokens): matches Type/DataDisplay MDX contract
+   (30px hero, 12px unit, 11px submeta) and the Tailwind utilities
+   baked into Stat.svelte. Used by <Stat> and by reference pages that
+   emit the raw classes directly (Dashboard/Security/Vpn). */
+.stat {
+  font-family: var(--font-sans);
+  font-size: var(--fs-30);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-1);
+}
+.stat .unit {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-regular);
+  color: var(--text-3);
+  margin-left: var(--space-1);
+}
+.submeta {
+  font-size: var(--fs-11);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+.delta-up {
+  color: var(--status-success);
+}
+.delta-down {
+  color: var(--status-danger);
+}
 
 /* Pill CSS removed: see scoped Tailwind utilities in Pill.svelte. */
 
@@ -187,6 +534,45 @@ td {
 }
 tbody tr:hover td {
   background: rgba(255, 255, 255, 0.02);
+}
+/* Table shell: page-level wrapper for full-width tables that live outside
+   a <Card>. Mirrors the inline style every dashboard page uses today so
+   userland gets the same chrome from a single class. */
+.table-shell {
+  background: var(--neutral-09);
+  border: 1px solid var(--border-1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+/* Table pager row: sibling under .table-shell carrying rows-per-page on the
+   left and the <Pagination> nav on the right. Mirrors the inline flex /
+   space-between / margin-top: 12px every reference Devices-style page uses
+   today so userland drops the bespoke wrapper. */
+.table-pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-3);
+}
+/* Form layout primitives: mirror the rhythm every reference Settings card
+   uses today (14px column gap, 6px top offset, 16px stack, right-aligned
+   action row) so userland can drop the inline styles. */
+.field-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 6px;
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
 }
 .mac {
   font-family: 'JetBrains Mono', monospace;
@@ -816,6 +1202,16 @@ tbody tr:hover td {
 }
 
 /* SkipLink CSS removed: see scoped Tailwind utilities in SkipLink.svelte. */
+
+/* ===== Muted text utility =====
+   Drops a phrase to the tertiary text colour (--text-3) so secondary
+   metadata, captions and "X active" lines sit visually below the primary
+   label without losing AA contrast. Matches the colour used by .submeta,
+   .stat .unit and the .card h3 title chrome. Inline-by-default so the
+   parent line-height and flex layout keep working unchanged. */
+.t-muted {
+  color: var(--text-3);
+}
 
 /* ===== Visually-hidden utility (WCAG 2.4.6 Headings and Labels) =====
    Hides content visually while keeping it available to assistive tech. */
@@ -1753,8 +2149,14 @@ tr:hover .action-menu-trigger,
   }
 }
 
-/* ===== Tag (removable filter chip, WCAG 4.1.2 / 2.1.1) ===== */
-.tag {
+/* ===== Tag (removable filter chip, WCAG 4.1.2 / 2.1.1) =====
+   `:not(.token)` excludes Prism syntax-highlighter spans (which receive
+   `class="token tag"` for every HTML/JSX/TSX opening or closing tag); without
+   it, our chip styling bleeds onto every code-block token and renders MDX
+   foundations pages as a soup of blue pastel pills. The dash-ui <Tag>
+   primitive renders `<span class="tag">` without `.token`, so this scope is
+   transparent for real userland usages. */
+.tag:not(.token) {
   display: inline-flex;
   align-items: center;
   gap: 4px;

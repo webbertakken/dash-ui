@@ -6,10 +6,12 @@
     activeApp = undefined,
     apps = DEFAULT_APPS,
     initials = 'MS',
-    notificationCount = 1
+    notificationCount = 1,
+    status = 'ok',
+    siteSwitchable = true
   } = $props();
 </script>
 
-<Original {siteName} {activeApp} {apps} {initials} {notificationCount}>
+<Original {siteName} {activeApp} {apps} {initials} {notificationCount} {status} {siteSwitchable}>
   <slot />
 </Original>

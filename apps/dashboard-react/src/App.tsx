@@ -1,5 +1,5 @@
 import {
-  SkipLink,
+  AppLayout,
   Topbar,
   Sidebar,
   Modal,
@@ -118,31 +118,27 @@ export function App() {
   }, [])
 
   return (
-    <div className="app">
-      <SkipLink />
-      <Topbar siteName="Demo cluster" activeApp={activeApp} onAppChange={setActiveApp} />
-      <div className="workspace">
-        <Sidebar sections={SECTIONS} activeId={page} onChange={setPage} />
-        <main className="content" id="main-content" tabIndex={-1} aria-labelledby="page-title">
-          <h1 id="page-title" className="sr-only">
-            {pageLabel}
-          </h1>
-          {page === 'dashboard' && <Dashboard onAdopt={openAdopt} />}
-          {page === 'devices' && <Devices onAdopt={openAdopt} />}
-          {page === 'clients' && <Clients />}
-          {page === 'topology' && <Topology />}
-          {page === 'alarms' && <Alarms />}
-          {page === 'logs' && <Logs />}
-          {page === 'wifi' && <Wifi />}
-          {page === 'ports' && <Ports />}
-          {page === 'vpn' && <Vpn />}
-          {page === 'security' && <Security />}
-          {page === 'settings' && <Settings />}
-          {page === 'wireless' && <Wireless />}
-          {page === 'infra' && <Infrastructure />}
-          {page === 'integrations' && <Integrations />}
-        </main>
-      </div>
+    <>
+      <AppLayout
+        pageLabel={pageLabel}
+        topbar={<Topbar siteName="Demo cluster" activeApp={activeApp} onAppChange={setActiveApp} />}
+        sidebar={<Sidebar sections={SECTIONS} activeId={page} onChange={setPage} />}
+      >
+        {page === 'dashboard' && <Dashboard onAdopt={openAdopt} />}
+        {page === 'devices' && <Devices onAdopt={openAdopt} />}
+        {page === 'clients' && <Clients />}
+        {page === 'topology' && <Topology />}
+        {page === 'alarms' && <Alarms />}
+        {page === 'logs' && <Logs />}
+        {page === 'wifi' && <Wifi />}
+        {page === 'ports' && <Ports />}
+        {page === 'vpn' && <Vpn />}
+        {page === 'security' && <Security />}
+        {page === 'settings' && <Settings />}
+        {page === 'wireless' && <Wireless />}
+        {page === 'infra' && <Infrastructure />}
+        {page === 'integrations' && <Integrations />}
+      </AppLayout>
 
       <Toaster />
 
@@ -197,6 +193,6 @@ export function App() {
         <Field label="Device name" defaultValue="AP Pro · Warehouse" />
         <Field label="Site" defaultValue="Demo cluster" />
       </Modal>
-    </div>
+    </>
   )
 }
