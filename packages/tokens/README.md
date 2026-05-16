@@ -20,16 +20,24 @@ The CSS exports two motifs:
 
 ## CSS entry points
 
-The package ships three CSS files. Pick by what your app needs:
+The package ships four CSS files. Pick by what your app needs:
 
-| Import                        | What it ships                                                      | When                                             |
-| ----------------------------- | ------------------------------------------------------------------ | ------------------------------------------------ |
-| `@w5-ui/tokens/tokens.css`    | Raw CSS variables (dark + light)                                   | You want token vars only, nothing else           |
-| `@w5-ui/tokens/dashboard.css` | `.app` / `.workspace` / `.grid` / `.card` / `.ph-bar` chrome       | You want the canonical dashboard layout / rhythm |
-| `@w5-ui/tokens/tailwind.css`  | `tokens.css` + `@theme inline` bridge + `dark:` data-motif variant | You use Tailwind v4 and want token utilities     |
+| Import                            | What it ships                                                      | When                                              |
+| --------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------- |
+| `@w5-ui/tokens/tokens.css`        | Raw CSS variables (dark + light)                                   | You want token vars only, nothing else            |
+| `@w5-ui/tokens/dashboard.css`     | `.app` / `.workspace` / `.grid` / `.card` / `.ph-bar` chrome       | You want the canonical dashboard layout / rhythm  |
+| `@w5-ui/tokens/tailwind.css`      | `tokens.css` + `@theme inline` bridge + `dark:` data-motif variant | You use Tailwind v4 and want token utilities only |
+| `@w5-ui/tokens/tailwind-full.css` | `tailwind.css` + `dashboard.css` (single import)                   | You use Tailwind v4 and want chrome classes too   |
 
 `tailwind.css` does **not** include `dashboard.css`. Tailwind users who also want the canonical
-chrome classes import both, in this exact order:
+chrome classes can either reach for the one-stop `tailwind-full.css`:
+
+```css
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind-full.css';
+```
+
+…or import both layers explicitly, in this exact order:
 
 ```css
 @import 'tailwindcss';

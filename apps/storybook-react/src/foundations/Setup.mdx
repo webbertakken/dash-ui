@@ -163,7 +163,17 @@ If a custom system font is preferred, override `--dash-ui-font-sans` / `--dash-u
 ## 7. Tailwind (optional)
 
 Userland that already uses Tailwind v4 can pull in the token utilities and the motif-aware
-`dark:` variant alongside the chrome classes. **Two imports**, in this exact order:
+`dark:` variant alongside the chrome classes. Reach for the **one-stop** entry — single import,
+no ordering footguns:
+
+```css
+/* src/app.css */
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind-full.css'; /* tokens + @theme bridge + chrome classes */
+```
+
+If you need fine-grained control over which layers land in the bundle, the two layers are also
+available separately, in this exact order:
 
 ```css
 /* src/app.css */
@@ -227,7 +237,7 @@ If three or more rows fail at once, suspect the styles import (step 3) or the mo
 | Card padding looks fine but the page edges feel too tight / too wide    | A custom `<div style={{ padding: ... }}>` wraps the page below `<main>`     | Render `Banner` / `PageHeader` / `.grid` as siblings of `<main>` — see Page layout        |
 | Gaps between cards look wrong (8 px or 16 px instead of 12 px)          | Re-implementing `.grid` with `display: flex; gap: 1rem`                     | Use `<div className="grid">` from the dashboard CSS — `repeat(12, 1fr)` + 12 px gap       |
 | Cards render but no shadow / depth                                      | Imported only `tokens.css`, not `dashboard.css`                             | Use `@w5-ui/react/styles.css` (step 3) — it bundles both                                  |
-| Tailwind app: spacing wrong, `.grid` and `.card` un-styled              | Imported `@w5-ui/tokens/tailwind.css` but skipped `@w5-ui/tokens/dashboard.css` | Add the `dashboard.css` import right after `tailwind.css` (step 7), or use `@w5-ui/{react,svelte}/styles.css` |
+| Tailwind app: spacing wrong, `.grid` and `.card` un-styled              | Imported `@w5-ui/tokens/tailwind.css` but skipped `@w5-ui/tokens/dashboard.css` | Switch to `@w5-ui/tokens/tailwind-full.css` (one import, ships both), or add the `dashboard.css` import right after `tailwind.css` (step 7) |
 | Two scrollbars, page won't scroll the content area                      | `html, body { height: 100% }` plus `#root { display: flex }`                | Delete those resets. `AppLayout` already sets up the viewport grid                        |
 | Topbar / Sidebar render twice when navigating                           | `AppLayout` rendered inside a page component instead of once at App root    | Move `AppLayout` to `App.tsx`; pages render as `children`                                 |
 | Tailwind `dark:` classes never trigger                                  | Tailwind config sets `darkMode: 'media'` / `'class'` and beats the variant  | Remove the override; `@w5-ui/tokens/tailwind.css` already binds `dark:` to `data-motif`   |

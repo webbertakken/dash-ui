@@ -1,0 +1,27 @@
+/* =========================================================================
+ * Dash UI ↔ Tailwind v4, full bundle.
+ *
+ * One-import alternative to:
+ *
+ *   @import "tailwindcss";
+ *   @import "@w5-ui/tokens/tailwind.css";   <-- token vars + @theme bridge
+ *   @import "@w5-ui/tokens/dashboard.css";  <-- .app / .grid / .card / .ph-bar
+ *
+ * Forgetting the third line is the documented #1 cause of "spacing looks
+ * off vs Storybook" in Tailwind userland: AppLayout / <div class="grid"> /
+ * <Card> all fall back to unstyled <div>s because the chrome classes never
+ * landed. This entry collapses the two w5-ui imports into one.
+ *
+ * Usage:
+ *
+ *   @import "tailwindcss";
+ *   @import "@w5-ui/tokens/tailwind-full.css";
+ *   @source "../path/to/your/templates";
+ *
+ * Pick this entry when you want the canonical dashboard chrome AND the
+ * Tailwind token utilities, but don't want to pull in the framework
+ * components bundle (@w5-ui/react/styles.css / @w5-ui/svelte/styles.css).
+ * ========================================================================= */
+
+@import './tailwind.css';
+@import './dashboard.css';
