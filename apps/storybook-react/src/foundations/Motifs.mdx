@@ -1,0 +1,218 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Motifs" />
+
+# Motifs (dark & light)
+
+Dash UI ships two motifs — **dark** (the dashboard surface, default) and **light** (marketing,
+store, onboarding). Every semantic colour, border, shadow, and status background resolves through
+the `data-motif` attribute, so the same component renders correctly on either surface without a
+single explicit override.
+
+Userland skipping the motif wiring is the silent killer of visual parity: the page renders, the
+components mount, contrast looks "fine", but every shade is off by one step because tokens never
+got applied. If your userland app looks washed-out, too-bright, or weirdly low-contrast next to
+the Dashboard story, motif setup is the first thing to check.
+
+> If you didn't set `data-motif`, you didn't pick a motif. The dashboard default lives on `<html>`,
+> not in CSS.
+
+## The two motifs
+
+| Motif   | `data-motif` value | Use for…                                                          |
+| ------- | ------------------ | ----------------------------------------------------------------- |
+| Dark    | `dark`             | The dashboard itself. All `apps/dashboard-*` stories run here.    |
+| Light   | `light`            | Marketing pages, store, login splash, onboarding, design wizard.  |
+
+The dashboard is dark-first by intent: dense data UIs read better on a dark canvas. Light is for
+content that lives outside the chrome — a public landing page, a checkout step, a print stylesheet.
+Don't toggle motifs to "freshen up" a single dashboard panel; userland that mixes both inside the
+`.app` shell almost always reads as broken.
+
+## Setting the motif
+
+### 1. The root (every app)
+
+Set `data-motif` on `<html>` before the app mounts. This is the single source of truth.
+
+```html
+<!-- index.html -->
+<html lang="en" data-motif="dark">
+  <head>
+    <!-- … -->
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+```
+
+Once that attribute is present and `@w5-ui/react/styles.css` (or `@w5-ui/svelte/styles.css`) is
+imported at the entry, every `var(--bg-page)` / `--text-1` / `--depthBg-*` / `--border-*` /
+`--shadow-*` token resolves correctly. No `useEffect`, no `<ThemeProvider>`, no JS.
+
+### 2. A subtree (the marketing strip exception)
+
+Because resolution happens via the cascade, you can flip a single subtree to the opposite motif
+without touching the rest of the page. The only legitimate use case is a marketing-style strip
+inside the dashboard chrome (e.g., a promo banner, a billing checkout embed).
+
+```tsx
+<section data-motif="light" className="promo-strip">
+  <PageHeader title="Upgrade to Pro" />
+  {/* …light surfaces inside an otherwise dark dashboard… */}
+</section>
+```
+
+The light-motif tokens resolve at the `<section>` boundary and stop bleeding the moment the
+DOM exits it. Reach for this rarely — it works, but most "dashboard panel that needs to look
+different" instincts are better solved with a `<Banner>` or a `<Callout>`.
+
+### 3. Runtime toggle (React)
+
+For apps that expose a user-facing theme switcher, mutate the attribute on `documentElement`. Keep
+the source of truth in `localStorage` so the choice survives a refresh.
+
+```tsx
+import { useEffect, useState } from 'react'
+
+type Motif = 'dark' | 'light'
+
+function readInitialMotif(): Motif {
+  if (typeof window === 'undefined') return 'dark'
+  const stored = localStorage.getItem('motif') as Motif | null
+  if (stored === 'dark' || stored === 'light') return stored
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
+export function useMotif() {
+  const [motif, setMotif] = useState<Motif>(readInitialMotif)
+  useEffect(() => {
+    document.documentElement.setAttribute('data-motif', motif)
+    localStorage.setItem('motif', motif)
+  }, [motif])
+  return [motif, setMotif] as const
+}
+```
+
+To avoid the first-paint flash, set `data-motif` from an inline `<script>` in `index.html` **before**
+the React bundle parses, then let `useMotif` take over.
+
+```html
+<script>
+  ;(function () {
+    var m = localStorage.getItem('motif')
+    if (m !== 'dark' && m !== 'light') {
+      m = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+    }
+    document.documentElement.setAttribute('data-motif', m)
+  })()
+</script>
+```
+
+### 4. Runtime toggle (Svelte)
+
+```svelte
+<script lang="ts">
+  type Motif = 'dark' | 'light'
+  let motif: Motif = 'dark'
+  function apply(next: Motif) {
+    motif = next
+    document.documentElement.setAttribute('data-motif', next)
+    localStorage.setItem('motif', next)
+  }
+  // on:mount, hydrate from storage or system preference
+</script>
+```
+
+Inline-script hydration (same as the React snippet above) belongs in `app.html` /
+`index.html` — never inside a Svelte component, which mounts too late to beat the first paint.
+
+## What flips with motif
+
+Setting `data-motif` re-resolves every semantic token defined under `[data-motif='dark']` and
+`[data-motif='light']` in `@w5-ui/tokens/tokens.css`. The raw ramps (`--brand-*`, `--neutral-*`,
+`--status-*` foregrounds) don't flip — they're motif-independent inputs to the semantic layer.
+
+| Category          | Flips per motif                          | Example tokens                           |
+| ----------------- | ---------------------------------------- | ---------------------------------------- |
+| Page & surfaces   | Yes                                      | `--bg-page`, `--depthBg-0` → `-3`        |
+| Text              | Yes                                      | `--text-1` → `--text-4`, `--text-link`   |
+| Borders           | Yes                                      | `--border-1` → `--border-3`, `--divider` |
+| Row interactions  | Yes                                      | `--row-hover`, `--row-active`            |
+| Primary states    | Hover / press flip; brand hue stays put  | `--primary-hover`, `--primary-press`     |
+| Shadows           | Yes (light gains an outer shadow)        | `--shadow-card`, `--shadow-modal`        |
+| Status foregrounds| No (brand-tied)                          | `--status-success`, `--status-danger`    |
+| Status backgrounds| No (already 12% tinted to pair correctly)| `--status-*-bg`                          |
+
+If a value you styled doesn't flip when you toggle motif, you probably wrote a hex (or reached
+for a raw `--neutral-*` / `--brand-*` ramp) instead of the semantic token. See **Foundations /
+Colours** for the full token-picking matrix.
+
+## Tailwind: `dark:` is wired to the motif
+
+`@w5-ui/tokens/tailwind.css` declares `@custom-variant dark (&[data-motif='dark'], [data-motif='dark'] &)`,
+so Tailwind v4's `dark:` prefix tracks the motif attribute — not `prefers-color-scheme`. Userland
+that uses `dark:bg-bg-1` gets the right surface as soon as `data-motif="dark"` exists on `<html>`.
+
+```tsx
+<div className="bg-bg-1 dark:bg-bg-2">{/* … */}</div>
+```
+
+Don't add a parallel `darkMode: 'media'` or `darkMode: 'class'` config — it will race with the
+`@custom-variant` rule and the dashboard's motif toolbar will stop matching userland.
+
+## Storybook mirrors the same attribute
+
+The Storybook preview installs `withThemeByDataAttribute` with `attributeName: 'data-motif'` and
+themes `{ Dark: 'dark', Light: 'light' }`. The motif toolbar in the top bar writes the same
+attribute on `<html>` that userland does, so anything that renders in Storybook will render the
+same way in userland once `data-motif` is set there.
+
+```ts
+import { withThemeByDataAttribute } from '@storybook/addon-themes'
+
+decorators: [
+  withThemeByDataAttribute({
+    themes: { Dark: 'dark', Light: 'light' },
+    defaultTheme: 'Dark',
+    attributeName: 'data-motif',
+  }),
+]
+```
+
+If your own Storybook (or VRT harness) uses a different attribute name or a class-based motif, the
+tokens won't resolve and every story will fall back to the dark `:root` block. Mirror this config
+verbatim.
+
+## Common mistakes (and the fix)
+
+| Symptom                                                 | Likely cause                                                        | Fix                                                                                              |
+| ------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Whole page renders blinding white in production         | `data-motif` never set on `<html>`; tokens fall through to `:root` dark, but a hardcoded `body { background: white }` wins | Add `data-motif="dark"` to `<html>` in the entry HTML; remove the white `body` rule              |
+| First paint flashes the wrong motif, then corrects      | Motif applied inside a `useEffect` after the bundle parses          | Move the read-from-storage + `setAttribute` into an inline `<script>` in `index.html`            |
+| Tailwind `dark:` classes never trigger                  | App config sets `darkMode: 'media'` / `'class'` and overrides the custom-variant | Drop the override. `@custom-variant dark` in `@w5-ui/tokens/tailwind.css` already binds it       |
+| Cards look like the dark motif even after toggling light| `data-motif` set on `<body>` instead of `<html>`, beaten by an ancestor rule on `<html>`     | Set it on `<html>` (the root); subtree overrides are for sections, not the app shell             |
+| Light motif looks "flat" — no card shadow               | Imported `tokens.css` but skipped `dashboard.css`                   | Import via `@w5-ui/react/styles.css` (or `@w5-ui/svelte/styles.css`); it bundles both            |
+| Status pills look fine in dark but wrong tint in light  | Custom `bg-red-500/10` re-implements the tint manually              | Use `bg-status-danger-bg` + `text-status-danger`; the pair is pre-composited per motif           |
+| Theme toggle works but page text stays bright on light  | Body / root has `color: white` baked in                             | Remove the override; `var(--text-1)` resolves to near-black under `data-motif='light'`           |
+| Marketing strip inside dashboard bleeds light into rest | `data-motif="light"` on a parent of `.app` instead of a sibling     | Put `data-motif="light"` on the strip itself (e.g. a `<section>`); keep `<html>` on `dark`       |
+| Modal looks correct, but dropdown menu inside it doesn't| Menu portal escapes the `data-motif="light"` subtree, lands on `<body>` (dark) | Render the portal inside the same subtree, or set the same `data-motif` on the portal container |
+| Print stylesheet shows dark page background             | No `@media print` flip                                              | Add `@media print { :root { color-scheme: light } html { data-motif: 'light' } }` (or a hook)    |
+| Storybook story shows correct motif, userland doesn't   | Userland uses `data-theme` / `class="dark"` / a custom attribute    | Switch userland to `data-motif="dark|light"` on `<html>` — that's the contract                   |
+
+## The take-away
+
+- **One attribute** controls everything: `data-motif="dark|light"` on `<html>`.
+- **Dark is the dashboard.** Light is for marketing surfaces — don't mix them inside `.app`.
+- **Set it before first paint** via an inline `<script>` to avoid the flash; let React / Svelte
+  drive subsequent toggles via `document.documentElement.setAttribute`.
+- **Tailwind's `dark:` is already bound** to the motif attribute — don't reconfigure.
+- **Storybook uses the same attribute** — mirror the addon config and every story renders the
+  same in userland as it does here.
+
+## See also
+
+- **Foundations / Colours** — the token vocabulary that flips with motif
+- **Foundations / Overview** — the package layout and `styles.css` entry point
+- **Foundations / Page layout** — the `.app` shell that hosts the motif attribute
