@@ -160,6 +160,17 @@ something off-scale, surface it as a design fork before shipping.
 | Bell `<IconButton>` + bespoke red dot positioned in CSS                       | `<IconButton>` + `<NotifDot>` |
 | `<span class="dot status-ok">` for a coloured site-health ring                | `<StatusRing status="ok">`   |
 | Bespoke Search / Updates / Bell / Help / Avatar block in a custom `<Topbar>`  | `<TopbarActions />`          |
+| `<h3 class="m-0 text-13 font-semibold text-text-1">` as a card title          | `<CardTitle>`                |
+| `<a class="text-12 text-text-3 ml-auto">More →</a>` in a card title row       | `<CardMore>`                 |
+| `<p class="m-0 text-12 text-text-3">` muted sub-line under a hero number      | `<Submeta>`                  |
+| `<span class="text-12 font-mono text-text-3">` unit trailing a hero number    | `<Unit>`                     |
+| `<span class="text-12 text-status-{ok\|danger}">↑ 12%</span>` trend chip      | `<Delta dir="up\|down\|flat">` |
+| `<td>` with `<img class="w-7 h-7 rounded">` + stacked name + 12 px sub        | `<NameCell thumb={…}>`       |
+| Hand-rolled `<div class="flex justify-between mt-3">` under a `<Table>`       | `<TablePager>`               |
+| `<div class="grid gap-4">` for stacked `<Field>`s in a card / modal           | `<FieldStack>`               |
+| `<div class="grid grid-cols-2 gap-[14px] mt-[6px]">` two-column form row      | `<FormRow>`                  |
+| `<div class="flex justify-end gap-2 mt-4">` action button row under a form   | `<FormActions>`              |
+| `<div class="grid grid-cols-12 gap-3 px-6 py-4">` page body grid              | `<Grid>` (or `<div className="grid">`) |
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
