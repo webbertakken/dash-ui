@@ -624,6 +624,10 @@
     "tag": "uni-tab-panel"
   },
   {
+    "name": "TablePager",
+    "tag": "uni-table-pager"
+  },
+  {
     "name": "TableShell",
     "tag": "uni-table-shell"
   },

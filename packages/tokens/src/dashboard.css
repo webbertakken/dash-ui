@@ -526,6 +526,16 @@ tbody tr:hover td {
   border-radius: 8px;
   overflow: hidden;
 }
+/* Table pager row: sibling under .table-shell carrying rows-per-page on the
+   left and the <Pagination> nav on the right. Mirrors the inline flex /
+   space-between / margin-top: 12px every reference Devices-style page uses
+   today so userland drops the bespoke wrapper. */
+.table-pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-3);
+}
 /* Form layout primitives: mirror the rhythm every reference Settings card
    uses today (14px column gap, 6px top offset, 16px stack, right-aligned
    action row) so userland can drop the inline styles. */
