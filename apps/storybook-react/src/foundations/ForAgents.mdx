@@ -268,6 +268,23 @@ something off-scale, surface it as a design fork before shipping.
 | `<button>` + bespoke `position:absolute` panel + click-outside listener for a menu     | `<Popover label="Filters" title="…" placement="bottom">…</Popover>` (focus trap + ESC + outside-click) |
 | `<div class="animate-pulse bg-bg-2 h-4 w-32 rounded">` placeholder block             | `<Skeleton variant="text\|rect\|circle" width={…} height={…} ariaLabel="Loading" />` |
 | Hand-rolled coloured dot + label (`<span class="w-2 h-2 rounded-full bg-status-ok" /> Online`) | `<StatusIndicator color="var(--color-status-ok)" text="Online" />` (or `<StatusRing status="ok">` for site-health rings) |
+| `<input type="date">` with Tailwind chrome + bespoke calendar popover                  | `<DatePicker value={…} onChange={…} placeholder="…" />` (Date object in/out + WAI-ARIA dialog) |
+| Two `<input type="date">`s + manual "from / to" validation + popover plumbing          | `<DateRangePicker value={{ from, to }} onChange={…} />` (single popover, range constraint) |
+| `<input type="time">` styled with Tailwind + hand-rolled hour/minute steppers          | `<TimePicker value="HH:MM" onChange={…} label="…" />` (24h normalised string) |
+| `<input type="file" hidden>` + bespoke drag-and-drop zone (`onDragOver` / Tailwind ring) | `<FileUpload accept="…" multiple onFiles={(files) => …} label="…" hint="…" />` (drop + click + state) |
+| Native `<select>` with hand-typed search input filtering the option list                | `<Combobox options={…} value={…} onChange={…} placeholder="Search…" />` (WAI-ARIA combobox + filter) |
+| Multiple `<input type="checkbox">`s in a popover with manual chip-readout              | `<MultiSelect options={…} value={[…]} onChange={…} placeholder="Select…" />` (checkable listbox + chip summary) |
+| Hand-rolled colour swatch grid + `<input type="color">` fallback + hex text input       | `<ColorPicker value="#…" onChange={…} swatches={…} label="…" />` (swatch grid + hex sync) |
+| `<input>` + array-state-on-Enter + bespoke tag chip rendering + backspace-to-remove     | `<TagInput value={[…]} onChange={…} placeholder="Type and press Enter…" />` (chips + keyboard rm) |
+| `<input type="password">` + hand-rolled show/hide eye `<IconButton>` toggling `type`    | `<PasswordInput value={…} onChange={…} autocomplete="current-password" label="…" />` (toggle + a11y label) |
+| Six `<input maxlength=1>` boxes + manual focus-advance + paste-split-across-inputs      | `<OTPInput length={6} value={…} onChange={…} label="One-time code" />` (auto-advance + paste handling) |
+| Hand-rolled radio-as-pill group (`<button class="px-3 py-1 …">A</button>` + active state) | `<SegmentedControl label="…" options={…} value={…} onChange={…} />` (radio semantics + arrow keys) |
+| Multiple `<Toggle>`s in a `<div class="flex gap-1">` for a multi-select toolbar         | `<ToggleGroup options={…} value={[…]} onChange={…} ariaLabel="…" size="sm\|md" />` (multi-pressed + group a11y) |
+| Click-to-edit `<span>` swapping to `<input>` on focus with manual confirm/cancel logic  | `<InlineEdit value={…} onConfirm={…} label="…" placeholder="…" />` (Enter/Esc + focus return) |
+| `<Button>` + adjacent caret `<IconButton>` + bespoke menu popover for secondary actions | `<SplitButton label="Save" items={[{ id, label }]} onPrimaryClick={…} onAction={…} />` (primary + menu) |
+| `<IconButton>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" tooltip     | `<CopyButton text={value} label="Copy" />` (clipboard + transient confirm + a11y live) |
+| Hand-rolled "no results" panel (`<div class="text-center py-10 text-text-3">…</div>`)  | `<EmptyState title="…" description="…" action={…} />` (canonical zero-state rhythm) |
+| Hand-rolled wizard progress bar (`<ol class="flex gap-2">` + active/complete CSS state) | `<Stepper steps={[{ label }]} active={n} />` (`aria-current="step"` + complete/upcoming state) |
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
