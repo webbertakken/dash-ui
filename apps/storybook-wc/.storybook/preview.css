@@ -120,3 +120,20 @@ html[data-motif='light'] {
 .sbdocs td {
   color: var(--text-1);
 }
+
+/* MDX scrollbars: dashboard.css ::-webkit-scrollbar-thumb/track use hardcoded
+   dark colours (#2a2a2c / #0a0a0b) so MDX code-block scrollbars look out of
+   place in light-motif docs. Rebind to tokens inside .sbdocs so both motifs
+   render consistently. */
+.sbdocs ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.sbdocs ::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+  border-radius: 6px;
+  border: 2px solid var(--bg-page);
+}
+.sbdocs ::-webkit-scrollbar-track {
+  background: transparent;
+}
