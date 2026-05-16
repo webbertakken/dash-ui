@@ -241,6 +241,12 @@ something off-scale, surface it as a design fork before shipping.
 | `<button class="btn btn-primary">Save</button>` (or `btn-ghost` / `btn-danger`) | `<Button variant="primary\|ghost\|danger">Save</Button>` |
 | `<button class="icon-btn" aria-label="Close"><X /></button>` (or bare `<button>` with an SVG child) | `<IconButton aria-label="Close"><X /></IconButton>` |
 | `<input type="checkbox" role="switch">` + hand-rolled track / knob CSS         | `<Toggle on={…} onToggle={…} ariaLabel="…" />` |
+| `<input type="checkbox">` + bespoke check / indeterminate SVG + label `<span>` | `<Checkbox checked={…} indeterminate={…} onChange={…} label="…" />` |
+| Native `<select>` with Tailwind chrome (`bg-bg-2 border border-border-1 …`)    | `<Select options={…} value={…} onChange={…} />` (WAI-ARIA combobox/listbox) |
+| Hand-rolled radio cluster (`<input type="radio">` + label + flex stack)        | `<RadioGroup options={…} value={…} onChange={…} />` (fieldset + radio a11y) |
+| `<input type="number">` + bespoke `+` / `−` `<IconButton>`s for step           | `<NumberInput value={…} onChange={…} min={…} max={…} step={…} />` (WAI-ARIA spinbutton) |
+| `<textarea class="bg-bg-2 border border-border-1 rounded p-2 …">` for multi-line | `<Textarea value={…} onChange={…} rows={…} />` |
+| Hand-rolled "Prev / 1 2 3 / Next" pager (`<button>` row + bespoke page-state)   | `<Pagination page={…} pageCount={…} onPageChange={…} />` (WAI-ARIA nav + `aria-current`) |
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
