@@ -144,6 +144,7 @@ import './elements/StackedBarChart.wc.svelte'
 import './elements/StackedProgress.wc.svelte'
 import './elements/StarRating.wc.svelte'
 import './elements/Stat.wc.svelte'
+import './elements/StatNumber.wc.svelte'
 import './elements/StatusIndicator.wc.svelte'
 import './elements/StepChart.wc.svelte'
 import './elements/Stepper.wc.svelte'
@@ -323,6 +324,7 @@ export const REGISTERED_TAGS = [
   'uni-stacked-progress',
   'uni-star-rating',
   'uni-stat',
+  'uni-stat-number',
   'uni-status-indicator',
   'uni-step-chart',
   'uni-stepper',

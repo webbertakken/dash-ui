@@ -97,15 +97,15 @@ card body). Compose the parts by hand and use `<Submeta>` for the muted line tha
 number and the chart — it matches the `.submeta` rhythm without an inline class string.
 
 ```tsx
-import { Card, Pill, Submeta, Delta, Unit, Sparkline } from '@w5-ui/react'
+import { Card, Pill, StatNumber, Submeta, Delta, Unit, Sparkline } from '@w5-ui/react'
 
 ;<Card span={4}>
   <h3>
     Internet <Pill variant="success">Online</Pill>
   </h3>
-  <div className="stat">
+  <StatNumber>
     847<Unit>Mbps · down</Unit>
-  </div>
+  </StatNumber>
   <Submeta>
     ↑ 312 Mbps · 18 ms · 0.0% loss · <Delta dir="up">+12% 24h</Delta>
   </Submeta>
@@ -122,6 +122,12 @@ a card title row): renders `<span className="unit">` so the canonical muted colo
 come from `dashboard.css` instead of an inline override. `<Stat>` already wires this internally;
 reach for `<Unit>` when you compose `.stat` by hand (number above a chart, or a unit suffix in an
 `<h3>` title).
+
+`<StatNumber>` is the typed wrapper for the hero-number row itself: renders `<div className="stat">`
+so the canonical 30 px size, semibold weight, tabular figures, and primary text colour come from
+`dashboard.css` rather than inline `font-size` / `font-weight` overrides. `<Stat>` (the prefab tile)
+wires this internally; reach for `<StatNumber>` when you compose `.stat` by hand inside a `<Card>`
+that also hosts a chart underneath.
 
 ### Title + chart
 
@@ -190,6 +196,7 @@ and `@w5-ui/svelte/styles.css`):
 - `.card` — the tile shell. Use through `<Card>` / `<Stat>`
 - `.card h3` — the title rhythm (size, weight, colour, flex). Use a plain `<h3>` and inherit it
 - `.card h3 .more` — the trailing "More →" affordance inside a title. Use through `<CardMore>`
+- `.stat` — the hero-number row (30 px, semibold, tabular). Use through `<Stat>` / `<StatNumber>`
 - `.submeta` — the muted supporting line under a `.stat` number. Use through `<Submeta>`
 - `.delta-up` / `.delta-down` — colour-coded trend text. Use through `<Delta dir="up | down | flat">`
 - `.unit` — small trailing label after a hero number or inside a title row. Use through `<Unit>`

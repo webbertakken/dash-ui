@@ -572,6 +572,10 @@
     "tag": "uni-stat"
   },
   {
+    "name": "StatNumber",
+    "tag": "uni-stat-number"
+  },
+  {
     "name": "StatusIndicator",
     "tag": "uni-status-indicator"
   },
