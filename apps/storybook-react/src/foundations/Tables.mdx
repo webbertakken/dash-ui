@@ -13,6 +13,8 @@ Devices and Clients pages — no inline borders, no hand-rolled sort UI, no ad-h
 
 ```tsx
 import {
+  TableShell,
+  Mac,
   Pagination,
   Select,
   SortHeader,
@@ -23,7 +25,7 @@ import {
 export function DevicesTable({ rows }) {
   const { sortKey, dir, onSort } = useSortable()
   return (
-    <div className="table-shell">
+    <TableShell>
       <table>
         <caption className="sr-only">Devices</caption>
         <thead>
@@ -41,32 +43,26 @@ export function DevicesTable({ rows }) {
           {rows.map((r) => (
             <tr key={r.id}>
               <td>{r.name}</td>
-              <td className="mac">{r.mac}</td>
+              <td><Mac>{r.mac}</Mac></td>
               <td style={{ textAlign: 'right' }}>{r.uptime}</td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </TableShell>
   )
 }
 ```
 
-That is the contract. A `.table-shell` wraps a plain `<table>` so the rounded border, elevated
-background, and overflow-clip come from one class — no `style={{ background, border,
-borderRadius }}` repetition. The `<table>`, `<th>` and `<td>` selectors already carry the
-dashboard's typography, padding, and hover row.
+That is the contract. `<TableShell>` renders the canonical `<div className="table-shell">` so the
+rounded border, elevated background, and overflow-clip come from one class — no `style={{
+background, border, borderRadius }}` repetition. The `<table>`, `<th>` and `<td>` selectors
+already carry the dashboard's typography, padding, and hover row. `<Mac>` renders the
+`<span className="mac">` monospace label without copying the class name into userland.
 
-Prefer the typed `<TableShell>` import when you want an auto-importable component instead of a
-raw `<div className="table-shell">` — both render the same wrapper, so they are interchangeable:
-
-```tsx
-import { TableShell, SortHeader } from '@w5-ui/react'
-
-;<TableShell>
-  <table>{/* … */}</table>
-</TableShell>
-```
+`<TableShell>` and `<div className="table-shell">` are interchangeable — both render the same
+wrapper, so a raw class string is a valid fallback when an auto-importable component is not
+available. Same goes for `<Mac>` vs `className="mac"` on a `<td>`.
 
 ## Anatomy
 
@@ -100,13 +96,13 @@ import { TableShell, SortHeader } from '@w5-ui/react'
 ## Selection + bulk actions
 
 ```tsx
-import { Checkbox, SelectionToolbar } from '@w5-ui/react'
+import { Checkbox, SelectionToolbar, TableShell } from '@w5-ui/react'
 
 const [selected, setSelected] = useState<Set<string>>(new Set())
 
 return (
   <>
-    <div className="table-shell">
+    <TableShell>
       <table>
         <thead>
           <tr>
@@ -123,7 +119,7 @@ return (
         </thead>
         <tbody>{/* … */}</tbody>
       </table>
-    </div>
+    </TableShell>
     <SelectionToolbar
       count={selected.size}
       actions={[{ label: 'Forget', onClick: forget, variant: 'danger' }]}
@@ -164,11 +160,11 @@ buttons would get cut off otherwise.
 
 | Symptom                                   | Likely cause                                                | Fix                                                                                  |
 | ----------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Table corners aren't rounded              | `<table>` rendered without a wrapper                         | Wrap in `<div className="table-shell">`                                              |
-| Border looks doubled along the rim        | The wrapper has its own border _and_ each `<td>` has one    | Drop the wrapper border. `.table-shell` already supplies a single 1px border         |
+| Table corners aren't rounded              | `<table>` rendered without a wrapper                         | Wrap in `<TableShell>` (or `<div className="table-shell">`)                          |
+| Border looks doubled along the rim        | The wrapper has its own border _and_ each `<td>` has one    | Drop the wrapper border. `<TableShell>` already supplies a single 1px border         |
 | Sortable header behaves like a label      | Plain `<th>` with an onClick                                | Use `<SortHeader>` — it renders `<th scope="col" aria-sort>` and a real button       |
 | Screen readers skip the table             | No `<caption>`                                              | Add `<caption className="sr-only">{name}</caption>` — WCAG 1.3.1                     |
-| MAC / IP column is hard to scan           | Default proportional font                                   | Add `className="mac"` to the cell                                                    |
+| MAC / IP column is hard to scan           | Default proportional font                                   | Wrap the value with `<Mac>` (or apply `className="mac"` directly to the `<td>`)      |
 | Selection toolbar covers the last row     | Manual padding-bottom on the page that fights the toolbar   | Remove it. The toolbar is fixed; the page scroll already reveals every row           |
 | Pager buttons are clipped                 | Pager rendered inside `.table-shell` (overflow: hidden)     | Render the pager as a sibling, below the shell                                       |
 | Header doesn't stick when scrolling       | `.table-shell` wraps the table _and_ scrolls vertically     | Let the page scroll. `<th>` is `position: sticky; top: 0` against the page viewport  |
