@@ -304,6 +304,10 @@
     "tag": "uni-h2"
   },
   {
+    "name": "H3",
+    "tag": "uni-h3"
+  },
+  {
     "name": "HealthBar",
     "tag": "uni-health-bar"
   },
