@@ -10,7 +10,16 @@
  *
  *   @import "tailwindcss";
  *   @import "@w5-ui/tokens/tailwind.css";
+ *   @import "@w5-ui/tokens/dashboard.css";   <-- chrome classes (.app / .grid / .card)
  *   @source "../path/to/your/templates";
+ *
+ * tailwind.css ships ONLY the token vars and the @theme bridge — it does not
+ * include the .app / .workspace / .grid / .card / .ph-bar chrome classes. Without
+ * the second import, AppLayout and <div class="grid"> render unstyled and userland
+ * "spacing looks wrong vs. Storybook". The framework bundles
+ * (@w5-ui/react/styles.css, @w5-ui/svelte/styles.css) ship both layers in one
+ * import; reach for tailwind.css + dashboard.css only when you need fine-grained
+ * control over which layers land in your bundle.
  *
  * After this, every w5-ui design token is a first-class Tailwind utility:
  *
