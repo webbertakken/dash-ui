@@ -150,6 +150,7 @@ import './elements/StripeChart.wc.svelte'
 import './elements/SunburstChart.wc.svelte'
 import './elements/SwitchPortGrid.wc.svelte'
 import './elements/TabPanel.wc.svelte'
+import './elements/TableShell.wc.svelte'
 import './elements/Tabs.wc.svelte'
 import './elements/Tag.wc.svelte'
 import './elements/TagInput.wc.svelte'
@@ -324,6 +325,7 @@ export const REGISTERED_TAGS = [
   'uni-sunburst-chart',
   'uni-switch-port-grid',
   'uni-tab-panel',
+  'uni-table-shell',
   'uni-tabs',
   'uni-tag',
   'uni-tag-input',

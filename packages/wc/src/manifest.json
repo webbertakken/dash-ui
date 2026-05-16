@@ -596,6 +596,10 @@
     "tag": "uni-tab-panel"
   },
   {
+    "name": "TableShell",
+    "tag": "uni-table-shell"
+  },
+  {
     "name": "Tabs",
     "tag": "uni-tabs"
   },

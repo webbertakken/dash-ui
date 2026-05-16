@@ -278,5 +278,6 @@ export { default as Grid } from './components/Grid.svelte'
 export { default as FieldStack } from './components/FieldStack.svelte'
 export { default as FormRow } from './components/FormRow.svelte'
 export { default as FormActions } from './components/FormActions.svelte'
+export { default as TableShell } from './components/TableShell.svelte'
 
 export * from './icons.js'

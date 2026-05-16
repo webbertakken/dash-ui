@@ -57,6 +57,17 @@ background, and overflow-clip come from one class — no `style={{ background, b
 borderRadius }}` repetition. The `<table>`, `<th>` and `<td>` selectors already carry the
 dashboard's typography, padding, and hover row.
 
+Prefer the typed `<TableShell>` import when you want an auto-importable component instead of a
+raw `<div className="table-shell">` — both render the same wrapper, so they are interchangeable:
+
+```tsx
+import { TableShell, SortHeader } from '@w5-ui/react'
+
+;<TableShell>
+  <table>{/* … */}</table>
+</TableShell>
+```
+
 ## Anatomy
 
 | Layer            | Element                          | Where the values live                                                |
