@@ -171,6 +171,9 @@ something off-scale, surface it as a design fork before shipping.
 | `<div class="grid grid-cols-2 gap-[14px] mt-[6px]">` two-column form row      | `<FormRow>`                  |
 | `<div class="flex justify-end gap-2 mt-4">` action button row under a form   | `<FormActions>`              |
 | `<div class="grid grid-cols-12 gap-3 px-6 py-4">` page body grid              | `<Grid>` (or `<div className="grid">`) |
+| `<span class="px-2 py-0.5 rounded-full text-12 bg-status-ok-bg text-status-ok">Active</span>` | `<Pill variant="success">Active</Pill>` |
+| `<span class="px-2 py-0.5 rounded-md bg-bg-2 text-12 inline-flex items-center gap-1">router</span>` | `<Tag label="router" />` |
+| `<kbd class="px-1.5 py-0.5 rounded border bg-bg-2 text-12 font-mono">⌘K</kbd>`  | `<Kbd keys="⌘+K" />`         |
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
