@@ -308,6 +308,10 @@
     "tag": "uni-h3"
   },
   {
+    "name": "H4",
+    "tag": "uni-h4"
+  },
+  {
     "name": "HealthBar",
     "tag": "uni-health-bar"
   },
