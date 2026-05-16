@@ -126,6 +126,47 @@ and DOM. Every miss is documented in **Foundations / Troubleshooting** with a on
 
 A passing run on those ten points reproduces the reference dashboard 1:1.
 
+## Tailwind drift → typed primitive
+
+The single biggest userland drift in practice: hand-rolled Tailwind class strings (`text-12
+text-text-3`, `text-13 font-semibold text-text-1`, `text-[10px] font-semibold uppercase
+tracking-[0.06em] text-text-3`) where a typed primitive already encodes the same contract.
+Tailwind tokens line up with the type scale, but free-typed combinations re-derive what
+`<Body>` / `<Label>` / `<Eyebrow>` already bundle — and as soon as one site uses 10px and
+the next uses 11px, the rhythm splits. Reach for the primitive; if the page truly needs
+something off-scale, surface it as a design fork before shipping.
+
+| You typed…                                                                    | Use instead                  |
+| ----------------------------------------------------------------------------- | ---------------------------- |
+| `text-14 text-text-2` (or `text-base text-text-2`)                            | `<Body>`                     |
+| `text-16 text-text-2` (multi-paragraph settings copy)                         | `<BodyLg>`                   |
+| `text-13 font-medium text-text-2` (KPI / form label)                          | `<Label>`                    |
+| `text-12 text-text-3` (helper, metadata, "last updated")                      | `<Caption>`                  |
+| `text-[10px]` / `text-11 font-semibold uppercase tracking-[0.06em] text-text-3` | `<Eyebrow>`                  |
+| `text-30 font-semibold tabular-nums text-text-1` (KPI number)                 | `<StatNumber>` (or `<Stat>`) |
+| `text-13 font-mono text-text-2` (inline MAC / IP / hex / port)                | `<Mono>` (or `<Mac>`)        |
+| `text-12 font-mono px-1.5 py-px border rounded bg-bg-2` (inline code chip)    | `<Code>`                     |
+| `text-13 font-semibold text-text-1` (panel / section title)                   | `<H4>` (or `<CardTitle>`)    |
+| `text-24 font-semibold text-text-1` (page sub-section head)                   | `<H3>`                       |
+| `text-30 font-semibold text-text-1` (page section head)                       | `<H2>`                       |
+| `text-38 font-bold tracking-[-0.02em] text-text-1` (marketing page title)     | `<H1>`                       |
+| `text-48 font-bold tracking-[-0.02em] text-text-1` (login / large marketing)  | `<Display2>`                 |
+| `text-64 font-bold tracking-[-0.02em] text-text-1` (onboarding / hero)        | `<Display1>`                 |
+| `text-text-3` on prose to "look muted"                                        | `<Muted>` (inline span)      |
+| `class="sr-only"` for a visually-hidden caption / label                       | `<SrOnly>` (or the class)    |
+| `m-0 text-13 font-semibold text-text-1` on a panel `<h2>`                     | `<H4>` (snap to the scale)   |
+| `bg-bg-1 border border-border-2 rounded-md p-3` (hand-rolled card)            | `<Card>` (or `<Stat>`)       |
+| `<div class="search">` + raw `<input type="search">` + magnifying glass SVG   | `<SearchBox>`                |
+| Bell `<IconButton>` + bespoke red dot positioned in CSS                       | `<IconButton>` + `<NotifDot>` |
+| `<span class="dot status-ok">` for a coloured site-health ring                | `<StatusRing status="ok">`   |
+| Bespoke Search / Updates / Bell / Help / Avatar block in a custom `<Topbar>`  | `<TopbarActions />`          |
+
+The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
+reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
+preference) for free. Tailwind utilities remain the right tool for one-off layout glue
+(`flex`, `gap-3`, `min-w-0`, `overflow-hidden`) — just don't re-derive typography or the
+canonical chrome with them.
+
 ## Lookup table — symptom → page
 
 Agents debugging a drift should jump straight to the matching Foundations page rather than
