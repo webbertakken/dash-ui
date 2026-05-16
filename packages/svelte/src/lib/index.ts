@@ -289,5 +289,6 @@ export { default as CardTitle } from './components/CardTitle.svelte'
 export { default as Mac } from './components/Mac.svelte'
 export { default as NameCell } from './components/NameCell.svelte'
 export { default as SrOnly } from './components/SrOnly.svelte'
+export { default as NotifDot } from './components/NotifDot.svelte'
 
 export * from './icons.js'

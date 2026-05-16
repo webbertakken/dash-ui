@@ -3,6 +3,7 @@ import { Fragment, type ReactNode } from 'react'
 import { CaretIcon, SearchIcon, UpdatesIcon, BellIcon, HelpIcon } from '../icons.js'
 import { Avatar } from './Avatar.js'
 import { IconButton } from './Button.js'
+import { NotifDot } from './NotifDot.js'
 
 void logos
 
@@ -101,7 +102,7 @@ export function Topbar({
               style={{ position: 'relative' }}
             >
               <BellIcon />
-              {notificationCount > 0 && <span aria-hidden="true" className="topbar-notif-dot" />}
+              {notificationCount > 0 && <NotifDot />}
             </IconButton>
             <IconButton aria-label="Help" title="Help">
               <HelpIcon />

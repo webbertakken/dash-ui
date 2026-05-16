@@ -400,6 +400,10 @@
     "tag": "uni-nightingale-chart"
   },
   {
+    "name": "NotifDot",
+    "tag": "uni-notif-dot"
+  },
+  {
     "name": "NotificationPanel",
     "tag": "uni-notification-panel"
   },

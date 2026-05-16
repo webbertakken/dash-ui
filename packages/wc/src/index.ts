@@ -101,6 +101,7 @@ import './elements/Modal.wc.svelte'
 import './elements/MultiSelect.wc.svelte'
 import './elements/NameCell.wc.svelte'
 import './elements/NightingaleChart.wc.svelte'
+import './elements/NotifDot.wc.svelte'
 import './elements/NotificationPanel.wc.svelte'
 import './elements/NumberInput.wc.svelte'
 import './elements/OTPInput.wc.svelte'
@@ -286,6 +287,7 @@ export const REGISTERED_TAGS = [
   'uni-multi-select',
   'uni-name-cell',
   'uni-nightingale-chart',
+  'uni-notif-dot',
   'uni-notification-panel',
   'uni-number-input',
   'uni-otpinput',

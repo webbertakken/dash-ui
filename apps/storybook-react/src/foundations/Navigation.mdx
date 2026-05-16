@@ -112,6 +112,33 @@ Doesn't belong (move it down a layer):
 If you find yourself growing a second strip under the topbar, the page header or a `Tabs`
 strip is what you really wanted.
 
+### Custom actions: keep the unread dot
+
+When you slot your own controls into `<Topbar actions>` (theme toggle, status pill, custom bell)
+the default Search / Updates / Notifications / Help / Avatar block is replaced wholesale. The
+unread indicator on the bell — the canonical `.topbar-notif-dot` — disappears with it. Re-attach
+it with the typed `<NotifDot />` primitive instead of copying the class name into userland:
+
+```tsx
+import { IconButton, NotifDot, BellIcon } from '@w5-ui/react'
+
+<Topbar
+  siteName="HQ"
+  activeApp="system"
+  onAppChange={setApp}
+  actions={
+    <IconButton aria-label="Notifications, 3 new" style={{ position: 'relative' }}>
+      <BellIcon />
+      <NotifDot />
+    </IconButton>
+  }
+/>
+```
+
+The dot is presentational (`aria-hidden`); put the live count in the button's `aria-label` so
+screen readers announce it. The hosting button must be `position: relative` for the dot to
+anchor in the top-right corner.
+
 ## Sidebar: sections and counts
 
 `<Sidebar>` holds the page-level navigation for one app. Items live inside named sections; each
