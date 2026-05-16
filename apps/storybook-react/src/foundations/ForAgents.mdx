@@ -247,6 +247,18 @@ something off-scale, surface it as a design fork before shipping.
 | `<input type="number">` + bespoke `+` / `−` `<IconButton>`s for step           | `<NumberInput value={…} onChange={…} min={…} max={…} step={…} />` (WAI-ARIA spinbutton) |
 | `<textarea class="bg-bg-2 border border-border-1 rounded p-2 …">` for multi-line | `<Textarea value={…} onChange={…} rows={…} />` |
 | Hand-rolled "Prev / 1 2 3 / Next" pager (`<button>` row + bespoke page-state)   | `<Pagination page={…} pageCount={…} onPageChange={…} />` (WAI-ARIA nav + `aria-current`) |
+| `<div class="bg-status-info-bg text-status-info border-l-4 px-4 py-3 …">` page-level notice | `<Banner variant="info\|success\|warn\|danger" title="…" action={…} onDismiss={…}>…</Banner>` |
+| `<aside class="border-l-4 border-status-info bg-bg-2 p-3 text-13 …">Tip: …</aside>` inline note | `<Callout variant="info\|success\|warn\|danger\|tip" title="…">…</Callout>` (`role="note"`) |
+| `<div role="alert" class="bg-status-danger-bg text-status-danger px-3 py-2 …">` toast-shaped block | `<Alert variant="success\|warn\|danger\|info" onDismiss={…}>…</Alert>` (`role="alert"` + `aria-live`) |
+| Hand-rolled fixed-corner notification stack (`position: fixed; bottom: 16px …`) | `<Toaster />` once + `toast.success("Saved")` / `toast.warn(…)` (`aria-live` log) |
+| `<div class="animate-spin w-5 h-5 border-2 border-current border-r-transparent rounded-full" />` | `<Spinner size="sm\|md\|lg" label="Loading" />` (`role="status"`) |
+| `<div class="h-1 bg-bg-2 rounded"><div class="h-full bg-brand" style={{ width: pct }} /></div>` | `<ProgressBar value={pct} label="…" valueText="…" />` (labelled `<progress>`) |
+| Hand-rolled tablist (`<button role="tab" class="border-b-2 …">` row + manual active state) | `<Tabs items={…} active={…} onChange={…} ariaLabel="…" />` + `<TabPanel id active>` (roving tabindex + arrow keys) |
+| `<nav class="text-12 text-text-3"><ol class="flex gap-1"><li>…</li></ol></nav>` breadcrumb trail | `<Breadcrumb items={[{ label, href }, …]} onNavigate={…} />` (WAI-ARIA + `aria-current="page"`) |
+| `<details class="border-b border-border-1"><summary class="py-2 …">…</summary>…</details>` | `<Accordion><AccordionItem title="…" defaultOpen>…</AccordionItem></Accordion>` (disclosure + keyboard) |
+| `<input type="range" class="w-full accent-brand" />` + bespoke value label / ticks | `<Slider value={…} onChange={…} min={…} max={…} step={…} />` (WAI-ARIA + label/value formatting) |
+| `<dialog open class="fixed inset-0 …">` or hand-rolled overlay + close `<button>`   | `<Modal open title onClose footer={…}>…</Modal>` (`role="dialog"` + focus trap + body-scroll lock) |
+| Hand-rolled side panel (`fixed right-0 top-0 h-full w-80 translate-x-0 …`)     | `<Drawer open title onClose>…</Drawer>` (`role="dialog"` + focus trap + slide-in) |
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
