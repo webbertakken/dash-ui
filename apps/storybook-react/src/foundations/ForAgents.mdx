@@ -136,6 +136,60 @@ and DOM. Every miss is documented in **Foundations / Troubleshooting** with a on
 
 A passing run on those ten points reproduces the reference dashboard 1:1.
 
+### Copy-paste DevTools probe
+
+Open the running userland app, paste the snippet below into the browser console, and read the
+report. It exercises six of the ten self-check points against the **live DOM** — the four
+remaining (`styles.css` once, no inline shell `style`, `<h3>` only inside `<Card>`, forms use
+`.field-stack` / `.form-row` / `.form-actions`) are diff-time checks that don't surface in the
+computed style. Every failure prints the offending element so you can jump to it in Elements.
+
+```js
+;(() => {
+  const fail = []
+  const ok = []
+  const note = (cond, msg, el) => (cond ? ok : fail).push(el ? { msg, el } : msg)
+
+  const motif = document.documentElement.getAttribute('data-motif')
+  note(motif === 'dark' || motif === 'light', `<html data-motif="${motif ?? 'unset'}">`)
+
+  const probe = getComputedStyle(document.documentElement).getPropertyValue('--space-3').trim()
+  note(probe === '12px', `--space-3 resolves to "${probe || 'unset'}" (expected 12px)`)
+
+  const font = getComputedStyle(document.body).fontFamily
+  note(/inter/i.test(font), `body font-family is "${font}" (expected Inter)`)
+
+  const grid = document.querySelector('.grid')
+  if (!grid) {
+    fail.push('no `.grid` element found — page body is missing the canonical grid')
+  } else {
+    const cs = getComputedStyle(grid)
+    note(cs.gap === '12px', `.grid gap is ${cs.gap} (expected 12px)`, grid)
+    note(
+      cs.paddingTop === '16px' && cs.paddingLeft === '24px',
+      `.grid padding is ${cs.padding} (expected 16px 24px)`,
+      grid,
+    )
+    const lanes = [...grid.children].filter(
+      (c) => !c.classList.contains('card') && !c.classList.contains('sel-toolbar'),
+    )
+    note(lanes.length === 0, `.grid has ${lanes.length} non-Card child lane(s)`, lanes[0])
+    const badSpans = [...grid.children].filter((c) => {
+      const m = /span (\d+)/.exec(c.style.gridColumn || '')
+      return m && ![4, 6, 8, 12].includes(Number(m[1]))
+    })
+    note(badSpans.length === 0, `${badSpans.length} card(s) with span ∉ {4,6,8,12}`, badSpans[0])
+  }
+
+  console.log(`%c✓ ${ok.length} pass`, 'color:#3ad07b', ok)
+  console.log(`%c✗ ${fail.length} fail`, 'color:#ff6b6b', fail)
+  return { ok, fail }
+})()
+```
+
+Zero failures means the contract holds at the DOM level. Any failure points at the exact node
+that drifts — paste the snippet again after each fix to confirm the regression collapses.
+
 ## Tailwind drift → typed primitive
 
 The single biggest userland drift in practice: hand-rolled Tailwind class strings (`text-12
