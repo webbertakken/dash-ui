@@ -26,7 +26,8 @@ at the bottom. Mirrors the **Dashboard** story tile-for-tile.
 // src/pages/Dashboard.tsx — React
 import {
   AppLayout, Topbar, Sidebar, PageHeader,
-  Stat, Card, Sparkline, LineChart, BarChart,
+  Stat, Card, CardTitle, Grid,
+  Sparkline, LineChart, BarChart,
 } from '@w5-ui/react'
 
 export function Dashboard() {
@@ -37,7 +38,7 @@ export function Dashboard() {
       sidebar={<Sidebar sections={SECTIONS} activeId="dashboard" />}
     >
       <PageHeader title="Dashboard" />
-      <div className="grid">
+      <Grid>
         <Stat span={4} label="Internet" value="847" unit="Mbps · down"
               sub="18 ms · 0.0% loss" delta="+12% 24h" deltaDir="up" />
         <Stat span={4} label="Clients" value="312" unit="active"
@@ -46,19 +47,19 @@ export function Dashboard() {
               sub="1 critical · 2 warn" delta="-2 24h" deltaDir="down" />
 
         <Card span={8}>
-          <h3>Throughput</h3>
+          <CardTitle>Throughput</CardTitle>
           <LineChart data={throughput} />
         </Card>
         <Card span={4}>
-          <h3>Top clients</h3>
+          <CardTitle>Top clients</CardTitle>
           <Sparkline data={top} />
         </Card>
 
         <Card span={12}>
-          <h3>Traffic by device</h3>
+          <CardTitle>Traffic by device</CardTitle>
           <BarChart data={traffic} />
         </Card>
-      </div>
+      </Grid>
     </AppLayout>
   )
 }
@@ -69,7 +70,8 @@ export function Dashboard() {
 <script lang="ts">
   import {
     AppLayout, Topbar, Sidebar, PageHeader,
-    Stat, Card, Sparkline, LineChart, BarChart,
+    Stat, Card, CardTitle, Grid,
+    Sparkline, LineChart, BarChart,
   } from '@w5-ui/svelte'
 </script>
 
@@ -78,7 +80,7 @@ export function Dashboard() {
   {#snippet sidebar()}<Sidebar sections={SECTIONS} activeId="dashboard" />{/snippet}
 
   <PageHeader title="Dashboard" />
-  <div class="grid">
+  <Grid>
     <Stat span={4} label="Internet" value="847" unit="Mbps · down"
           sub="18 ms · 0.0% loss" delta="+12% 24h" deltaDir="up" />
     <Stat span={4} label="Clients" value="312" unit="active"
@@ -86,16 +88,17 @@ export function Dashboard() {
     <Stat span={4} label="Alerts" value="3" unit="open"
           sub="1 critical · 2 warn" delta="-2 24h" deltaDir="down" />
 
-    <Card span={8}><h3>Throughput</h3><LineChart data={throughput} /></Card>
-    <Card span={4}><h3>Top clients</h3><Sparkline data={top} /></Card>
-    <Card span={12}><h3>Traffic by device</h3><BarChart data={traffic} /></Card>
-  </div>
+    <Card span={8}><CardTitle>Throughput</CardTitle><LineChart data={throughput} /></Card>
+    <Card span={4}><CardTitle>Top clients</CardTitle><Sparkline data={top} /></Card>
+    <Card span={12}><CardTitle>Traffic by device</CardTitle><BarChart data={traffic} /></Card>
+  </Grid>
 </AppLayout>
 ```
 
 **What carries the look**: `AppLayout` owns the shell padding. `PageHeader` owns the sticky
-header rhythm. `.grid` owns the 12-column gutter. `Stat` and `Card span={n}` own tile
-padding and the title-row layout. Nothing else needs to be set.
+header rhythm. `<Grid>` owns the 12-column gutter (typed equivalent of `<div className="grid">`).
+`Stat` and `Card span={n}` own tile padding; `<CardTitle>` is the typed sibling of `<h3>` so
+the `.card h3` rhythm survives codegen, MDX, or stray wrapper `<div>`s. Nothing else needs to be set.
 
 ## Recipe 2 — List page with table
 
@@ -107,8 +110,8 @@ toolbar triggers `.grid:has(.sel-toolbar)` automatically — no extra padding re
 // src/pages/Devices.tsx — React
 import {
   AppLayout, Topbar, Sidebar, PageHeader,
-  Card, Button, SearchBox, Table, SortHeader,
-  Pagination, SelectionToolbar, Checkbox,
+  Card, Grid, Button, SearchBox, Table, SortHeader,
+  TableShell, Pagination, SelectionToolbar, Checkbox,
 } from '@w5-ui/react'
 
 export function Devices() {
@@ -124,9 +127,9 @@ export function Devices() {
           </>
         }
       />
-      <div className="grid">
+      <Grid>
         <Card span={12}>
-          <div className="table-shell">
+          <TableShell>
             <Table>
               <thead>
                 <tr>
@@ -139,7 +142,7 @@ export function Devices() {
               </thead>
               <tbody>{rows.map(r => <DeviceRow key={r.id} row={r} />)}</tbody>
             </Table>
-          </div>
+          </TableShell>
           <Pagination page={page} total={total} onChange={setPage} />
         </Card>
 
@@ -149,16 +152,17 @@ export function Devices() {
             <Button variant="danger">Forget</Button>
           </SelectionToolbar>
         )}
-      </div>
+      </Grid>
     </AppLayout>
   )
 }
 ```
 
-**What carries the look**: `.table-shell` wraps `<Table>` for the inset rhythm. `<th
-scope="col">` carries a11y. `SortHeader` owns the sort icon + `aria-sort`. The selection
-toolbar is rendered _inside_ `.grid` so the `:has()` rule reserves room for it — never as a
-sibling of `<main>` or a fixed-positioned overlay you styled yourself.
+**What carries the look**: `<Grid>` is the typed page grid. `<TableShell>` wraps `<Table>`
+for the inset rhythm (typed sibling of `<div className="table-shell">`). `<th scope="col">`
+carries a11y. `SortHeader` owns the sort icon + `aria-sort`. The selection toolbar is
+rendered _inside_ `<Grid>` so the `.grid:has(.sel-toolbar)` rule reserves room for it —
+never as a sibling of `<main>` or a fixed-positioned overlay you styled yourself.
 
 ## Recipe 3 — Settings / form page
 
