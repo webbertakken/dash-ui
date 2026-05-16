@@ -3,10 +3,11 @@
   import Original from '@w5-ui/svelte/components/StatusRing.svelte';
   let {
     class: className = '',
-    style = ''
+    style = '',
+    status = 'ok'
   } = $props();
 </script>
 
-<Original class={className} {style}>
+<Original class={className} {style} {status}>
   <slot />
 </Original>

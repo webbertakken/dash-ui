@@ -1,6 +1,7 @@
 import { appLogos, logos } from '@w5-ui/assets'
 import { Fragment, type ReactNode } from 'react'
 import { CaretIcon } from '../icons.js'
+import { StatusRing, type StatusRingStatus } from './StatusRing.js'
 import { TopbarActions } from './TopbarActions.js'
 
 void logos
@@ -24,6 +25,10 @@ export interface TopbarProps {
   onAppChange?: (id: string) => void
   initials?: string
   notificationCount?: number
+  /** Health colour of the site-name status ring. Defaults to `'ok'` (green).
+   * Drive from userland health state to surface degraded / down conditions
+   * without replacing the canonical site-switcher chrome. */
+  status?: StatusRingStatus
   /** When false, the site label renders as a static element instead of a
    * site-switcher dropdown trigger. Use for single-site dashboards. */
   siteSwitchable?: boolean
@@ -40,12 +45,13 @@ export function Topbar({
   onAppChange,
   initials = 'MS',
   notificationCount = 1,
+  status = 'ok',
   siteSwitchable = true,
   actions,
 }: TopbarProps) {
   const siteLabel = (
     <>
-      <span className="status-ring" />
+      <StatusRing status={status} />
       <span className="site-name" aria-hidden={siteSwitchable ? 'true' : undefined}>
         {siteName}
       </span>
