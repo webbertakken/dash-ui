@@ -25,6 +25,13 @@ export interface TopbarProps {
   onAppChange?: (id: string) => void
   initials?: string
   notificationCount?: number
+  /** When false, the site label renders as a static element instead of a
+   * site-switcher dropdown trigger. Use for single-site dashboards. */
+  siteSwitchable?: boolean
+  /** Custom right-side actions. When provided, replaces the default
+   * Search/Updates/Notifications/Help/Avatar block in full. Use to slot in
+   * app-specific controls (theme toggle, status pill, etc.). */
+  actions?: ReactNode
 }
 
 export function Topbar({
@@ -34,21 +41,34 @@ export function Topbar({
   onAppChange,
   initials = 'MS',
   notificationCount = 1,
+  siteSwitchable = true,
+  actions,
 }: TopbarProps) {
+  const siteLabel = (
+    <>
+      <span className="status-ring" />
+      <span className="site-name" aria-hidden={siteSwitchable ? 'true' : undefined}>
+        {siteName}
+      </span>
+      {siteSwitchable && <CaretIcon className="caret" aria-hidden="true" />}
+    </>
+  )
   return (
     <header className="topbar">
-      <button
-        type="button"
-        className="site-switch"
-        aria-label={`Switch site: ${siteName}`}
-        aria-haspopup="menu"
-      >
-        <span className="status-ring" />
-        <span className="site-name" aria-hidden="true">
-          {siteName}
-        </span>
-        <CaretIcon className="caret" aria-hidden="true" />
-      </button>
+      {siteSwitchable ? (
+        <button
+          type="button"
+          className="site-switch"
+          aria-label={`Switch site: ${siteName}`}
+          aria-haspopup="menu"
+        >
+          {siteLabel}
+        </button>
+      ) : (
+        <div className="site-switch" role="presentation">
+          {siteLabel}
+        </div>
+      )}
       <nav className="app-tabs" aria-label="Apps">
         {apps.map((a) => (
           <button
@@ -65,40 +85,44 @@ export function Topbar({
       </nav>
       <div className="topbar-spacer" />
       <div className="topbar-right">
-        <IconButton aria-label="Search" title="Search">
-          <SearchIcon />
-        </IconButton>
-        <IconButton aria-label="Updates" title="Updates">
-          <UpdatesIcon />
-        </IconButton>
-        <IconButton
-          aria-label={
-            notificationCount > 0 ? `Notifications, ${notificationCount} new` : 'Notifications'
-          }
-          title="Notifications"
-          style={{ position: 'relative' }}
-        >
-          <BellIcon />
-          {notificationCount > 0 && (
-            <span
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: 6,
-                right: 6,
-                width: 6,
-                height: 6,
-                background: '#F03A3A',
-                borderRadius: '50%',
-                border: '1.5px solid #0A0A0B',
-              }}
-            />
-          )}
-        </IconButton>
-        <IconButton aria-label="Help" title="Help">
-          <HelpIcon />
-        </IconButton>
-        <Avatar initials={initials} size="sm" alt={`Account, ${initials}`} />
+        {actions ?? (
+          <>
+            <IconButton aria-label="Search" title="Search">
+              <SearchIcon />
+            </IconButton>
+            <IconButton aria-label="Updates" title="Updates">
+              <UpdatesIcon />
+            </IconButton>
+            <IconButton
+              aria-label={
+                notificationCount > 0 ? `Notifications, ${notificationCount} new` : 'Notifications'
+              }
+              title="Notifications"
+              style={{ position: 'relative' }}
+            >
+              <BellIcon />
+              {notificationCount > 0 && (
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    top: 6,
+                    right: 6,
+                    width: 6,
+                    height: 6,
+                    background: '#F03A3A',
+                    borderRadius: '50%',
+                    border: '1.5px solid #0A0A0B',
+                  }}
+                />
+              )}
+            </IconButton>
+            <IconButton aria-label="Help" title="Help">
+              <HelpIcon />
+            </IconButton>
+            <Avatar initials={initials} size="sm" alt={`Account, ${initials}`} />
+          </>
+        )}
       </div>
     </header>
   )
