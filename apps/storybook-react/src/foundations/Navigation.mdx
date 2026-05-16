@@ -112,12 +112,34 @@ Doesn't belong (move it down a layer):
 If you find yourself growing a second strip under the topbar, the page header or a `Tabs`
 strip is what you really wanted.
 
-### Custom actions: keep the unread dot
+### Custom actions: keep the canonical block
 
-When you slot your own controls into `<Topbar actions>` (theme toggle, status pill, custom bell)
-the default Search / Updates / Notifications / Help / Avatar block is replaced wholesale. The
-unread indicator on the bell — the canonical `.topbar-notif-dot` — disappears with it. Re-attach
-it with the typed `<NotifDot />` primitive instead of copying the class name into userland:
+When you slot your own controls into `<Topbar actions>` (theme toggle, status pill, environment
+switch) the default Search / Updates / Notifications / Help / Avatar block is replaced
+_wholesale_. Nine out of ten times userland wants the custom control _alongside_ the canonical
+group, not instead of it. Re-mount the canonical group with the typed `<TopbarActions />`
+primitive — it ships the same five controls in the same order, with the `<NotifDot>` overlay
+already wired up:
+
+```tsx
+import { Topbar, TopbarActions } from '@w5-ui/react'
+
+<Topbar
+  siteName="HQ"
+  activeApp="system"
+  onAppChange={setApp}
+  actions={
+    <>
+      <ThemeToggle />
+      <TopbarActions notificationCount={3} initials="WS" />
+    </>
+  }
+/>
+```
+
+If you really do want to replace the bell with your own button, re-attach the unread indicator
+with the typed `<NotifDot />` primitive instead of copying the `.topbar-notif-dot` class name
+into userland:
 
 ```tsx
 import { IconButton, NotifDot, BellIcon } from '@w5-ui/react'
@@ -281,6 +303,7 @@ step in any order, that's `Tabs`, not a stepper.
 | Stepper used for general nav                       | Reached for the visual treatment, not the semantics                | If the user can jump steps freely, switch to `<Tabs>` — `Stepper` carries `aria-current="step"` and a numbered ord |
 | Segmented control with 6 options                   | Outgrew the radio-group affordance                                 | Switch to `<Select>` (ordered enum) or `<Tabs>` (different content per option)                                     |
 | Sidebar pill colour clashes with status            | Hand-picked colour                                                 | Use the `pill` prop — it inherits the canonical alert palette                                                       |
+| Custom topbar action wipes out Search / bell / avatar | `<Topbar actions>` replaces the default block wholesale         | Compose your control alongside typed `<TopbarActions />` — same five controls + `<NotifDot>` overlay, no class copies |
 
 ## ARIA recap
 
@@ -304,7 +327,8 @@ rebuilding one of these primitives by hand — use the component instead.
 These classes ship with `@w5-ui/tokens/dashboard.css` (re-exported by `@w5-ui/react/styles.css`
 and `@w5-ui/svelte/styles.css`). They are the seams the reference dashboards stand on:
 
-- `.topbar`, `.site-switch`, `.app-tabs`, `.app-tab`, `.topbar-right` — the product chrome row
+- `.topbar`, `.site-switch`, `.app-tabs`, `.app-tab`, `.topbar-right` — the product chrome row. Userland that extends `<Topbar actions>` should re-mount the canonical right-side block through `<TopbarActions />` instead of copying these class strings
+- `.topbar-notif-dot` — the 8 px red unread overlay on the notifications bell. Use through `<NotifDot />` instead of copying the class name
 - `.status-ring` — the 18 px translucent ring + 8 px inner dot (success colour) used next to the site name and any tunnel / session / device row that needs a live-state pulse. Use through `<StatusRing />` instead of copying the class name
 - `.sidebar`, `.sb-section`, `.sb-list`, `.sb-item`, `.sb-count`, `.sb-pill` — the workspace nav
 - `.tabs`, `.tab` — the page-level tab strip
