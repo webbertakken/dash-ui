@@ -143,6 +143,7 @@ import './elements/SparklineMatrix.wc.svelte'
 import './elements/Spinner.wc.svelte'
 import './elements/SplitButton.wc.svelte'
 import './elements/Spoiler.wc.svelte'
+import './elements/SrOnly.wc.svelte'
 import './elements/StackedBarChart.wc.svelte'
 import './elements/StackedProgress.wc.svelte'
 import './elements/StarRating.wc.svelte'
@@ -327,6 +328,7 @@ export const REGISTERED_TAGS = [
   'uni-spinner',
   'uni-split-button',
   'uni-spoiler',
+  'uni-sr-only',
   'uni-stacked-bar-chart',
   'uni-stacked-progress',
   'uni-star-rating',

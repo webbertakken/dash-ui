@@ -568,6 +568,10 @@
     "tag": "uni-spoiler"
   },
   {
+    "name": "SrOnly",
+    "tag": "uni-sr-only"
+  },
+  {
     "name": "StackedBarChart",
     "tag": "uni-stacked-bar-chart"
   },

@@ -179,6 +179,7 @@ buttons would get cut off otherwise.
 - `.table-pager` — flex / space-between / 12 px top-margin row that hosts rows-per-page + `<Pagination>` directly below the shell. Use through `<TablePager>`
 - `.mac` — monospace cell for MACs, IPs, SKUs. Use through `<Mac>` (or apply the class directly to a `<td>`)
 - `.name-cell`, `.nc-thumb` — avatar + label layout for the first column. Use through `<NameCell thumb={…}>` (pass `thumbClassName="cam"` for the camera gradient variant)
+- `.sr-only` — visually-hidden text kept available to assistive tech (the table `<caption>` rides on this; WCAG 1.3.1). Use through `<SrOnly>` (or apply the class directly to a `<caption>` / `<label>`)
 
 Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values. See
 **Foundations / Spacing** and **Foundations / Colours**.
