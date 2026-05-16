@@ -126,6 +126,26 @@ html[data-motif='light'] {
 .sbdocs li > p {
   margin: 4px 0;
 }
+/* MDX prose measure (line length): Storybook's .sbdocs-content runs at
+   ~1000px, which at our 14px body size yields ~120 characters per line —
+   well past the 45–75 char comfortable-reading range (React docs / Tailwind
+   docs / MDN all cap at ~65–75 ch). Constrain only the prose elements; let
+   tables, code blocks, and headings keep the full width so lookup tables
+   and code samples don't get clipped. */
+.sbdocs p,
+.sbdocs ul,
+.sbdocs ol,
+.sbdocs blockquote {
+  max-width: 72ch;
+}
+.sbdocs td p,
+.sbdocs td ul,
+.sbdocs td ol,
+.sbdocs th p,
+.sbdocs th ul,
+.sbdocs th ol {
+  max-width: none;
+}
 
 /* MDX inline code chips: the chip background is --neutral-08, which is also
    the background of .sbdocs th and .sbdocs blockquote — so inline `code`
