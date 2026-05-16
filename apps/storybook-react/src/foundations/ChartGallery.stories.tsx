@@ -4,7 +4,7 @@
 // the shape that fits the question.
 
 import type { Meta, StoryObj } from '@storybook/react'
-import { Card } from '@w5-ui/react'
+import { Caption, Card, CardTitle, Grid } from '@w5-ui/react'
 import { FIXTURES } from '../../../../packages/react/test-fixtures/fixtures.js'
 
 const meta: Meta = {
@@ -106,7 +106,7 @@ function Tile({ name }: { name: string }) {
   if (!v) return null
   return (
     <Card span={4}>
-      <h3>{name}</h3>
+      <CardTitle>{name}</CardTitle>
       <div className="chart-gallery-frame">{v.node}</div>
     </Card>
   )
@@ -114,20 +114,9 @@ function Tile({ name }: { name: string }) {
 
 function SectionHeading({ title, blurb }: { title: string; blurb: string }) {
   return (
-    <header style={{ gridColumn: '1 / -1', marginTop: 8 }}>
-      <h2
-        style={{
-          margin: 0,
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: 0.6,
-          textTransform: 'uppercase',
-          color: 'var(--text-2)',
-        }}
-      >
-        {title}
-      </h2>
-      <p style={{ margin: '4px 0 0', color: 'var(--text-2)', fontSize: 13 }}>{blurb}</p>
+    <header className="chart-gallery-section">
+      <h2 className="dash-ui-eyebrow">{title}</h2>
+      <Caption>{blurb}</Caption>
     </header>
   )
 }
@@ -135,8 +124,22 @@ function SectionHeading({ title, blurb }: { title: string; blurb: string }) {
 export const Gallery: Story = {
   name: 'Gallery',
   render: () => (
-    <main className="content" style={{ minHeight: '100vh' }}>
+    <main className="content chart-gallery">
       <style>{`
+        .chart-gallery {
+          min-height: 100vh;
+        }
+        .chart-gallery-section {
+          grid-column: 1 / -1;
+          margin-top: var(--space-2);
+        }
+        .chart-gallery-section h2 {
+          margin: 0;
+        }
+        .chart-gallery-section .dash-ui-caption {
+          display: block;
+          margin-top: var(--space-1);
+        }
         .chart-gallery-frame {
           height: 140px;
           overflow: hidden;
@@ -150,7 +153,7 @@ export const Gallery: Story = {
           max-height: 140px;
         }
       `}</style>
-      <div className="grid">
+      <Grid>
         <SectionHeading
           title="Hero / KPI"
           blurb="A single number you want a glance to land on. Each of these is already a Card."
@@ -187,7 +190,7 @@ export const Gallery: Story = {
         {HIERARCHY_FLOW.map((n) => (
           <Tile key={n} name={n} />
         ))}
-      </div>
+      </Grid>
     </main>
   ),
 }
