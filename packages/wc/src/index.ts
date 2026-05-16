@@ -32,6 +32,7 @@ import './elements/Carousel.wc.svelte'
 import './elements/Checkbox.wc.svelte'
 import './elements/ChordDiagram.wc.svelte'
 import './elements/CirclePacking.wc.svelte'
+import './elements/Code.wc.svelte'
 import './elements/CodeBlock.wc.svelte'
 import './elements/ColorPicker.wc.svelte'
 import './elements/ColumnToggle.wc.svelte'
@@ -219,6 +220,7 @@ export const REGISTERED_TAGS = [
   'uni-checkbox',
   'uni-chord-diagram',
   'uni-circle-packing',
+  'uni-code',
   'uni-code-block',
   'uni-color-picker',
   'uni-column-toggle',

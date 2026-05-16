@@ -124,6 +124,10 @@
     "tag": "uni-circle-packing"
   },
   {
+    "name": "Code",
+    "tag": "uni-code"
+  },
+  {
     "name": "CodeBlock",
     "tag": "uni-code-block"
   },
