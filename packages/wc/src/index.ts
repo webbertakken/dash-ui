@@ -53,6 +53,7 @@ import './elements/DatePicker.wc.svelte'
 import './elements/DateRangePicker.wc.svelte'
 import './elements/Delta.wc.svelte'
 import './elements/Dendrogram.wc.svelte'
+import './elements/Display2.wc.svelte'
 import './elements/Donut.wc.svelte'
 import './elements/DotPlot.wc.svelte'
 import './elements/Drawer.wc.svelte'
@@ -251,6 +252,7 @@ export const REGISTERED_TAGS = [
   'uni-date-range-picker',
   'uni-delta',
   'uni-dendrogram',
+  'uni-display2',
   'uni-donut',
   'uni-dot-plot',
   'uni-drawer',
