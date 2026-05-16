@@ -45,6 +45,7 @@ import './elements/CountUp.wc.svelte'
 import './elements/CumulativeDistribution.wc.svelte'
 import './elements/DatePicker.wc.svelte'
 import './elements/DateRangePicker.wc.svelte'
+import './elements/Delta.wc.svelte'
 import './elements/Dendrogram.wc.svelte'
 import './elements/Donut.wc.svelte'
 import './elements/DotPlot.wc.svelte'
@@ -221,6 +222,7 @@ export const REGISTERED_TAGS = [
   'uni-cumulative-distribution',
   'uni-date-picker',
   'uni-date-range-picker',
+  'uni-delta',
   'uni-dendrogram',
   'uni-donut',
   'uni-dot-plot',

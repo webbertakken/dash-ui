@@ -176,6 +176,10 @@
     "tag": "uni-date-range-picker"
   },
   {
+    "name": "Delta",
+    "tag": "uni-delta"
+  },
+  {
     "name": "Dendrogram",
     "tag": "uni-dendrogram"
   },

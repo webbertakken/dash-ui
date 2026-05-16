@@ -97,7 +97,7 @@ card body). Compose the parts by hand and use `<Submeta>` for the muted line tha
 number and the chart — it matches the `.submeta` rhythm without an inline class string.
 
 ```tsx
-import { Card, Pill, Submeta, Sparkline } from '@w5-ui/react'
+import { Card, Pill, Submeta, Delta, Sparkline } from '@w5-ui/react'
 
 ;<Card span={4}>
   <h3>
@@ -107,11 +107,15 @@ import { Card, Pill, Submeta, Sparkline } from '@w5-ui/react'
     847<span className="unit">Mbps · down</span>
   </div>
   <Submeta>
-    ↑ 312 Mbps · 18 ms · 0.0% loss · <span className="delta-up">+12% 24h</span>
+    ↑ 312 Mbps · 18 ms · 0.0% loss · <Delta dir="up">+12% 24h</Delta>
   </Submeta>
   <Sparkline />
 </Card>
 ```
+
+`<Delta>` is the typed wrapper for the colour-coded trend span. Pass `dir="up" | "down" | "flat"` —
+green / red / neutral colours come from the tokens, and a visually-hidden "Trend: " prefix is
+emitted so screen readers announce the direction independent of any arrow glyph in the copy.
 
 ### Title + chart
 
@@ -176,6 +180,7 @@ and `@w5-ui/svelte/styles.css`):
 - `.card h3` — the title rhythm (size, weight, colour, flex). Use a plain `<h3>` and inherit it
 - `.card h3 .more` — the trailing "More →" affordance inside a title
 - `.submeta` — the muted supporting line under a `.stat` number. Use through `<Submeta>`
+- `.delta-up` / `.delta-down` — colour-coded trend text. Use through `<Delta dir="up | down | flat">`
 
 Everything else (raw colours, ad-hoc paddings, custom radii) should come from tokens, not bespoke
 values. See **Foundations / Spacing** and **Foundations / Colours**.
