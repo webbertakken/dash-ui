@@ -195,7 +195,92 @@ a {
   grid-template-columns: 220px 1fr;
   min-height: 0;
 }
-/* Sidebar CSS removed: see scoped Tailwind utilities in Sidebar.svelte. */
+/* ===== Sidebar =====
+ * Mirrors the Tailwind utilities baked into Sidebar.svelte so the React
+ * Sidebar (and any non-Tailwind userland) renders with the same chrome.
+ * Chrome stays dark regardless of `data-motif`, matching Topbar. */
+.sidebar {
+  overflow: auto;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--neutral-10);
+  padding: var(--space-2) 0;
+}
+.sidebar .sb-section {
+  margin: 0;
+  padding: 14px var(--space-4) 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  color: var(--neutral-05);
+}
+.sidebar .sb-list {
+  margin: 0;
+  padding: 0 var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  list-style: none;
+}
+.sidebar .sb-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: #c8c9d0;
+  font: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+}
+.sidebar .sb-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.sidebar .sb-item.active {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+.sidebar .sb-item.active .sb-ico {
+  color: var(--brand-05);
+}
+.sidebar .sb-item:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+.sidebar .sb-ico {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--neutral-04);
+}
+.sidebar .sb-ico svg {
+  width: 16px;
+  height: 16px;
+}
+.sidebar .sb-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--neutral-05);
+}
+.sidebar .sb-item.active .sb-count {
+  color: var(--neutral-04);
+}
+.sidebar .sb-pill {
+  margin-left: auto;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  background: var(--brand-05);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+}
 
 /* ===== Content ===== */
 .content {
