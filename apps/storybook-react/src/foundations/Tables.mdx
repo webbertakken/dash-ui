@@ -1,0 +1,174 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Tables" />
+
+# Tables
+
+Lists of devices, clients, leases, ports, alarms — every dashboard page that isn't a chart-grid
+ends up rendering a table. Dash UI ships the chrome and a few primitives, and lets you keep the
+markup plain HTML. Reproduce the recipe and userland tables read exactly like the reference
+Devices and Clients pages — no inline borders, no hand-rolled sort UI, no ad-hoc paging widget.
+
+## The recipe
+
+```tsx
+import {
+  Pagination,
+  Select,
+  SortHeader,
+  useSortable,
+  Field,
+} from '@w5-ui/react'
+
+export function DevicesTable({ rows }) {
+  const { sortKey, dir, onSort } = useSortable()
+  return (
+    <div className="table-shell">
+      <table>
+        <caption className="sr-only">Devices</caption>
+        <thead>
+          <tr>
+            <SortHeader sortKey="name" activeKey={sortKey} dir={dir} onSort={onSort}>
+              Name
+            </SortHeader>
+            <th scope="col">MAC</th>
+            <th scope="col" style={{ textAlign: 'right' }}>
+              Uptime
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.id}>
+              <td>{r.name}</td>
+              <td className="mac">{r.mac}</td>
+              <td style={{ textAlign: 'right' }}>{r.uptime}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+```
+
+That is the contract. A `.table-shell` wraps a plain `<table>` so the rounded border, elevated
+background, and overflow-clip come from one class — no `style={{ background, border,
+borderRadius }}` repetition. The `<table>`, `<th>` and `<td>` selectors already carry the
+dashboard's typography, padding, and hover row.
+
+## Anatomy
+
+| Layer            | Element                          | Where the values live                                                |
+| ---------------- | -------------------------------- | -------------------------------------------------------------------- |
+| Page wrapper     | `<div className="table-shell">`  | Rounded 8px border, `--neutral-09` bg, `overflow: hidden`            |
+| Caption (sr)     | `<caption className="sr-only">`  | WCAG 1.3.1 — names the table for screen readers                      |
+| Header row       | `<th scope="col">`               | 10px uppercase tracking, sticky `top: 0`                             |
+| Sortable header  | `<SortHeader>`                   | Renders `<th scope="col" aria-sort>` + sort button + chevrons        |
+| Body row         | `<tr>` `<td>`                    | 9px × 12px padding, 40px row height, hover row tint                  |
+| Monospace cell   | `<td className="mac">`           | JetBrains Mono — MACs, IPs, SKUs                                     |
+| Avatar + name    | `<div className="name-cell">`    | 28px thumb + label, used in the first column of most lists           |
+
+## Pick the right primitive
+
+| You want…                                          | Reach for                                  |
+| -------------------------------------------------- | ------------------------------------------ |
+| A list of similar items (devices, clients, leases) | `<table>` inside `.table-shell`            |
+| A property sheet (key / value pairs)               | `<KVTable>` — drawers, detail panels       |
+| One row of inline metrics inside a `<Card>`        | `<Stat>` cards in `.grid`                  |
+| A sortable column                                  | `<SortHeader>` + `useSortable()`           |
+| Page-level paging                                  | `<Pagination>` + `<Select>` rows-per-page  |
+| Row selection                                      | `<Checkbox>` first column + `<SelectionToolbar>` |
+| Per-row actions menu                               | `<ActionMenu>` in the last column          |
+| Expandable detail row                              | `<ExpandableRow>`                          |
+| Inline editing of a cell                           | `<InlineEdit>`                             |
+| Column show / hide                                 | `<ColumnToggle>` in the page header        |
+| Filtering                                          | `<Tag>` chips + `<FilterBuilder>` for compound rules |
+| Very long lists (10k+ rows)                        | `<VirtualList>` instead of a `<table>`     |
+
+## Selection + bulk actions
+
+```tsx
+import { Checkbox, SelectionToolbar } from '@w5-ui/react'
+
+const [selected, setSelected] = useState<Set<string>>(new Set())
+
+return (
+  <>
+    <div className="table-shell">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" style={{ width: 32 }}>
+              <Checkbox
+                checked={selected.size === rows.length}
+                indeterminate={selected.size > 0 && selected.size < rows.length}
+                onChange={toggleAll}
+                ariaLabel="Select all rows"
+              />
+            </th>
+            <th scope="col">Name</th>
+          </tr>
+        </thead>
+        <tbody>{/* … */}</tbody>
+      </table>
+    </div>
+    <SelectionToolbar
+      count={selected.size}
+      actions={[{ label: 'Forget', onClick: forget, variant: 'danger' }]}
+      onClear={() => setSelected(new Set())}
+    />
+  </>
+)
+```
+
+`SelectionToolbar` is `position: fixed` along the bottom — it floats over the page until the
+selection is cleared. The rest of the page keeps its own scroll; no manual padding-bottom is
+needed because the toolbar disappears once `count === 0`.
+
+## Pagination + rows-per-page
+
+```tsx
+<div className="table-pager">
+  <Field label="Rows per page">
+    <Select value={pageSize} onChange={setPageSize} options={[25, 50, 100]} />
+  </Field>
+  <Pagination
+    page={page}
+    pageCount={Math.ceil(rows.length / pageSize)}
+    onChange={setPage}
+  />
+</div>
+```
+
+Render the pager as a sibling of the `.table-shell`, not inside it — the shell clips its overflow
+and the focus ring on the pager buttons would get cut off otherwise.
+
+## Common mistakes (and the fix)
+
+| Symptom                                   | Likely cause                                                | Fix                                                                                  |
+| ----------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Table corners aren't rounded              | `<table>` rendered without a wrapper                         | Wrap in `<div className="table-shell">`                                              |
+| Border looks doubled along the rim        | The wrapper has its own border _and_ each `<td>` has one    | Drop the wrapper border. `.table-shell` already supplies a single 1px border         |
+| Sortable header behaves like a label      | Plain `<th>` with an onClick                                | Use `<SortHeader>` — it renders `<th scope="col" aria-sort>` and a real button       |
+| Screen readers skip the table             | No `<caption>`                                              | Add `<caption className="sr-only">{name}</caption>` — WCAG 1.3.1                     |
+| MAC / IP column is hard to scan           | Default proportional font                                   | Add `className="mac"` to the cell                                                    |
+| Selection toolbar covers the last row     | Manual padding-bottom on the page that fights the toolbar   | Remove it. The toolbar is fixed; the page scroll already reveals every row           |
+| Pager buttons are clipped                 | Pager rendered inside `.table-shell` (overflow: hidden)     | Render the pager as a sibling, below the shell                                       |
+| Header doesn't stick when scrolling       | `.table-shell` wraps the table _and_ scrolls vertically     | Let the page scroll. `<th>` is `position: sticky; top: 0` against the page viewport  |
+
+## CSS hooks userland can rely on
+
+- `.table-shell` — rounded, bordered wrapper for any full-width table on a page
+- `.mac` — monospace cell for MACs, IPs, SKUs
+- `.name-cell`, `.nc-thumb` — avatar + label layout for the first column
+
+Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values. See
+**Foundations / Spacing** and **Foundations / Colours**.
+
+## See also
+
+- **Foundations / Page layout** — the `Banner` → `PageHeader` → `.grid` → `Card` skeleton tables
+  live inside
+- **Foundations / Forms** — inputs, validation, and the `Field` wrapper that filter / search
+  controls reuse

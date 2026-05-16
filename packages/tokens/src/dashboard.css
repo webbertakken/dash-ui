@@ -188,6 +188,15 @@ td {
 tbody tr:hover td {
   background: rgba(255, 255, 255, 0.02);
 }
+/* Table shell: page-level wrapper for full-width tables that live outside
+   a <Card>. Mirrors the inline style every dashboard page uses today so
+   userland gets the same chrome from a single class. */
+.table-shell {
+  background: var(--neutral-09);
+  border: 1px solid var(--border-1);
+  border-radius: 8px;
+  overflow: hidden;
+}
 .mac {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
