@@ -2,13 +2,15 @@
 
 ## Goal
 
-Right now, the dashboard looks good, both in dev server and storybook. However, when userland (i.e.
-`~/Repositories/assistant/apps/dashboard`) try to implement the design system it ends up looking a
-lot different with regard to spacing and distance between elements.
+Right now, the dashboard looks mostly good, both in dev server and storybook. However, the code
+blocks don't render correctly and the markdown tables aren't shown correctly in storybook. The whole
+styling on the pages seems a bit off. And when userland
+(i.e.`~/Repositories/assistant/apps/dashboard`) try to implement the design system it ends up
+looking a lot different with regard to spacing and distance between elements.
 
-We need to make sure the design system is optimised and has proper instructions for humands and for
-agentic implementers, so that resulting userland applications actually look more like the intended
-design, as shown in the "Dashboard" section in Storybook.
+We need to make sure the design system is optimised and has proper and well formatted instructions
+UI for humands and for agentic implementers, so that resulting userland applications actually look
+more like the intended design, as shown in the "Dashboard" section in Storybook.
 
 ## Success criteria
 
