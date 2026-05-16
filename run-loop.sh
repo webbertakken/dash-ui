@@ -7,8 +7,16 @@
 #   ./run-loop.sh may09-v2 50           # custom tag + iteration count
 #   ./run-loop.sh may09-v2 50 480       # custom tag + iters + per-iter timeout (sec)
 #
-# Env overrides:
+# Flags (may appear before or after positional args):
+#   --tag <name>                        # same as positional TAG
+#   --iterations <n>                    # same as positional ITERATIONS
+#   --timeout <sec>                     # same as positional ITER_TIMEOUT
+#   --model <name>                      # override the default (sonnet 4.6)
+#   --effort <level>                    # low | medium | high | xhigh | max
+#
+# Env overrides (flags win over env):
 #   CLAUDE_MODEL=claude-opus-4-7        # override the default (sonnet 4.6)
+#   CLAUDE_EFFORT=high                  # low | medium | high | xhigh | max
 #   CLAUDE_BIN=claude                   # path to claude CLI
 
 set -euo pipefail
@@ -32,12 +40,60 @@ on_signal() {
 }
 trap on_signal INT TERM
 
-TAG="${1:-$(date +%b%d | tr '[:upper:]' '[:lower:]')}"
-ITERATIONS="${2:-200}"
-ITER_TIMEOUT="${3:-600}"   # 10 min hard kill (5 min budget + buffer)
+# Parse flags out of the arg list; collect remaining args positionally.
+CLI_TAG=""
+CLI_ITERATIONS=""
+CLI_TIMEOUT=""
+CLI_MODEL=""
+CLI_EFFORT=""
+POSITIONAL=()
+
+require_value() {
+  # $1 = flag name, $2 = value
+  if [[ -z "${2:-}" || "${2:0:1}" == "-" ]]; then
+    echo "error: ${1} requires a value" >&2
+    exit 1
+  fi
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --tag)         require_value "--tag"        "${2:-}"; CLI_TAG="$2";        shift 2 ;;
+    --tag=*)       CLI_TAG="${1#--tag=}";                                       shift   ;;
+    --iterations)  require_value "--iterations" "${2:-}"; CLI_ITERATIONS="$2"; shift 2 ;;
+    --iterations=*) CLI_ITERATIONS="${1#--iterations=}";                        shift   ;;
+    --timeout)     require_value "--timeout"    "${2:-}"; CLI_TIMEOUT="$2";    shift 2 ;;
+    --timeout=*)   CLI_TIMEOUT="${1#--timeout=}";                               shift   ;;
+    --model)       require_value "--model"      "${2:-}"; CLI_MODEL="$2";      shift 2 ;;
+    --model=*)     CLI_MODEL="${1#--model=}";                                   shift   ;;
+    --effort)      require_value "--effort"     "${2:-}"; CLI_EFFORT="$2";     shift 2 ;;
+    --effort=*)    CLI_EFFORT="${1#--effort=}";                                 shift   ;;
+    --)
+      shift
+      while [[ $# -gt 0 ]]; do POSITIONAL+=("$1"); shift; done
+      ;;
+    -*)
+      echo "error: unknown flag '$1'" >&2
+      exit 1
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# Named flags win over positionals; positionals win over defaults.
+TAG="${CLI_TAG:-${POSITIONAL[0]:-$(date +%b%d | tr '[:upper:]' '[:lower:]')}}"
+ITERATIONS="${CLI_ITERATIONS:-${POSITIONAL[1]:-200}}"
+ITER_TIMEOUT="${CLI_TIMEOUT:-${POSITIONAL[2]:-600}}"   # 10 min hard kill (5 min budget + buffer)
 BRANCH="autoresearch/${TAG}"
 LOG_DIR="runs/${TAG}"
 CLAUDE_BIN="${CLAUDE_BIN:-claude}"
+
+# CLI flags win over env vars.
+[[ -n "${CLI_MODEL}" ]]  && CLAUDE_MODEL="${CLI_MODEL}"
+[[ -n "${CLI_EFFORT}" ]] && CLAUDE_EFFORT="${CLI_EFFORT}"
 
 if ! command -v "$CLAUDE_BIN" >/dev/null 2>&1; then
   echo "error: $CLAUDE_BIN not found on PATH" >&2
@@ -89,6 +145,19 @@ PROMPT='Read program.md and OBJECTIVES.md. Run exactly ONE iteration of the auto
 CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-4-6}"
 MODEL_FLAG=(--model "${CLAUDE_MODEL}")
 
+EFFORT_FLAG=()
+if [[ -n "${CLAUDE_EFFORT:-}" ]]; then
+  case "${CLAUDE_EFFORT}" in
+    low|medium|high|xhigh|max)
+      EFFORT_FLAG=(--effort "${CLAUDE_EFFORT}")
+      ;;
+    *)
+      echo "error: effort must be one of: low, medium, high, xhigh, max (got '${CLAUDE_EFFORT}')" >&2
+      exit 1
+      ;;
+  esac
+fi
+
 START_EPOCH=$(date +%s)
 echo "→ starting ${ITERATIONS} iterations on ${BRANCH} (timeout ${ITER_TIMEOUT}s each)"
 echo "→ logs: ${LOG_DIR}/iter-NNN.log"
@@ -108,6 +177,7 @@ for i in $(seq 1 "${ITERATIONS}"); do
     -p "${PROMPT}" \
     --dangerously-skip-permissions \
     "${MODEL_FLAG[@]}" \
+    ${EFFORT_FLAG[@]+"${EFFORT_FLAG[@]}"} \
     > "${LOG}" 2>&1 &
   CHILD_PID=$!
   wait "${CHILD_PID}"
