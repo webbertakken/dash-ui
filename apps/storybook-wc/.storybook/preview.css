@@ -196,6 +196,14 @@ html[data-motif='light'] {
 .sbdocs td {
   color: var(--text-1);
 }
+/* Zebra rhythm: foundation lookup tables (ForAgents Tailwind-drift cheat
+   sheet, Troubleshooting symptom map) run 25–80 rows of left-vs-right pairs.
+   Plain MDX tables make the eye lose its place mid-row. --row-hover is the
+   same token the dashboard uses for table-row tint (rgba 0.04 in both
+   motifs) so the rhythm is visible without competing with the row contents. */
+.sbdocs tbody tr:nth-child(even) td {
+  background: var(--row-hover);
+}
 
 /* MDX scrollbars: dashboard.css ::-webkit-scrollbar-thumb/track use hardcoded
    dark colours (#2a2a2c / #0a0a0b) so MDX code-block scrollbars look out of
