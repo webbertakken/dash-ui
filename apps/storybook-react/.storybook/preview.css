@@ -114,11 +114,21 @@ html[data-motif='light'] {
   margin: 4px 0;
 }
 
+/* MDX inline code chips: the chip background is --neutral-08, which is also
+   the background of .sbdocs th and .sbdocs blockquote — so inline `code`
+   inside table headers (e.g. `--space-1`, `<Card>`) and blockquote callouts
+   renders as plain text on a same-colour surface and disappears. Add a thin
+   token-driven border so chips stay demarcated on every surface, and pin the
+   mono font + a slightly smaller em size so chips don't visually outweigh
+   surrounding prose. */
 .sbdocs code {
   color: var(--text-2);
   background: var(--neutral-08);
+  border: 1px solid var(--border-2);
   padding: 1px 4px;
   border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.92em;
 }
 
 /* MDX prose links: dashboard.css resets `a { color: inherit; text-decoration: none }`
@@ -157,6 +167,7 @@ html[data-motif='light'] {
   background: transparent;
   color: inherit;
   padding: 0;
+  border: 0;
   border-radius: 0;
   font-size: inherit;
   font-family: inherit;
