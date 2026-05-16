@@ -38,9 +38,11 @@ Forms live inside `<Card>` tiles like every other page region. Inside the card, 
 shapes:
 
 ```tsx
+import { Card, CardTitle, FieldStack, FormRow } from '@w5-ui/react'
+
 {/* Single column — narrow forms, modal bodies */}
 <Card span={4}>
-  <h3>Profile</h3>
+  <CardTitle>Profile</CardTitle>
   <FieldStack>
     <Field label="Display name" defaultValue="Maya S." />
     <Field label="Email" defaultValue="maya@example.com" />
@@ -52,7 +54,7 @@ shapes:
 
 {/* Two-column grid — Settings cards, dense editors */}
 <Card span={8}>
-  <h3>System</h3>
+  <CardTitle>System</CardTitle>
   <FormRow>
     <Field label="Site name" defaultValue="Edge Gateway" />
     <Field label="Country">
