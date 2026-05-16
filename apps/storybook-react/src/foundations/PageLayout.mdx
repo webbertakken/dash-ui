@@ -1,0 +1,126 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Page layout" />
+
+# Page layout
+
+Every page in the reference dashboards follows the same skeleton. Userland gets correct spacing
+for free as long as the skeleton is reproduced verbatim — no custom paddings, no ad-hoc flex
+wrappers, no hand-tuned gaps.
+
+## The skeleton
+
+```tsx
+import { Banner, PageHeader, Card, Button, SearchBox } from '@w5-ui/react'
+import '@w5-ui/react/styles.css' // ships @w5-ui/tokens/dashboard.css
+
+export function MyPage() {
+  return (
+    <>
+      <Banner variant="warn" title="…">…</Banner>
+      <PageHeader
+        title="Dashboard"
+        actions={
+          <>
+            <SearchBox placeholder="Search…" />
+            <Button variant="primary">Adopt</Button>
+          </>
+        }
+      />
+      <div className="grid">
+        <Card span={4}>…</Card>
+        <Card span={4}>…</Card>
+        <Card span={4}>…</Card>
+        <Card span={8}>…</Card>
+        <Card span={4}>…</Card>
+      </div>
+    </>
+  )
+}
+```
+
+That is the entire contract. `PageHeader`, `.grid`, and `<Card span={n}>` carry every padding
+and gap value the reference dashboards use. **Do not wrap them in extra containers** — the
+sticky header, the 16px / 24px gutter, and the 12-column lanes only line up when they are
+direct children of the page root.
+
+## Anatomy
+
+| Layer | Element | Where the values live |
+| --- | --- | --- |
+| Optional banner | `<Banner>` | Renders flush against the top of the scroll container |
+| Sticky page header | `<PageHeader>` or `.ph-bar` | 14px × 24px padding, 1px hairline border, `position: sticky` |
+| Page body | `<div className="grid">` | 12-column grid, 12px gap, 16px × 24px padding |
+| Tile | `<Card span={n}>` | 12-column slot. `n` defaults to full-width |
+
+## Grid math
+
+`.grid` is `repeat(12, 1fr)` with a 12px gap. Pick a `span` that divides 12 cleanly:
+
+| Tile width | `span` | Typical use |
+| --- | --- | --- |
+| Third | `4` | Single-stat card, donut |
+| Half | `6` | Two-column comparison |
+| Two-thirds | `8` | Wide table, line chart |
+| Full | `12` | Time series, sankey, page-wide table |
+
+Mixing 4+4+4, 8+4, 6+6, or 12 on a row all snap cleanly. **Avoid `span={5}` or `span={7}`** —
+they leave dead pixels and force the next row to wrap unevenly.
+
+## Card content patterns
+
+For a single hero number with a sub-line, reach for `<Stat>` first — it _is_ a `<Card>`
+already, so no nesting:
+
+```tsx
+<Stat
+  span={4}
+  label="Internet"
+  value="847"
+  unit="Mbps · down"
+  sub="18 ms · 0.0% loss"
+  delta="+12% 24h"
+  deltaDir="up"
+/>
+```
+
+For richer tiles, compose inside `<Card>`. The `.card h3` rule already sets the title
+size, colour and flex layout — don't restyle the heading:
+
+```tsx
+<Card span={4}>
+  <h3>
+    Internet <Pill variant="success">Online</Pill>
+  </h3>
+  <Sparkline />
+</Card>
+```
+
+Status and pills inside the title flex to the right automatically. `<Pill>`,
+`<StatusIndicator>`, `<Badge>`, `<Banner>` and `<Callout>` cover the common status
+patterns — prefer them over hand-rolled coloured spans.
+
+## Common mistakes (and the fix)
+
+| Symptom | Likely cause | Fix |
+| --- | --- | --- |
+| Page gutter too wide / too narrow | Custom outer `<div style={{ padding }}>` wraps `.grid` | Remove the wrapper. `.grid` already pads 16px × 24px |
+| Header doesn't stick | `<PageHeader>` rendered inside a wrapper with `overflow: hidden` | Place it as a direct child of the scrolling container (`.content`) |
+| Cards bleed into the header | The page root is `display: flex; gap: …` adding extra space | Don't gap-stack. Render `<Banner>`, `<PageHeader>`, and `<div className="grid">` as siblings — the components already own their separation |
+| Tile widths don't line up | Mixed `span` values that don't sum to 12 per row | Use 4/6/8/12 (and combinations) |
+| Tile padding looks wrong | Re-implementing `.card` with a custom `<div>` | Use `<Card>` from `@w5-ui/react` |
+| Title font too small / colour off | `<h3>` rendered outside a `<Card>` | The `.card h3` rule only applies inside `<Card>` — keep titles inside |
+
+## CSS hooks userland can rely on
+
+These classes ship with `@w5-ui/tokens/dashboard.css` (re-exported by
+`@w5-ui/react/styles.css` and `@w5-ui/svelte/styles.css`). They are the seams the reference
+dashboards stand on:
+
+- `.ph-bar`, `.ph-title`, `.ph-actions` — the page-header bar primitives (`PageHeader` wraps them)
+- `.grid` — the 12-column page grid with the canonical gutter
+- `.card`, `.card h3` — tile shell and title rhythm (used through `<Card>` and `<Stat>`)
+- `.mac`, `.name-cell` — monospace and avatar-style cell layouts inside tables
+
+Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values.
+See **Foundations / Spacing** and **Foundations / Colours**.
