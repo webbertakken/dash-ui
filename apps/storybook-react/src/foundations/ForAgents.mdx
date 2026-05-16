@@ -259,6 +259,15 @@ something off-scale, surface it as a design fork before shipping.
 | `<input type="range" class="w-full accent-brand" />` + bespoke value label / ticks | `<Slider value={…} onChange={…} min={…} max={…} step={…} />` (WAI-ARIA + label/value formatting) |
 | `<dialog open class="fixed inset-0 …">` or hand-rolled overlay + close `<button>`   | `<Modal open title onClose footer={…}>…</Modal>` (`role="dialog"` + focus trap + body-scroll lock) |
 | Hand-rolled side panel (`fixed right-0 top-0 h-full w-80 translate-x-0 …`)     | `<Drawer open title onClose>…</Drawer>` (`role="dialog"` + focus trap + slide-in) |
+| `<img class="w-8 h-8 rounded-full">` + fallback `<div>` initials + bespoke ring | `<Avatar src={…} initials="WN" size="sm\|md\|lg" status="online\|busy\|offline" />` |
+| Hand-rolled stack of overlapping `<img>` thumbs + `+N` chip                     | `<AvatarGroup avatars={[…]} max={5} size="md" ariaLabel="Members" />` |
+| `<span class="relative">…<span class="absolute -top-1 -right-1 …">3</span></span>` | `<Badge count={3} max={99} color="danger\|brand\|neutral">…</Badge>` (auto `99+`) |
+| `<span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-status-danger rounded-full" />` notification dot | `<Badge dot color="danger">…</Badge>` (or `<NotifDot>` on a `<TopbarActions>` bell) |
+| `title="…"` attribute (no styling, no a11y wiring) or hand-rolled `position:absolute` bubble | `<Tooltip label="…" placement="top\|bottom\|left\|right">{trigger}</Tooltip>` (`aria-describedby` + `role="tooltip"`) |
+| Hand-rolled hover-triggered preview card (`onMouseEnter` + bespoke `absolute` panel)  | `<HoverCard content={…} placement="top" delay={200}>{trigger}</HoverCard>` (hover/focus + delay) |
+| `<button>` + bespoke `position:absolute` panel + click-outside listener for a menu     | `<Popover label="Filters" title="…" placement="bottom">…</Popover>` (focus trap + ESC + outside-click) |
+| `<div class="animate-pulse bg-bg-2 h-4 w-32 rounded">` placeholder block             | `<Skeleton variant="text\|rect\|circle" width={…} height={…} ariaLabel="Loading" />` |
+| Hand-rolled coloured dot + label (`<span class="w-2 h-2 rounded-full bg-status-ok" /> Online`) | `<StatusIndicator color="var(--color-status-ok)" text="Online" />` (or `<StatusRing status="ok">` for site-health rings) |
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
