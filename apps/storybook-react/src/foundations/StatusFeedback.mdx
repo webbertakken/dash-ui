@@ -56,7 +56,7 @@ putting an ephemeral thing somewhere persistent (toast jammed into the layout).
 
 | Scope         | Lifetime                  | Component(s)                      | Where it lives                                         |
 | ------------- | ------------------------- | --------------------------------- | ------------------------------------------------------ |
-| Inline label  | Persistent, no dismiss    | `Pill`, `Badge`, `StatusIndicator`| Inside `<h3>`, table cell, list row, legend            |
+| Inline label  | Persistent, no dismiss    | `Pill`, `Badge`, `StatusIndicator`| Inside `<CardTitle>`, table cell, list row, legend     |
 | Inline block  | Persistent, dismissable   | `Callout`, `Alert`                | Inside body copy, inside a `<Card>`, inside a `Field`  |
 | Page-level    | Persistent until acted on | `Banner`                          | Direct child of the page root, above `<PageHeader>`    |
 | Ephemeral     | Auto-dismisses            | `toast.show(...)` + `<Toaster />` | Bottom-right of the viewport, controlled by `<Toaster>`|
@@ -118,8 +118,10 @@ Every list, table, and chart needs an empty state. `EmptyState` ships a title, d
 optional action — drop it inside the `<Card>` or `.table-shell` that would otherwise be empty:
 
 ```tsx
-<Card span={6}>
-  <h3>Recent alarms</h3>
+import { Card, CardTitle, EmptyState } from '@w5-ui/react'
+
+;<Card span={6}>
+  <CardTitle>Recent alarms</CardTitle>
   {alarms.length === 0 ? (
     <EmptyState
       title="No alarms"
@@ -161,7 +163,7 @@ for screen readers.
 
 | Symptom                                       | Likely cause                                                       | Fix                                                                                                              |
 | --------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Page drifts down a row vs Dashboard story     | `Banner` used for a single-item status that should be a `Pill`     | Move the status into the `<h3>` of the relevant card as a `<Pill>`                                               |
+| Page drifts down a row vs Dashboard story     | `Banner` used for a single-item status that should be a `Pill`     | Move the status into the `<CardTitle>` of the relevant card as a `<Pill>`                                        |
 | "Online" / "Offline" cell looks heavy         | `Pill` used inside a dense table column                            | Switch to `StatusIndicator` for table cells                                                                       |
 | Toast shows but never disappears              | Used as an error users must read                                   | Switch to `Banner` (page-level) or `ConfirmDialog`                                                                |
 | Toast doesn't render at all                   | `<Toaster />` not mounted at the app root                          | Mount `<Toaster />` once inside `AppLayout`'s children                                                            |
