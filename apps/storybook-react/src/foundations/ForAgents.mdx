@@ -285,6 +285,13 @@ something off-scale, surface it as a design fork before shipping.
 | `<IconButton>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" tooltip     | `<CopyButton text={value} label="Copy" />` (clipboard + transient confirm + a11y live) |
 | Hand-rolled "no results" panel (`<div class="text-center py-10 text-text-3">…</div>`)  | `<EmptyState title="…" description="…" action={…} />` (canonical zero-state rhythm) |
 | Hand-rolled wizard progress bar (`<ol class="flex gap-2">` + active/complete CSS state) | `<Stepper steps={[{ label }]} active={n} />` (`aria-current="step"` + complete/upcoming state) |
+| Four `<input maxlength=3>` octet boxes + manual `.` separator + 0-255 clamp logic | `<IPInput label="…" value="10.0.0.1" onChange={(s) => …} />` (WAI-ARIA spinbutton per octet) |
+| Six `<input maxlength=2>` hex boxes + manual `:` separator + `[0-9a-f]` mask | `<MACInput label="…" value="aa:bb:cc:dd:ee:ff" onChange={(s) => …} />` (WAI-ARIA spinbutton per octet) |
+| `<input>` + bespoke regex for `0.0.0.0/24` + manual prefix-length clamp (0-32) | `<CIDRInput label="…" value="192.168.1.0/24" onChange={(s) => …} />` (octets + prefix in one row) |
+| Three `<input type=number>` for HH/MM/SS + bespoke `:` separator + step plumbing | `<DurationInput label="…" value="01:30:00" onChange={(s) => …} />` (WAI-ARIA spinbutton + clamp) |
+| `<div class="flex"><span class="bg-bg-2 px-2 …">https://</span><input class="flex-1 …">…<span>…</span></div>` | `<InputGroup prefix="https://" suffix=".com"><input … /></InputGroup>` (flush addon + focus ring) |
+| Hand-rolled `<dl>` or two-column `<table>` for device drawer key/value rows | `<KVTable rows={[{ key, value }, …]} caption="…" />` (semantic `<th scope="row">` + zebra rhythm) |
+| `<pre class="bg-bg-2 rounded p-3 text-12 font-mono overflow-auto">…</pre>` + manual copy button | `<CodeBlock code={src} language="ts" label="Example" />` (`role="region"` + integrated `<CopyButton>`) |
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
