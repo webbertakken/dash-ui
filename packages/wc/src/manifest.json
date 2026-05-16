@@ -300,6 +300,10 @@
     "tag": "uni-grouped-list"
   },
   {
+    "name": "H2",
+    "tag": "uni-h2"
+  },
+  {
     "name": "HealthBar",
     "tag": "uni-health-bar"
   },

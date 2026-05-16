@@ -76,6 +76,7 @@ import './elements/GanttChart.wc.svelte'
 import './elements/Gauge.wc.svelte'
 import './elements/Grid.wc.svelte'
 import './elements/GroupedList.wc.svelte'
+import './elements/H2.wc.svelte'
 import './elements/HealthBar.wc.svelte'
 import './elements/HeatMap.wc.svelte'
 import './elements/HexbinChart.wc.svelte'
@@ -270,6 +271,7 @@ export const REGISTERED_TAGS = [
   'uni-gauge',
   'uni-grid',
   'uni-grouped-list',
+  'uni-h2',
   'uni-health-bar',
   'uni-heat-map',
   'uni-hexbin-chart',

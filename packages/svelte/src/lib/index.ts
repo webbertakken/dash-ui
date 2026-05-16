@@ -298,5 +298,6 @@ export { default as Caption } from './components/Caption.svelte'
 export { default as BodyLg } from './components/BodyLg.svelte'
 export { default as Body } from './components/Body.svelte'
 export { default as Label } from './components/Label.svelte'
+export { default as H2 } from './components/H2.svelte'
 
 export * from './icons.js'
