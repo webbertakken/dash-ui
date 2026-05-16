@@ -104,6 +104,10 @@
     "tag": "uni-card-more"
   },
   {
+    "name": "CardTitle",
+    "tag": "uni-card-title"
+  },
+  {
     "name": "Carousel",
     "tag": "uni-carousel"
   },

@@ -284,5 +284,6 @@ export { default as Delta } from './components/Delta.svelte'
 export { default as CardMore } from './components/CardMore.svelte'
 export { default as Unit } from './components/Unit.svelte'
 export { default as StatNumber } from './components/StatNumber.svelte'
+export { default as CardTitle } from './components/CardTitle.svelte'
 
 export * from './icons.js'

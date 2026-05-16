@@ -194,7 +194,7 @@ Stable class names shipped by `@w5-ui/tokens/dashboard.css` (re-exported via `@w
 and `@w5-ui/svelte/styles.css`):
 
 - `.card` — the tile shell. Use through `<Card>` / `<Stat>`
-- `.card h3` — the title rhythm (size, weight, colour, flex). Use a plain `<h3>` and inherit it
+- `.card h3` — the title rhythm (size, weight, colour, flex). Use a plain `<h3>` (or `<CardTitle>` when the raw element is awkward — codegen, MDX, mixed JSX trees) and inherit it
 - `.card h3 .more` — the trailing "More →" affordance inside a title. Use through `<CardMore>`
 - `.stat` — the hero-number row (30 px, semibold, tabular). Use through `<Stat>` / `<StatNumber>`
 - `.submeta` — the muted supporting line under a `.stat` number. Use through `<Submeta>`

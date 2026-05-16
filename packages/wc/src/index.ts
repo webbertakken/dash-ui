@@ -27,6 +27,7 @@ import './elements/Callout.wc.svelte'
 import './elements/CandlestickChart.wc.svelte'
 import './elements/Card.wc.svelte'
 import './elements/CardMore.wc.svelte'
+import './elements/CardTitle.wc.svelte'
 import './elements/Carousel.wc.svelte'
 import './elements/Checkbox.wc.svelte'
 import './elements/ChordDiagram.wc.svelte'
@@ -207,6 +208,7 @@ export const REGISTERED_TAGS = [
   'uni-candlestick-chart',
   'uni-card',
   'uni-card-more',
+  'uni-card-title',
   'uni-carousel',
   'uni-checkbox',
   'uni-chord-diagram',
