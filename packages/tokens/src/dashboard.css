@@ -260,10 +260,19 @@ a {
 :root:has(.sel-toolbar) {
   --bottom-panel-h: 76px;
 }
-/* Card root CSS removed: see scoped Tailwind utilities in Card.svelte.
- * The `.card h3` consumer-slot rules below stay until every page that
- * puts an `<h3>` inside a Card has migrated those headings to Tailwind
- * utilities of its own. */
+/* Card chrome (tokens): mirror the Tailwind utilities baked into
+   Card.svelte so React + userland render the same tile without
+   needing Tailwind. Motif-blind on purpose (matches Svelte). */
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: var(--space-2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--neutral-09);
+  padding: 14px var(--space-4);
+}
 .card h3 {
   margin: 0;
   font-size: 12px;
@@ -278,7 +287,36 @@ a {
   cursor: pointer;
   color: #6e7079;
 }
-/* Stat CSS removed: see scoped Tailwind utilities in Stat.svelte. */
+/* Stat hero rhythm (tokens): matches Type/DataDisplay MDX contract
+   (30px hero, 12px unit, 11px submeta) and the Tailwind utilities
+   baked into Stat.svelte. Used by <Stat> and by reference pages that
+   emit the raw classes directly (Dashboard/Security/Vpn). */
+.stat {
+  font-family: var(--font-sans);
+  font-size: var(--fs-30);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-1);
+}
+.stat .unit {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-regular);
+  color: var(--text-3);
+  margin-left: var(--space-1);
+}
+.submeta {
+  font-size: var(--fs-11);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+.delta-up {
+  color: var(--status-success);
+}
+.delta-down {
+  color: var(--status-danger);
+}
 
 /* Pill CSS removed: see scoped Tailwind utilities in Pill.svelte. */
 
