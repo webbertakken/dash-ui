@@ -56,3 +56,20 @@ Add `data-motif="dark"` to `<html>` and that single snippet is the whole contrac
 (custom paddings, ad-hoc wrappers, raw hex colours) is what drags Svelte userland away from the
 reference. See the React storybook's **Foundations / Setup** for the full walkthrough - every step
 applies here, swap `@w5-ui/react` for `@w5-ui/svelte`.
+
+## Common mistakes (Svelte-specific)
+
+The React storybook's **Foundations / Troubleshooting** covers the framework-agnostic drift cases
+(missing `dashboard.css`, custom `gap` overrides, hardcoded hex). The four pitfalls below are
+unique to Svelte userland - they don't appear in React, so the React troubleshooting page can't
+flag them.
+
+| Symptom in Svelte userland                                       | Cause                                                                                    | Fix                                                                          |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `Topbar`/`Sidebar` render as empty slots inside `AppLayout`      | Passed as children (`<AppLayout><Topbar /></AppLayout>`) instead of via snippet props    | Use `{#snippet topbar()}<Topbar ... />{/snippet}` - they are `Snippet` props |
+| Topbar app-switcher caret never highlights the active app        | Forgot `bind:` on `activeApp` - it is a `$bindable()` prop, not plain                    | `<Topbar bind:activeApp ... />`                                              |
+| Tokens load but `.app`/`.grid`/`.card` rules are missing         | Imported `@w5-ui/tokens/tokens.css` only; `dashboard.css` is a separate file in Svelte   | Use the one-liner `import '@w5-ui/svelte/styles.css'` - it bundles both      |
+| `class` prop on a primitive does nothing / triggers a TS error   | Wrote `class:my-class` (Svelte directive) instead of forwarding a string `class` prop    | Pass a string: `<Card class="my-extra" ...>` - every primitive forwards it   |
+
+The four cases above plus the React **Foundations / Troubleshooting** 30-second triage cover every
+drift case we have seen in Svelte userland to date.
