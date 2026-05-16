@@ -108,7 +108,7 @@ update if the design system shifts a value. Available everywhere `@w5-ui/*` styl
 | `.dash-ui-caption`     | 12px  | regular      | 1.25  | `--text-3`  | Metadata, helper text, table footnote     |
 | `.dash-ui-eyebrow`     | 11px  | semibold     | 1     | `--text-3`  | Uppercase tracked overline                |
 | `.dash-ui-stat`        | 30px  | semibold     | 1     | `--text-1`  | KPI number (tabular numerals, -0.01em)    |
-| `.dash-ui-mono`        | 13px  | regular      | 1.4   | `--text-2`  | MAC / IP / hex IDs inline                 |
+| `.dash-ui-mono`        | 13px  | regular      | 1.4   | `--text-2`  | MAC / IP / hex IDs inline (`<Mono>`)      |
 | `.dash-ui-code`        | 12px  | regular      | —     | `--text-2`  | Inline `<code>` — boxed + bordered        |
 
 The `<Card>` component injects `.dash-ui-h4` on its title; `<Stat>` injects `.dash-ui-stat` on its
@@ -191,7 +191,7 @@ column of MACs / IPs / versions aligns vertically. That alignment is the whole p
 | Longer settings descriptions (multi-paragraph)     | `.dash-ui-body-lg`                         |
 | Form field label                                   | (already in `<Field label="…">`)           |
 | Section overline / category eyebrow                | `.dash-ui-eyebrow`                         |
-| MAC / IP / hex / port / firmware version           | `.dash-ui-mono`                            |
+| MAC / IP / hex / port / firmware version           | `<Mono>` (or `.dash-ui-mono`)              |
 | Inline `<code>` (key name, env var, config path)   | `.dash-ui-code` or `<Code>`                |
 | Helper text, metadata, "last updated" stamp        | `.dash-ui-caption`                         |
 

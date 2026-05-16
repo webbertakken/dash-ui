@@ -100,6 +100,7 @@ import './elements/MatrixChart.wc.svelte'
 import './elements/Menubar.wc.svelte'
 import './elements/MirroredBarChart.wc.svelte'
 import './elements/Modal.wc.svelte'
+import './elements/Mono.wc.svelte'
 import './elements/MultiSelect.wc.svelte'
 import './elements/Muted.wc.svelte'
 import './elements/NameCell.wc.svelte'
@@ -289,6 +290,7 @@ export const REGISTERED_TAGS = [
   'uni-menubar',
   'uni-mirrored-bar-chart',
   'uni-modal',
+  'uni-mono',
   'uni-multi-select',
   'uni-muted',
   'uni-name-cell',

@@ -396,6 +396,10 @@
     "tag": "uni-modal"
   },
   {
+    "name": "Mono",
+    "tag": "uni-mono"
+  },
+  {
     "name": "MultiSelect",
     "tag": "uni-multi-select"
   },
