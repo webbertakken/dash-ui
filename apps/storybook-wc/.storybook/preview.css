@@ -47,3 +47,60 @@ html[data-motif='light'] {
   padding: 1px 4px;
   border-radius: 3px;
 }
+
+/* MDX code blocks: dashboard.css doesn't style <pre>, and the inline-chip rule
+   above bleeds into <pre><code>, making fenced code blocks render as a single
+   dark chip with no padding or scroll. Reset <pre><code> back to a real code
+   block. */
+.sbdocs pre {
+  background: var(--neutral-08);
+  color: var(--text-1);
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border-2);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 16px 0;
+}
+.sbdocs pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+/* MDX tables: dashboard.css globally styles table/th/td for dashboard data
+   tables (sticky header, uppercase 10px caps, hardcoded #141415 bg). Those
+   rules leak into MDX docs tables and make them look like data grids. Reset
+   for the docs context. */
+.sbdocs table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.sbdocs th,
+.sbdocs td {
+  border: 1px solid var(--border-2);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  text-transform: none;
+  letter-spacing: 0;
+  height: auto;
+  position: static;
+}
+.sbdocs th {
+  background: var(--neutral-08);
+  color: var(--text-1);
+  font-weight: 600;
+  font-size: 13px;
+}
+.sbdocs td {
+  color: var(--text-1);
+}
