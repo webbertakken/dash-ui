@@ -170,6 +170,7 @@ import './elements/Topbar.wc.svelte'
 import './elements/TransferList.wc.svelte'
 import './elements/TreeMap.wc.svelte'
 import './elements/TreeView.wc.svelte'
+import './elements/Unit.wc.svelte'
 import './elements/UptimeTimeline.wc.svelte'
 import './elements/VennDiagram.wc.svelte'
 import './elements/ViolinPlot.wc.svelte'
@@ -348,6 +349,7 @@ export const REGISTERED_TAGS = [
   'uni-transfer-list',
   'uni-tree-map',
   'uni-tree-view',
+  'uni-unit',
   'uni-uptime-timeline',
   'uni-venn-diagram',
   'uni-violin-plot',

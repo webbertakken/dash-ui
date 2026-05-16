@@ -676,6 +676,10 @@
     "tag": "uni-tree-view"
   },
   {
+    "name": "Unit",
+    "tag": "uni-unit"
+  },
+  {
     "name": "UptimeTimeline",
     "tag": "uni-uptime-timeline"
   },
