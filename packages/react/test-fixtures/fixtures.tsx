@@ -1343,6 +1343,19 @@ export const FIXTURES: Record<string, Variant[]> = {
     { name: 'controlled', node: <U.OTPInput label="OTP" value="123" onChange={noop} length={4} /> },
     { name: 'disabled', node: <U.OTPInput label="OTP" disabled /> },
   ],
+  PageHeader: [
+    { name: 'default', node: <U.PageHeader title="Dashboard" /> },
+    {
+      name: 'with actions',
+      node: (
+        <U.PageHeader
+          title="Devices"
+          actions={<U.Button variant="primary">Adopt</U.Button>}
+          sticky={false}
+        />
+      ),
+    },
+  ],
   Pagination: [
     { name: 'default', node: <U.Pagination page={1} pageSize={10} total={50} onChange={noop} /> },
     { name: 'last page', node: <U.Pagination page={5} pageSize={10} total={50} onChange={noop} /> },

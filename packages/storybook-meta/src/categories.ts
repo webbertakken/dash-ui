@@ -23,6 +23,7 @@ export const COMPONENT_CATEGORY: Record<string, Category> = {
   // Layout
   AppShell: 'Layout',
   Card: 'Layout',
+  PageHeader: 'Layout',
   ResizablePanel: 'Layout',
   Drawer: 'Layout',
   Modal: 'Layout',

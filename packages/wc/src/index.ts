@@ -94,6 +94,7 @@ import './elements/NightingaleChart.wc.svelte'
 import './elements/NotificationPanel.wc.svelte'
 import './elements/NumberInput.wc.svelte'
 import './elements/OTPInput.wc.svelte'
+import './elements/PageHeader.wc.svelte'
 import './elements/Pagination.wc.svelte'
 import './elements/ParallelCoordinates.wc.svelte'
 import './elements/ParetoChart.wc.svelte'
@@ -262,6 +263,7 @@ export const REGISTERED_TAGS = [
   'uni-notification-panel',
   'uni-number-input',
   'uni-otpinput',
+  'uni-page-header',
   'uni-pagination',
   'uni-parallel-coordinates',
   'uni-pareto-chart',

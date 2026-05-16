@@ -372,6 +372,10 @@
     "tag": "uni-otpinput"
   },
   {
+    "name": "PageHeader",
+    "tag": "uni-page-header"
+  },
+  {
     "name": "Pagination",
     "tag": "uni-pagination"
   },

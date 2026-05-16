@@ -272,5 +272,6 @@ export type {
   GroupedListGroup,
   GroupedListItemStatus,
 } from './components/GroupedList.svelte'
+export { default as PageHeader } from './components/PageHeader.svelte'
 
 export * from './icons.js'

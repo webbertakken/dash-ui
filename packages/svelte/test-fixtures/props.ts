@@ -943,6 +943,10 @@ export const BUNDLES: Record<string, Bundle[]> = {
     { name: 'controlled', props: { label: 'OTP', value: '123', onChange: noop, length: 4 } },
     { name: 'disabled', props: { label: 'OTP', disabled: true } },
   ],
+  PageHeader: [
+    { name: 'default', props: { title: 'Dashboard' } },
+    { name: 'non-sticky', props: { title: 'Devices', sticky: false } },
+  ],
   Pagination: [
     { name: 'default', props: { page: 1, pageSize: 10, total: 50, onChange: noop } },
     { name: 'last', props: { page: 5, pageSize: 10, total: 50, onChange: noop } },
