@@ -76,6 +76,7 @@ import './elements/GanttChart.wc.svelte'
 import './elements/Gauge.wc.svelte'
 import './elements/Grid.wc.svelte'
 import './elements/GroupedList.wc.svelte'
+import './elements/H1.wc.svelte'
 import './elements/H2.wc.svelte'
 import './elements/H3.wc.svelte'
 import './elements/H4.wc.svelte'
@@ -273,6 +274,7 @@ export const REGISTERED_TAGS = [
   'uni-gauge',
   'uni-grid',
   'uni-grouped-list',
+  'uni-h1',
   'uni-h2',
   'uni-h3',
   'uni-h4',

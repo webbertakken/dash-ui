@@ -300,6 +300,10 @@
     "tag": "uni-grouped-list"
   },
   {
+    "name": "H1",
+    "tag": "uni-h1"
+  },
+  {
     "name": "H2",
     "tag": "uni-h2"
   },
