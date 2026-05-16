@@ -165,6 +165,7 @@ import './elements/StarRating.wc.svelte'
 import './elements/Stat.wc.svelte'
 import './elements/StatNumber.wc.svelte'
 import './elements/StatusIndicator.wc.svelte'
+import './elements/StatusRing.wc.svelte'
 import './elements/StepChart.wc.svelte'
 import './elements/Stepper.wc.svelte'
 import './elements/StreamGraph.wc.svelte'
@@ -366,6 +367,7 @@ export const REGISTERED_TAGS = [
   'uni-stat',
   'uni-stat-number',
   'uni-status-indicator',
+  'uni-status-ring',
   'uni-step-chart',
   'uni-stepper',
   'uni-stream-graph',

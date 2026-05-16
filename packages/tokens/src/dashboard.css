@@ -85,7 +85,7 @@ a {
   outline: var(--focus-ring);
   outline-offset: var(--focus-offset);
 }
-.topbar .status-ring {
+.status-ring {
   display: inline-flex;
   width: 18px;
   height: 18px;
@@ -94,7 +94,7 @@ a {
   align-items: center;
   justify-content: center;
 }
-.topbar .status-ring::after {
+.status-ring::after {
   content: '';
   width: 8px;
   height: 8px;

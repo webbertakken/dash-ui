@@ -11,6 +11,7 @@ import {
   ArcDiagram,
   CumulativeDistribution,
   ExpandableRow,
+  StatusRing,
 } from '@w5-ui/react'
 import type {
   FunnelSegment,
@@ -326,7 +327,7 @@ export function Vpn() {
                   borderRadius: 6,
                 }}
               >
-                <span className="status-ring" style={{ width: 8, height: 8 }} />
+                <StatusRing style={{ width: 8, height: 8 }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 13, color: '#fff' }}>{t[0]}</div>
                   <div

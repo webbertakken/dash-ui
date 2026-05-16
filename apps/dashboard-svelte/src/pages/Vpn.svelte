@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, Button, Pill, Tabs, PlusIcon, FunnelChart, UptimeTimeline, DumbbellChart, ErrorBandChart, ArcDiagram, CumulativeDistribution, ExpandableRow } from '@w5-ui/svelte';
+  import { Card, Button, Pill, Tabs, PlusIcon, FunnelChart, UptimeTimeline, DumbbellChart, ErrorBandChart, ArcDiagram, CumulativeDistribution, ExpandableRow, StatusRing } from '@w5-ui/svelte';
   import type { FunnelSegment, UptimeSeries, DumbbellItem, ErrorBandSeries, ArcNode, ArcLink, CdfSeries } from '@w5-ui/svelte';
   let tab = $state('s2s');
 
@@ -157,7 +157,7 @@
     <div style="display:flex;flex-direction:column;gap:8px;">
       {#each TELEPORT as t (t[0])}
         <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#0A0A0B;border:1px solid rgba(255,255,255,0.06);border-radius:6px;">
-          <span class="status-ring" style="width:8px;height:8px;"></span>
+          <StatusRing style="width:8px;height:8px;" />
           <div style="flex:1;">
             <div style="font-size:13px;color:#fff;">{t[0]}</div>
             <div style="font-size:11px;color:#6E7079;font-family:'JetBrains Mono',monospace;">{t[1]}</div>

@@ -656,6 +656,10 @@
     "tag": "uni-status-indicator"
   },
   {
+    "name": "StatusRing",
+    "tag": "uni-status-ring"
+  },
+  {
     "name": "StepChart",
     "tag": "uni-step-chart"
   },
