@@ -171,9 +171,10 @@ respects these contracts gets pixel parity with the Dashboard story automaticall
   alignment. Don't override.
 - **Animations:** Enter animations are on by default. Pass `animate={false}` for dashboards that
   refresh more than once every few seconds, otherwise the chart re-mount looks jittery.
-- **Bottom panel clearance:** Pages with a fixed bottom panel (`SelectionToolbar`,
-  `NotificationPanel`) auto-reserve `--bottom-panel-h` so charts in `.grid` aren't hidden behind it.
-  Don't add manual bottom padding — it stacks.
+- **Bottom panel clearance:** Pages with a fixed bottom bar (`SelectionToolbar`, or any userland
+  toolbar that sets `--bottom-panel-h`) auto-reserve room under `.grid` so the last row of charts
+  isn't hidden behind it. Don't add manual `padding-bottom` to the page — it stacks. To wire a
+  custom bottom bar, set `--bottom-panel-h: 76px` on `:root` while it is mounted.
 
 ## Common mistakes (and the fix)
 

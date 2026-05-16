@@ -123,7 +123,12 @@ a {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 12px;
-  padding: 16px 24px;
+  padding: 16px 24px calc(16px + var(--bottom-panel-h, 0px));
+}
+/* When a fixed bottom bar is mounted, lift --bottom-panel-h so .grid
+   reserves room for it. Userland gets correct clearance for free. */
+:root:has(.sel-toolbar) {
+  --bottom-panel-h: 76px;
 }
 /* Card root CSS removed: see scoped Tailwind utilities in Card.svelte.
  * The `.card h3` consumer-slot rules below stay until every page that
