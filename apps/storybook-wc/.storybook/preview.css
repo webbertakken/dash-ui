@@ -149,16 +149,20 @@ html[data-motif='light'] {
   max-width: none;
 }
 
-/* MDX inline code chips: the chip background is --neutral-08, which is also
-   the background of .sbdocs th and .sbdocs blockquote — so inline `code`
-   inside table headers (e.g. `--space-1`, `<Card>`) and blockquote callouts
-   renders as plain text on a same-colour surface and disappears. Add a thin
-   token-driven border so chips stay demarcated on every surface, and pin the
-   mono font + a slightly smaller em size so chips don't visually outweigh
-   surrounding prose. */
+/* MDX inline code chips: the chip background is --depthBg-2, which is also
+   the background of .sbdocs th, .sbdocs pre and .sbdocs blockquote — so inline
+   `code` inside table headers (e.g. `--space-1`, `<Card>`) and blockquote
+   callouts renders as plain text on a same-colour surface and disappears. Add
+   a thin token-driven border so chips stay demarcated on every surface, and
+   pin the mono font + a slightly smaller em size so chips don't visually
+   outweigh surrounding prose. --depthBg-2 (not --neutral-08) so the surface
+   actually flips between dark and light motif — --neutral-08 is fixed at
+   #1c1c1e in both motifs, so in light mode the chip/pre/th/blockquote
+   surface stayed near-black against near-black --text-1 / --text-2 and
+   failed WCAG 1.4.3 contrast. */
 .sbdocs code {
   color: var(--text-2);
-  background: var(--neutral-08);
+  background: var(--depthBg-2);
   border: 1px solid var(--border-2);
   padding: 1px 4px;
   border-radius: 3px;
@@ -212,7 +216,7 @@ html[data-motif='light'] {
    dark chip with no padding or scroll. Reset <pre><code> back to a real code
    block. */
 .sbdocs pre {
-  background: var(--neutral-08);
+  background: var(--depthBg-2);
   color: var(--text-1);
   padding: 12px 16px;
   border-radius: 6px;
@@ -256,7 +260,7 @@ html[data-motif='light'] {
   position: static;
 }
 .sbdocs th {
-  background: var(--neutral-08);
+  background: var(--depthBg-2);
   color: var(--text-1);
   font-weight: 600;
   font-size: 13px;
@@ -313,7 +317,7 @@ html[data-motif='light'] {
 .sbdocs blockquote {
   margin: 16px 0;
   padding: 12px 16px;
-  background: var(--neutral-08);
+  background: var(--depthBg-2);
   border-left: 3px solid var(--text-link);
   border-radius: 0 6px 6px 0;
   color: var(--text-1);
