@@ -1185,6 +1185,16 @@ tbody tr:hover td {
 
 /* SkipLink CSS removed: see scoped Tailwind utilities in SkipLink.svelte. */
 
+/* ===== Muted text utility =====
+   Drops a phrase to the tertiary text colour (--text-3) so secondary
+   metadata, captions and "X active" lines sit visually below the primary
+   label without losing AA contrast. Matches the colour used by .submeta,
+   .stat .unit and the .card h3 title chrome. Inline-by-default so the
+   parent line-height and flex layout keep working unchanged. */
+.t-muted {
+  color: var(--text-3);
+}
+
 /* ===== Visually-hidden utility (WCAG 2.4.6 Headings and Labels) =====
    Hides content visually while keeping it available to assistive tech. */
 .sr-only {

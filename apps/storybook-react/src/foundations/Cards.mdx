@@ -26,8 +26,9 @@ import { Card, Pill } from '@w5-ui/react'
 ```
 
 That is the whole thing. The `<h3>` becomes the tile title automatically because the `.card h3` CSS
-rule sets its size (12px), weight (500), colour (`--text-muted`), and flex layout (title on the
-left, status / "More" link pushed to the right). Don't restyle the heading. Don't replace it with an
+rule sets its size (12px), weight (500), colour (`--text-3`, the same muted tone as `.t-muted` and
+`.submeta`), and flex layout (title on the left, status / "More" link pushed to the right). Don't
+restyle the heading. Don't replace it with an
 `<h2>` or a custom `<div className="title">` — those skip the rule and the tile reads broken.
 
 ## Card vs Stat
@@ -78,7 +79,7 @@ pixels and force the next row to wrap unevenly. If `span` is omitted, the card s
 | Layer            | Where the values live                                                              |
 | ---------------- | ---------------------------------------------------------------------------------- |
 | `.card` shell    | 16px (`--space-4`) padding, `--radius-md` (6px) corner, `--surface-1` background   |
-| `.card h3` title | 12px / weight 500 / `--text-muted`, flex row with 8px (`--space-2`) inline gap     |
+| `.card h3` title | 12px / weight 500 / `--text-3` (muted), flex row with 8px (`--space-2`) inline gap |
 | Title trailing   | Anything after the title text in the `<h3>` (Pill, More link) is pushed right     |
 | Body             | Any element after the `<h3>`. Charts auto-fill, lists / tables stack on the 4px grid |
 

@@ -392,6 +392,10 @@
     "tag": "uni-multi-select"
   },
   {
+    "name": "Muted",
+    "tag": "uni-muted"
+  },
+  {
     "name": "NameCell",
     "tag": "uni-name-cell"
   },

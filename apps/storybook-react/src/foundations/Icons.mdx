@@ -103,10 +103,10 @@ Every path uses `stroke="currentColor"`. The icon inherits the colour of its par
 the entire colour contract — don't pass `stroke` or `color` props.
 
 ```tsx
-{/* Inherits .text-muted from the row label */}
-<span className="t-muted">
+{/* Inherits the tertiary text colour (--text-3) from the .t-muted wrapper */}
+<Muted>
   <ClientsIcon /> 124 active
-</span>
+</Muted>
 
 {/* Inherits danger red from .btn-danger */}
 <button className="btn btn-danger">
@@ -114,9 +114,15 @@ the entire colour contract — don't pass `stroke` or `color` props.
 </button>
 ```
 
+The typed `<Muted>` primitive from `@w5-ui/react` (`<uni-muted>` in WC) wraps the canonical
+`.t-muted` rule in `@w5-ui/tokens/dashboard.css`. Reach for it instead of inventing a one-off
+`color: #...` override when an inline phrase (counter, caption, sub-line beside an icon) needs to
+sit visually below the primary label.
+
 - Don't paint icons brand-blue by default. Brand-blue is reserved for the **one** primary action on
-  a page; the navigation icons sit on `--text` or `--text-muted` like the rest of the chrome.
-- Don't fight contrast by hard-coding `#fff`. The motif's `--text` is already AA against every
+  a page; the navigation icons sit on `--text-1` or `--text-3` (via `.t-muted`) like the rest of the
+  chrome.
+- Don't fight contrast by hard-coding `#fff`. The motif's `--text-1` is already AA against every
   surface variable; sticking with `currentColor` keeps you compliant when the user flips the motif.
 
 ## Accessibility: decorative vs meaningful
