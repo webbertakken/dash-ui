@@ -1,0 +1,155 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/For agents" />
+
+# For agents
+
+A single condensed brief for **agentic implementers** (Claude Code, Cursor, Copilot, etc.) wiring
+a userland app on top of `@w5-ui/react` or `@w5-ui/svelte`. The other Foundations pages explain
+**why** the contract is shaped the way it is; this page is the **what** in directive form, sized
+to drop straight into a userland `AGENTS.md` / `CLAUDE.md` / Cursor rules file.
+
+> If you are a human, skim this once and bookmark **Foundations / Setup** + **Recipes**. The
+> wording below is deliberately terse so an LLM can keep the whole contract in its working set.
+
+## Paste-into-userland brief
+
+Copy this block verbatim into `AGENTS.md` (or `CLAUDE.md`, or `.cursor/rules/dash-ui.md`) at the
+root of any userland project that consumes `@w5-ui/react` or `@w5-ui/svelte`. It is written as
+imperative rules — keep it short so it stays inside the model's prompt budget.
+
+```md
+# Dash UI — implementation contract
+
+Userland renders like the reference dashboard **only** when these rules hold. Every visual drift
+("spacing feels off", "colours look washed out", "header doesn't stick") maps to a rule below.
+
+## Setup (do once)
+
+- Import `@w5-ui/react/styles.css` (or `@w5-ui/svelte/styles.css`) **once** at the app entry.
+  Never import `@w5-ui/tokens/tokens.css` alone — `dashboard.css` is what wires `.app`/`.grid`
+  /`.card`. Tailwind users: import `@w5-ui/tokens/tailwind-full.css` instead.
+- Set `<html data-motif="dark">` (or `"light"`) **inline in `index.html`**, never inside a
+  `useEffect`. Anti-FOUC requires the attribute before the first paint.
+- Load Inter (UI) + JetBrains Mono (numeric cells). System fonts shift the type scale ~1px.
+
+## Page shell (every page, no exceptions)
+
+- `<AppLayout pageLabel topbar={<Topbar …/>} sidebar={<Sidebar …/>}>` wraps the whole window.
+  Never hand-roll `.app` / `.workspace` / `<main>`.
+- Inside `AppLayout`, render at most three siblings: optional `<Banner>`, then `<PageHeader>`,
+  then `<div className="grid">…</div>`. No extra wrapper `<div>` around the grid.
+- `<PageHeader title actions>` owns the sticky header. Never re-implement `.ph-bar` /
+  `.ph-title` / `.ph-actions` by hand.
+
+## Inside the grid
+
+- `.grid` is `repeat(12, 1fr)`, 12px gap, 16px × 24px padding. **Never** override `gap` /
+  `padding` on `.grid` or wrap it.
+- Every direct child is `<Card span={n}>` or `<Stat span={n}>`. Use `span` in {4, 6, 8, 12} —
+  never 5 or 7.
+- For a hero number, use `<Stat>` (it _is_ a `<Card>`). For richer tiles, compose inside
+  `<Card>` and let `.card h3` style the title — don't restyle `<h3>`.
+- Selection toolbars render **inside** `.grid` as `<SelectionToolbar>`. `.grid:has(.sel-toolbar)`
+  reserves the bottom room automatically; never use `position: fixed`.
+
+## Forms
+
+- `<Field label hint error required>` wraps every input. Inside a card, group fields in
+  `<div className="field-stack">` (16px gap).
+- Two-column rows use `<div className="form-row">` (1fr 1fr, 14px gap, 6px top offset). Never
+  free-type the gap.
+- Action rows use `<div className="form-actions">` (right-aligned, 8px between, 16px top).
+
+## Tables
+
+- Wrap `<Table>` in `<div className="table-shell">` for the inset rhythm.
+- Headers use `<SortHeader>` (owns `aria-sort` + sort icon). Pagination uses `<Pagination>`.
+- Monospace cells use `className="mac"` (MAC / IP / SKU). Avatar + name cells use `.name-cell`.
+
+## Colour, type, icons
+
+- Colours: tokens only. `var(--surface-1)`, `var(--text-1)`, `var(--text-2)`, `var(--border)`,
+  `var(--brand)`, `var(--status-ok|warn|danger)`. **Never** literal hex / rgb / `#fff` / `#000`.
+- Status copy: `<Pill variant="success|warn|danger|neutral">`, `<Badge>`, `<StatusIndicator>`.
+  Never `<span style={{ color: 'green' }}>`.
+- Type: `.dash-ui-display|h1|h2|h3|body|cap` semantic classes if you need typography outside a
+  component. Inter for UI, JetBrains Mono for numeric.
+- Icons: import from `@w5-ui/react` (23-icon canonical set). Size 16/20/24 only.
+
+## Spacing — the only escape hatch
+
+If a layout truly needs custom spacing, use `var(--space-1…12)` tokens. Never raw px in inline
+styles. Radius: `--radius-md` (6 px, default), `--radius-lg` (12 px, modals), `--radius-pill`,
+`--radius-app` (22 % for app squircles).
+
+## Anti-patterns (auto-reject in code review)
+
+- Inline `style={{ padding, gap, margin }}` on shell / grid / card elements
+- Re-implementing `<Card>` / `<Stat>` / `<PageHeader>` as styled `<div>`s
+- Hardcoded hex (`#1a1a1a`, `#006fff`, `#fff`)
+- Wrapper `<div>` around `.grid`, or `display: flex; gap: …` on the page root
+- `border-radius: 50%` on app-logo squircles (use `--radius-app`)
+- `tokens.css` imported without `dashboard.css` (or without `styles.css`)
+
+## When something looks "almost right"
+
+Open the matching **Dashboard** story in Storybook, inspect the rendered DOM, and diff your
+markup against it. The reference DOM is the single source of truth. If your class names differ,
+that delta **is** the drift.
+```
+
+That block is intentionally framework-neutral on prose and React-flavoured in the snippets —
+Svelte users swap component imports but every rule still holds.
+
+## Self-check protocol (run before declaring "done")
+
+When an agent finishes a userland page, it should run this checklist against the final markup
+and DOM. Every miss is documented in **Foundations / Troubleshooting** with a one-line fix.
+
+1. **`<html data-motif>` present** and set inline in `index.html` (not in a `useEffect`).
+2. **`@w5-ui/<framework>/styles.css` imported exactly once** at the app entry. No bare
+   `tokens.css` imports.
+3. **One `<AppLayout>` at the app root.** No hand-rolled `.app` / `.workspace` / `<main>`.
+4. **Page body is `<Banner>?` + `<PageHeader>` + `<div className="grid">`** as direct siblings.
+   No wrapper around `.grid`. No `display: flex` on the page root.
+5. **Every `.grid` child is `<Card>` or `<Stat>`** with `span ∈ {4, 6, 8, 12}`. No `span={5}`,
+   no `span={7}`, no bare `<div>` lanes.
+6. **No inline `style` for `padding` / `gap` / `margin`** on shell, header, or grid elements.
+7. **No literal hex / rgb colour** in components. Grep the diff for `#[0-9a-f]{3,8}` and replace
+   with `var(--…)` tokens.
+8. **`<h3>` only inside `<Card>`.** `.card h3` carries the title rhythm; outside a card the
+   selector doesn't apply.
+9. **Forms use `.field-stack` / `.form-row` / `.form-actions`** — no bespoke flex containers.
+10. **Computed style on root `.grid`:** `gap: 12px`, `padding: 16px 24px`. If either differs,
+    a wrapper or override is in the way.
+
+A passing run on those ten points reproduces the reference dashboard 1:1.
+
+## Lookup table — symptom → page
+
+Agents debugging a drift should jump straight to the matching Foundations page rather than
+re-deriving the contract:
+
+| If userland looks…                                          | Read first                          |
+| ----------------------------------------------------------- | ----------------------------------- |
+| Fresh app, nothing styled yet                               | **Foundations / Setup**             |
+| Spacing off, gaps too large                                 | **Foundations / Spacing**           |
+| Page chrome / sidebar / header off                          | **Foundations / Page layout**       |
+| Want a whole page template, not primitives                  | **Foundations / Recipes**           |
+| Colours wash out / motif flashes                            | **Foundations / Motifs**            |
+| Status text inconsistent                                    | **Foundations / Status & feedback** |
+| Form rhythm drifts                                          | **Foundations / Forms**             |
+| Charts clipped behind bottom panel                          | **Foundations / Charts**            |
+| Table headers misalign / no sort indicator                  | **Foundations / Tables**            |
+| Tailwind v4 user — utilities work but resets vanish         | **Foundations / Setup §7**          |
+| Symptom doesn't match anything obvious                      | **Foundations / Troubleshooting**   |
+
+## Why an agent brief at all?
+
+Documentation that works for humans assumes the reader can navigate sixteen MDX pages, follow
+cross-references, and skim for the relevant section. An agent's prompt budget rewards the
+opposite: **one** flat directive list, no chrome, every rule actionable from its own line. The
+brief above is sized to fit comfortably inside a project-level `AGENTS.md` alongside whatever
+else the project needs. The Foundations pages remain the long-form source of truth — this page
+is just the executive summary an agent can keep in working memory.
