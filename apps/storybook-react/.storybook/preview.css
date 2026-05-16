@@ -55,6 +55,39 @@ html[data-motif='light'] {
 .sbdocs th {
   color: var(--text-1);
 }
+
+/* MDX heading scale: dashboard.css sets `html, body { font-size: 13px }` for
+   the dashboard chrome density, so Storybook Docs headings fall back to
+   em-based browser defaults computed off a 13px root — h3 caps at ~15px and
+   h4 lands at exactly 13px, indistinguishable from body prose. Pin explicit
+   sizes from the dash-ui typography scale so `# / ## / ### / ####` markers in
+   foundation pages render with a real visual hierarchy. */
+.sbdocs h1 {
+  font-size: var(--fs-30);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-display);
+  margin: 24px 0 12px;
+}
+.sbdocs h2 {
+  font-size: var(--fs-24);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  margin: 28px 0 12px;
+}
+.sbdocs h3 {
+  font-size: var(--fs-18);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  margin: 24px 0 8px;
+}
+.sbdocs h4 {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  margin: 20px 0 8px;
+}
+
 .sbdocs code {
   color: var(--text-2);
   background: var(--neutral-08);
