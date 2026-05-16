@@ -80,6 +80,32 @@ html[data-motif='light'] {
   margin: 20px 0 8px;
 }
 
+/* MDX body prose + lists: dashboard.css `html, body { font-size: 13px }` for
+   dashboard-chrome density cascades into Storybook Docs, so paragraphs,
+   bullets, and numbered steps in foundation pages render at 13px — too
+   small for prose meant to be read top-to-bottom. Pin a proper docs body
+   size + line-height so foundation pages read like documentation, not
+   like a dense data-table caption. */
+.sbdocs p,
+.sbdocs li {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.sbdocs p {
+  margin: 12px 0;
+}
+.sbdocs ul,
+.sbdocs ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+.sbdocs li {
+  margin: 4px 0;
+}
+.sbdocs li > p {
+  margin: 4px 0;
+}
+
 .sbdocs code {
   color: var(--text-2);
   background: var(--neutral-08);
