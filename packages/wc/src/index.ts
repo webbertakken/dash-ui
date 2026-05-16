@@ -92,6 +92,7 @@ import './elements/JsonViewerNode.wc.svelte'
 import './elements/KVTable.wc.svelte'
 import './elements/KanbanBoard.wc.svelte'
 import './elements/Kbd.wc.svelte'
+import './elements/Label.wc.svelte'
 import './elements/LineChart.wc.svelte'
 import './elements/LogViewer.wc.svelte'
 import './elements/LollipopChart.wc.svelte'
@@ -284,6 +285,7 @@ export const REGISTERED_TAGS = [
   'uni-kvtable',
   'uni-kanban-board',
   'uni-kbd',
+  'uni-label',
   'uni-line-chart',
   'uni-log-viewer',
   'uni-lollipop-chart',

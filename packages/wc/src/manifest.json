@@ -364,6 +364,10 @@
     "tag": "uni-kbd"
   },
   {
+    "name": "Label",
+    "tag": "uni-label"
+  },
+  {
     "name": "LineChart",
     "tag": "uni-line-chart"
   },
