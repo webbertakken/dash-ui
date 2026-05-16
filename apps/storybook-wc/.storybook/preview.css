@@ -262,6 +262,20 @@ html[data-motif='light'] {
 .sbdocs tbody tr:nth-child(even) td {
   background: var(--row-hover);
 }
+/* MDX table hover: dashboard.css `tbody tr:hover td { background: rgba(255,
+   255, 255, 0.02) }` exists to signal row-clickability on interactive data
+   grids — but MDX docs tables (ForAgents Tailwind-drift cheat sheet,
+   Troubleshooting symptom map) are static lookup grids, so the hover
+   affordance is misleading: it pulls the eye toward "the row I'm hovering"
+   instead of letting it read left-vs-right pairs at its own pace. Drop the
+   leak on docs tables, but re-apply --row-hover on even rows so the zebra
+   rhythm survives a hover pass. */
+.sbdocs tbody tr:hover td {
+  background: transparent;
+}
+.sbdocs tbody tr:nth-child(even):hover td {
+  background: var(--row-hover);
+}
 
 /* MDX scrollbars: dashboard.css ::-webkit-scrollbar-thumb/track use hardcoded
    dark colours (#2a2a2c / #0a0a0b) so MDX code-block scrollbars look out of
