@@ -141,6 +141,16 @@ html[data-motif='light'] {
 .sbdocs li > p {
   margin: 4px 0;
 }
+/* MDX list markers (bullets + numbers): browser-default `::marker` inherits
+   `<li>` colour, so bullets render at full --text-1 intensity and visually
+   outweigh the item content — especially on label-style lists like
+   `- **Term**: description` where the bullet competes with the bold term for
+   first-glance attention. Mute markers to --text-3 (same affordance React
+   docs / Tailwind docs use) so the bullet recedes and the list content reads
+   first. */
+.sbdocs li::marker {
+  color: var(--text-3);
+}
 /* MDX prose measure (line length): Storybook's .sbdocs-content runs at
    ~1000px, which at our 14px body size yields ~120 characters per line —
    well past the 45–75 char comfortable-reading range (React docs / Tailwind
