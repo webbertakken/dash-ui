@@ -98,12 +98,12 @@ card body). Compose the parts by hand and use `<Submeta>` for the muted line tha
 number and the chart — it matches the `.submeta` rhythm without an inline class string.
 
 ```tsx
-import { Card, Pill, StatNumber, Submeta, Delta, Unit, Sparkline } from '@w5-ui/react'
+import { Card, CardTitle, Pill, StatNumber, Submeta, Delta, Unit, Sparkline } from '@w5-ui/react'
 
 ;<Card span={4}>
-  <h3>
+  <CardTitle>
     Internet <Pill variant="success">Online</Pill>
-  </h3>
+  </CardTitle>
   <StatNumber>
     847<Unit>Mbps · down</Unit>
   </StatNumber>
@@ -134,7 +134,7 @@ that also hosts a chart underneath.
 
 ```tsx
 <Card span={8}>
-  <h3>Throughput</h3>
+  <CardTitle>Throughput</CardTitle>
   <LineChart series={series} />
 </Card>
 ```
@@ -143,9 +143,9 @@ that also hosts a chart underneath.
 
 ```tsx
 <Card span={4}>
-  <h3>
+  <CardTitle>
     Internet <Pill variant="success">Online</Pill>
-  </h3>
+  </CardTitle>
   <Sparkline data={uplink} />
 </Card>
 ```
@@ -156,12 +156,12 @@ The `.card h3 .more` rule already styles a trailing inline link. Use `<CardMore>
 wrapper — don't roll your own button in the title row.
 
 ```tsx
-import { Card, CardMore, RankedList } from '@w5-ui/react'
+import { Card, CardTitle, CardMore, RankedList } from '@w5-ui/react'
 
 <Card span={6}>
-  <h3>
+  <CardTitle>
     Top clients <CardMore href="/clients">All →</CardMore>
-  </h3>
+  </CardTitle>
   <RankedList items={topClients} />
 </Card>
 ```
@@ -181,7 +181,7 @@ sit edge-to-edge in the tile, lift them out of `<Card>` and wrap in `.table-shel
 | --------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | Tile padding looks wrong                      | Re-implementing `.card` with a custom `<div>`               | Use `<Card>` — radius, padding, and `<h3>` rhythm ship together                      |
 | Card has double padding inside                | A wrapper `<div style={{ padding }}>` inside `<Card>`       | Render the content directly inside `<Card>`; the card already pads 16px              |
-| Title font / colour doesn't match dashboard   | Custom `<h2>` / `<div>` instead of `<h3>`                   | Use `<h3>` inside `<Card>` — `.card h3` sets size, weight, colour                    |
+| Title font / colour doesn't match dashboard   | Custom `<h2>` / `<div>` instead of `<h3>`                   | Use `<CardTitle>` (or a plain `<h3>`) inside `<Card>` — `.card h3` sets size, weight, colour |
 | Status pill in title is left-aligned          | Wrapped in an extra `<span>` or `<div>` after the title text| Place the `<Pill>` as a direct child of the `<h3>`; the flex rule pushes it right    |
 | Two cards in a row don't line up vertically   | Different `span` values, or one wrapped in an extra `<div>` | Match `span` values. No wrappers between `.grid` and `<Card>`                        |
 | Stat looks cramped or doubly-padded           | `<Stat>` nested inside another `<Card>`                     | `<Stat>` is a card already — render at the top level of `.grid`                      |
