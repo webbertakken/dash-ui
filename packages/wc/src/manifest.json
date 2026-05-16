@@ -584,6 +584,10 @@
     "tag": "uni-stripe-chart"
   },
   {
+    "name": "Submeta",
+    "tag": "uni-submeta"
+  },
+  {
     "name": "SunburstChart",
     "tag": "uni-sunburst-chart"
   },

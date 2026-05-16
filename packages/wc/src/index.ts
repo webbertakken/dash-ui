@@ -147,6 +147,7 @@ import './elements/StepChart.wc.svelte'
 import './elements/Stepper.wc.svelte'
 import './elements/StreamGraph.wc.svelte'
 import './elements/StripeChart.wc.svelte'
+import './elements/Submeta.wc.svelte'
 import './elements/SunburstChart.wc.svelte'
 import './elements/SwitchPortGrid.wc.svelte'
 import './elements/TabPanel.wc.svelte'
@@ -322,6 +323,7 @@ export const REGISTERED_TAGS = [
   'uni-stepper',
   'uni-stream-graph',
   'uni-stripe-chart',
+  'uni-submeta',
   'uni-sunburst-chart',
   'uni-switch-port-grid',
   'uni-tab-panel',

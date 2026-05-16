@@ -90,6 +90,29 @@ pixels and force the next row to wrap unevenly. If `span` is omitted, the card s
 <Stat span={4} label="Clients" value="124" unit="online" delta="+3" deltaDir="up" />
 ```
 
+### Headline number + chart → `<Submeta>` for the supporting line
+
+When the tile wants a hero number _and_ a chart underneath, `<Stat>` can't help (it owns the whole
+card body). Compose the parts by hand and use `<Submeta>` for the muted line that sits between the
+number and the chart — it matches the `.submeta` rhythm without an inline class string.
+
+```tsx
+import { Card, Pill, Submeta, Sparkline } from '@w5-ui/react'
+
+;<Card span={4}>
+  <h3>
+    Internet <Pill variant="success">Online</Pill>
+  </h3>
+  <div className="stat">
+    847<span className="unit">Mbps · down</span>
+  </div>
+  <Submeta>
+    ↑ 312 Mbps · 18 ms · 0.0% loss · <span className="delta-up">+12% 24h</span>
+  </Submeta>
+  <Sparkline />
+</Card>
+```
+
 ### Title + chart
 
 ```tsx
@@ -152,6 +175,7 @@ and `@w5-ui/svelte/styles.css`):
 - `.card` — the tile shell. Use through `<Card>` / `<Stat>`
 - `.card h3` — the title rhythm (size, weight, colour, flex). Use a plain `<h3>` and inherit it
 - `.card h3 .more` — the trailing "More →" affordance inside a title
+- `.submeta` — the muted supporting line under a `.stat` number. Use through `<Submeta>`
 
 Everything else (raw colours, ad-hoc paddings, custom radii) should come from tokens, not bespoke
 values. See **Foundations / Spacing** and **Foundations / Colours**.
