@@ -63,9 +63,16 @@ Userland renders like the reference dashboard **only** when these rules hold. Ev
 
 ## Tables
 
-- Wrap `<Table>` in `<div className="table-shell">` for the inset rhythm.
-- Headers use `<SortHeader>` (owns `aria-sort` + sort icon). Pagination uses `<Pagination>`.
-- Monospace cells use `className="mac"` (MAC / IP / SKU). Avatar + name cells use `.name-cell`.
+- Wrap a plain `<table>` in `<TableShell>` (renders `<div className="table-shell">`) for the
+  inset rhythm — rounded border, surface bg, `overflow: hidden` come from one class. Never
+  hand-roll `border` / `border-radius` / `background` on the table itself.
+- Headers use `<SortHeader>` (owns `aria-sort` + sort icon). Pagination renders below the shell
+  in a `<TablePager>` hosting `<Pagination>` + rows-per-page `<Select>` — keep it as a
+  **sibling** of `<TableShell>`, never inside it (the shell clips overflow and would crop the
+  pager's focus rings).
+- Monospace cells use `<Mac>` (or `className="mac"`) for MAC / IP / SKU columns. First-column
+  avatar + label uses `<NameCell thumb={…}>`. Screen-reader-only captions use `<SrOnly>` (or
+  `className="sr-only"`) — every `<table>` needs one for WCAG 1.3.1.
 
 ## Colour, type, icons
 
