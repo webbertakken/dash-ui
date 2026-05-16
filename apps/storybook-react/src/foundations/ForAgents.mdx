@@ -73,8 +73,11 @@ Userland renders like the reference dashboard **only** when these rules hold. Ev
   `var(--brand)`, `var(--status-ok|warn|danger)`. **Never** literal hex / rgb / `#fff` / `#000`.
 - Status copy: `<Pill variant="success|warn|danger|neutral">`, `<Badge>`, `<StatusIndicator>`.
   Never `<span style={{ color: 'green' }}>`.
-- Type: `.dash-ui-display|h1|h2|h3|body|cap` semantic classes if you need typography outside a
-  component. Inter for UI, JetBrains Mono for numeric.
+- Type: prefer typed primitives (`<Display1>` / `<Display2>` / `<H1>`-`<H4>` / `<Body>` /
+  `<BodyLg>` / `<Label>` / `<Caption>` / `<Eyebrow>` / `<Stat>` / `<Mono>` / `<Code>`); the
+  underlying classes are `.dash-ui-display-1|2`, `.dash-ui-h1|2|3|4`, `.dash-ui-body|body-lg`,
+  `.dash-ui-label|caption|eyebrow`, `.dash-ui-stat|mono|code` (note: `caption`, not `cap`). Use
+  the class form only when you can't import a primitive. Inter for UI, JetBrains Mono for numeric.
 - Icons: import from `@w5-ui/react` (23-icon canonical set). Size 16/20/24 only.
 
 ## Spacing — the only escape hatch
