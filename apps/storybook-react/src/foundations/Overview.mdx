@@ -87,16 +87,20 @@ the pitfalls that drag a userland app away from the reference look.
 ```tsx
 // src/main.tsx
 import '@w5-ui/react/styles.css' // tokens + dashboard.css in one import
-import { AppLayout, Topbar, Sidebar, PageHeader, Card, Stat } from '@w5-ui/react'
+import { AppLayout, Topbar, Sidebar, PageHeader, Grid, Card, Stat } from '@w5-ui/react'
 
 <AppLayout pageLabel="Dashboard" topbar={<Topbar siteName="HQ" />} sidebar={<Sidebar … />}>
   <PageHeader title="Dashboard" />
-  <div className="grid">
+  <Grid>
     <Stat span={4} label="Internet" value="847" unit="Mbps" />
     <Card span={8}>…</Card>
-  </div>
+  </Grid>
 </AppLayout>
 ```
+
+`<Grid>` renders the canonical `<div className="grid">` (12-column, 12 px gap, 16 × 24 px padding)
+— prefer the typed primitive so userland tracks every future tweak without copy-paste. The raw
+class hook stays interchangeable for hand-rolled markup.
 
 Add `data-motif="dark"` to `<html>` and that single snippet is the whole contract. Anything else
 (custom paddings, ad-hoc wrappers, raw hex colours) is what drags userland away from the reference.
