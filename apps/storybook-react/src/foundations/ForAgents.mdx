@@ -238,6 +238,9 @@ something off-scale, surface it as a design fork before shipping.
 | `<span class="px-2 py-0.5 rounded-full text-12 bg-status-ok-bg text-status-ok">Active</span>` | `<Pill variant="success">Active</Pill>` |
 | `<span class="px-2 py-0.5 rounded-md bg-bg-2 text-12 inline-flex items-center gap-1">router</span>` | `<Tag label="router" />` |
 | `<kbd class="px-1.5 py-0.5 rounded border bg-bg-2 text-12 font-mono">⌘K</kbd>`  | `<Kbd keys="⌘+K" />`         |
+| `<button class="btn btn-primary">Save</button>` (or `btn-ghost` / `btn-danger`) | `<Button variant="primary\|ghost\|danger">Save</Button>` |
+| `<button class="icon-btn" aria-label="Close"><X /></button>` (or bare `<button>` with an SVG child) | `<IconButton aria-label="Close"><X /></IconButton>` |
+| `<input type="checkbox" role="switch">` + hand-rolled track / knob CSS         | `<Toggle on={…} onToggle={…} ariaLabel="…" />` |
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
