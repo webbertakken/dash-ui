@@ -292,6 +292,22 @@ something off-scale, surface it as a design fork before shipping.
 | `<div class="flex"><span class="bg-bg-2 px-2 …">https://</span><input class="flex-1 …">…<span>…</span></div>` | `<InputGroup prefix="https://" suffix=".com"><input … /></InputGroup>` (flush addon + focus ring) |
 | Hand-rolled `<dl>` or two-column `<table>` for device drawer key/value rows | `<KVTable rows={[{ key, value }, …]} caption="…" />` (semantic `<th scope="row">` + zebra rhythm) |
 | `<pre class="bg-bg-2 rounded p-3 text-12 font-mono overflow-auto">…</pre>` + manual copy button | `<CodeBlock code={src} language="ts" label="Example" />` (`role="region"` + integrated `<CopyButton>`) |
+| `import { LineChart } from 'recharts'` (or hand-rolled `<svg>` with `<polyline>` + manual scale) | `<LineChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (zero-dep typed SVG) |
+| `<svg>` with `<path d="M…L…">` filled gradient hand-rolled per series                  | `<AreaChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (token-aligned gradients) |
+| Hand-rolled `<svg>` with one `<rect>` per bar + manual min/max scale                   | `<BarChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (typed series + token colours) |
+| Stacked `<rect>`s in raw `<svg>` with manual cumulative-sum offsets per series         | `<StackedBarChart series={[{ label, color, values }]} labels={…} normalized={false} height={160} ariaLabel="…" />` (cumulative stack + optional 100% normalise) |
+| Inline `<svg width=120 height=24>` with hand-tweaked bars for a KPI trend chip         | `<Sparkline bars={24} active seed={42} ariaLabel="Trend, last 24h" />` (no data wiring needed for KPI chips) |
+| Hand-rolled `<svg>` with two arcs + manual `pathLength` / `stroke-dasharray` for a donut KPI | `<Donut size={160} segments={[{ label, value, color }]} centerValue={pct} centerLabel="Healthy" ariaLabel="Health breakdown" />` |
+| Half-arc `<svg>` with manual angle math + hand-positioned value label for a gauge meter | `<Gauge value={0.62} label="CPU" color="var(--color-brand)" size={120} ariaLabel="CPU usage 62%" />` |
+| `<table>` of `<td style={{ background: hsl(…) }}>` cells + manual colour-ramp interpolation | `<HeatMap data={number[][]} colors={['#0a0e14', 'var(--color-brand)']} xLabels={…} height={200} cellGap={2} ariaLabel="Activity by hour × day" />` |
+| Hand-rolled `<svg>` with one `<circle>` per point + manual `xRange` / `yRange` projection | `<ScatterPlot points={[{ x, y, color, r }]} xRange={[0, 100]} yRange={[0, 1]} height={200} ariaLabel="Latency vs error rate" />` |
+
+> Chart drift in particular: every chart primitive ships as zero-dependency typed SVG that already
+> matches the Dashboard chart rhythm (gridlines, padding, gradient stops, motif colours). Pulling
+> in `recharts` / `chart.js` / `d3` re-derives the same picture with a 60 KB+ runtime, a different
+> tooltip chrome, and a colour palette that drifts from `--color-brand` / `--color-status-*`. If
+> the typed primitive truly can't express the chart, surface it as a design fork first — don't
+> silently widen the dependency footprint.
 
 The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
 reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
