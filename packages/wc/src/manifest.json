@@ -96,6 +96,10 @@
     "tag": "uni-candlestick-chart"
   },
   {
+    "name": "Caption",
+    "tag": "uni-caption"
+  },
+  {
     "name": "Card",
     "tag": "uni-card"
   },

@@ -25,6 +25,7 @@ import './elements/CIDRInput.wc.svelte'
 import './elements/CalendarHeatmap.wc.svelte'
 import './elements/Callout.wc.svelte'
 import './elements/CandlestickChart.wc.svelte'
+import './elements/Caption.wc.svelte'
 import './elements/Card.wc.svelte'
 import './elements/CardMore.wc.svelte'
 import './elements/CardTitle.wc.svelte'
@@ -215,6 +216,7 @@ export const REGISTERED_TAGS = [
   'uni-calendar-heatmap',
   'uni-callout',
   'uni-candlestick-chart',
+  'uni-caption',
   'uni-card',
   'uni-card-more',
   'uni-card-title',

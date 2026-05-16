@@ -294,5 +294,6 @@ export { default as Muted } from './components/Muted.svelte'
 export { default as Code } from './components/Code.svelte'
 export { default as Eyebrow } from './components/Eyebrow.svelte'
 export { default as Mono } from './components/Mono.svelte'
+export { default as Caption } from './components/Caption.svelte'
 
 export * from './icons.js'
