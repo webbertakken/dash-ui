@@ -184,7 +184,7 @@ column of MACs / IPs / versions aligns vertically. That alignment is the whole p
 | You're rendering…                                  | Reach for                                  |
 | -------------------------------------------------- | ------------------------------------------ |
 | A page title in the page header                    | (already in `<PageHeader>`) — don't re-style |
-| A card / tile title                                | `.dash-ui-h4` or `<Card title="…">`        |
+| A card / tile title                                | `<CardTitle>` (or `<Card title="…">`, or `.dash-ui-h4`) |
 | The big number in a KPI tile                       | `.dash-ui-stat` (or `<Stat>`)              |
 | The little label above a KPI number                | `<Label>` (or `<Stat>` label slot)         |
 | Body paragraphs, table cells, default text         | `<Body>` (often inherited — leave alone)   |
@@ -202,7 +202,7 @@ column of MACs / IPs / versions aligns vertically. That alignment is the whole p
 | Page text looks "too big" vs the reference dashboard   | `font-size: 16px` set globally (browser default) instead of 14px            | Use `.dash-ui-body` on body containers, or `text-14` on the page root                            |
 | KPI number renders narrow / variable-width             | Plain `font-weight: 600` with no `tabular-nums`                             | Use `.dash-ui-stat` or `<Stat>` — both opt in to `font-variant-numeric: tabular-nums`            |
 | MAC addresses in a table don't line up vertically      | `font-family: monospace` (Courier fallback) with proportional digits        | Use `.dash-ui-mono` — it pins JetBrains Mono **and** tabular-nums                                |
-| Card title size doesn't match the reference            | `<h3 style={{ fontSize: 20 }}>` or `text-xl` instead of the scale           | Use `<Card title="…">`, or `.dash-ui-h4` on the title — that is the 18 / 600 default             |
+| Card title size doesn't match the reference            | `<h3 style={{ fontSize: 20 }}>` or `text-xl` instead of the scale           | Use `<CardTitle>` (or `<Card title="…">`, or `.dash-ui-h4`) — that is the 18 / 600 default       |
 | Headings feel cramped on one line                      | `line-height: 1.4` applied to an h2/h3                                      | Drop to `--lh-snug` (1.25). The cliff at 1.25 / 1.4 is "headline / paragraph"                    |
 | Headings break awkwardly across two lines              | `letter-spacing: 0` on display sizes                                        | Apply `--tracking-display` (-0.02em) on display-1 / display-2 / h1                               |
 | Eyebrow text reads as a typo                           | Uppercase 11px with no letter-spacing                                       | Use `.dash-ui-eyebrow` — 0.08em + 11/600 is the canonical eyebrow                                |
