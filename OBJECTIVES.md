@@ -2,11 +2,13 @@
 
 ## Goal
 
-To research the internet for missing useful patterns and components to use in the dashboard. Update
-the dashboard with additional components or improve the quality of existing components.
+Right now, the dashboard looks good, both in dev server and storybook. However, when userland (i.e.
+`~/Repositories/assistant/apps/dashboard`) try to implement the design system it ends up looking a
+lot different with regard to spacing and distance between elements.
 
-The overarching idea is that we have a mega complete dashboard UI and design system that's ready to
-use for svelte 5 and latest react.
+We need to make sure the design system is optimised and has proper instructions for humands and for
+agentic implementers, so that resulting userland applications actually look more like the intended
+design, as shown in the "Dashboard" section in Storybook.
 
 ## Success criteria
 
@@ -17,20 +19,26 @@ A row in `results.tsv` is `keep` only if the change improves at least one of:
 - _e.g. All pages render without console errors_
 - _e.g. Visual parity between React and Svelte on Dashboard, Devices, Clients_
 - _e.g. Visual regression testing shows clear improvement to before_
+- Design system becomes easier to implement correctly for userland
+- Instructions are equal or more clear
 
 …without regressing any of them.
 
 ## Constraints
 
-- Maintain the public API of `@w5-ui/react` or `@w5-ui/svelte`.
 - Maintain WCAG 2.2 AA contrast.
 - No new runtime deps without a recorded benefit.
-
-(add/remove as needed)
 
 ## Ideas to try
 
 Optional brainstorm. The agent may pick from here or invent its own.
 
-- ...
-- ...
+- Add Design System best practices for better userland experience
+- Better instructions for users (including agents) of how the dashboard design can be recreated in
+  userland applications.
+- Explanation pages with succinct writing in the writing style of React documentation / blog
+- Reusable composite components to ensure integrity of the UI of combined components (i.e. Top bar
+  and its groups)
+- Graphs in storybook keep into account that bottom panel, so they don't fall behind it - easier to
+  quickly see the whole graph.
+- A page with all graphs, their names, intended usage and styling.
