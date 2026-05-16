@@ -78,7 +78,7 @@ import { TableShell, SortHeader } from '@w5-ui/react'
 | Sortable header  | `<SortHeader>`                   | Renders `<th scope="col" aria-sort>` + sort button + chevrons        |
 | Body row         | `<tr>` `<td>`                    | 9px × 12px padding, 40px row height, hover row tint                  |
 | Monospace cell   | `<td className="mac">`           | JetBrains Mono — MACs, IPs, SKUs                                     |
-| Avatar + name    | `<div className="name-cell">`    | 28px thumb + label, used in the first column of most lists           |
+| Avatar + name    | `<NameCell thumb={…}>`           | 28px thumb + label, used in the first column of most lists           |
 
 ## Pick the right primitive
 
@@ -172,7 +172,7 @@ and the focus ring on the pager buttons would get cut off otherwise.
 
 - `.table-shell` — rounded, bordered wrapper for any full-width table on a page. Use through `<TableShell>`
 - `.mac` — monospace cell for MACs, IPs, SKUs. Use through `<Mac>` (or apply the class directly to a `<td>`)
-- `.name-cell`, `.nc-thumb` — avatar + label layout for the first column
+- `.name-cell`, `.nc-thumb` — avatar + label layout for the first column. Use through `<NameCell thumb={…}>` (pass `thumbClassName="cam"` for the camera gradient variant)
 
 Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values. See
 **Foundations / Spacing** and **Foundations / Colours**.

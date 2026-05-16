@@ -392,6 +392,10 @@
     "tag": "uni-multi-select"
   },
   {
+    "name": "NameCell",
+    "tag": "uni-name-cell"
+  },
+  {
     "name": "NightingaleChart",
     "tag": "uni-nightingale-chart"
   },
