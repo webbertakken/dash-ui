@@ -1,0 +1,270 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Recipes" />
+
+# Recipes
+
+Complete, copy-paste page templates. Each recipe is a working file — drop it into a fresh
+React or Svelte app, import `@w5-ui/<framework>/styles.css`, set `<html data-motif="dark">`,
+and it renders pixel-for-pixel like the matching Dashboard story.
+
+If you are wiring a brand new userland app, copy from here first; tune later. The recipes
+deliberately favour the canonical components (`AppLayout`, `PageHeader`, `Card`, `Stat`,
+`Table`, `field-stack`) over hand-rolled markup — that is the difference between userland
+that matches and userland that drifts.
+
+> Every recipe assumes `@w5-ui/react/styles.css` (or the Svelte / WC equivalent) is imported
+> once at the app entry point and `<html data-motif="dark">` is set inline in `index.html`.
+> See **Foundations / Setup** for the entry-file walkthrough.
+
+## Recipe 1 — Dashboard overview
+
+A landing page: hero stats across the top, two wide charts underneath, one full-width tile
+at the bottom. Mirrors the **Dashboard** story tile-for-tile.
+
+```tsx
+// src/pages/Dashboard.tsx — React
+import {
+  AppLayout, Topbar, Sidebar, PageHeader,
+  Stat, Card, Sparkline, LineChart, BarChart,
+} from '@w5-ui/react'
+
+export function Dashboard() {
+  return (
+    <AppLayout
+      pageLabel="Dashboard"
+      topbar={<Topbar siteName="HQ" activeApp="system" />}
+      sidebar={<Sidebar sections={SECTIONS} activeId="dashboard" />}
+    >
+      <PageHeader title="Dashboard" />
+      <div className="grid">
+        <Stat span={4} label="Internet" value="847" unit="Mbps · down"
+              sub="18 ms · 0.0% loss" delta="+12% 24h" deltaDir="up" />
+        <Stat span={4} label="Clients" value="312" unit="active"
+              sub="42 wired · 270 wireless" delta="+4 24h" deltaDir="up" />
+        <Stat span={4} label="Alerts" value="3" unit="open"
+              sub="1 critical · 2 warn" delta="-2 24h" deltaDir="down" />
+
+        <Card span={8}>
+          <h3>Throughput</h3>
+          <LineChart data={throughput} />
+        </Card>
+        <Card span={4}>
+          <h3>Top clients</h3>
+          <Sparkline data={top} />
+        </Card>
+
+        <Card span={12}>
+          <h3>Traffic by device</h3>
+          <BarChart data={traffic} />
+        </Card>
+      </div>
+    </AppLayout>
+  )
+}
+```
+
+```svelte
+<!-- src/routes/+page.svelte — Svelte -->
+<script lang="ts">
+  import {
+    AppLayout, Topbar, Sidebar, PageHeader,
+    Stat, Card, Sparkline, LineChart, BarChart,
+  } from '@w5-ui/svelte'
+</script>
+
+<AppLayout pageLabel="Dashboard">
+  {#snippet topbar()}<Topbar siteName="HQ" activeApp="system" />{/snippet}
+  {#snippet sidebar()}<Sidebar sections={SECTIONS} activeId="dashboard" />{/snippet}
+
+  <PageHeader title="Dashboard" />
+  <div class="grid">
+    <Stat span={4} label="Internet" value="847" unit="Mbps · down"
+          sub="18 ms · 0.0% loss" delta="+12% 24h" deltaDir="up" />
+    <Stat span={4} label="Clients" value="312" unit="active"
+          sub="42 wired · 270 wireless" delta="+4 24h" deltaDir="up" />
+    <Stat span={4} label="Alerts" value="3" unit="open"
+          sub="1 critical · 2 warn" delta="-2 24h" deltaDir="down" />
+
+    <Card span={8}><h3>Throughput</h3><LineChart data={throughput} /></Card>
+    <Card span={4}><h3>Top clients</h3><Sparkline data={top} /></Card>
+    <Card span={12}><h3>Traffic by device</h3><BarChart data={traffic} /></Card>
+  </div>
+</AppLayout>
+```
+
+**What carries the look**: `AppLayout` owns the shell padding. `PageHeader` owns the sticky
+header rhythm. `.grid` owns the 12-column gutter. `Stat` and `Card span={n}` own tile
+padding and the title-row layout. Nothing else needs to be set.
+
+## Recipe 2 — List page with table
+
+Devices-style page: page header with primary action + search, table with sortable headers,
+pagination underneath, bottom selection toolbar when rows are checked. The selection
+toolbar triggers `.grid:has(.sel-toolbar)` automatically — no extra padding required.
+
+```tsx
+// src/pages/Devices.tsx — React
+import {
+  AppLayout, Topbar, Sidebar, PageHeader,
+  Card, Button, SearchBox, Table, SortHeader,
+  Pagination, SelectionToolbar, Checkbox,
+} from '@w5-ui/react'
+
+export function Devices() {
+  const [selected, setSelected] = useState<string[]>([])
+  return (
+    <AppLayout pageLabel="Devices" topbar={<Topbar … />} sidebar={<Sidebar … />}>
+      <PageHeader
+        title="Devices"
+        actions={
+          <>
+            <SearchBox placeholder="Search devices…" />
+            <Button variant="primary">Adopt</Button>
+          </>
+        }
+      />
+      <div className="grid">
+        <Card span={12}>
+          <div className="table-shell">
+            <Table>
+              <thead>
+                <tr>
+                  <th scope="col"><Checkbox … /></th>
+                  <SortHeader sort="asc">Name</SortHeader>
+                  <th scope="col">Model</th>
+                  <th scope="col" className="mac">MAC</th>
+                  <SortHeader>Clients</SortHeader>
+                </tr>
+              </thead>
+              <tbody>{rows.map(r => <DeviceRow key={r.id} row={r} />)}</tbody>
+            </Table>
+          </div>
+          <Pagination page={page} total={total} onChange={setPage} />
+        </Card>
+
+        {selected.length > 0 && (
+          <SelectionToolbar count={selected.length} onClear={() => setSelected([])}>
+            <Button>Move</Button>
+            <Button variant="danger">Forget</Button>
+          </SelectionToolbar>
+        )}
+      </div>
+    </AppLayout>
+  )
+}
+```
+
+**What carries the look**: `.table-shell` wraps `<Table>` for the inset rhythm. `<th
+scope="col">` carries a11y. `SortHeader` owns the sort icon + `aria-sort`. The selection
+toolbar is rendered _inside_ `.grid` so the `:has()` rule reserves room for it — never as a
+sibling of `<main>` or a fixed-positioned overlay you styled yourself.
+
+## Recipe 3 — Settings / form page
+
+Two-column form with grouped sections. `.field-stack` owns the 16 px vertical rhythm,
+`.form-row` owns the 14 px column gap, `.form-actions` owns the right-aligned button row.
+Drop in `<Field label hint error required>` for every input.
+
+```tsx
+// src/pages/Settings.tsx — React
+import {
+  AppLayout, Topbar, Sidebar, PageHeader,
+  Card, Field, Input, Select, Toggle, Button, Callout,
+} from '@w5-ui/react'
+
+export function Settings() {
+  return (
+    <AppLayout pageLabel="Settings" topbar={<Topbar … />} sidebar={<Sidebar … />}>
+      <PageHeader
+        title="Settings"
+        actions={<Button variant="primary" type="submit" form="settings">Save</Button>}
+      />
+      <form id="settings" className="grid" onSubmit={onSave}>
+        <Card span={6}>
+          <h3>Site</h3>
+          <div className="field-stack">
+            <Field label="Site name" required hint="Visible in the topbar">
+              <Input value={name} onChange={…} />
+            </Field>
+            <div className="form-row">
+              <Field label="Country"><Select … /></Field>
+              <Field label="Timezone"><Select … /></Field>
+            </div>
+            <Field label="Maintenance window" hint="Daily 04:00 local">
+              <Toggle checked={maint} onChange={…} />
+            </Field>
+          </div>
+        </Card>
+
+        <Card span={6}>
+          <h3>Network</h3>
+          <Callout variant="info" title="Restart required">
+            Changes to LAN subnet require a controller reboot.
+          </Callout>
+          <div className="field-stack">
+            <Field label="LAN subnet" error={cidrErr}>
+              <Input value={cidr} onChange={…} />
+            </Field>
+            <Field label="MTU"><Input value={mtu} onChange={…} /></Field>
+          </div>
+          <div className="form-actions">
+            <Button>Cancel</Button>
+            <Button variant="primary" type="submit">Apply</Button>
+          </div>
+        </Card>
+      </form>
+    </AppLayout>
+  )
+}
+```
+
+**What carries the look**: the form itself _is_ the grid — no extra wrapper. `.field-stack`
+ladders fields with 16 px gaps; `.form-row` two-columns inputs without bespoke gap
+overrides; `.form-actions` right-aligns and adds the 16 px top offset. Replace those classes
+with hand-rolled flex containers and the rhythm drifts within one PR.
+
+## Empty-state / loading shell
+
+When data is still loading or empty, render the same shell so layout doesn't jump:
+
+```tsx
+<AppLayout pageLabel="Devices" topbar={…} sidebar={…}>
+  <PageHeader title="Devices" />
+  <div className="grid">
+    <Card span={12}>
+      {loading
+        ? <Skeleton lines={6} />
+        : items.length === 0
+          ? <EmptyState title="No devices yet" hint="Adopt one to get started" />
+          : <Table>…</Table>}
+    </Card>
+  </div>
+</AppLayout>
+```
+
+`<Skeleton>` and `<EmptyState>` both reserve the same vertical room as the eventual table,
+so the page never jolts when data arrives. Never conditionally render the `<Card>` itself —
+the grid lane goes with it and your other tiles reflow.
+
+## What every recipe omits (on purpose)
+
+- **No inline `style={{ padding, gap }}`.** Everything spatial comes from `.grid` / `.card`
+  / `.field-stack` / `.form-row` / `.form-actions`.
+- **No raw hex colours.** Status comes from `Pill` / `Callout` / `Banner`; copy comes from
+  `var(--text-1)` and `var(--text-2)`.
+- **No bespoke page header.** `PageHeader` (or the `.ph-bar` / `.ph-title` / `.ph-actions`
+  primitives) owns the sticky border + padding.
+- **No wrapper `<div>` around `.grid`.** The grid is a direct child of `<main>` (which
+  `AppLayout` renders for you). Wrappers nullify the 16 × 24 page gutter.
+
+If a recipe needs to bend one of those rules, that delta belongs in **Foundations** as a
+new primitive — not as a one-off override in userland. Surface it instead of hand-rolling.
+
+## See also
+
+- **Foundations / Setup** — the entry-file wiring every recipe assumes
+- **Foundations / Page layout** — the shell skeleton and grid math
+- **Foundations / Forms** — the field / row / action primitives used in Recipe 3
+- **Foundations / Tables** — the `.table-shell` + `SortHeader` recipe in Recipe 2
+- **Foundations / Troubleshooting** — when a recipe renders but looks "almost right"
