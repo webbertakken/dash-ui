@@ -56,10 +56,13 @@ import './elements/EmptyState.wc.svelte'
 import './elements/ErrorBandChart.wc.svelte'
 import './elements/ExpandableRow.wc.svelte'
 import './elements/Field.wc.svelte'
+import './elements/FieldStack.wc.svelte'
 import './elements/FileUpload.wc.svelte'
 import './elements/FilterBuilder.wc.svelte'
 import './elements/FlameGraph.wc.svelte'
 import './elements/ForceGraph.wc.svelte'
+import './elements/FormActions.wc.svelte'
+import './elements/FormRow.wc.svelte'
 import './elements/FunnelChart.wc.svelte'
 import './elements/GanttChart.wc.svelte'
 import './elements/Gauge.wc.svelte'
@@ -227,10 +230,13 @@ export const REGISTERED_TAGS = [
   'uni-error-band-chart',
   'uni-expandable-row',
   'uni-field',
+  'uni-field-stack',
   'uni-file-upload',
   'uni-filter-builder',
   'uni-flame-graph',
   'uni-force-graph',
+  'uni-form-actions',
+  'uni-form-row',
   'uni-funnel-chart',
   'uni-gantt-chart',
   'uni-gauge',

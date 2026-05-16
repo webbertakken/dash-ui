@@ -220,6 +220,10 @@
     "tag": "uni-field"
   },
   {
+    "name": "FieldStack",
+    "tag": "uni-field-stack"
+  },
+  {
     "name": "FileUpload",
     "tag": "uni-file-upload"
   },
@@ -234,6 +238,14 @@
   {
     "name": "ForceGraph",
     "tag": "uni-force-graph"
+  },
+  {
+    "name": "FormActions",
+    "tag": "uni-form-actions"
+  },
+  {
+    "name": "FormRow",
+    "tag": "uni-form-row"
   },
   {
     "name": "FunnelChart",

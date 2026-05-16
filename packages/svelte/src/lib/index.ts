@@ -275,5 +275,8 @@ export type {
 export { default as PageHeader } from './components/PageHeader.svelte'
 export { default as AppLayout } from './components/AppLayout.svelte'
 export { default as Grid } from './components/Grid.svelte'
+export { default as FieldStack } from './components/FieldStack.svelte'
+export { default as FormRow } from './components/FormRow.svelte'
+export { default as FormActions } from './components/FormActions.svelte'
 
 export * from './icons.js'
