@@ -222,13 +222,16 @@ html[data-motif='light'] {
 /* MDX code blocks: dashboard.css doesn't style <pre>, and the inline-chip rule
    above bleeds into <pre><code>, making fenced code blocks render as a single
    dark chip with no padding or scroll. Reset <pre><code> back to a real code
-   block. */
+   block, and repaint the surface with the Dracula palette so syntax
+   highlighting reads the same in both motifs (Dracula is dark-only by design;
+   keeping it consistent across light + dark motif means foundation pages
+   never flicker between two code-block themes when motif toggles). */
 .sbdocs pre {
-  background: var(--depthBg-2);
-  color: var(--text-1);
+  background: #282a36;
+  color: #f8f8f2;
   padding: 12px 16px;
   border-radius: 6px;
-  border: 1px solid var(--border-2);
+  border: 1px solid #44475a;
   overflow-x: auto;
   font-family: var(--font-mono);
   font-size: 13px;
@@ -243,6 +246,92 @@ html[data-motif='light'] {
   border-radius: 0;
   font-size: inherit;
   font-family: inherit;
+}
+/* Storybook 8 wraps the outer <pre> with a `<div class="docblock-source">`
+   that paints its own surface via emotion; without re-pinning the Dracula
+   bg here the wrapper bleeds back through and the inner Prism <pre> looks
+   like a token island. */
+.sbdocs pre .docblock-source,
+.sbdocs .docblock-source {
+  background: #282a36;
+}
+.sbdocs pre.prismjs {
+  background: #282a36;
+  color: #f8f8f2;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Dracula token palette (https://draculatheme.com/prism). Applied to Prism's
+   token spans inside every MDX code fence so HTML/TSX/CSS/JSON/YAML/bash all
+   highlight with the same six-colour vocabulary (pink keywords / purple
+   literals / green strings / yellow callables / cyan keywords / orange
+   regex). Selectors are prefixed with `.sbdocs pre` (4 classes) so they
+   outrank Storybook's emotion-injected `.css-XXX * .token.X` rules (3
+   classes) which would otherwise win on later cascade order. Scoped under
+   `.sbdocs pre` so dashboard chrome outside MDX docs (real app stories,
+   any tokenised source not inside a `<pre>`) is untouched. */
+.sbdocs pre .token.comment,
+.sbdocs pre .token.prolog,
+.sbdocs pre .token.cdata {
+  color: #6272a4;
+}
+.sbdocs pre .token.punctuation {
+  color: #f8f8f2;
+}
+.sbdocs pre .token.namespace {
+  opacity: 0.7;
+}
+.sbdocs pre .token.property,
+.sbdocs pre .token.tag,
+.sbdocs pre .token.constant,
+.sbdocs pre .token.symbol,
+.sbdocs pre .token.deleted {
+  color: #ff79c6;
+}
+.sbdocs pre .token.boolean,
+.sbdocs pre .token.number {
+  color: #bd93f9;
+}
+.sbdocs pre .token.selector,
+.sbdocs pre .token.attr-name,
+.sbdocs pre .token.string,
+.sbdocs pre .token.char,
+.sbdocs pre .token.builtin,
+.sbdocs pre .token.inserted {
+  color: #50fa7b;
+}
+.sbdocs pre .token.operator,
+.sbdocs pre .token.entity,
+.sbdocs pre .token.url,
+.sbdocs pre .language-css .token.string,
+.sbdocs pre .style .token.string,
+.sbdocs pre .token.variable {
+  color: #f8f8f2;
+}
+.sbdocs pre .token.atrule,
+.sbdocs pre .token.attr-value,
+.sbdocs pre .token.function,
+.sbdocs pre .token.class-name {
+  color: #f1fa8c;
+}
+.sbdocs pre .token.keyword {
+  color: #8be9fd;
+}
+.sbdocs pre .token.regex,
+.sbdocs pre .token.important {
+  color: #ffb86c;
+}
+.sbdocs pre .token.important,
+.sbdocs pre .token.bold {
+  font-weight: bold;
+}
+.sbdocs pre .token.italic {
+  font-style: italic;
+}
+.sbdocs pre .token.entity {
+  cursor: help;
 }
 
 /* MDX tables: dashboard.css globally styles table/th/td for dashboard data

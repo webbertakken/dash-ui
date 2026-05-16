@@ -16,7 +16,6 @@ of the app — everything else (banners, headers, grids) renders inside its defa
 
 ```tsx
 import { AppLayout, Topbar, Sidebar } from '@w5-ui/react'
-
 ;<AppLayout
   pageLabel="Dashboard"
   topbar={<Topbar siteName="HQ" activeApp="system" />}
@@ -73,7 +72,6 @@ Prefer the typed `<Grid>` import when you want an auto-importable component inst
 
 ```tsx
 import { Grid, Card } from '@w5-ui/react'
-
 ;<Grid>
   <Card span={4}>…</Card>
   <Card span={8}>…</Card>
@@ -126,7 +124,6 @@ without any hand-rolled markup:
 
 ```tsx
 import { Card, CardTitle, Pill, Sparkline } from '@w5-ui/react'
-
 ;<Card span={4}>
   <CardTitle>
     Internet <Pill variant="success">Online</Pill>
@@ -158,7 +155,8 @@ These classes ship with `@w5-ui/tokens/dashboard.css` (re-exported by `@w5-ui/re
 - `.ph-bar`, `.ph-title`, `.ph-actions` — the page-header bar primitives (`PageHeader` wraps them)
 - `.grid` — the 12-column page grid with the canonical gutter
 - `.card`, `.card h3` — tile shell and title rhythm (used through `<Card>` and `<Stat>`)
-- `.field-stack`, `.form-row`, `.form-actions` — the form rhythm primitives (see Foundations / Forms)
+- `.field-stack`, `.form-row`, `.form-actions` — the form rhythm primitives (see Foundations /
+  Forms)
 - `.mac`, `.name-cell` — monospace and avatar-style cell layouts inside tables
 
 Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values. See

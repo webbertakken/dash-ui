@@ -15,32 +15,32 @@ spacing rhythm, and accessibility contract.
 
 ## Pick the right trigger
 
-| You need to…                                                                  | Reach for           | Why                                                                                          |
-| ----------------------------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------- |
-| Submit a form, confirm a change, advance a wizard                             | `<Button variant="primary">` | One per row. Carries the page's only filled affordance                                |
-| Offer a neutral side action (Cancel, Back, View details)                      | `<Button variant="ghost">`   | Default variant. No fill, only label + hover                                          |
-| Run a destructive action inline (Delete row, Remove member)                   | `<Button variant="danger">`  | Red label/border; pair with a `<ConfirmDialog variant="danger">`                      |
-| Trigger a control that only needs an icon (close, copy, expand, kebab)        | `<IconButton>`               | 28×28 square, `aria-label` mandatory, no text label                                   |
-| Offer a default action with a few related variants ("Save" + "Save as draft") | `<SplitButton>`              | Primary half + caret half. The menu lists peer actions                                |
-| Surface 3–6 row-level actions behind a kebab (Edit, Duplicate, Delete…)       | `<ActionMenu>`               | Single `…` trigger, items rendered in a portal-free menu                              |
-| Switch one binary state in place (Wi-Fi on/off, dark mode)                    | `<Toggle>`                   | `role="switch"`, no label of its own — wrap with `<Field>`                            |
-| Pick **one** option from a small set (Day / Week / Month)                     | `<SegmentedControl>`         | Single-selection, radio-group semantics, flat row                                     |
-| Filter by **many** flags (severity: error + warn)                             | `<ToggleGroup>`              | Multi-selection, `aria-pressed` per option                                            |
-| Copy a value (IP, hash, key) to the clipboard                                 | `<CopyButton>`               | Owns the success state ("Copied") and the timing                                      |
-| Show a keyboard shortcut next to an action                                    | `<Kbd>`                      | Renders `Cmd + K` as styled key caps; pairs with menu items                           |
+| You need to…                                                                  | Reach for                    | Why                                                              |
+| ----------------------------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------------- |
+| Submit a form, confirm a change, advance a wizard                             | `<Button variant="primary">` | One per row. Carries the page's only filled affordance           |
+| Offer a neutral side action (Cancel, Back, View details)                      | `<Button variant="ghost">`   | Default variant. No fill, only label + hover                     |
+| Run a destructive action inline (Delete row, Remove member)                   | `<Button variant="danger">`  | Red label/border; pair with a `<ConfirmDialog variant="danger">` |
+| Trigger a control that only needs an icon (close, copy, expand, kebab)        | `<IconButton>`               | 28×28 square, `aria-label` mandatory, no text label              |
+| Offer a default action with a few related variants ("Save" + "Save as draft") | `<SplitButton>`              | Primary half + caret half. The menu lists peer actions           |
+| Surface 3–6 row-level actions behind a kebab (Edit, Duplicate, Delete…)       | `<ActionMenu>`               | Single `…` trigger, items rendered in a portal-free menu         |
+| Switch one binary state in place (Wi-Fi on/off, dark mode)                    | `<Toggle>`                   | `role="switch"`, no label of its own — wrap with `<Field>`       |
+| Pick **one** option from a small set (Day / Week / Month)                     | `<SegmentedControl>`         | Single-selection, radio-group semantics, flat row                |
+| Filter by **many** flags (severity: error + warn)                             | `<ToggleGroup>`              | Multi-selection, `aria-pressed` per option                       |
+| Copy a value (IP, hash, key) to the clipboard                                 | `<CopyButton>`               | Owns the success state ("Copied") and the timing                 |
+| Show a keyboard shortcut next to an action                                    | `<Kbd>`                      | Renders `Cmd + K` as styled key caps; pairs with menu items      |
 
-If two answers look right, default to the **lower-emphasis** one. A page with three `primary` buttons
-has no primary. A toolbar with five filled buttons reads as a wall of noise.
+If two answers look right, default to the **lower-emphasis** one. A page with three `primary`
+buttons has no primary. A toolbar with five filled buttons reads as a wall of noise.
 
 ## Variants, sizes, and the one-primary rule
 
 `Button` ships three variants. Anything else is a bug in the call site, not a missing feature.
 
-| Variant   | When to use                                                           | Visual                              |
-| --------- | --------------------------------------------------------------------- | ----------------------------------- |
-| `primary` | The single most important action on a page, modal, or row             | Blue fill, white text               |
-| `ghost`   | **Default.** Cancel, secondary, "View details", neutral toolbar slots | No fill, neutral text, hover bg     |
-| `danger`  | Inline destructive verbs ("Delete", "Revoke", "Disconnect")           | Red text/border, red fill on hover  |
+| Variant   | When to use                                                           | Visual                             |
+| --------- | --------------------------------------------------------------------- | ---------------------------------- |
+| `primary` | The single most important action on a page, modal, or row             | Blue fill, white text              |
+| `ghost`   | **Default.** Cancel, secondary, "View details", neutral toolbar slots | No fill, neutral text, hover bg    |
+| `danger`  | Inline destructive verbs ("Delete", "Revoke", "Disconnect")           | Red text/border, red fill on hover |
 
 - **One `primary` per visible region.** A page can have a primary action in the `PageHeader` and
   another primary inside a Modal — but never two primaries in the same toolbar.
@@ -56,9 +56,10 @@ has no primary. A toolbar with five filled buttons reads as a wall of noise.
 
 ```tsx
 import { Button } from '@w5-ui/react'
-
 ;<PageHeader title="Site HQ">
-  <Button variant="ghost" onClick={cancel}>Cancel</Button>
+  <Button variant="ghost" onClick={cancel}>
+    Cancel
+  </Button>
   <Button variant="primary" onClick={save} loading={saving}>
     Save changes
   </Button>
@@ -72,7 +73,6 @@ text-bearing belongs in a regular `<Button>`.
 
 ```tsx
 import { IconButton, CloseIcon } from '@w5-ui/react'
-
 ;<IconButton aria-label="Close" onClick={onClose}>
   <CloseIcon />
 </IconButton>
@@ -95,17 +95,23 @@ secondary (`ghost`) in the middle, the primary on the right.
   title="Members"
   actions={
     <>
-      <Button variant="danger" onClick={removeSelected}>Remove</Button>
-      <Button variant="ghost" onClick={exportCsv}>Export</Button>
-      <Button variant="primary" onClick={invite}>Invite admin</Button>
+      <Button variant="danger" onClick={removeSelected}>
+        Remove
+      </Button>
+      <Button variant="ghost" onClick={exportCsv}>
+        Export
+      </Button>
+      <Button variant="primary" onClick={invite}>
+        Invite admin
+      </Button>
     </>
   }
 />
 ```
 
-- **Don't wrap actions in a `<div style={{ display: 'flex', gap: 12 }}>`.** The container (PageHeader
-  `.ph-bar`, Modal `.modal-f`, Drawer body) is already flex with `gap: var(--space-2)`. Any wrapper
-  resets the gap and adds drift.
+- **Don't wrap actions in a `<div style={{ display: 'flex', gap: 12 }}>`.** The container
+  (PageHeader `.ph-bar`, Modal `.modal-f`, Drawer body) is already flex with `gap: var(--space-2)`.
+  Any wrapper resets the gap and adds drift.
 - Primary action goes **last** (right-most) in left-to-right languages. ConfirmDialog enforces this
   for you; the rest is your responsibility.
 - Don't stack action buttons vertically in toolbars. If you have more than three, collapse the
@@ -118,7 +124,6 @@ opens a menu of the alternatives.
 
 ```tsx
 import { SplitButton } from '@w5-ui/react'
-
 ;<SplitButton
   label="Save"
   variant="primary"
@@ -145,7 +150,6 @@ import { SplitButton } from '@w5-ui/react'
 
 ```tsx
 import { ActionMenu } from '@w5-ui/react'
-
 ;<ActionMenu
   label="Row actions"
   items={[
@@ -168,11 +172,11 @@ import { ActionMenu } from '@w5-ui/react'
 
 These three look similar at a glance and trip up almost every userland implementation.
 
-| Component           | Selection model           | When to use                                                | ARIA                       |
-| ------------------- | ------------------------- | ---------------------------------------------------------- | -------------------------- |
-| `<Toggle>`          | Single on/off             | Binary state in place ("Notifications", "Dark mode")       | `role="switch"`            |
-| `<SegmentedControl>`| Single from N (radio)     | "Day / Week / Month", "Cosy / Compact"                     | `role="radiogroup"`        |
-| `<ToggleGroup>`     | Many from N (multi-press) | Severity filter (error + warn), feature flags             | `aria-pressed` per option  |
+| Component            | Selection model           | When to use                                          | ARIA                      |
+| -------------------- | ------------------------- | ---------------------------------------------------- | ------------------------- |
+| `<Toggle>`           | Single on/off             | Binary state in place ("Notifications", "Dark mode") | `role="switch"`           |
+| `<SegmentedControl>` | Single from N (radio)     | "Day / Week / Month", "Cosy / Compact"               | `role="radiogroup"`       |
+| `<ToggleGroup>`      | Many from N (multi-press) | Severity filter (error + warn), feature flags        | `aria-pressed` per option |
 
 - A `Toggle` has no label of its own. Wrap it in a `<Field label="Notifications">` or pair it with a
   row label inside a settings list.
@@ -185,7 +189,6 @@ These three look similar at a glance and trip up almost every userland implement
 
 ```tsx
 import { CopyButton, Kbd } from '@w5-ui/react'
-
 ;<>
   <CopyButton value="10.0.0.42" label="Copy IP" />
   <Kbd keys="Cmd+K" />
@@ -199,18 +202,18 @@ import { CopyButton, Kbd } from '@w5-ui/react'
 
 ## Common mistakes (and the fix)
 
-| Symptom                                                          | Likely cause                                                | Fix                                                                                          |
-| ---------------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| Three filled buttons in one toolbar fight for attention          | Multiple `variant="primary"` on the same page region        | Demote two to `ghost`. There is exactly one primary per visible surface                      |
-| Buttons in a row are spaced inconsistently (12, 16, custom)      | Custom `<div style={{ gap }}>` wrapper around the actions   | Drop the wrapper. The parent (`.ph-bar`, `.modal-f`, drawer footer) already sets `gap: 8px`  |
-| Icon-only button reads "button" in screen readers                | Missing `aria-label`                                        | Pass `aria-label`. `<IconButton aria-label="Close">…</IconButton>`                           |
-| Toggle and Segmented look the same in code reviews               | Picking by visual, not by semantics                         | Toggle = boolean; Segmented = pick-one; ToggleGroup = pick-many                              |
-| Loading button shows two spinners                                | Spinner rendered manually inside `children`                 | Drop the inline spinner; pass `loading` and the built-in one renders                         |
-| Kebab menu opens but `Esc` doesn't close it                      | Custom `<details>` or click-outside handler                 | Use `<ActionMenu>` — `Esc`, click-outside, and focus restore are wired up                    |
-| Destructive button next to primary delete-by-mistake             | `Delete` rendered as `variant="primary"` red                | Use `variant="danger"`. Reserve the filled blue for the safe path                            |
-| Save button stays clickable while the request is in flight       | No `loading` state                                          | Pass `loading={saving}`. It disables the button **and** sets `aria-busy`                     |
-| Long button row wraps onto two lines on narrow viewports         | Five+ inline buttons in a toolbar                           | Collapse overflow into an `<ActionMenu>`; keep the primary outside                           |
-| SegmentedControl with 8 options scrolls horizontally             | Wrong picker for the cardinality                            | Switch to `<Select>` or `<Tabs>`. Segmented is for 2–5 options                                |
+| Symptom                                                     | Likely cause                                              | Fix                                                                                         |
+| ----------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Three filled buttons in one toolbar fight for attention     | Multiple `variant="primary"` on the same page region      | Demote two to `ghost`. There is exactly one primary per visible surface                     |
+| Buttons in a row are spaced inconsistently (12, 16, custom) | Custom `<div style={{ gap }}>` wrapper around the actions | Drop the wrapper. The parent (`.ph-bar`, `.modal-f`, drawer footer) already sets `gap: 8px` |
+| Icon-only button reads "button" in screen readers           | Missing `aria-label`                                      | Pass `aria-label`. `<IconButton aria-label="Close">…</IconButton>`                          |
+| Toggle and Segmented look the same in code reviews          | Picking by visual, not by semantics                       | Toggle = boolean; Segmented = pick-one; ToggleGroup = pick-many                             |
+| Loading button shows two spinners                           | Spinner rendered manually inside `children`               | Drop the inline spinner; pass `loading` and the built-in one renders                        |
+| Kebab menu opens but `Esc` doesn't close it                 | Custom `<details>` or click-outside handler               | Use `<ActionMenu>` — `Esc`, click-outside, and focus restore are wired up                   |
+| Destructive button next to primary delete-by-mistake        | `Delete` rendered as `variant="primary"` red              | Use `variant="danger"`. Reserve the filled blue for the safe path                           |
+| Save button stays clickable while the request is in flight  | No `loading` state                                        | Pass `loading={saving}`. It disables the button **and** sets `aria-busy`                    |
+| Long button row wraps onto two lines on narrow viewports    | Five+ inline buttons in a toolbar                         | Collapse overflow into an `<ActionMenu>`; keep the primary outside                          |
+| SegmentedControl with 8 options scrolls horizontally        | Wrong picker for the cardinality                          | Switch to `<Select>` or `<Tabs>`. Segmented is for 2–5 options                              |
 
 ## CSS hooks userland can rely on
 

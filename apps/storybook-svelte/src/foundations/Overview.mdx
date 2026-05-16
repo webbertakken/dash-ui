@@ -4,8 +4,8 @@ import { Meta } from '@storybook/blocks'
 
 # Dash UI - Svelte
 
-The same 168 components as `@w5-ui/react`, exposed as native Svelte 5 components with snippet
-props, runes, and the same canonical CSS hooks.
+The same 168 components as `@w5-ui/react`, exposed as native Svelte 5 components with snippet props,
+runes, and the same canonical CSS hooks.
 
 | Package         | Description                                        |
 | --------------- | -------------------------------------------------- |
@@ -25,8 +25,8 @@ missing.
 The full foundations index (Setup, Spacing, Colours, Type, Page layout, Recipes, Charts,
 Troubleshooting, For agents, ...) lives in the React storybook at the root of this site. Every page
 applies to Svelte verbatim: the tokens, the `.app`/`.grid`/`.card` CSS hooks, and the typed
-primitive contracts are framework-agnostic. Only the import path changes (`@w5-ui/svelte` instead
-of `@w5-ui/react`) and the component syntax (Svelte 5 snippets instead of React children).
+primitive contracts are framework-agnostic. Only the import path changes (`@w5-ui/svelte` instead of
+`@w5-ui/react`) and the component syntax (Svelte 5 snippets instead of React children).
 
 ## Userland recipe in one screen
 
@@ -60,16 +60,15 @@ applies here, swap `@w5-ui/react` for `@w5-ui/svelte`.
 ## Common mistakes (Svelte-specific)
 
 The React storybook's **Foundations / Troubleshooting** covers the framework-agnostic drift cases
-(missing `dashboard.css`, custom `gap` overrides, hardcoded hex). The four pitfalls below are
-unique to Svelte userland - they don't appear in React, so the React troubleshooting page can't
-flag them.
+(missing `dashboard.css`, custom `gap` overrides, hardcoded hex). The four pitfalls below are unique
+to Svelte userland - they don't appear in React, so the React troubleshooting page can't flag them.
 
-| Symptom in Svelte userland                                       | Cause                                                                                    | Fix                                                                          |
-| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `Topbar`/`Sidebar` render as empty slots inside `AppLayout`      | Passed as children (`<AppLayout><Topbar /></AppLayout>`) instead of via snippet props    | Use `{#snippet topbar()}<Topbar ... />{/snippet}` - they are `Snippet` props |
-| Topbar app-switcher caret never highlights the active app        | Forgot `bind:` on `activeApp` - it is a `$bindable()` prop, not plain                    | `<Topbar bind:activeApp ... />`                                              |
-| Tokens load but `.app`/`.grid`/`.card` rules are missing         | Imported `@w5-ui/tokens/tokens.css` only; `dashboard.css` is a separate file in Svelte   | Use the one-liner `import '@w5-ui/svelte/styles.css'` - it bundles both      |
-| `class` prop on a primitive does nothing / triggers a TS error   | Wrote `class:my-class` (Svelte directive) instead of forwarding a string `class` prop    | Pass a string: `<Card class="my-extra" ...>` - every primitive forwards it   |
+| Symptom in Svelte userland                                     | Cause                                                                                  | Fix                                                                          |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `Topbar`/`Sidebar` render as empty slots inside `AppLayout`    | Passed as children (`<AppLayout><Topbar /></AppLayout>`) instead of via snippet props  | Use `{#snippet topbar()}<Topbar ... />{/snippet}` - they are `Snippet` props |
+| Topbar app-switcher caret never highlights the active app      | Forgot `bind:` on `activeApp` - it is a `$bindable()` prop, not plain                  | `<Topbar bind:activeApp ... />`                                              |
+| Tokens load but `.app`/`.grid`/`.card` rules are missing       | Imported `@w5-ui/tokens/tokens.css` only; `dashboard.css` is a separate file in Svelte | Use the one-liner `import '@w5-ui/svelte/styles.css'` - it bundles both      |
+| `class` prop on a primitive does nothing / triggers a TS error | Wrote `class:my-class` (Svelte directive) instead of forwarding a string `class` prop  | Pass a string: `<Card class="my-extra" ...>` - every primitive forwards it   |
 
 The four cases above plus the React **Foundations / Troubleshooting** 30-second triage cover every
 drift case we have seen in Svelte userland to date.

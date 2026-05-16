@@ -1798,6 +1798,141 @@ export const BUNDLES: Record<string, Bundle[]> = {
       },
     },
   ],
+  // Typed primitives added in the `autoresearch/may16` Foundations sweep.
+  // Each renders the canonical `.dash-ui-*` / dashboard.css class hook; the
+  // auto-render test just asserts they mount without throwing. Snippets
+  // (children/thumb) are optional so `{}` props are enough to drive mount.
+  Body: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  BodyLg: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Caption: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  CardMore: [
+    { name: 'default', props: {} },
+    { name: 'withHref', props: { href: '#' } },
+  ],
+  CardTitle: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Code: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Delta: [
+    { name: 'up', props: { dir: 'up' } },
+    { name: 'down', props: { dir: 'down' } },
+    { name: 'flat', props: { dir: 'flat' } },
+  ],
+  Display1: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Display2: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Eyebrow: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  FieldStack: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  FormActions: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  FormRow: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Grid: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  H1: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  H2: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  H3: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  H4: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Label: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Mac: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Mono: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  Muted: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  NameCell: [
+    { name: 'default', props: {} },
+    { name: 'thumbClassName', props: { thumbClass: 'cam' } },
+  ],
+  NotifDot: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  SrOnly: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  StatNumber: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  StatusRing: [
+    { name: 'ok', props: {} },
+    { name: 'warn', props: { status: 'warn' } },
+    { name: 'danger', props: { status: 'danger' } },
+    { name: 'neutral', props: { status: 'neutral' } },
+  ],
+  Submeta: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  TablePager: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  TableShell: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
+  TopbarActions: [
+    { name: 'default', props: {} },
+    { name: 'withCount', props: { initials: 'WS', notificationCount: 3 } },
+  ],
+  Unit: [
+    { name: 'default', props: {} },
+    { name: 'className', props: { class: 'x' } },
+  ],
 }
 
 // Icon components

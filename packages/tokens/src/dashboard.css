@@ -2149,8 +2149,14 @@ tr:hover .action-menu-trigger,
   }
 }
 
-/* ===== Tag (removable filter chip, WCAG 4.1.2 / 2.1.1) ===== */
-.tag {
+/* ===== Tag (removable filter chip, WCAG 4.1.2 / 2.1.1) =====
+   `:not(.token)` excludes Prism syntax-highlighter spans (which receive
+   `class="token tag"` for every HTML/JSX/TSX opening or closing tag); without
+   it, our chip styling bleeds onto every code-block token and renders MDX
+   foundations pages as a soup of blue pastel pills. The dash-ui <Tag>
+   primitive renders `<span class="tag">` without `.token`, so this scope is
+   transparent for real userland usages. */
+.tag:not(.token) {
   display: inline-flex;
   align-items: center;
   gap: 4px;

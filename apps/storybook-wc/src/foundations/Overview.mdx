@@ -39,10 +39,10 @@ missing.
 ```
 
 The full foundations index (Setup, Spacing, Colours, Type, Page layout, Recipes, Charts,
-Troubleshooting, For agents, ...) lives in the React storybook at the root of this site. Every
-page applies to Web Components verbatim: the tokens, the `.app`/`.grid`/`.card` CSS hooks, and the
-typed primitive contracts are framework-agnostic. Only the element name changes (`uni-card` for
-`Card`) and prop assignment (set as JS properties for complex values, see below).
+Troubleshooting, For agents, ...) lives in the React storybook at the root of this site. Every page
+applies to Web Components verbatim: the tokens, the `.app`/`.grid`/`.card` CSS hooks, and the typed
+primitive contracts are framework-agnostic. Only the element name changes (`uni-card` for `Card`)
+and prop assignment (set as JS properties for complex values, see below).
 
 ## Userland recipe in one screen
 
@@ -74,10 +74,10 @@ typed primitive contracts are framework-agnostic. Only the element name changes 
 </script>
 ```
 
-The shell (`.app` / `.workspace` / `.content` / `.grid`) is plain HTML using the canonical CSS
-hooks from `@w5-ui/wc/styles.css`. The `uni-app-layout` element accepts a single default slot only
-(no named `topbar` / `sidebar` slots, since custom elements cannot forward Svelte 5 snippets across
-the element boundary) - in WC userland, compose the shell directly with the class hooks and nest
+The shell (`.app` / `.workspace` / `.content` / `.grid`) is plain HTML using the canonical CSS hooks
+from `@w5-ui/wc/styles.css`. The `uni-app-layout` element accepts a single default slot only (no
+named `topbar` / `sidebar` slots, since custom elements cannot forward Svelte 5 snippets across the
+element boundary) - in WC userland, compose the shell directly with the class hooks and nest
 `uni-topbar` / `uni-sidebar` at the matching positions.
 
 Add `data-motif="dark"` to `<html>` and that single snippet is the whole contract. Anything else
@@ -88,16 +88,16 @@ applies here, swap `<Component>` for `<uni-component>`.
 ## Common mistakes (WC-specific)
 
 The React storybook's **Foundations / Troubleshooting** covers the framework-agnostic drift cases
-(missing `dashboard.css`, custom `gap` overrides, hardcoded hex). The four pitfalls below are
-unique to Web Components userland - they do not appear in React or Svelte, so the React
-troubleshooting page cannot flag them.
+(missing `dashboard.css`, custom `gap` overrides, hardcoded hex). The four pitfalls below are unique
+to Web Components userland - they do not appear in React or Svelte, so the React troubleshooting
+page cannot flag them.
 
-| Symptom in WC userland                                              | Cause                                                                                       | Fix                                                                                          |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `uni-button` (or any `uni-*`) renders as an empty inline element    | Forgot the side-effect import; the browser falls back to `HTMLUnknownElement`               | Add `import '@w5-ui/wc'` at the entry; it registers all 166 elements                         |
-| Topbar app-switcher shows `[object Object]` or never highlights     | Set complex props (`apps`, `onAppChange`) as HTML attributes - attributes serialise to strings | Set as JS properties after `createElement` / `querySelector`: `el.apps = [...]`              |
-| `uni-app-layout` renders topbar/sidebar inside the main content     | WC wrapper exposes only the default `<slot />`; Svelte snippets do not cross the boundary   | Build the shell with raw `.app` / `.workspace` / `.content` CSS hooks; nest `uni-*` inside   |
-| Tokens load but `.app` / `.grid` / `.card` rules are missing        | Imported `@w5-ui/tokens/tokens.css` only; `dashboard.css` is a separate file in WC          | Use the one-liner `@w5-ui/wc/styles.css` - it bundles both                                   |
+| Symptom in WC userland                                           | Cause                                                                                          | Fix                                                                                        |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `uni-button` (or any `uni-*`) renders as an empty inline element | Forgot the side-effect import; the browser falls back to `HTMLUnknownElement`                  | Add `import '@w5-ui/wc'` at the entry; it registers all 166 elements                       |
+| Topbar app-switcher shows `[object Object]` or never highlights  | Set complex props (`apps`, `onAppChange`) as HTML attributes - attributes serialise to strings | Set as JS properties after `createElement` / `querySelector`: `el.apps = [...]`            |
+| `uni-app-layout` renders topbar/sidebar inside the main content  | WC wrapper exposes only the default `<slot />`; Svelte snippets do not cross the boundary      | Build the shell with raw `.app` / `.workspace` / `.content` CSS hooks; nest `uni-*` inside |
+| Tokens load but `.app` / `.grid` / `.card` rules are missing     | Imported `@w5-ui/tokens/tokens.css` only; `dashboard.css` is a separate file in WC             | Use the one-liner `@w5-ui/wc/styles.css` - it bundles both                                 |
 
 The four cases above plus the React **Foundations / Troubleshooting** 30-second triage cover every
 drift case we have seen in WC userland to date.

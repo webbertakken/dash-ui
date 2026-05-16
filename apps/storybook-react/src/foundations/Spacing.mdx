@@ -13,20 +13,20 @@ visual drift between the reference dashboards and apps that consume `@w5-ui/*`.
 
 ## The scale
 
-| Token         | px   | When to reach for it                                         |
-| ------------- | ---- | ------------------------------------------------------------ |
-| `--space-1`   | 4px  | Hairline gaps inside chips, between icon and label           |
-| `--space-2`   | 8px  | Default inline gap (button row, pill row, topbar slots)      |
-| `--space-3`   | 12px | Tile gap (`.grid`), card-title row, inline form rows         |
-| `--space-4`   | 16px | Card body padding, vertical gap between stacked sections     |
-| `--space-5`   | 20px | Section-header padding (`.app-tab`, settings rows)           |
-| `--space-6`   | 24px | Page horizontal gutter, modal padding                        |
-| `--space-7`   | 32px | Empty-state vertical breathing room                          |
-| `--space-8`   | 40px | Stand-alone callouts, marketing blocks                       |
-| `--space-9`   | 48px | Topbar height; one full app-row                              |
-| `--space-10`  | 64px | Hero / login splash padding                                  |
-| `--space-11`  | 80px | Vertical rhythm between full-bleed sections                  |
-| `--space-12`  | 96px | Reserved for documentation / marketing layouts               |
+| Token        | px   | When to reach for it                                     |
+| ------------ | ---- | -------------------------------------------------------- |
+| `--space-1`  | 4px  | Hairline gaps inside chips, between icon and label       |
+| `--space-2`  | 8px  | Default inline gap (button row, pill row, topbar slots)  |
+| `--space-3`  | 12px | Tile gap (`.grid`), card-title row, inline form rows     |
+| `--space-4`  | 16px | Card body padding, vertical gap between stacked sections |
+| `--space-5`  | 20px | Section-header padding (`.app-tab`, settings rows)       |
+| `--space-6`  | 24px | Page horizontal gutter, modal padding                    |
+| `--space-7`  | 32px | Empty-state vertical breathing room                      |
+| `--space-8`  | 40px | Stand-alone callouts, marketing blocks                   |
+| `--space-9`  | 48px | Topbar height; one full app-row                          |
+| `--space-10` | 64px | Hero / login splash padding                              |
+| `--space-11` | 80px | Vertical rhythm between full-bleed sections              |
+| `--space-12` | 96px | Reserved for documentation / marketing layouts           |
 
 Tokens live in `@w5-ui/tokens/tokens.css` and are re-exported by every component-library entry
 point. Reach for them from your own CSS / Tailwind config instead of typing px directly:
@@ -41,14 +41,14 @@ point. Reach for them from your own CSS / Tailwind config instead of typing px d
 
 ## Radius
 
-| Token           | Value    | Where it appears                                       |
-| --------------- | -------- | ------------------------------------------------------ |
-| `--radius-sm`   | `4px`    | Pills, badges, status dots                             |
-| `--radius-md`   | `6px`    | **Default.** Buttons, inputs, cards, tabs              |
-| `--radius-lg`   | `12px`   | Modals, drawers, popovers, section panels              |
-| `--radius-xl`   | `16px`   | Marketing / onboarding cards                           |
-| `--radius-app`  | `22%`    | App-logo squircle containers only                      |
-| `--radius-pill` | `9999px` | Pill capsules, avatar circles                          |
+| Token           | Value    | Where it appears                          |
+| --------------- | -------- | ----------------------------------------- |
+| `--radius-sm`   | `4px`    | Pills, badges, status dots                |
+| `--radius-md`   | `6px`    | **Default.** Buttons, inputs, cards, tabs |
+| `--radius-lg`   | `12px`   | Modals, drawers, popovers, section panels |
+| `--radius-xl`   | `16px`   | Marketing / onboarding cards              |
+| `--radius-app`  | `22%`    | App-logo squircle containers only         |
+| `--radius-pill` | `9999px` | Pill capsules, avatar circles             |
 
 Don't mix radius scales on adjacent elements. A card at `--radius-md` containing a popover at
 `--radius-lg` reads as intentional layering; mixing two arbitrary radii on the same row reads as a
@@ -59,51 +59,51 @@ bug.
 These are the numbers the reference pages actually use. Reproduce them verbatim and your page will
 match the Dashboard story pixel-for-pixel.
 
-| Element                  | Padding              | Gap                  | Source                |
-| ------------------------ | -------------------- | -------------------- | --------------------- |
-| `.app` (window grid)     | —                    | `48px` topbar row    | `dashboard.css`       |
-| `.workspace`             | —                    | `220px` sidebar col  | `dashboard.css`       |
-| `.ph-bar` (page header)  | `14px 24px`          | `8px` between actions| `<PageHeader>`        |
-| `.grid` (page body)      | `16px 24px`          | `12px` between tiles | `<div className="grid">` |
-| `.card` (tile)           | `16px` (`--space-4`) | `12px` row gap       | `<Card>` / `<Stat>`   |
-| `.card h3` (title row)   | —                    | `8px` (`--space-2`)  | injected by `.card h3`|
-| Modal body               | `24px` (`--space-6`) | `16px` row gap       | `<Modal>`             |
-| Form field stack         | —                    | `16px` (`--space-4`) | `<Field>`             |
-| Form inline row          | —                    | `8px` (`--space-2`)  | `<Field>` row layout  |
-| Topbar slots             | —                    | `8px` (`--space-2`)  | `<Topbar>`            |
+| Element                 | Padding              | Gap                   | Source                   |
+| ----------------------- | -------------------- | --------------------- | ------------------------ |
+| `.app` (window grid)    | —                    | `48px` topbar row     | `dashboard.css`          |
+| `.workspace`            | —                    | `220px` sidebar col   | `dashboard.css`          |
+| `.ph-bar` (page header) | `14px 24px`          | `8px` between actions | `<PageHeader>`           |
+| `.grid` (page body)     | `16px 24px`          | `12px` between tiles  | `<div className="grid">` |
+| `.card` (tile)          | `16px` (`--space-4`) | `12px` row gap        | `<Card>` / `<Stat>`      |
+| `.card h3` (title row)  | —                    | `8px` (`--space-2`)   | injected by `.card h3`   |
+| Modal body              | `24px` (`--space-6`) | `16px` row gap        | `<Modal>`                |
+| Form field stack        | —                    | `16px` (`--space-4`)  | `<Field>`                |
+| Form inline row         | —                    | `8px` (`--space-2`)   | `<Field>` row layout     |
+| Topbar slots            | —                    | `8px` (`--space-2`)   | `<Topbar>`               |
 
 The take-away: **12px is the page-grid gap, 16px is the inside-the-tile rhythm, 24px is the page
-gutter, 8px is the inline rhythm.** Those four numbers (3 / 4 / 6 / 2 on the scale) carry 90% of
-the layout.
+gutter, 8px is the inline rhythm.** Those four numbers (3 / 4 / 6 / 2 on the scale) carry 90% of the
+layout.
 
 ## Picking a value
 
-| You're spacing…                                  | Reach for                |
-| ------------------------------------------------ | ------------------------ |
-| Icon + label inside a button                     | `--space-1` (4px)        |
-| Two buttons / pills / chips next to each other   | `--space-2` (8px)        |
-| Two cards in a row, two form rows stacked        | `--space-3` (12px)       |
-| Card interior padding, modal section gap         | `--space-4` (16px)       |
-| Page header bar vertical padding                 | `--space-5` (20px)       |
-| Page-level horizontal gutter, modal padding      | `--space-6` (24px)       |
-| Empty-state vertical breathing room              | `--space-7` (32px)       |
-| Hero / login layout padding                      | `--space-10` (64px)      |
+| You're spacing…                                | Reach for           |
+| ---------------------------------------------- | ------------------- |
+| Icon + label inside a button                   | `--space-1` (4px)   |
+| Two buttons / pills / chips next to each other | `--space-2` (8px)   |
+| Two cards in a row, two form rows stacked      | `--space-3` (12px)  |
+| Card interior padding, modal section gap       | `--space-4` (16px)  |
+| Page header bar vertical padding               | `--space-5` (20px)  |
+| Page-level horizontal gutter, modal padding    | `--space-6` (24px)  |
+| Empty-state vertical breathing room            | `--space-7` (32px)  |
+| Hero / login layout padding                    | `--space-10` (64px) |
 
 ## Common mistakes (and the fix)
 
-| Symptom                                              | Likely cause                                                    | Fix                                                                                              |
-| ---------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Page feels "loose" — cards float far apart           | Custom `gap: 16px` (or 20px) on the page grid                   | Drop the override. `.grid` is already `gap: 12px`                                                |
-| Page gutter is too wide / narrow                     | Extra `<div style={{ padding }}>` wraps `.grid`                 | Remove the wrapper. `.grid` already pads `16px 24px`                                             |
-| Card body padding looks inconsistent                 | Reimplementing `.card` with a bespoke `<div>`                   | Use `<Card>` from `@w5-ui/react` / `@w5-ui/svelte`                                               |
-| Buttons in a row touch / hug too tightly             | No gap on the parent flex container                             | `display: flex; gap: var(--space-2)` — that's the topbar / page-header rhythm                    |
-| Form fields stack too tightly / too loosely          | Custom `margin-bottom` on every field                           | Wrap in `<FieldStack>` (16px gap, `.field-stack` underneath) — see Foundations / Forms           |
-| Two-column form columns gap drifts (12 / 16 / 20)    | Free-typed `gap` on a hand-rolled grid                          | Use `<FormRow>` (1fr 1fr, 14px gap, 6px top offset; `.form-row` underneath)                       |
-| Form action row sits flush against the last field    | Buttons rendered without an action wrapper                      | Use `<FormActions>` (right-aligned, 8px between buttons, 16px top offset; `.form-actions` underneath) |
-| Modal content looks cramped against the close button | Custom modal body without `--space-6` padding                   | Use `<Modal>`; its body padding is already wired up                                              |
-| Random odd numbers (10px, 14px, 18px) sneak in       | Free-typing px values                                           | Snap to the nearest token. If 14px feels right, you almost certainly want `--space-3` (12px)     |
-| Round corners feel off                               | Mixing `border-radius: 8px` with `--radius-md`                  | Use `--radius-md` (6px) for cards/inputs/buttons; `--radius-lg` (12px) for modals/drawers        |
-| App-logo squircles look pill-shaped                  | Setting `border-radius: 50%` or `--radius-pill` on the wrapper  | Use `--radius-app` (22%) on the container, not pill                                              |
+| Symptom                                              | Likely cause                                                   | Fix                                                                                                   |
+| ---------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Page feels "loose" — cards float far apart           | Custom `gap: 16px` (or 20px) on the page grid                  | Drop the override. `.grid` is already `gap: 12px`                                                     |
+| Page gutter is too wide / narrow                     | Extra `<div style={{ padding }}>` wraps `.grid`                | Remove the wrapper. `.grid` already pads `16px 24px`                                                  |
+| Card body padding looks inconsistent                 | Reimplementing `.card` with a bespoke `<div>`                  | Use `<Card>` from `@w5-ui/react` / `@w5-ui/svelte`                                                    |
+| Buttons in a row touch / hug too tightly             | No gap on the parent flex container                            | `display: flex; gap: var(--space-2)` — that's the topbar / page-header rhythm                         |
+| Form fields stack too tightly / too loosely          | Custom `margin-bottom` on every field                          | Wrap in `<FieldStack>` (16px gap, `.field-stack` underneath) — see Foundations / Forms                |
+| Two-column form columns gap drifts (12 / 16 / 20)    | Free-typed `gap` on a hand-rolled grid                         | Use `<FormRow>` (1fr 1fr, 14px gap, 6px top offset; `.form-row` underneath)                           |
+| Form action row sits flush against the last field    | Buttons rendered without an action wrapper                     | Use `<FormActions>` (right-aligned, 8px between buttons, 16px top offset; `.form-actions` underneath) |
+| Modal content looks cramped against the close button | Custom modal body without `--space-6` padding                  | Use `<Modal>`; its body padding is already wired up                                                   |
+| Random odd numbers (10px, 14px, 18px) sneak in       | Free-typing px values                                          | Snap to the nearest token. If 14px feels right, you almost certainly want `--space-3` (12px)          |
+| Round corners feel off                               | Mixing `border-radius: 8px` with `--radius-md`                 | Use `--radius-md` (6px) for cards/inputs/buttons; `--radius-lg` (12px) for modals/drawers             |
+| App-logo squircles look pill-shaped                  | Setting `border-radius: 50%` or `--radius-pill` on the wrapper | Use `--radius-app` (22%) on the container, not pill                                                   |
 
 ## How the tokens flow
 
@@ -116,6 +116,6 @@ the layout.
            @w5-ui/svelte/styles.css     ←  re-exports both for Svelte userland
 ```
 
-Importing `styles.css` from `@w5-ui/react` or `@w5-ui/svelte` once at the app entry is enough to
-get every token and every `.app` / `.grid` / `.card` rule. Don't copy values out of these files
-into bespoke stylesheets — when the design system bumps a token, your page should move with it.
+Importing `styles.css` from `@w5-ui/react` or `@w5-ui/svelte` once at the app entry is enough to get
+every token and every `.app` / `.grid` / `.card` rule. Don't copy values out of these files into
+bespoke stylesheets — when the design system bumps a token, your page should move with it.

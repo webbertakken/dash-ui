@@ -2512,6 +2512,154 @@ export const FIXTURES: Record<string, Variant[]> = {
       ),
     },
   ],
+  // Typed primitives added in the `autoresearch/may16` Foundations sweep.
+  // Each renders the canonical `.dash-ui-*` / dashboard.css class hook with
+  // children; the auto-render test just asserts they mount without throwing.
+  Body: [
+    { name: 'default', node: <U.Body>body text</U.Body> },
+    { name: 'className', node: <U.Body className="x">body text</U.Body> },
+  ],
+  BodyLg: [
+    { name: 'default', node: <U.BodyLg>large body</U.BodyLg> },
+    { name: 'className', node: <U.BodyLg className="x">large body</U.BodyLg> },
+  ],
+  Caption: [
+    { name: 'default', node: <U.Caption>caption</U.Caption> },
+    { name: 'className', node: <U.Caption className="x">caption</U.Caption> },
+  ],
+  CardMore: [
+    { name: 'default', node: <U.CardMore href="#">More</U.CardMore> },
+    {
+      name: 'className',
+      node: (
+        <U.CardMore href="#" className="x">
+          More
+        </U.CardMore>
+      ),
+    },
+  ],
+  Code: [
+    { name: 'default', node: <U.Code>code</U.Code> },
+    { name: 'className', node: <U.Code className="x">code</U.Code> },
+  ],
+  Delta: [
+    { name: 'up', node: <U.Delta dir="up">+12%</U.Delta> },
+    { name: 'down', node: <U.Delta dir="down">-3%</U.Delta> },
+    { name: 'flat', node: <U.Delta dir="flat">0%</U.Delta> },
+  ],
+  Display1: [
+    { name: 'default', node: <U.Display1>display 1</U.Display1> },
+    { name: 'className', node: <U.Display1 className="x">display 1</U.Display1> },
+  ],
+  Display2: [
+    { name: 'default', node: <U.Display2>display 2</U.Display2> },
+    { name: 'className', node: <U.Display2 className="x">display 2</U.Display2> },
+  ],
+  Eyebrow: [
+    { name: 'default', node: <U.Eyebrow>eyebrow</U.Eyebrow> },
+    { name: 'className', node: <U.Eyebrow className="x">eyebrow</U.Eyebrow> },
+  ],
+  FieldStack: [
+    { name: 'default', node: <U.FieldStack>field stack</U.FieldStack> },
+    { name: 'className', node: <U.FieldStack className="x">field stack</U.FieldStack> },
+  ],
+  FormActions: [
+    { name: 'default', node: <U.FormActions>actions</U.FormActions> },
+    { name: 'className', node: <U.FormActions className="x">actions</U.FormActions> },
+  ],
+  FormRow: [
+    { name: 'default', node: <U.FormRow>row</U.FormRow> },
+    { name: 'className', node: <U.FormRow className="x">row</U.FormRow> },
+  ],
+  Grid: [
+    { name: 'default', node: <U.Grid>grid</U.Grid> },
+    { name: 'className', node: <U.Grid className="x">grid</U.Grid> },
+  ],
+  H1: [
+    { name: 'default', node: <U.H1>heading</U.H1> },
+    { name: 'className', node: <U.H1 className="x">heading</U.H1> },
+  ],
+  H2: [
+    { name: 'default', node: <U.H2>heading</U.H2> },
+    { name: 'className', node: <U.H2 className="x">heading</U.H2> },
+  ],
+  H3: [
+    { name: 'default', node: <U.H3>heading</U.H3> },
+    { name: 'className', node: <U.H3 className="x">heading</U.H3> },
+  ],
+  H4: [
+    { name: 'default', node: <U.H4>heading</U.H4> },
+    { name: 'className', node: <U.H4 className="x">heading</U.H4> },
+  ],
+  Label: [
+    { name: 'default', node: <U.Label>label</U.Label> },
+    { name: 'className', node: <U.Label className="x">label</U.Label> },
+  ],
+  Mac: [
+    { name: 'default', node: <U.Mac>AA:BB:CC:DD:EE:FF</U.Mac> },
+    { name: 'className', node: <U.Mac className="x">AA:BB</U.Mac> },
+  ],
+  Mono: [
+    { name: 'default', node: <U.Mono>192.168.1.1</U.Mono> },
+    { name: 'className', node: <U.Mono className="x">port 80</U.Mono> },
+  ],
+  Muted: [
+    { name: 'default', node: <U.Muted>muted</U.Muted> },
+    { name: 'className', node: <U.Muted className="x">muted</U.Muted> },
+  ],
+  NameCell: [
+    { name: 'default', node: <U.NameCell>device</U.NameCell> },
+    { name: 'withThumb', node: <U.NameCell thumb="R">router</U.NameCell> },
+    {
+      name: 'thumbClassName',
+      node: (
+        <U.NameCell thumb="C" thumbClassName="cam">
+          camera
+        </U.NameCell>
+      ),
+    },
+  ],
+  NotifDot: [
+    { name: 'default', node: <U.NotifDot /> },
+    { name: 'className', node: <U.NotifDot className="x" /> },
+  ],
+  SrOnly: [
+    { name: 'default', node: <U.SrOnly>screen-reader-only text</U.SrOnly> },
+    { name: 'className', node: <U.SrOnly className="x">screen-reader-only</U.SrOnly> },
+  ],
+  StatNumber: [
+    { name: 'default', node: <U.StatNumber>42</U.StatNumber> },
+    { name: 'className', node: <U.StatNumber className="x">42</U.StatNumber> },
+  ],
+  StatusRing: [
+    { name: 'ok', node: <U.StatusRing /> },
+    { name: 'warn', node: <U.StatusRing status="warn" /> },
+    { name: 'danger', node: <U.StatusRing status="danger" /> },
+    { name: 'neutral', node: <U.StatusRing status="neutral" /> },
+  ],
+  Submeta: [
+    { name: 'default', node: <U.Submeta>sub text</U.Submeta> },
+    { name: 'className', node: <U.Submeta className="x">sub text</U.Submeta> },
+  ],
+  TablePager: [
+    { name: 'default', node: <U.TablePager>pager</U.TablePager> },
+    { name: 'className', node: <U.TablePager className="x">pager</U.TablePager> },
+  ],
+  TableShell: [
+    { name: 'default', node: <U.TableShell>table shell</U.TableShell> },
+    { name: 'className', node: <U.TableShell className="x">table shell</U.TableShell> },
+  ],
+  TopbarActions: [
+    { name: 'default', node: <U.TopbarActions /> },
+    {
+      name: 'withCount',
+      node: <U.TopbarActions initials="WS" notificationCount={3} />,
+    },
+  ],
+  Unit: [
+    { name: 'default', node: <U.Unit>Mbps</U.Unit> },
+    { name: 'className', node: <U.Unit className="x">Mbps</U.Unit> },
+  ],
 }
 
 // Icons are simple SVG functions; render each at default + with custom size + className.

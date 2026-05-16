@@ -4,13 +4,13 @@ import { Meta } from '@storybook/blocks'
 
 # For agents
 
-A single condensed brief for **agentic implementers** (Claude Code, Cursor, Copilot, etc.) wiring
-a userland app on top of `@w5-ui/react` or `@w5-ui/svelte`. The other Foundations pages explain
-**why** the contract is shaped the way it is; this page is the **what** in directive form, sized
-to drop straight into a userland `AGENTS.md` / `CLAUDE.md` / Cursor rules file.
+A single condensed brief for **agentic implementers** (Claude Code, Cursor, Copilot, etc.) wiring a
+userland app on top of `@w5-ui/react` or `@w5-ui/svelte`. The other Foundations pages explain
+**why** the contract is shaped the way it is; this page is the **what** in directive form, sized to
+drop straight into a userland `AGENTS.md` / `CLAUDE.md` / Cursor rules file.
 
-> If you are a human, skim this once and bookmark **Foundations / Setup** + **Recipes**. The
-> wording below is deliberately terse so an LLM can keep the whole contract in its working set.
+> If you are a human, skim this once and bookmark **Foundations / Setup** + **Recipes**. The wording
+> below is deliberately terse so an LLM can keep the whole contract in its working set.
 
 ## Paste-into-userland brief
 
@@ -26,30 +26,30 @@ Userland renders like the reference dashboard **only** when these rules hold. Ev
 
 ## Setup (do once)
 
-- Import `@w5-ui/react/styles.css` (or `@w5-ui/svelte/styles.css`) **once** at the app entry.
-  Never import `@w5-ui/tokens/tokens.css` alone — `dashboard.css` is what wires `.app`/`.grid`
-  /`.card`. Tailwind users: import `@w5-ui/tokens/tailwind-full.css` instead.
+- Import `@w5-ui/react/styles.css` (or `@w5-ui/svelte/styles.css`) **once** at the app entry. Never
+  import `@w5-ui/tokens/tokens.css` alone — `dashboard.css` is what wires `.app`/`.grid` /`.card`.
+  Tailwind users: import `@w5-ui/tokens/tailwind-full.css` instead.
 - Set `<html data-motif="dark">` (or `"light"`) **inline in `index.html`**, never inside a
   `useEffect`. Anti-FOUC requires the attribute before the first paint.
 - Load Inter (UI) + JetBrains Mono (numeric cells). System fonts shift the type scale ~1px.
 
 ## Page shell (every page, no exceptions)
 
-- `<AppLayout pageLabel topbar={<Topbar …/>} sidebar={<Sidebar …/>}>` wraps the whole window.
-  Never hand-roll `.app` / `.workspace` / `<main>`.
-- Inside `AppLayout`, render at most three siblings: optional `<Banner>`, then `<PageHeader>`,
-  then `<div className="grid">…</div>`. No extra wrapper `<div>` around the grid.
-- `<PageHeader title actions>` owns the sticky header. Never re-implement `.ph-bar` /
-  `.ph-title` / `.ph-actions` by hand.
+- `<AppLayout pageLabel topbar={<Topbar …/>} sidebar={<Sidebar …/>}>` wraps the whole window. Never
+  hand-roll `.app` / `.workspace` / `<main>`.
+- Inside `AppLayout`, render at most three siblings: optional `<Banner>`, then `<PageHeader>`, then
+  `<div className="grid">…</div>`. No extra wrapper `<div>` around the grid.
+- `<PageHeader title actions>` owns the sticky header. Never re-implement `.ph-bar` / `.ph-title` /
+  `.ph-actions` by hand.
 
 ## Inside the grid
 
-- `.grid` is `repeat(12, 1fr)`, 12px gap, 16px × 24px padding. **Never** override `gap` /
-  `padding` on `.grid` or wrap it.
-- Every direct child is `<Card span={n}>` or `<Stat span={n}>`. Use `span` in {4, 6, 8, 12} —
-  never 5 or 7.
-- For a hero number, use `<Stat>` (it _is_ a `<Card>`). For richer tiles, compose inside
-  `<Card>` and let `.card h3` style the title — don't restyle `<h3>`.
+- `.grid` is `repeat(12, 1fr)`, 12px gap, 16px × 24px padding. **Never** override `gap` / `padding`
+  on `.grid` or wrap it.
+- Every direct child is `<Card span={n}>` or `<Stat span={n}>`. Use `span` in {4, 6, 8, 12} — never
+  5 or 7.
+- For a hero number, use `<Stat>` (it _is_ a `<Card>`). For richer tiles, compose inside `<Card>`
+  and let `.card h3` style the title — don't restyle `<h3>`.
 - Selection toolbars render **inside** `.grid` as `<SelectionToolbar>`. `.grid:has(.sel-toolbar)`
   reserves the bottom room automatically; never use `position: fixed`.
 
@@ -63,13 +63,12 @@ Userland renders like the reference dashboard **only** when these rules hold. Ev
 
 ## Tables
 
-- Wrap a plain `<table>` in `<TableShell>` (renders `<div className="table-shell">`) for the
-  inset rhythm — rounded border, surface bg, `overflow: hidden` come from one class. Never
-  hand-roll `border` / `border-radius` / `background` on the table itself.
-- Headers use `<SortHeader>` (owns `aria-sort` + sort icon). Pagination renders below the shell
-  in a `<TablePager>` hosting `<Pagination>` + rows-per-page `<Select>` — keep it as a
-  **sibling** of `<TableShell>`, never inside it (the shell clips overflow and would crop the
-  pager's focus rings).
+- Wrap a plain `<table>` in `<TableShell>` (renders `<div className="table-shell">`) for the inset
+  rhythm — rounded border, surface bg, `overflow: hidden` come from one class. Never hand-roll
+  `border` / `border-radius` / `background` on the table itself.
+- Headers use `<SortHeader>` (owns `aria-sort` + sort icon). Pagination renders below the shell in a
+  `<TablePager>` hosting `<Pagination>` + rows-per-page `<Select>` — keep it as a **sibling** of
+  `<TableShell>`, never inside it (the shell clips overflow and would crop the pager's focus rings).
 - Monospace cells use `<Mac>` (or `className="mac"`) for MAC / IP / SKU columns. First-column
   avatar + label uses `<NameCell thumb={…}>`. Screen-reader-only captions use `<SrOnly>` (or
   `className="sr-only"`) — every `<table>` needs one for WCAG 1.3.1.
@@ -78,13 +77,13 @@ Userland renders like the reference dashboard **only** when these rules hold. Ev
 
 - Colours: tokens only. `var(--surface-1)`, `var(--text-1)`, `var(--text-2)`, `var(--border)`,
   `var(--brand)`, `var(--status-ok|warn|danger)`. **Never** literal hex / rgb / `#fff` / `#000`.
-- Status copy: `<Pill variant="success|warn|danger|neutral">`, `<Badge>`, `<StatusIndicator>`.
-  Never `<span style={{ color: 'green' }}>`.
-- Type: prefer typed primitives (`<Display1>` / `<Display2>` / `<H1>`-`<H4>` / `<Body>` /
-  `<BodyLg>` / `<Label>` / `<Caption>` / `<Eyebrow>` / `<Stat>` / `<Mono>` / `<Code>`); the
-  underlying classes are `.dash-ui-display-1|2`, `.dash-ui-h1|2|3|4`, `.dash-ui-body|body-lg`,
-  `.dash-ui-label|caption|eyebrow`, `.dash-ui-stat|mono|code` (note: `caption`, not `cap`). Use
-  the class form only when you can't import a primitive. Inter for UI, JetBrains Mono for numeric.
+- Status copy: `<Pill variant="success|warn|danger|neutral">`, `<Badge>`, `<StatusIndicator>`. Never
+  `<span style={{ color: 'green' }}>`.
+- Type: prefer typed primitives (`<Display1>` / `<Display2>` / `<H1>`-`<H4>` / `<Body>` / `<BodyLg>`
+  / `<Label>` / `<Caption>` / `<Eyebrow>` / `<Stat>` / `<Mono>` / `<Code>`); the underlying classes
+  are `.dash-ui-display-1|2`, `.dash-ui-h1|2|3|4`, `.dash-ui-body|body-lg`,
+  `.dash-ui-label|caption|eyebrow`, `.dash-ui-stat|mono|code` (note: `caption`, not `cap`). Use the
+  class form only when you can't import a primitive. Inter for UI, JetBrains Mono for numeric.
 - Icons: import from `@w5-ui/react` (23-icon canonical set). Size 16/20/24 only.
 
 ## Spacing — the only escape hatch
@@ -104,45 +103,45 @@ styles. Radius: `--radius-md` (6 px, default), `--radius-lg` (12 px, modals), `-
 
 ## When something looks "almost right"
 
-Open the matching **Dashboard** story in Storybook, inspect the rendered DOM, and diff your
-markup against it. The reference DOM is the single source of truth. If your class names differ,
-that delta **is** the drift.
+Open the matching **Dashboard** story in Storybook, inspect the rendered DOM, and diff your markup
+against it. The reference DOM is the single source of truth. If your class names differ, that delta
+**is** the drift.
 ```
 
-That block is intentionally framework-neutral on prose and React-flavoured in the snippets —
-Svelte users swap component imports but every rule still holds.
+That block is intentionally framework-neutral on prose and React-flavoured in the snippets — Svelte
+users swap component imports but every rule still holds.
 
 ## Self-check protocol (run before declaring "done")
 
-When an agent finishes a userland page, it should run this checklist against the final markup
-and DOM. Every miss is documented in **Foundations / Troubleshooting** with a one-line fix.
+When an agent finishes a userland page, it should run this checklist against the final markup and
+DOM. Every miss is documented in **Foundations / Troubleshooting** with a one-line fix.
 
 1. **`<html data-motif>` present** and set inline in `index.html` (not in a `useEffect`).
-2. **`@w5-ui/<framework>/styles.css` imported exactly once** at the app entry. No bare
-   `tokens.css` imports.
+2. **`@w5-ui/<framework>/styles.css` imported exactly once** at the app entry. No bare `tokens.css`
+   imports.
 3. **One `<AppLayout>` at the app root.** No hand-rolled `.app` / `.workspace` / `<main>`.
-4. **Page body is `<Banner>?` + `<PageHeader>` + `<div className="grid">`** as direct siblings.
-   No wrapper around `.grid`. No `display: flex` on the page root.
-5. **Every `.grid` child is `<Card>` or `<Stat>`** with `span ∈ {4, 6, 8, 12}`. No `span={5}`,
-   no `span={7}`, no bare `<div>` lanes.
+4. **Page body is `<Banner>?` + `<PageHeader>` + `<div className="grid">`** as direct siblings. No
+   wrapper around `.grid`. No `display: flex` on the page root.
+5. **Every `.grid` child is `<Card>` or `<Stat>`** with `span ∈ {4, 6, 8, 12}`. No `span={5}`, no
+   `span={7}`, no bare `<div>` lanes.
 6. **No inline `style` for `padding` / `gap` / `margin`** on shell, header, or grid elements.
 7. **No literal hex / rgb colour** in components. Grep the diff for `#[0-9a-f]{3,8}` and replace
    with `var(--…)` tokens.
-8. **`<h3>` only inside `<Card>`.** `.card h3` carries the title rhythm; outside a card the
-   selector doesn't apply.
+8. **`<h3>` only inside `<Card>`.** `.card h3` carries the title rhythm; outside a card the selector
+   doesn't apply.
 9. **Forms use `.field-stack` / `.form-row` / `.form-actions`** — no bespoke flex containers.
-10. **Computed style on root `.grid`:** `gap: 12px`, `padding: 16px 24px`. If either differs,
-    a wrapper or override is in the way.
+10. **Computed style on root `.grid`:** `gap: 12px`, `padding: 16px 24px`. If either differs, a
+    wrapper or override is in the way.
 
 A passing run on those ten points reproduces the reference dashboard 1:1.
 
 ### Copy-paste DevTools probe
 
 Open the running userland app, paste the snippet below into the browser console, and read the
-report. It exercises six of the ten self-check points against the **live DOM** — the four
-remaining (`styles.css` once, no inline shell `style`, `<h3>` only inside `<Card>`, forms use
-`.field-stack` / `.form-row` / `.form-actions`) are diff-time checks that don't surface in the
-computed style. Every failure prints the offending element so you can jump to it in Elements.
+report. It exercises six of the ten self-check points against the **live DOM** — the four remaining
+(`styles.css` once, no inline shell `style`, `<h3>` only inside `<Card>`, forms use `.field-stack` /
+`.form-row` / `.form-actions`) are diff-time checks that don't surface in the computed style. Every
+failure prints the offending element so you can jump to it in Elements.
 
 ```js
 ;(() => {
@@ -187,174 +186,173 @@ computed style. Every failure prints the offending element so you can jump to it
 })()
 ```
 
-Zero failures means the contract holds at the DOM level. Any failure points at the exact node
-that drifts — paste the snippet again after each fix to confirm the regression collapses.
+Zero failures means the contract holds at the DOM level. Any failure points at the exact node that
+drifts — paste the snippet again after each fix to confirm the regression collapses.
 
 ## Tailwind drift → typed primitive
 
-The single biggest userland drift in practice: hand-rolled Tailwind class strings (`text-12
-text-text-3`, `text-13 font-semibold text-text-1`, `text-[10px] font-semibold uppercase
-tracking-[0.06em] text-text-3`) where a typed primitive already encodes the same contract.
-Tailwind tokens line up with the type scale, but free-typed combinations re-derive what
-`<Body>` / `<Label>` / `<Eyebrow>` already bundle — and as soon as one site uses 10px and
-the next uses 11px, the rhythm splits. Reach for the primitive; if the page truly needs
+The single biggest userland drift in practice: hand-rolled Tailwind class strings
+(`text-12 text-text-3`, `text-13 font-semibold text-text-1`,
+`text-[10px] font-semibold uppercase tracking-[0.06em] text-text-3`) where a typed primitive already
+encodes the same contract. Tailwind tokens line up with the type scale, but free-typed combinations
+re-derive what `<Body>` / `<Label>` / `<Eyebrow>` already bundle — and as soon as one site uses 10px
+and the next uses 11px, the rhythm splits. Reach for the primitive; if the page truly needs
 something off-scale, surface it as a design fork before shipping.
 
-| You typed…                                                                    | Use instead                  |
-| ----------------------------------------------------------------------------- | ---------------------------- |
-| `text-14 text-text-2` (or `text-base text-text-2`)                            | `<Body>`                     |
-| `text-16 text-text-2` (multi-paragraph settings copy)                         | `<BodyLg>`                   |
-| `text-13 font-medium text-text-2` (KPI / form label)                          | `<Label>`                    |
-| `text-12 text-text-3` (helper, metadata, "last updated")                      | `<Caption>`                  |
-| `text-[10px]` / `text-11 font-semibold uppercase tracking-[0.06em] text-text-3` | `<Eyebrow>`                  |
-| `text-30 font-semibold tabular-nums text-text-1` (KPI number)                 | `<StatNumber>` (or `<Stat>`) |
-| `text-13 font-mono text-text-2` (inline MAC / IP / hex / port)                | `<Mono>` (or `<Mac>`)        |
-| `text-12 font-mono px-1.5 py-px border rounded bg-bg-2` (inline code chip)    | `<Code>`                     |
-| `text-13 font-semibold text-text-1` (panel / section title)                   | `<H4>` (or `<CardTitle>`)    |
-| `text-24 font-semibold text-text-1` (page sub-section head)                   | `<H3>`                       |
-| `text-30 font-semibold text-text-1` (page section head)                       | `<H2>`                       |
-| `text-38 font-bold tracking-[-0.02em] text-text-1` (marketing page title)     | `<H1>`                       |
-| `text-48 font-bold tracking-[-0.02em] text-text-1` (login / large marketing)  | `<Display2>`                 |
-| `text-64 font-bold tracking-[-0.02em] text-text-1` (onboarding / hero)        | `<Display1>`                 |
-| `text-text-3` on prose to "look muted"                                        | `<Muted>` (inline span)      |
-| `class="sr-only"` for a visually-hidden caption / label                       | `<SrOnly>` (or the class)    |
-| `m-0 text-13 font-semibold text-text-1` on a panel `<h2>`                     | `<H4>` (snap to the scale)   |
-| `bg-bg-1 border border-border-2 rounded-md p-3` (hand-rolled card)            | `<Card>` (or `<Stat>`)       |
-| `<div class="search">` + raw `<input type="search">` + magnifying glass SVG   | `<SearchBox>`                |
-| Bell `<IconButton>` + bespoke red dot positioned in CSS                       | `<IconButton>` + `<NotifDot>` |
-| `<span class="dot status-ok">` for a coloured site-health ring                | `<StatusRing status="ok">`   |
-| Bespoke Search / Updates / Bell / Help / Avatar block in a custom `<Topbar>`  | `<TopbarActions />`          |
-| `<h3 class="m-0 text-13 font-semibold text-text-1">` as a card title          | `<CardTitle>`                |
-| `<a class="text-12 text-text-3 ml-auto">More →</a>` in a card title row       | `<CardMore>`                 |
-| `<p class="m-0 text-12 text-text-3">` muted sub-line under a hero number      | `<Submeta>`                  |
-| `<span class="text-12 font-mono text-text-3">` unit trailing a hero number    | `<Unit>`                     |
-| `<span class="text-12 text-status-{ok\|danger}">↑ 12%</span>` trend chip      | `<Delta dir="up\|down\|flat">` |
-| `<td>` with `<img class="w-7 h-7 rounded">` + stacked name + 12 px sub        | `<NameCell thumb={…}>`       |
-| Hand-rolled `<div class="flex justify-between mt-3">` under a `<Table>`       | `<TablePager>`               |
-| `<div class="grid gap-4">` for stacked `<Field>`s in a card / modal           | `<FieldStack>`               |
-| `<div class="grid grid-cols-2 gap-[14px] mt-[6px]">` two-column form row      | `<FormRow>`                  |
-| `<div class="flex justify-end gap-2 mt-4">` action button row under a form   | `<FormActions>`              |
-| `<div class="grid grid-cols-12 gap-3 px-6 py-4">` page body grid              | `<Grid>` (or `<div className="grid">`) |
-| `<span class="px-2 py-0.5 rounded-full text-12 bg-status-ok-bg text-status-ok">Active</span>` | `<Pill variant="success">Active</Pill>` |
-| `<span class="px-2 py-0.5 rounded-md bg-bg-2 text-12 inline-flex items-center gap-1">router</span>` | `<Tag label="router" />` |
-| `<kbd class="px-1.5 py-0.5 rounded border bg-bg-2 text-12 font-mono">⌘K</kbd>`  | `<Kbd keys="⌘+K" />`         |
-| `<button class="btn btn-primary">Save</button>` (or `btn-ghost` / `btn-danger`) | `<Button variant="primary\|ghost\|danger">Save</Button>` |
-| `<button class="icon-btn" aria-label="Close"><X /></button>` (or bare `<button>` with an SVG child) | `<IconButton aria-label="Close"><X /></IconButton>` |
-| `<input type="checkbox" role="switch">` + hand-rolled track / knob CSS         | `<Toggle on={…} onToggle={…} ariaLabel="…" />` |
-| `<input type="checkbox">` + bespoke check / indeterminate SVG + label `<span>` | `<Checkbox checked={…} indeterminate={…} onChange={…} label="…" />` |
-| Native `<select>` with Tailwind chrome (`bg-bg-2 border border-border-1 …`)    | `<Select options={…} value={…} onChange={…} />` (WAI-ARIA combobox/listbox) |
-| Hand-rolled radio cluster (`<input type="radio">` + label + flex stack)        | `<RadioGroup options={…} value={…} onChange={…} />` (fieldset + radio a11y) |
-| `<input type="number">` + bespoke `+` / `−` `<IconButton>`s for step           | `<NumberInput value={…} onChange={…} min={…} max={…} step={…} />` (WAI-ARIA spinbutton) |
-| `<textarea class="bg-bg-2 border border-border-1 rounded p-2 …">` for multi-line | `<Textarea value={…} onChange={…} rows={…} />` |
-| Hand-rolled "Prev / 1 2 3 / Next" pager (`<button>` row + bespoke page-state)   | `<Pagination page={…} pageCount={…} onPageChange={…} />` (WAI-ARIA nav + `aria-current`) |
-| `<div class="bg-status-info-bg text-status-info border-l-4 px-4 py-3 …">` page-level notice | `<Banner variant="info\|success\|warn\|danger" title="…" action={…} onDismiss={…}>…</Banner>` |
-| `<aside class="border-l-4 border-status-info bg-bg-2 p-3 text-13 …">Tip: …</aside>` inline note | `<Callout variant="info\|success\|warn\|danger\|tip" title="…">…</Callout>` (`role="note"`) |
-| `<div role="alert" class="bg-status-danger-bg text-status-danger px-3 py-2 …">` toast-shaped block | `<Alert variant="success\|warn\|danger\|info" onDismiss={…}>…</Alert>` (`role="alert"` + `aria-live`) |
-| Hand-rolled fixed-corner notification stack (`position: fixed; bottom: 16px …`) | `<Toaster />` once + `toast.success("Saved")` / `toast.warn(…)` (`aria-live` log) |
-| `<div class="animate-spin w-5 h-5 border-2 border-current border-r-transparent rounded-full" />` | `<Spinner size="sm\|md\|lg" label="Loading" />` (`role="status"`) |
-| `<div class="h-1 bg-bg-2 rounded"><div class="h-full bg-brand" style={{ width: pct }} /></div>` | `<ProgressBar value={pct} label="…" valueText="…" />` (labelled `<progress>`) |
-| Hand-rolled tablist (`<button role="tab" class="border-b-2 …">` row + manual active state) | `<Tabs items={…} active={…} onChange={…} ariaLabel="…" />` + `<TabPanel id active>` (roving tabindex + arrow keys) |
-| `<nav class="text-12 text-text-3"><ol class="flex gap-1"><li>…</li></ol></nav>` breadcrumb trail | `<Breadcrumb items={[{ label, href }, …]} onNavigate={…} />` (WAI-ARIA + `aria-current="page"`) |
-| `<details class="border-b border-border-1"><summary class="py-2 …">…</summary>…</details>` | `<Accordion><AccordionItem title="…" defaultOpen>…</AccordionItem></Accordion>` (disclosure + keyboard) |
-| `<input type="range" class="w-full accent-brand" />` + bespoke value label / ticks | `<Slider value={…} onChange={…} min={…} max={…} step={…} />` (WAI-ARIA + label/value formatting) |
-| Two `<input type="range">`s overlapping + manual low/high clamp + bespoke fill bar between thumbs | `<RangeSlider label="…" min={0} max={100} low={…} high={…} onChange={([lo, hi]) => …} suffix="…" />` (two-thumb range + clamp + filled track) |
-| `<dialog open class="fixed inset-0 …">` or hand-rolled overlay + close `<button>`   | `<Modal open title onClose footer={…}>…</Modal>` (`role="dialog"` + focus trap + body-scroll lock) |
+| You typed…                                                                                                                          | Use instead                                                                                                                                                                              |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text-14 text-text-2` (or `text-base text-text-2`)                                                                                  | `<Body>`                                                                                                                                                                                 |
+| `text-16 text-text-2` (multi-paragraph settings copy)                                                                               | `<BodyLg>`                                                                                                                                                                               |
+| `text-13 font-medium text-text-2` (KPI / form label)                                                                                | `<Label>`                                                                                                                                                                                |
+| `text-12 text-text-3` (helper, metadata, "last updated")                                                                            | `<Caption>`                                                                                                                                                                              |
+| `text-[10px]` / `text-11 font-semibold uppercase tracking-[0.06em] text-text-3`                                                     | `<Eyebrow>`                                                                                                                                                                              |
+| `text-30 font-semibold tabular-nums text-text-1` (KPI number)                                                                       | `<StatNumber>` (or `<Stat>`)                                                                                                                                                             |
+| `text-13 font-mono text-text-2` (inline MAC / IP / hex / port)                                                                      | `<Mono>` (or `<Mac>`)                                                                                                                                                                    |
+| `text-12 font-mono px-1.5 py-px border rounded bg-bg-2` (inline code chip)                                                          | `<Code>`                                                                                                                                                                                 |
+| `text-13 font-semibold text-text-1` (panel / section title)                                                                         | `<H4>` (or `<CardTitle>`)                                                                                                                                                                |
+| `text-24 font-semibold text-text-1` (page sub-section head)                                                                         | `<H3>`                                                                                                                                                                                   |
+| `text-30 font-semibold text-text-1` (page section head)                                                                             | `<H2>`                                                                                                                                                                                   |
+| `text-38 font-bold tracking-[-0.02em] text-text-1` (marketing page title)                                                           | `<H1>`                                                                                                                                                                                   |
+| `text-48 font-bold tracking-[-0.02em] text-text-1` (login / large marketing)                                                        | `<Display2>`                                                                                                                                                                             |
+| `text-64 font-bold tracking-[-0.02em] text-text-1` (onboarding / hero)                                                              | `<Display1>`                                                                                                                                                                             |
+| `text-text-3` on prose to "look muted"                                                                                              | `<Muted>` (inline span)                                                                                                                                                                  |
+| `class="sr-only"` for a visually-hidden caption / label                                                                             | `<SrOnly>` (or the class)                                                                                                                                                                |
+| `m-0 text-13 font-semibold text-text-1` on a panel `<h2>`                                                                           | `<H4>` (snap to the scale)                                                                                                                                                               |
+| `bg-bg-1 border border-border-2 rounded-md p-3` (hand-rolled card)                                                                  | `<Card>` (or `<Stat>`)                                                                                                                                                                   |
+| `<div class="search">` + raw `<input type="search">` + magnifying glass SVG                                                         | `<SearchBox>`                                                                                                                                                                            |
+| Bell `<IconButton>` + bespoke red dot positioned in CSS                                                                             | `<IconButton>` + `<NotifDot>`                                                                                                                                                            |
+| `<span class="dot status-ok">` for a coloured site-health ring                                                                      | `<StatusRing status="ok">`                                                                                                                                                               |
+| Bespoke Search / Updates / Bell / Help / Avatar block in a custom `<Topbar>`                                                        | `<TopbarActions />`                                                                                                                                                                      |
+| `<h3 class="m-0 text-13 font-semibold text-text-1">` as a card title                                                                | `<CardTitle>`                                                                                                                                                                            |
+| `<a class="text-12 text-text-3 ml-auto">More →</a>` in a card title row                                                             | `<CardMore>`                                                                                                                                                                             |
+| `<p class="m-0 text-12 text-text-3">` muted sub-line under a hero number                                                            | `<Submeta>`                                                                                                                                                                              |
+| `<span class="text-12 font-mono text-text-3">` unit trailing a hero number                                                          | `<Unit>`                                                                                                                                                                                 |
+| `<span class="text-12 text-status-{ok\|danger}">↑ 12%</span>` trend chip                                                            | `<Delta dir="up\|down\|flat">`                                                                                                                                                           |
+| `<td>` with `<img class="w-7 h-7 rounded">` + stacked name + 12 px sub                                                              | `<NameCell thumb={…}>`                                                                                                                                                                   |
+| Hand-rolled `<div class="flex justify-between mt-3">` under a `<Table>`                                                             | `<TablePager>`                                                                                                                                                                           |
+| `<div class="grid gap-4">` for stacked `<Field>`s in a card / modal                                                                 | `<FieldStack>`                                                                                                                                                                           |
+| `<div class="grid grid-cols-2 gap-[14px] mt-[6px]">` two-column form row                                                            | `<FormRow>`                                                                                                                                                                              |
+| `<div class="flex justify-end gap-2 mt-4">` action button row under a form                                                          | `<FormActions>`                                                                                                                                                                          |
+| `<div class="grid grid-cols-12 gap-3 px-6 py-4">` page body grid                                                                    | `<Grid>` (or `<div className="grid">`)                                                                                                                                                   |
+| `<span class="px-2 py-0.5 rounded-full text-12 bg-status-ok-bg text-status-ok">Active</span>`                                       | `<Pill variant="success">Active</Pill>`                                                                                                                                                  |
+| `<span class="px-2 py-0.5 rounded-md bg-bg-2 text-12 inline-flex items-center gap-1">router</span>`                                 | `<Tag label="router" />`                                                                                                                                                                 |
+| `<kbd class="px-1.5 py-0.5 rounded border bg-bg-2 text-12 font-mono">⌘K</kbd>`                                                      | `<Kbd keys="⌘+K" />`                                                                                                                                                                     |
+| `<button class="btn btn-primary">Save</button>` (or `btn-ghost` / `btn-danger`)                                                     | `<Button variant="primary\|ghost\|danger">Save</Button>`                                                                                                                                 |
+| `<button class="icon-btn" aria-label="Close"><X /></button>` (or bare `<button>` with an SVG child)                                 | `<IconButton aria-label="Close"><X /></IconButton>`                                                                                                                                      |
+| `<input type="checkbox" role="switch">` + hand-rolled track / knob CSS                                                              | `<Toggle on={…} onToggle={…} ariaLabel="…" />`                                                                                                                                           |
+| `<input type="checkbox">` + bespoke check / indeterminate SVG + label `<span>`                                                      | `<Checkbox checked={…} indeterminate={…} onChange={…} label="…" />`                                                                                                                      |
+| Native `<select>` with Tailwind chrome (`bg-bg-2 border border-border-1 …`)                                                         | `<Select options={…} value={…} onChange={…} />` (WAI-ARIA combobox/listbox)                                                                                                              |
+| Hand-rolled radio cluster (`<input type="radio">` + label + flex stack)                                                             | `<RadioGroup options={…} value={…} onChange={…} />` (fieldset + radio a11y)                                                                                                              |
+| `<input type="number">` + bespoke `+` / `−` `<IconButton>`s for step                                                                | `<NumberInput value={…} onChange={…} min={…} max={…} step={…} />` (WAI-ARIA spinbutton)                                                                                                  |
+| `<textarea class="bg-bg-2 border border-border-1 rounded p-2 …">` for multi-line                                                    | `<Textarea value={…} onChange={…} rows={…} />`                                                                                                                                           |
+| Hand-rolled "Prev / 1 2 3 / Next" pager (`<button>` row + bespoke page-state)                                                       | `<Pagination page={…} pageCount={…} onPageChange={…} />` (WAI-ARIA nav + `aria-current`)                                                                                                 |
+| `<div class="bg-status-info-bg text-status-info border-l-4 px-4 py-3 …">` page-level notice                                         | `<Banner variant="info\|success\|warn\|danger" title="…" action={…} onDismiss={…}>…</Banner>`                                                                                            |
+| `<aside class="border-l-4 border-status-info bg-bg-2 p-3 text-13 …">Tip: …</aside>` inline note                                     | `<Callout variant="info\|success\|warn\|danger\|tip" title="…">…</Callout>` (`role="note"`)                                                                                              |
+| `<div role="alert" class="bg-status-danger-bg text-status-danger px-3 py-2 …">` toast-shaped block                                  | `<Alert variant="success\|warn\|danger\|info" onDismiss={…}>…</Alert>` (`role="alert"` + `aria-live`)                                                                                    |
+| Hand-rolled fixed-corner notification stack (`position: fixed; bottom: 16px …`)                                                     | `<Toaster />` once + `toast.success("Saved")` / `toast.warn(…)` (`aria-live` log)                                                                                                        |
+| `<div class="animate-spin w-5 h-5 border-2 border-current border-r-transparent rounded-full" />`                                    | `<Spinner size="sm\|md\|lg" label="Loading" />` (`role="status"`)                                                                                                                        |
+| `<div class="h-1 bg-bg-2 rounded"><div class="h-full bg-brand" style={{ width: pct }} /></div>`                                     | `<ProgressBar value={pct} label="…" valueText="…" />` (labelled `<progress>`)                                                                                                            |
+| Hand-rolled tablist (`<button role="tab" class="border-b-2 …">` row + manual active state)                                          | `<Tabs items={…} active={…} onChange={…} ariaLabel="…" />` + `<TabPanel id active>` (roving tabindex + arrow keys)                                                                       |
+| `<nav class="text-12 text-text-3"><ol class="flex gap-1"><li>…</li></ol></nav>` breadcrumb trail                                    | `<Breadcrumb items={[{ label, href }, …]} onNavigate={…} />` (WAI-ARIA + `aria-current="page"`)                                                                                          |
+| `<details class="border-b border-border-1"><summary class="py-2 …">…</summary>…</details>`                                          | `<Accordion><AccordionItem title="…" defaultOpen>…</AccordionItem></Accordion>` (disclosure + keyboard)                                                                                  |
+| `<input type="range" class="w-full accent-brand" />` + bespoke value label / ticks                                                  | `<Slider value={…} onChange={…} min={…} max={…} step={…} />` (WAI-ARIA + label/value formatting)                                                                                         |
+| Two `<input type="range">`s overlapping + manual low/high clamp + bespoke fill bar between thumbs                                   | `<RangeSlider label="…" min={0} max={100} low={…} high={…} onChange={([lo, hi]) => …} suffix="…" />` (two-thumb range + clamp + filled track)                                            |
+| `<dialog open class="fixed inset-0 …">` or hand-rolled overlay + close `<button>`                                                   | `<Modal open title onClose footer={…}>…</Modal>` (`role="dialog"` + focus trap + body-scroll lock)                                                                                       |
 | `<Modal>` re-implementation for "Are you sure?" delete / warn / info flows (manual confirm/cancel `<Button>`s + danger variant CSS) | `<ConfirmDialog open title="Delete user?" description="…" variant="danger\|warning\|info" confirmLabel="Delete" onConfirm={…} onCancel={…} />` (canonical 2-button modal + variant icon) |
-| Hand-rolled side panel (`fixed right-0 top-0 h-full w-80 translate-x-0 …`)     | `<Drawer open title onClose>…</Drawer>` (`role="dialog"` + focus trap + slide-in) |
-| `<img class="w-8 h-8 rounded-full">` + fallback `<div>` initials + bespoke ring | `<Avatar src={…} initials="WN" size="sm\|md\|lg" status="online\|busy\|offline" />` |
-| Hand-rolled stack of overlapping `<img>` thumbs + `+N` chip                     | `<AvatarGroup avatars={[…]} max={5} size="md" ariaLabel="Members" />` |
-| `<span class="relative">…<span class="absolute -top-1 -right-1 …">3</span></span>` | `<Badge count={3} max={99} color="danger\|brand\|neutral">…</Badge>` (auto `99+`) |
-| `<span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-status-danger rounded-full" />` notification dot | `<Badge dot color="danger">…</Badge>` (or `<NotifDot>` on a `<TopbarActions>` bell) |
-| `title="…"` attribute (no styling, no a11y wiring) or hand-rolled `position:absolute` bubble | `<Tooltip label="…" placement="top\|bottom\|left\|right">{trigger}</Tooltip>` (`aria-describedby` + `role="tooltip"`) |
-| Hand-rolled hover-triggered preview card (`onMouseEnter` + bespoke `absolute` panel)  | `<HoverCard content={…} placement="top" delay={200}>{trigger}</HoverCard>` (hover/focus + delay) |
-| `<button>` + bespoke `position:absolute` panel + click-outside listener for a menu     | `<Popover label="Filters" title="…" placement="bottom">…</Popover>` (focus trap + ESC + outside-click) |
-| Kebab `<IconButton>` (`⋯`) + hand-rolled `position:absolute` menu + manual roving-tabindex + danger-item red text     | `<ActionMenu items={[{ id, label, danger?, disabled? }]} onAction={(id) => …} label="Row actions" />` (canonical kebab menu + arrow-key roving + ESC) |
-| `onContextMenu` handler + bespoke `position:fixed` panel at `{x, y}` + manual viewport-edge clamp + separator `<div>`s | `<ContextMenu open x={x} y={y} items={[…, { separator: true }, …]} onClose={…} onAction={(id) => …} />` (right-click menu + edge clamp + ESC) |
-| `Cmd+K` listener + bespoke `<Modal>` with `<input>` + manual fuzzy-search + grouped result list + shortcut chips     | `<CommandPalette open onClose={…} items={[{ id, label, group?, icon?, shortcut? }]} onSelect={(id) => …} placeholder="Search…" />` (Cmd+K palette + grouped filter + `<Kbd>` chips) |
-| `<div class="animate-pulse bg-bg-2 h-4 w-32 rounded">` placeholder block             | `<Skeleton variant="text\|rect\|circle" width={…} height={…} ariaLabel="Loading" />` |
-| Hand-rolled coloured dot + label (`<span class="w-2 h-2 rounded-full bg-status-ok" /> Online`) | `<StatusIndicator color="var(--color-status-ok)" text="Online" />` (or `<StatusRing status="ok">` for site-health rings) |
-| `<input type="date">` with Tailwind chrome + bespoke calendar popover                  | `<DatePicker value={…} onChange={…} placeholder="…" />` (Date object in/out + WAI-ARIA dialog) |
-| Two `<input type="date">`s + manual "from / to" validation + popover plumbing          | `<DateRangePicker value={{ from, to }} onChange={…} />` (single popover, range constraint) |
-| `<input type="time">` styled with Tailwind + hand-rolled hour/minute steppers          | `<TimePicker value="HH:MM" onChange={…} label="…" />` (24h normalised string) |
-| `<input type="file" hidden>` + bespoke drag-and-drop zone (`onDragOver` / Tailwind ring) | `<FileUpload accept="…" multiple onFiles={(files) => …} label="…" hint="…" />` (drop + click + state) |
-| Native `<select>` with hand-typed search input filtering the option list                | `<Combobox options={…} value={…} onChange={…} placeholder="Search…" />` (WAI-ARIA combobox + filter) |
-| Multiple `<input type="checkbox">`s in a popover with manual chip-readout              | `<MultiSelect options={…} value={[…]} onChange={…} placeholder="Select…" />` (checkable listbox + chip summary) |
-| Hand-rolled colour swatch grid + `<input type="color">` fallback + hex text input       | `<ColorPicker value="#…" onChange={…} swatches={…} label="…" />` (swatch grid + hex sync) |
-| `<input>` + array-state-on-Enter + bespoke tag chip rendering + backspace-to-remove     | `<TagInput value={[…]} onChange={…} placeholder="Type and press Enter…" />` (chips + keyboard rm) |
-| `<input type="password">` + hand-rolled show/hide eye `<IconButton>` toggling `type`    | `<PasswordInput value={…} onChange={…} autocomplete="current-password" label="…" />` (toggle + a11y label) |
-| Six `<input maxlength=1>` boxes + manual focus-advance + paste-split-across-inputs      | `<OTPInput length={6} value={…} onChange={…} label="One-time code" />` (auto-advance + paste handling) |
-| Hand-rolled radio-as-pill group (`<button class="px-3 py-1 …">A</button>` + active state) | `<SegmentedControl label="…" options={…} value={…} onChange={…} />` (radio semantics + arrow keys) |
-| Multiple `<Toggle>`s in a `<div class="flex gap-1">` for a multi-select toolbar         | `<ToggleGroup options={…} value={[…]} onChange={…} ariaLabel="…" size="sm\|md" />` (multi-pressed + group a11y) |
-| Click-to-edit `<span>` swapping to `<input>` on focus with manual confirm/cancel logic  | `<InlineEdit value={…} onConfirm={…} label="…" placeholder="…" />` (Enter/Esc + focus return) |
-| `<Button>` + adjacent caret `<IconButton>` + bespoke menu popover for secondary actions | `<SplitButton label="Save" items={[{ id, label }]} onPrimaryClick={…} onAction={…} />` (primary + menu) |
-| `<IconButton>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" tooltip     | `<CopyButton text={value} label="Copy" />` (clipboard + transient confirm + a11y live) |
-| Hand-rolled "no results" panel (`<div class="text-center py-10 text-text-3">…</div>`)  | `<EmptyState title="…" description="…" action={…} />` (canonical zero-state rhythm) |
-| Hand-rolled wizard progress bar (`<ol class="flex gap-2">` + active/complete CSS state) | `<Stepper steps={[{ label }]} active={n} />` (`aria-current="step"` + complete/upcoming state) |
-| Four `<input maxlength=3>` octet boxes + manual `.` separator + 0-255 clamp logic | `<IPInput label="…" value="10.0.0.1" onChange={(s) => …} />` (WAI-ARIA spinbutton per octet) |
-| Six `<input maxlength=2>` hex boxes + manual `:` separator + `[0-9a-f]` mask | `<MACInput label="…" value="aa:bb:cc:dd:ee:ff" onChange={(s) => …} />` (WAI-ARIA spinbutton per octet) |
-| `<input>` + bespoke regex for `0.0.0.0/24` + manual prefix-length clamp (0-32) | `<CIDRInput label="…" value="192.168.1.0/24" onChange={(s) => …} />` (octets + prefix in one row) |
-| Three `<input type=number>` for HH/MM/SS + bespoke `:` separator + step plumbing | `<DurationInput label="…" value="01:30:00" onChange={(s) => …} />` (WAI-ARIA spinbutton + clamp) |
-| `<div class="flex"><span class="bg-bg-2 px-2 …">https://</span><input class="flex-1 …">…<span>…</span></div>` | `<InputGroup prefix="https://" suffix=".com"><input … /></InputGroup>` (flush addon + focus ring) |
-| Hand-rolled `<dl>` or two-column `<table>` for device drawer key/value rows | `<KVTable rows={[{ key, value }, …]} caption="…" />` (semantic `<th scope="row">` + zebra rhythm) |
-| `<pre class="bg-bg-2 rounded p-3 text-12 font-mono overflow-auto">…</pre>` + manual copy button | `<CodeBlock code={src} language="ts" label="Example" />` (`role="region"` + integrated `<CopyButton>`) |
-| `import { LineChart } from 'recharts'` (or hand-rolled `<svg>` with `<polyline>` + manual scale) | `<LineChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (zero-dep typed SVG) |
-| `<svg>` with `<path d="M…L…">` filled gradient hand-rolled per series                  | `<AreaChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (token-aligned gradients) |
-| Hand-rolled `<svg>` with one `<rect>` per bar + manual min/max scale                   | `<BarChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (typed series + token colours) |
-| Stacked `<rect>`s in raw `<svg>` with manual cumulative-sum offsets per series         | `<StackedBarChart series={[{ label, color, values }]} labels={…} normalized={false} height={160} ariaLabel="…" />` (cumulative stack + optional 100% normalise) |
-| Inline `<svg width=120 height=24>` with hand-tweaked bars for a KPI trend chip         | `<Sparkline bars={24} active seed={42} ariaLabel="Trend, last 24h" />` (no data wiring needed for KPI chips) |
-| Hand-rolled `<svg>` with two arcs + manual `pathLength` / `stroke-dasharray` for a donut KPI | `<Donut size={160} segments={[{ label, value, color }]} centerValue={pct} centerLabel="Healthy" ariaLabel="Health breakdown" />` |
-| Half-arc `<svg>` with manual angle math + hand-positioned value label for a gauge meter | `<Gauge value={0.62} label="CPU" color="var(--color-brand)" size={120} ariaLabel="CPU usage 62%" />` |
-| `<table>` of `<td style={{ background: hsl(…) }}>` cells + manual colour-ramp interpolation | `<HeatMap data={number[][]} colors={['#0a0e14', 'var(--color-brand)']} xLabels={…} height={200} cellGap={2} ariaLabel="Activity by hour × day" />` |
-| Hand-rolled `<svg>` with one `<circle>` per point + manual `xRange` / `yRange` projection | `<ScatterPlot points={[{ x, y, color, r }]} xRange={[0, 100]} yRange={[0, 1]} height={200} ariaLabel="Latency vs error rate" />` |
+| Hand-rolled side panel (`fixed right-0 top-0 h-full w-80 translate-x-0 …`)                                                          | `<Drawer open title onClose>…</Drawer>` (`role="dialog"` + focus trap + slide-in)                                                                                                        |
+| `<img class="w-8 h-8 rounded-full">` + fallback `<div>` initials + bespoke ring                                                     | `<Avatar src={…} initials="WN" size="sm\|md\|lg" status="online\|busy\|offline" />`                                                                                                      |
+| Hand-rolled stack of overlapping `<img>` thumbs + `+N` chip                                                                         | `<AvatarGroup avatars={[…]} max={5} size="md" ariaLabel="Members" />`                                                                                                                    |
+| `<span class="relative">…<span class="absolute -top-1 -right-1 …">3</span></span>`                                                  | `<Badge count={3} max={99} color="danger\|brand\|neutral">…</Badge>` (auto `99+`)                                                                                                        |
+| `<span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-status-danger rounded-full" />` notification dot                              | `<Badge dot color="danger">…</Badge>` (or `<NotifDot>` on a `<TopbarActions>` bell)                                                                                                      |
+| `title="…"` attribute (no styling, no a11y wiring) or hand-rolled `position:absolute` bubble                                        | `<Tooltip label="…" placement="top\|bottom\|left\|right">{trigger}</Tooltip>` (`aria-describedby` + `role="tooltip"`)                                                                    |
+| Hand-rolled hover-triggered preview card (`onMouseEnter` + bespoke `absolute` panel)                                                | `<HoverCard content={…} placement="top" delay={200}>{trigger}</HoverCard>` (hover/focus + delay)                                                                                         |
+| `<button>` + bespoke `position:absolute` panel + click-outside listener for a menu                                                  | `<Popover label="Filters" title="…" placement="bottom">…</Popover>` (focus trap + ESC + outside-click)                                                                                   |
+| Kebab `<IconButton>` (`⋯`) + hand-rolled `position:absolute` menu + manual roving-tabindex + danger-item red text                   | `<ActionMenu items={[{ id, label, danger?, disabled? }]} onAction={(id) => …} label="Row actions" />` (canonical kebab menu + arrow-key roving + ESC)                                    |
+| `onContextMenu` handler + bespoke `position:fixed` panel at `{x, y}` + manual viewport-edge clamp + separator `<div>`s              | `<ContextMenu open x={x} y={y} items={[…, { separator: true }, …]} onClose={…} onAction={(id) => …} />` (right-click menu + edge clamp + ESC)                                            |
+| `Cmd+K` listener + bespoke `<Modal>` with `<input>` + manual fuzzy-search + grouped result list + shortcut chips                    | `<CommandPalette open onClose={…} items={[{ id, label, group?, icon?, shortcut? }]} onSelect={(id) => …} placeholder="Search…" />` (Cmd+K palette + grouped filter + `<Kbd>` chips)      |
+| `<div class="animate-pulse bg-bg-2 h-4 w-32 rounded">` placeholder block                                                            | `<Skeleton variant="text\|rect\|circle" width={…} height={…} ariaLabel="Loading" />`                                                                                                     |
+| Hand-rolled coloured dot + label (`<span class="w-2 h-2 rounded-full bg-status-ok" /> Online`)                                      | `<StatusIndicator color="var(--color-status-ok)" text="Online" />` (or `<StatusRing status="ok">` for site-health rings)                                                                 |
+| `<input type="date">` with Tailwind chrome + bespoke calendar popover                                                               | `<DatePicker value={…} onChange={…} placeholder="…" />` (Date object in/out + WAI-ARIA dialog)                                                                                           |
+| Two `<input type="date">`s + manual "from / to" validation + popover plumbing                                                       | `<DateRangePicker value={{ from, to }} onChange={…} />` (single popover, range constraint)                                                                                               |
+| `<input type="time">` styled with Tailwind + hand-rolled hour/minute steppers                                                       | `<TimePicker value="HH:MM" onChange={…} label="…" />` (24h normalised string)                                                                                                            |
+| `<input type="file" hidden>` + bespoke drag-and-drop zone (`onDragOver` / Tailwind ring)                                            | `<FileUpload accept="…" multiple onFiles={(files) => …} label="…" hint="…" />` (drop + click + state)                                                                                    |
+| Native `<select>` with hand-typed search input filtering the option list                                                            | `<Combobox options={…} value={…} onChange={…} placeholder="Search…" />` (WAI-ARIA combobox + filter)                                                                                     |
+| Multiple `<input type="checkbox">`s in a popover with manual chip-readout                                                           | `<MultiSelect options={…} value={[…]} onChange={…} placeholder="Select…" />` (checkable listbox + chip summary)                                                                          |
+| Hand-rolled colour swatch grid + `<input type="color">` fallback + hex text input                                                   | `<ColorPicker value="#…" onChange={…} swatches={…} label="…" />` (swatch grid + hex sync)                                                                                                |
+| `<input>` + array-state-on-Enter + bespoke tag chip rendering + backspace-to-remove                                                 | `<TagInput value={[…]} onChange={…} placeholder="Type and press Enter…" />` (chips + keyboard rm)                                                                                        |
+| `<input type="password">` + hand-rolled show/hide eye `<IconButton>` toggling `type`                                                | `<PasswordInput value={…} onChange={…} autocomplete="current-password" label="…" />` (toggle + a11y label)                                                                               |
+| Six `<input maxlength=1>` boxes + manual focus-advance + paste-split-across-inputs                                                  | `<OTPInput length={6} value={…} onChange={…} label="One-time code" />` (auto-advance + paste handling)                                                                                   |
+| Hand-rolled radio-as-pill group (`<button class="px-3 py-1 …">A</button>` + active state)                                           | `<SegmentedControl label="…" options={…} value={…} onChange={…} />` (radio semantics + arrow keys)                                                                                       |
+| Multiple `<Toggle>`s in a `<div class="flex gap-1">` for a multi-select toolbar                                                     | `<ToggleGroup options={…} value={[…]} onChange={…} ariaLabel="…" size="sm\|md" />` (multi-pressed + group a11y)                                                                          |
+| Click-to-edit `<span>` swapping to `<input>` on focus with manual confirm/cancel logic                                              | `<InlineEdit value={…} onConfirm={…} label="…" placeholder="…" />` (Enter/Esc + focus return)                                                                                            |
+| `<Button>` + adjacent caret `<IconButton>` + bespoke menu popover for secondary actions                                             | `<SplitButton label="Save" items={[{ id, label }]} onPrimaryClick={…} onAction={…} />` (primary + menu)                                                                                  |
+| `<IconButton>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" tooltip                                                 | `<CopyButton text={value} label="Copy" />` (clipboard + transient confirm + a11y live)                                                                                                   |
+| Hand-rolled "no results" panel (`<div class="text-center py-10 text-text-3">…</div>`)                                               | `<EmptyState title="…" description="…" action={…} />` (canonical zero-state rhythm)                                                                                                      |
+| Hand-rolled wizard progress bar (`<ol class="flex gap-2">` + active/complete CSS state)                                             | `<Stepper steps={[{ label }]} active={n} />` (`aria-current="step"` + complete/upcoming state)                                                                                           |
+| Four `<input maxlength=3>` octet boxes + manual `.` separator + 0-255 clamp logic                                                   | `<IPInput label="…" value="10.0.0.1" onChange={(s) => …} />` (WAI-ARIA spinbutton per octet)                                                                                             |
+| Six `<input maxlength=2>` hex boxes + manual `:` separator + `[0-9a-f]` mask                                                        | `<MACInput label="…" value="aa:bb:cc:dd:ee:ff" onChange={(s) => …} />` (WAI-ARIA spinbutton per octet)                                                                                   |
+| `<input>` + bespoke regex for `0.0.0.0/24` + manual prefix-length clamp (0-32)                                                      | `<CIDRInput label="…" value="192.168.1.0/24" onChange={(s) => …} />` (octets + prefix in one row)                                                                                        |
+| Three `<input type=number>` for HH/MM/SS + bespoke `:` separator + step plumbing                                                    | `<DurationInput label="…" value="01:30:00" onChange={(s) => …} />` (WAI-ARIA spinbutton + clamp)                                                                                         |
+| `<div class="flex"><span class="bg-bg-2 px-2 …">https://</span><input class="flex-1 …">…<span>…</span></div>`                       | `<InputGroup prefix="https://" suffix=".com"><input … /></InputGroup>` (flush addon + focus ring)                                                                                        |
+| Hand-rolled `<dl>` or two-column `<table>` for device drawer key/value rows                                                         | `<KVTable rows={[{ key, value }, …]} caption="…" />` (semantic `<th scope="row">` + zebra rhythm)                                                                                        |
+| `<pre class="bg-bg-2 rounded p-3 text-12 font-mono overflow-auto">…</pre>` + manual copy button                                     | `<CodeBlock code={src} language="ts" label="Example" />` (`role="region"` + integrated `<CopyButton>`)                                                                                   |
+| `import { LineChart } from 'recharts'` (or hand-rolled `<svg>` with `<polyline>` + manual scale)                                    | `<LineChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (zero-dep typed SVG)                                                                           |
+| `<svg>` with `<path d="M…L…">` filled gradient hand-rolled per series                                                               | `<AreaChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (token-aligned gradients)                                                                      |
+| Hand-rolled `<svg>` with one `<rect>` per bar + manual min/max scale                                                                | `<BarChart series={[{ label, color, values }]} labels={…} height={160} ariaLabel="…" />` (typed series + token colours)                                                                  |
+| Stacked `<rect>`s in raw `<svg>` with manual cumulative-sum offsets per series                                                      | `<StackedBarChart series={[{ label, color, values }]} labels={…} normalized={false} height={160} ariaLabel="…" />` (cumulative stack + optional 100% normalise)                          |
+| Inline `<svg width=120 height=24>` with hand-tweaked bars for a KPI trend chip                                                      | `<Sparkline bars={24} active seed={42} ariaLabel="Trend, last 24h" />` (no data wiring needed for KPI chips)                                                                             |
+| Hand-rolled `<svg>` with two arcs + manual `pathLength` / `stroke-dasharray` for a donut KPI                                        | `<Donut size={160} segments={[{ label, value, color }]} centerValue={pct} centerLabel="Healthy" ariaLabel="Health breakdown" />`                                                         |
+| Half-arc `<svg>` with manual angle math + hand-positioned value label for a gauge meter                                             | `<Gauge value={0.62} label="CPU" color="var(--color-brand)" size={120} ariaLabel="CPU usage 62%" />`                                                                                     |
+| `<table>` of `<td style={{ background: hsl(…) }}>` cells + manual colour-ramp interpolation                                         | `<HeatMap data={number[][]} colors={['#0a0e14', 'var(--color-brand)']} xLabels={…} height={200} cellGap={2} ariaLabel="Activity by hour × day" />`                                       |
+| Hand-rolled `<svg>` with one `<circle>` per point + manual `xRange` / `yRange` projection                                           | `<ScatterPlot points={[{ x, y, color, r }]} xRange={[0, 100]} yRange={[0, 1]} height={200} ariaLabel="Latency vs error rate" />`                                                         |
 
 > Chart drift in particular: every chart primitive ships as zero-dependency typed SVG that already
-> matches the Dashboard chart rhythm (gridlines, padding, gradient stops, motif colours). Pulling
-> in `recharts` / `chart.js` / `d3` re-derives the same picture with a 60 KB+ runtime, a different
-> tooltip chrome, and a colour palette that drifts from `--color-brand` / `--color-status-*`. If
-> the typed primitive truly can't express the chart, surface it as a design fork first — don't
-> silently widen the dependency footprint.
+> matches the Dashboard chart rhythm (gridlines, padding, gradient stops, motif colours). Pulling in
+> `recharts` / `chart.js` / `d3` re-derives the same picture with a 60 KB+ runtime, a different
+> tooltip chrome, and a colour palette that drifts from `--color-brand` / `--color-status-*`. If the
+> typed primitive truly can't express the chart, surface it as a design fork first — don't silently
+> widen the dependency footprint.
 
-The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard
-reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
-preference) for free. Tailwind utilities remain the right tool for one-off layout glue
-(`flex`, `gap-3`, `min-w-0`, `overflow-hidden`) — just don't re-derive typography or the
-canonical chrome with them.
+The pattern: the typed primitive renders the **exact same DOM + class** that the Dashboard reference
+uses, so userland tracks every future tweak (token shift, contrast bump, motion preference) for
+free. Tailwind utilities remain the right tool for one-off layout glue (`flex`, `gap-3`, `min-w-0`,
+`overflow-hidden`) — just don't re-derive typography or the canonical chrome with them.
 
 ## Lookup table — symptom → page
 
 Agents debugging a drift should jump straight to the matching Foundations page rather than
 re-deriving the contract:
 
-| If userland looks…                                          | Read first                          |
-| ----------------------------------------------------------- | ----------------------------------- |
-| Fresh app, nothing styled yet                               | **Foundations / Setup**             |
-| Spacing off, gaps too large                                 | **Foundations / Spacing**           |
-| Page chrome / sidebar / header off                          | **Foundations / Page layout**       |
-| Topbar slots / sidebar items / `<PageHeader>` actions drift | **Foundations / Navigation**        |
-| Want a whole page template, not primitives                  | **Foundations / Recipes**           |
-| Want primitive-first userland shell at a glance             | **Foundations / Overview**          |
-| Colour tokens picked wrong (`text-1` vs `text-2`, bg ladder)| **Foundations / Colours**           |
-| Colours wash out / motif flashes                            | **Foundations / Motifs**            |
-| Three primaries fighting / wrong `Button` variant / `IconButton` missing `aria-label` | **Foundations / Actions**           |
-| Modal / Drawer / Popover / ConfirmDialog drift              | **Foundations / Overlays**          |
-| Cards have wrong `<h3>` rhythm or `<CardTitle>`/`<CardMore>` missing | **Foundations / Cards**             |
-| KPI / stats / KVTable / list hierarchy drifts               | **Foundations / Data display**      |
-| Status text inconsistent                                    | **Foundations / Status & feedback** |
-| Form rhythm drifts                                          | **Foundations / Forms**             |
-| Charts clipped behind bottom panel                          | **Foundations / Charts**            |
-| Table headers misalign / no sort indicator                  | **Foundations / Tables**            |
-| Type scale drifts (free-typed `text-12`/`text-13` instead of typed primitives) | **Foundations / Type**              |
-| Icons look chunky / two icon styles on the page             | **Foundations / Icons**             |
-| Svelte userland: snippet-prop, `$bindable` activeApp, `class` directive drift | **Foundations / Overview** (Svelte storybook) |
-| Web Components userland: `uni-*` empty boxes, `[object Object]` props, `uni-app-layout` slot, `tokens.css` without `dashboard.css` | **Foundations / Overview** (WC storybook) |
-| Tailwind v4 user — utilities work but resets vanish         | **Foundations / Setup §7**          |
-| Symptom doesn't match anything obvious                      | **Foundations / Troubleshooting**   |
+| If userland looks…                                                                                                                 | Read first                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Fresh app, nothing styled yet                                                                                                      | **Foundations / Setup**                       |
+| Spacing off, gaps too large                                                                                                        | **Foundations / Spacing**                     |
+| Page chrome / sidebar / header off                                                                                                 | **Foundations / Page layout**                 |
+| Topbar slots / sidebar items / `<PageHeader>` actions drift                                                                        | **Foundations / Navigation**                  |
+| Want a whole page template, not primitives                                                                                         | **Foundations / Recipes**                     |
+| Want primitive-first userland shell at a glance                                                                                    | **Foundations / Overview**                    |
+| Colour tokens picked wrong (`text-1` vs `text-2`, bg ladder)                                                                       | **Foundations / Colours**                     |
+| Colours wash out / motif flashes                                                                                                   | **Foundations / Motifs**                      |
+| Three primaries fighting / wrong `Button` variant / `IconButton` missing `aria-label`                                              | **Foundations / Actions**                     |
+| Modal / Drawer / Popover / ConfirmDialog drift                                                                                     | **Foundations / Overlays**                    |
+| Cards have wrong `<h3>` rhythm or `<CardTitle>`/`<CardMore>` missing                                                               | **Foundations / Cards**                       |
+| KPI / stats / KVTable / list hierarchy drifts                                                                                      | **Foundations / Data display**                |
+| Status text inconsistent                                                                                                           | **Foundations / Status & feedback**           |
+| Form rhythm drifts                                                                                                                 | **Foundations / Forms**                       |
+| Charts clipped behind bottom panel                                                                                                 | **Foundations / Charts**                      |
+| Table headers misalign / no sort indicator                                                                                         | **Foundations / Tables**                      |
+| Type scale drifts (free-typed `text-12`/`text-13` instead of typed primitives)                                                     | **Foundations / Type**                        |
+| Icons look chunky / two icon styles on the page                                                                                    | **Foundations / Icons**                       |
+| Svelte userland: snippet-prop, `$bindable` activeApp, `class` directive drift                                                      | **Foundations / Overview** (Svelte storybook) |
+| Web Components userland: `uni-*` empty boxes, `[object Object]` props, `uni-app-layout` slot, `tokens.css` without `dashboard.css` | **Foundations / Overview** (WC storybook)     |
+| Tailwind v4 user — utilities work but resets vanish                                                                                | **Foundations / Setup §7**                    |
+| Symptom doesn't match anything obvious                                                                                             | **Foundations / Troubleshooting**             |
 
 ## Why an agent brief at all?
 
 Documentation that works for humans assumes the reader can navigate sixteen MDX pages, follow
-cross-references, and skim for the relevant section. An agent's prompt budget rewards the
-opposite: **one** flat directive list, no chrome, every rule actionable from its own line. The
-brief above is sized to fit comfortably inside a project-level `AGENTS.md` alongside whatever
-else the project needs. The Foundations pages remain the long-form source of truth — this page
-is just the executive summary an agent can keep in working memory.
+cross-references, and skim for the relevant section. An agent's prompt budget rewards the opposite:
+**one** flat directive list, no chrome, every rule actionable from its own line. The brief above is
+sized to fit comfortably inside a project-level `AGENTS.md` alongside whatever else the project
+needs. The Foundations pages remain the long-form source of truth — this page is just the executive
+summary an agent can keep in working memory.

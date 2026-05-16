@@ -4,10 +4,10 @@ import { Meta } from '@storybook/blocks'
 
 # Setup
 
-This page is the **end-to-end recipe** for getting a fresh userland app to render like the
-Dashboard story. Follow it top-to-bottom once. Skip ahead and a single missing line (the styles
-import, the `data-motif` attribute, an opinionated body reset) silently re-introduces all of the
-spacing and contrast drift the design system was meant to eliminate.
+This page is the **end-to-end recipe** for getting a fresh userland app to render like the Dashboard
+story. Follow it top-to-bottom once. Skip ahead and a single missing line (the styles import, the
+`data-motif` attribute, an opinionated body reset) silently re-introduces all of the spacing and
+contrast drift the design system was meant to eliminate.
 
 > If your userland looks "almost right but the gaps are off and the colours are washed out", you
 > almost certainly missed exactly one step below. Re-read in order, don't cherry-pick.
@@ -21,11 +21,11 @@ yarn add @w5-ui/react @w5-ui/tokens @w5-ui/assets
 `@w5-ui/react` already depends on `@w5-ui/tokens` and `@w5-ui/assets` transitively — listing them
 explicitly is optional, but it makes deduping in monorepos predictable.
 
-| Package         | What it ships                                                       |
-| --------------- | ------------------------------------------------------------------- |
-| `@w5-ui/react`  | Components, `styles.css` (re-exports tokens + dashboard CSS)        |
-| `@w5-ui/tokens` | `tokens.css` (motif tokens), `dashboard.css` (`.app`/`.grid`/`.card`)|
-| `@w5-ui/assets` | Brand SVGs (logo, product marks) consumed by `Topbar`               |
+| Package         | What it ships                                                         |
+| --------------- | --------------------------------------------------------------------- |
+| `@w5-ui/react`  | Components, `styles.css` (re-exports tokens + dashboard CSS)          |
+| `@w5-ui/tokens` | `tokens.css` (motif tokens), `dashboard.css` (`.app`/`.grid`/`.card`) |
+| `@w5-ui/assets` | Brand SVGs (logo, product marks) consumed by `Topbar`                 |
 
 Svelte users swap the first row for `@w5-ui/svelte`. The remaining two packages are framework-
 agnostic — never install them per-app twice.
@@ -140,9 +140,9 @@ that sets `data-motif` before the React bundle loads.
 </script>
 ```
 
-Then expose a `useMotif()` hook (or Svelte action) that mirrors writes back to
-`localStorage`. The pattern lives in **Foundations / Motifs**. Doing this inside a `useEffect`
-instead of an inline script causes a one-frame flash of the wrong motif on every refresh.
+Then expose a `useMotif()` hook (or Svelte action) that mirrors writes back to `localStorage`. The
+pattern lives in **Foundations / Motifs**. Doing this inside a `useEffect` instead of an inline
+script causes a one-frame flash of the wrong motif on every refresh.
 
 ## 6. Fonts
 
@@ -162,9 +162,9 @@ If a custom system font is preferred, override `--dash-ui-font-sans` / `--dash-u
 
 ## 7. Tailwind (optional)
 
-Userland that already uses Tailwind v4 can pull in the token utilities and the motif-aware
-`dark:` variant alongside the chrome classes. Reach for the **one-stop** entry — single import,
-no ordering footguns:
+Userland that already uses Tailwind v4 can pull in the token utilities and the motif-aware `dark:`
+variant alongside the chrome classes. Reach for the **one-stop** entry — single import, no ordering
+footguns:
 
 ```css
 /* src/app.css */
@@ -183,11 +183,11 @@ available separately, in this exact order:
 ```
 
 `tailwind.css` ships only the token vars and the `@theme inline { ... }` bridge — it deliberately
-does **not** include `dashboard.css`. If you stop after one import, every Tailwind utility works
-but the canonical chrome classes are missing, and `AppLayout` / `<div className="grid">` /
-`<Card>` fall back to unstyled `<div>`s. That's the single biggest cause of "spacing looks off"
-when a Tailwind userland mounts a w5-ui app — the components render, but the 12-column grid,
-16/24 px page padding, 12 px gap, and card shell are gone.
+does **not** include `dashboard.css`. If you stop after one import, every Tailwind utility works but
+the canonical chrome classes are missing, and `AppLayout` / `<div className="grid">` / `<Card>` fall
+back to unstyled `<div>`s. That's the single biggest cause of "spacing looks off" when a Tailwind
+userland mounts a w5-ui app — the components render, but the 12-column grid, 16/24 px page padding,
+12 px gap, and card shell are gone.
 
 If you'd rather one-stop the import, use the framework bundle instead — it ships both layers:
 
@@ -198,9 +198,9 @@ import '@w5-ui/react/styles.css'
 import '@w5-ui/svelte/styles.css'
 ```
 
-`tailwind.css` declares
-`@custom-variant dark (&[data-motif='dark'], [data-motif='dark'] &)`, so `dark:bg-bg-1` already
-tracks the motif attribute — no `darkMode: 'class'` / `'media'` override needed.
+`tailwind.css` declares `@custom-variant dark (&[data-motif='dark'], [data-motif='dark'] &)`, so
+`dark:bg-bg-1` already tracks the motif attribute — no `darkMode: 'class'` / `'media'` override
+needed.
 
 ```tsx
 <div className="bg-bg-1 dark:bg-bg-2">{/* … */}</div>
@@ -211,39 +211,39 @@ class names (`bg-bg-*`, `text-text-*`, `border-border-*`, `bg-status-*-bg`, …)
 
 ## 8. Sanity checklist
 
-Open the running app next to the **Dashboard** story in Storybook. Each row below should match.
-If one doesn't, the fix is in the named foundations page — don't tweak in userland.
+Open the running app next to the **Dashboard** story in Storybook. Each row below should match. If
+one doesn't, the fix is in the named foundations page — don't tweak in userland.
 
-| Check                                                              | If it fails, read…                |
-| ------------------------------------------------------------------ | --------------------------------- |
-| Page background is the deep dark surface, not pure black or white  | Foundations / Motifs              |
-| `<main>` has 16 px top / 24 px side padding around the grid        | Foundations / Page layout         |
-| Cards have 6 px radius, 16 px padding, 12 px gap between them      | Foundations / Cards               |
-| `Stat span={4}` cards line up 3-across, 8 + 4 lines up 2-across    | Foundations / Page layout (grid)  |
-| `<CardTitle>` inside a `<Card>` renders 14 px / weight 500 / `text-1` (raw `<h3>` still works via the `.card h3` CSS rule) | Foundations / Cards               |
-| Pills render rounded full, status-tinted, never bare hex colours   | Foundations / Status & feedback   |
-| Sidebar links highlight on hover with `--row-hover`, not a custom  | Foundations / Navigation          |
-| `body`, `#root`, and the page wrapper have **no** margin or padding| This page (step 2)                |
+| Check                                                                                                                      | If it fails, read…               |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Page background is the deep dark surface, not pure black or white                                                          | Foundations / Motifs             |
+| `<main>` has 16 px top / 24 px side padding around the grid                                                                | Foundations / Page layout        |
+| Cards have 6 px radius, 16 px padding, 12 px gap between them                                                              | Foundations / Cards              |
+| `Stat span={4}` cards line up 3-across, 8 + 4 lines up 2-across                                                            | Foundations / Page layout (grid) |
+| `<CardTitle>` inside a `<Card>` renders 14 px / weight 500 / `text-1` (raw `<h3>` still works via the `.card h3` CSS rule) | Foundations / Cards              |
+| Pills render rounded full, status-tinted, never bare hex colours                                                           | Foundations / Status & feedback  |
+| Sidebar links highlight on hover with `--row-hover`, not a custom                                                          | Foundations / Navigation         |
+| `body`, `#root`, and the page wrapper have **no** margin or padding                                                        | This page (step 2)               |
 
-If three or more rows fail at once, suspect the styles import (step 3) or the motif attribute
-(step 2). Both fix the symptoms in bulk.
+If three or more rows fail at once, suspect the styles import (step 3) or the motif attribute (step
+2). Both fix the symptoms in bulk.
 
 ## Common mistakes (and the fix)
 
-| Symptom                                                                 | Likely cause                                                                | Fix                                                                                       |
-| ----------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Bundle loads, screen is blank white, no errors                          | `@w5-ui/react/styles.css` not imported in the entry                         | Add it as the **first** import in `main.tsx`                                              |
-| Components render but colours look raw — neutral greys, blue link blue  | `data-motif` missing from `<html>`, tokens fall through to default `:root`  | Add `data-motif="dark"` to `<html>` (step 2). See **Foundations / Motifs**                |
-| Card padding looks fine but the page edges feel too tight / too wide    | A custom `<div style={{ padding: ... }}>` wraps the page below `<main>`     | Render `Banner` / `PageHeader` / `.grid` as siblings of `<main>` — see Page layout        |
-| Gaps between cards look wrong (8 px or 16 px instead of 12 px)          | Re-implementing `.grid` with `display: flex; gap: 1rem`                     | Use the typed `<Grid>` primitive (or raw `<div className="grid">` as escape hatch) — `repeat(12, 1fr)` + 12 px gap |
-| Cards render but no shadow / depth                                      | Imported only `tokens.css`, not `dashboard.css`                             | Use `@w5-ui/react/styles.css` (step 3) — it bundles both                                  |
-| Tailwind app: spacing wrong, `.grid` and `.card` un-styled              | Imported `@w5-ui/tokens/tailwind.css` but skipped `@w5-ui/tokens/dashboard.css` | Switch to `@w5-ui/tokens/tailwind-full.css` (one import, ships both), or add the `dashboard.css` import right after `tailwind.css` (step 7) |
-| Two scrollbars, page won't scroll the content area                      | `html, body { height: 100% }` plus `#root { display: flex }`                | Delete those resets. `AppLayout` already sets up the viewport grid                        |
-| Topbar / Sidebar render twice when navigating                           | `AppLayout` rendered inside a page component instead of once at App root    | Move `AppLayout` to `App.tsx`; pages render as `children`                                 |
-| Tailwind `dark:` classes never trigger                                  | Tailwind config sets `darkMode: 'media'` / `'class'` and beats the variant  | Remove the override; `@w5-ui/tokens/tailwind.css` already binds `dark:` to `data-motif`   |
-| First paint flashes the wrong motif on refresh                          | Motif read happens in a `useEffect` after the bundle parses                 | Move it to an inline `<script>` in `index.html` (step 5)                                  |
-| Fonts look like the system default, not Inter                           | Font link tag missing or `font-family` overridden somewhere in userland CSS | Add the `<link>` (step 6); don't set `body { font-family: ... }`                          |
-| Status pills are the right colour in dark but garish in light           | Hardcoded `bg-red-500/10` reproduces the tint manually                      | Use `bg-status-danger-bg` / `text-status-danger` — both flip per motif                    |
+| Symptom                                                                | Likely cause                                                                    | Fix                                                                                                                                         |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Bundle loads, screen is blank white, no errors                         | `@w5-ui/react/styles.css` not imported in the entry                             | Add it as the **first** import in `main.tsx`                                                                                                |
+| Components render but colours look raw — neutral greys, blue link blue | `data-motif` missing from `<html>`, tokens fall through to default `:root`      | Add `data-motif="dark"` to `<html>` (step 2). See **Foundations / Motifs**                                                                  |
+| Card padding looks fine but the page edges feel too tight / too wide   | A custom `<div style={{ padding: ... }}>` wraps the page below `<main>`         | Render `Banner` / `PageHeader` / `.grid` as siblings of `<main>` — see Page layout                                                          |
+| Gaps between cards look wrong (8 px or 16 px instead of 12 px)         | Re-implementing `.grid` with `display: flex; gap: 1rem`                         | Use the typed `<Grid>` primitive (or raw `<div className="grid">` as escape hatch) — `repeat(12, 1fr)` + 12 px gap                          |
+| Cards render but no shadow / depth                                     | Imported only `tokens.css`, not `dashboard.css`                                 | Use `@w5-ui/react/styles.css` (step 3) — it bundles both                                                                                    |
+| Tailwind app: spacing wrong, `.grid` and `.card` un-styled             | Imported `@w5-ui/tokens/tailwind.css` but skipped `@w5-ui/tokens/dashboard.css` | Switch to `@w5-ui/tokens/tailwind-full.css` (one import, ships both), or add the `dashboard.css` import right after `tailwind.css` (step 7) |
+| Two scrollbars, page won't scroll the content area                     | `html, body { height: 100% }` plus `#root { display: flex }`                    | Delete those resets. `AppLayout` already sets up the viewport grid                                                                          |
+| Topbar / Sidebar render twice when navigating                          | `AppLayout` rendered inside a page component instead of once at App root        | Move `AppLayout` to `App.tsx`; pages render as `children`                                                                                   |
+| Tailwind `dark:` classes never trigger                                 | Tailwind config sets `darkMode: 'media'` / `'class'` and beats the variant      | Remove the override; `@w5-ui/tokens/tailwind.css` already binds `dark:` to `data-motif`                                                     |
+| First paint flashes the wrong motif on refresh                         | Motif read happens in a `useEffect` after the bundle parses                     | Move it to an inline `<script>` in `index.html` (step 5)                                                                                    |
+| Fonts look like the system default, not Inter                          | Font link tag missing or `font-family` overridden somewhere in userland CSS     | Add the `<link>` (step 6); don't set `body { font-family: ... }`                                                                            |
+| Status pills are the right colour in dark but garish in light          | Hardcoded `bg-red-500/10` reproduces the tint manually                          | Use `bg-status-danger-bg` / `text-status-danger` — both flip per motif                                                                      |
 
 ## See also
 

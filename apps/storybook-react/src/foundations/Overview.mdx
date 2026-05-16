@@ -46,17 +46,17 @@ new userland app looks "almost right but the spacing is off", one of those three
 
 Pick the entry point that matches your situation:
 
-| Situation                                                       | Read first                  |
-| --------------------------------------------------------------- | --------------------------- |
-| Wiring a fresh React or Svelte app                              | **Foundations / Setup**     |
-| Already importing `styles.css`, page chrome still looks off     | **Foundations / Page layout** |
-| Userland already uses Tailwind v4                               | **Foundations / Setup §7** + **Motifs** |
-| Light/dark toggle flashes the wrong motif on refresh            | **Foundations / Motifs**    |
-| Spacing between cards / sections looks wrong                    | **Foundations / Spacing** + **Page layout** |
-| Hand-rolling a status colour or hex                             | **Foundations / Colours**   |
-| Want a complete copy-paste page template to start from          | **Foundations / Recipes**   |
-| Userland looks "almost right" — fast symptom-to-fix index       | **Foundations / Troubleshooting** |
-| Briefing an LLM / coding agent on the contract                  | **Foundations / For agents** |
+| Situation                                                   | Read first                                  |
+| ----------------------------------------------------------- | ------------------------------------------- |
+| Wiring a fresh React or Svelte app                          | **Foundations / Setup**                     |
+| Already importing `styles.css`, page chrome still looks off | **Foundations / Page layout**               |
+| Userland already uses Tailwind v4                           | **Foundations / Setup §7** + **Motifs**     |
+| Light/dark toggle flashes the wrong motif on refresh        | **Foundations / Motifs**                    |
+| Spacing between cards / sections looks wrong                | **Foundations / Spacing** + **Page layout** |
+| Hand-rolling a status colour or hex                         | **Foundations / Colours**                   |
+| Want a complete copy-paste page template to start from      | **Foundations / Recipes**                   |
+| Userland looks "almost right" — fast symptom-to-fix index   | **Foundations / Troubleshooting**           |
+| Briefing an LLM / coding agent on the contract              | **Foundations / For agents**                |
 
 Reproduce the recipe in **Setup** and the skeleton in **Page layout** verbatim — spacing, rhythm,
 and contrast then match the Dashboard story without hand-tuning.
@@ -66,28 +66,28 @@ and contrast then match the Dashboard story without hand-tuning.
 Each page is a self-contained picker: when to reach for which primitive, the canonical recipe, and
 the pitfalls that drag a userland app away from the reference look.
 
-| Page                            | What it covers                                                              |
-| ------------------------------- | --------------------------------------------------------------------------- |
-| **Setup**                       | End-to-end install, entry file, motif attribute, fonts, Tailwind, checklist |
-| **Page layout**                 | `AppLayout` shell + `Banner` → `PageHeader` → `.grid` → `Card` skeleton     |
-| **Recipes**                     | Complete copy-paste page templates: dashboard / list+table / settings form  |
-| **Motifs**                      | `data-motif`, runtime toggle, Tailwind `dark:` variant, anti-FOUC           |
-| **Colours**                     | Surface / text / border / status tokens + Tailwind class names              |
-| **Type**                        | 13-size scale, 5 weights, `.dash-ui-*` semantic classes, Inter + Mono       |
-| **Spacing**                     | 12-token spacing scale and the canonical page rhythm                        |
-| **Icons**                       | 23-icon set, sizing, colour, accessibility defaults                         |
-| **Actions**                     | Button / IconButton / SplitButton / ActionMenu / Toggle / Segmented         |
-| **Navigation**                  | Topbar / Sidebar / Tabs / Menubar / Breadcrumb / Stepper                    |
-| **Overlays**                    | Modal / Drawer / Popover / ConfirmDialog / CommandPalette                   |
-| **Forms**                       | Field / Input / Select / Checkbox / Toggle / `.field-stack` rhythm          |
-| **Tables**                      | Table primitives, header rows, `.mac` / `.name-cell` helpers                |
-| **Cards**                       | `Card` and `Stat` contract: `span`, title rhythm, when to compose           |
-| **Status & feedback**           | Pill / Badge / Banner / Callout / Alert / Toast / Skeleton                  |
-| **Data display**                | KVTable / RankedList / Timeline / ActivityFeed / LogViewer / JsonViewer     |
-| **Charts**                      | Chart families, sizing, the bottom-panel clearance token                    |
-| **Chart gallery**               | One tile per chart, grouped by category — visual picker for the ~80 shapes  |
-| **Troubleshooting**             | Symptom → fix index for the most common userland drift cases                |
-| **For agents**                  | Paste-into-userland AGENTS.md brief + 10-point self-check for LLM coders    |
+| Page                  | What it covers                                                              |
+| --------------------- | --------------------------------------------------------------------------- |
+| **Setup**             | End-to-end install, entry file, motif attribute, fonts, Tailwind, checklist |
+| **Page layout**       | `AppLayout` shell + `Banner` → `PageHeader` → `.grid` → `Card` skeleton     |
+| **Recipes**           | Complete copy-paste page templates: dashboard / list+table / settings form  |
+| **Motifs**            | `data-motif`, runtime toggle, Tailwind `dark:` variant, anti-FOUC           |
+| **Colours**           | Surface / text / border / status tokens + Tailwind class names              |
+| **Type**              | 13-size scale, 5 weights, `.dash-ui-*` semantic classes, Inter + Mono       |
+| **Spacing**           | 12-token spacing scale and the canonical page rhythm                        |
+| **Icons**             | 23-icon set, sizing, colour, accessibility defaults                         |
+| **Actions**           | Button / IconButton / SplitButton / ActionMenu / Toggle / Segmented         |
+| **Navigation**        | Topbar / Sidebar / Tabs / Menubar / Breadcrumb / Stepper                    |
+| **Overlays**          | Modal / Drawer / Popover / ConfirmDialog / CommandPalette                   |
+| **Forms**             | Field / Input / Select / Checkbox / Toggle / `.field-stack` rhythm          |
+| **Tables**            | Table primitives, header rows, `.mac` / `.name-cell` helpers                |
+| **Cards**             | `Card` and `Stat` contract: `span`, title rhythm, when to compose           |
+| **Status & feedback** | Pill / Badge / Banner / Callout / Alert / Toast / Skeleton                  |
+| **Data display**      | KVTable / RankedList / Timeline / ActivityFeed / LogViewer / JsonViewer     |
+| **Charts**            | Chart families, sizing, the bottom-panel clearance token                    |
+| **Chart gallery**     | One tile per chart, grouped by category — visual picker for the ~80 shapes  |
+| **Troubleshooting**   | Symptom → fix index for the most common userland drift cases                |
+| **For agents**        | Paste-into-userland AGENTS.md brief + 10-point self-check for LLM coders    |
 
 ## Userland recipe in one screen
 
@@ -105,9 +105,9 @@ import { AppLayout, Topbar, Sidebar, PageHeader, Grid, Card, Stat } from '@w5-ui
 </AppLayout>
 ```
 
-`<Grid>` renders the canonical `<div className="grid">` (12-column, 12 px gap, 16 × 24 px padding)
-— prefer the typed primitive so userland tracks every future tweak without copy-paste. The raw
-class hook stays interchangeable for hand-rolled markup.
+`<Grid>` renders the canonical `<div className="grid">` (12-column, 12 px gap, 16 × 24 px padding) —
+prefer the typed primitive so userland tracks every future tweak without copy-paste. The raw class
+hook stays interchangeable for hand-rolled markup.
 
 Add `data-motif="dark"` to `<html>` and that single snippet is the whole contract. Anything else
 (custom paddings, ad-hoc wrappers, raw hex colours) is what drags userland away from the reference.

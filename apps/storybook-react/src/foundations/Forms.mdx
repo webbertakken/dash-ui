@@ -16,13 +16,10 @@ gap. Drop a control inside as the child — `Field` will not double-render the `
 
 ```tsx
 import { Field, FieldStack, FormRow, FormActions, Input, Combobox, NumberInput } from '@w5-ui/react'
-
 ;<Field label="Site name" defaultValue="Edge Gateway" />
-
 ;<Field label="Country" hint="ISO 3166 alpha-2">
   <Combobox options={COUNTRIES} value={country} onChange={setCountry} />
 </Field>
-
 ;<Field label="MTU" error={mtu < 576 ? 'Must be ≥ 576' : undefined} required>
   <NumberInput value={mtu} onChange={setMtu} min={576} max={9216} />
 </Field>
@@ -40,8 +37,10 @@ shapes:
 ```tsx
 import { Card, CardTitle, FieldStack, FormRow } from '@w5-ui/react'
 
-{/* Single column — narrow forms, modal bodies */}
-<Card span={4}>
+{
+  /* Single column — narrow forms, modal bodies */
+}
+;<Card span={4}>
   <CardTitle>Profile</CardTitle>
   <FieldStack>
     <Field label="Display name" defaultValue="Maya S." />
@@ -52,8 +51,10 @@ import { Card, CardTitle, FieldStack, FormRow } from '@w5-ui/react'
   </FieldStack>
 </Card>
 
-{/* Two-column grid — Settings cards, dense editors */}
-<Card span={8}>
+{
+  /* Two-column grid — Settings cards, dense editors */
+}
+;<Card span={8}>
   <CardTitle>System</CardTitle>
   <FormRow>
     <Field label="Site name" defaultValue="Edge Gateway" />
@@ -70,33 +71,32 @@ import { Card, CardTitle, FieldStack, FormRow } from '@w5-ui/react'
 </Card>
 ```
 
-`<FieldStack>` and `<FormRow>` are typed wrappers around the canonical
-`.field-stack` / `.form-row` classes from `@w5-ui/tokens/dashboard.css` (re-exported by the React
-and Svelte style bundles). `.form-row` is **14px** gap with a **6px** top offset — the same rhythm
-Settings uses. Wider gaps (16, 20, 24) make fields feel disconnected; tighter (≤ 10) lets labels
-and controls collide visually. Reach for the typed primitive (or the class) instead of typing the
-values inline.
+`<FieldStack>` and `<FormRow>` are typed wrappers around the canonical `.field-stack` / `.form-row`
+classes from `@w5-ui/tokens/dashboard.css` (re-exported by the React and Svelte style bundles).
+`.form-row` is **14px** gap with a **6px** top offset — the same rhythm Settings uses. Wider gaps
+(16, 20, 24) make fields feel disconnected; tighter (≤ 10) lets labels and controls collide
+visually. Reach for the typed primitive (or the class) instead of typing the values inline.
 
 ## Choose the right control
 
-| Data shape                                  | Reach for                                                |
-| ------------------------------------------- | -------------------------------------------------------- |
-| Free-text string                            | `<Field>` (renders `Input`)                              |
-| Multi-line text, code, keys                 | `<Textarea>`                                             |
-| One of a short fixed list (≤ 6)             | `<RadioGroup>` or `<SegmentedControl>`                   |
-| One of many (search needed)                 | `<Select>` or `<Combobox>`                               |
-| Many of many                                | `<MultiSelect>`                                          |
-| Tagged free-form (DNS, emails, allow-list)  | `<TagInput>`                                             |
-| Integer / float with bounds                 | `<NumberInput>`                                          |
-| Range with two ends                         | `<RangeSlider>`                                          |
-| Boolean toggle                              | `<Toggle>` (state) or `<Checkbox>` (selection in a list) |
-| IP / CIDR / MAC / port                      | `<IPInput>`, `<CIDRInput>`, `<MACInput>`, `<NumberInput>` |
-| Time / date / range                         | `<TimePicker>`, `<DatePicker>`, `<DateRangePicker>`      |
-| Duration (HH:MM:SS)                         | `<DurationInput>`                                        |
-| Password with show/hide                     | `<PasswordInput>`                                        |
-| One-time code                               | `<OTPInput>`                                             |
-| Hex colour                                  | `<ColorPicker>`                                          |
-| Prefix / suffix decoration (units, @, $)    | `<InputGroup>` around the control                        |
+| Data shape                                 | Reach for                                                 |
+| ------------------------------------------ | --------------------------------------------------------- |
+| Free-text string                           | `<Field>` (renders `Input`)                               |
+| Multi-line text, code, keys                | `<Textarea>`                                              |
+| One of a short fixed list (≤ 6)            | `<RadioGroup>` or `<SegmentedControl>`                    |
+| One of many (search needed)                | `<Select>` or `<Combobox>`                                |
+| Many of many                               | `<MultiSelect>`                                           |
+| Tagged free-form (DNS, emails, allow-list) | `<TagInput>`                                              |
+| Integer / float with bounds                | `<NumberInput>`                                           |
+| Range with two ends                        | `<RangeSlider>`                                           |
+| Boolean toggle                             | `<Toggle>` (state) or `<Checkbox>` (selection in a list)  |
+| IP / CIDR / MAC / port                     | `<IPInput>`, `<CIDRInput>`, `<MACInput>`, `<NumberInput>` |
+| Time / date / range                        | `<TimePicker>`, `<DatePicker>`, `<DateRangePicker>`       |
+| Duration (HH:MM:SS)                        | `<DurationInput>`                                         |
+| Password with show/hide                    | `<PasswordInput>`                                         |
+| One-time code                              | `<OTPInput>`                                              |
+| Hex colour                                 | `<ColorPicker>`                                           |
+| Prefix / suffix decoration (units, @, $)   | `<InputGroup>` around the control                         |
 
 Pick the most specific control available — `<IPInput>` enforces octets and tab-between-fields where
 a bare `<Input maxlength=15>` cannot. Specific controls also get correct accessibility (spinbutton,
@@ -141,17 +141,17 @@ entirely. For modal dialogs, the `Modal` footer slot owns this row — don't re-
 
 ## Common mistakes (and the fix)
 
-| Symptom                                          | Likely cause                                                    | Fix                                                                                  |
-| ------------------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Symptom                                          | Likely cause                                                     | Fix                                                                                   |
+| ------------------------------------------------ | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | Labels look pale / wrong size in React           | Hand-rolled `<label style={{ fontSize, color }}>` next to fields | Use `<Field label="…">`. Don't reach past it to style labels                          |
 | Fields touch each other vertically               | Form wrapped in `<div style={{ display: 'flex' }}>`              | Wrap in `<FieldStack>` — 16px gap, no margin hacks                                    |
 | Two-column form columns drift on resize          | `gridTemplateColumns: 'auto auto'`                               | Use `<FormRow>` — 1fr 1fr with the canonical 14px gap                                 |
 | Inline 14px gap drifts to 12 / 16 across pages   | Free-typed `gap: 14` on every form grid                          | Replace inline styles with `<FormRow>` so the rhythm is centralised                   |
 | Action row clings to the last field              | Buttons rendered as a sibling without `margin-top`               | Wrap in `<FormActions>` — right-aligned, 16px top offset                              |
-| Required asterisk is announced to SR users       | Manual `*` appended to label text                                | Use the `required` prop. `Field` renders `aria-hidden` asterisk and `required` attr  |
-| Error message not announced on focus             | Error rendered in a sibling `<div>` outside `Field`              | Pass `error` to `Field` — it wires `aria-describedby` and `role="alert"`             |
-| Combobox shows browser default underline         | `<Combobox>` rendered outside `<Field>`                          | Wrap in `<Field label="…">` — Field owns the label rhythm                            |
-| Save button activates on Enter inside a Combobox | `<form onSubmit>` wraps everything                               | Either drop the `<form>` (per-page save) or set `type="button"` on non-submit buttons|
+| Required asterisk is announced to SR users       | Manual `*` appended to label text                                | Use the `required` prop. `Field` renders `aria-hidden` asterisk and `required` attr   |
+| Error message not announced on focus             | Error rendered in a sibling `<div>` outside `Field`              | Pass `error` to `Field` — it wires `aria-describedby` and `role="alert"`              |
+| Combobox shows browser default underline         | `<Combobox>` rendered outside `<Field>`                          | Wrap in `<Field label="…">` — Field owns the label rhythm                             |
+| Save button activates on Enter inside a Combobox | `<form onSubmit>` wraps everything                               | Either drop the `<form>` (per-page save) or set `type="button"` on non-submit buttons |
 
 ## See also
 

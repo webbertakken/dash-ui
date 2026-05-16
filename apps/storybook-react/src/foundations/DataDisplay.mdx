@@ -5,95 +5,92 @@ import { Meta } from '@storybook/blocks'
 # Data display
 
 Once a tile knows what it shows, picking the right data-display primitive is what makes the
-reference dashboards read the way they do. A drawer of properties wants `KVTable`, not a
-hand-rolled two-column flex. A list of "top N" wants `RankedList`, not a `<ul>` plus a custom
-bar. A growing stream of activity wants `ActivityFeed`, not a regular list. Reach for the
-right primitive and the spacing, alignment, and ARIA wiring fall out for free.
+reference dashboards read the way they do. A drawer of properties wants `KVTable`, not a hand-rolled
+two-column flex. A list of "top N" wants `RankedList`, not a `<ul>` plus a custom bar. A growing
+stream of activity wants `ActivityFeed`, not a regular list. Reach for the right primitive and the
+spacing, alignment, and ARIA wiring fall out for free.
 
-Every component on this page ships in `@w5-ui/react` (and mirrors in `@w5-ui/svelte` /
-`@w5-ui/wc`) with monospace columns, hairline dividers, and screen-reader semantics already
-done.
+Every component on this page ships in `@w5-ui/react` (and mirrors in `@w5-ui/svelte` / `@w5-ui/wc`)
+with monospace columns, hairline dividers, and screen-reader semantics already done.
 
 ## Pick by question
 
 Start from what the data _is_, not from what you want it to look like.
 
-| The data is…                                                          | Reach for         |
-| --------------------------------------------------------------------- | ----------------- |
-| One headline number with optional unit, sub-line, and delta           | `Stat`            |
-| A flat list of label → value rows (device props, config, drawer)      | `KVTable`         |
-| A nested object or API response you need to inspect                   | `JsonViewer`      |
-| A multi-line snippet of CLI / config / code with copy-to-clipboard    | `CodeBlock`       |
-| A scrolling, severity-tagged stream of log lines                      | `LogViewer`       |
-| A "Top N" comparison with proportional bars                           | `RankedList`      |
-| A flat list of recent items, newest at the top, with live updates     | `ActivityFeed`    |
-| An ordered sequence of events with timestamps and dots                | `Timeline`        |
-| Items grouped under collapsible section headers                       | `GroupedList`     |
-| A table row that reveals extra detail when expanded                   | `ExpandableRow`   |
-| A long block of text you want to clip behind a "Show more" toggle     | `Spoiler`         |
-| A number you want to animate from 0 to its final value on mount       | `CountUp`         |
+| The data is…                                                       | Reach for       |
+| ------------------------------------------------------------------ | --------------- |
+| One headline number with optional unit, sub-line, and delta        | `Stat`          |
+| A flat list of label → value rows (device props, config, drawer)   | `KVTable`       |
+| A nested object or API response you need to inspect                | `JsonViewer`    |
+| A multi-line snippet of CLI / config / code with copy-to-clipboard | `CodeBlock`     |
+| A scrolling, severity-tagged stream of log lines                   | `LogViewer`     |
+| A "Top N" comparison with proportional bars                        | `RankedList`    |
+| A flat list of recent items, newest at the top, with live updates  | `ActivityFeed`  |
+| An ordered sequence of events with timestamps and dots             | `Timeline`      |
+| Items grouped under collapsible section headers                    | `GroupedList`   |
+| A table row that reveals extra detail when expanded                | `ExpandableRow` |
+| A long block of text you want to clip behind a "Show more" toggle  | `Spoiler`       |
+| A number you want to animate from 0 to its final value on mount    | `CountUp`       |
 
-If the data is a fixed schema with sortable columns and pagination, that's a regular table —
-see **Foundations / Tables**. If the data is numeric and varies over time, that's a chart —
-see **Foundations / Charts**.
+If the data is a fixed schema with sortable columns and pagination, that's a regular table — see
+**Foundations / Tables**. If the data is numeric and varies over time, that's a chart — see
+**Foundations / Charts**.
 
 ## Stat vs KVTable vs RankedList
 
-These three feel similar from a distance — a label paired with a number — but they live in
-different tiles.
+These three feel similar from a distance — a label paired with a number — but they live in different
+tiles.
 
-| Component    | Shape                                          | Use when                                                                |
-| ------------ | ---------------------------------------------- | ----------------------------------------------------------------------- |
-| `Stat`       | One hero number inside its own `<Card>`        | The tile is _the_ number (throughput, clients, uptime)                  |
-| `KVTable`    | Two-column label/value rows, no chrome         | A drawer / details panel with many properties at once                   |
-| `RankedList` | Numbered rows with proportional bars and totals| A "Top 5 clients" / "Most active APs" leaderboard inside a `<Card>`     |
+| Component    | Shape                                           | Use when                                                            |
+| ------------ | ----------------------------------------------- | ------------------------------------------------------------------- |
+| `Stat`       | One hero number inside its own `<Card>`         | The tile is _the_ number (throughput, clients, uptime)              |
+| `KVTable`    | Two-column label/value rows, no chrome          | A drawer / details panel with many properties at once               |
+| `RankedList` | Numbered rows with proportional bars and totals | A "Top 5 clients" / "Most active APs" leaderboard inside a `<Card>` |
 
-`Stat` already is a `<Card>` — don't wrap it. `KVTable` and `RankedList` are tile content;
-drop them inside a `<Card>` so the title rhythm and padding are correct.
+`Stat` already is a `<Card>` — don't wrap it. `KVTable` and `RankedList` are tile content; drop them
+inside a `<Card>` so the title rhythm and padding are correct.
 
 ## Timeline vs ActivityFeed vs LogViewer
 
 All three render a vertical stream of events. They differ in lifetime, density, and ARIA.
 
-| Component      | Use when                                                            | ARIA                          |
-| -------------- | ------------------------------------------------------------------- | ----------------------------- |
-| `Timeline`     | A small, fixed set of milestones with rich descriptions             | `<ol>` semantic order         |
-| `ActivityFeed` | A growing, screen-reader-friendly stream (alarms, audit log)        | `role="feed"`, `aria-busy`    |
-| `LogViewer`    | High-volume, severity-coloured log lines with follow-tail behaviour | `role="log"`, `aria-live`     |
+| Component      | Use when                                                            | ARIA                       |
+| -------------- | ------------------------------------------------------------------- | -------------------------- |
+| `Timeline`     | A small, fixed set of milestones with rich descriptions             | `<ol>` semantic order      |
+| `ActivityFeed` | A growing, screen-reader-friendly stream (alarms, audit log)        | `role="feed"`, `aria-busy` |
+| `LogViewer`    | High-volume, severity-coloured log lines with follow-tail behaviour | `role="log"`, `aria-live`  |
 
-A handful of release notes → `Timeline`. The live alarm stream on the Alarms page →
-`ActivityFeed`. The raw syslog tail on the Logs page → `LogViewer`. Don't mix them: a
-`Timeline` packed with hundreds of items reads as a wall; a `LogViewer` with three entries
-reads as overkill.
+A handful of release notes → `Timeline`. The live alarm stream on the Alarms page → `ActivityFeed`.
+The raw syslog tail on the Logs page → `LogViewer`. Don't mix them: a `Timeline` packed with
+hundreds of items reads as a wall; a `LogViewer` with three entries reads as overkill.
 
 ## JsonViewer vs CodeBlock
 
-Both render mono-spaced text. The difference is whether the user needs to navigate the
-structure.
+Both render mono-spaced text. The difference is whether the user needs to navigate the structure.
 
-- `JsonViewer` for objects / arrays the user expands to inspect. Tree semantics
-  (`role="tree"`), per-node toggles, depth-aware indentation.
-- `CodeBlock` for opaque snippets (a CLI command, a config file, a token) the user copies as
-  a single string. Ships with a `CopyButton` already; no tree, no indentation control.
+- `JsonViewer` for objects / arrays the user expands to inspect. Tree semantics (`role="tree"`),
+  per-node toggles, depth-aware indentation.
+- `CodeBlock` for opaque snippets (a CLI command, a config file, a token) the user copies as a
+  single string. Ships with a `CopyButton` already; no tree, no indentation control.
 
-If the snippet is short enough to fit inline and never needs copying, render plain
-`<code>…</code>` instead — neither component is the right reach for a one-liner.
+If the snippet is short enough to fit inline and never needs copying, render plain `<code>…</code>`
+instead — neither component is the right reach for a one-liner.
 
 ## Anatomy
 
-| Layer                  | Where the values live                                                              |
-| ---------------------- | ---------------------------------------------------------------------------------- |
-| `Stat`                 | `<Card>` shell + `.stat` hero (32px), `.unit` (12px), `.submeta` (11px)            |
-| `KVTable` row          | `.kv-table__label` left col, `.kv-table__value` right col, 12px row gap            |
-| `RankedList` row       | `.rl-rank` (#), `.rl-label` + `.rl-sublabel`, `.rl-bar-track` + `.rl-bar-fill`     |
-| `Timeline` item        | `.timeline__dot` (status colour), `.timeline__title` + `.timeline__time`           |
-| `ActivityFeed` article | `.af-dot` + `.af-title` + `.af-time`, `.af-desc` (optional)                        |
-| `LogViewer` toolbar    | `.lv__count` + `.lv__follow` toggle, `.lv__body` scroll region with `role="log"`   |
-| `CodeBlock`            | `.code-block__lang` + `.code-block__header` with `CopyButton`, `.code-block__pre`  |
-| `JsonViewer` node      | `.jv-key` / `.jv-colon` / `.jv-string` / `.jv-number` / `.jv-bracket` per token    |
+| Layer                  | Where the values live                                                             |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| `Stat`                 | `<Card>` shell + `.stat` hero (32px), `.unit` (12px), `.submeta` (11px)           |
+| `KVTable` row          | `.kv-table__label` left col, `.kv-table__value` right col, 12px row gap           |
+| `RankedList` row       | `.rl-rank` (#), `.rl-label` + `.rl-sublabel`, `.rl-bar-track` + `.rl-bar-fill`    |
+| `Timeline` item        | `.timeline__dot` (status colour), `.timeline__title` + `.timeline__time`          |
+| `ActivityFeed` article | `.af-dot` + `.af-title` + `.af-time`, `.af-desc` (optional)                       |
+| `LogViewer` toolbar    | `.lv__count` + `.lv__follow` toggle, `.lv__body` scroll region with `role="log"`  |
+| `CodeBlock`            | `.code-block__lang` + `.code-block__header` with `CopyButton`, `.code-block__pre` |
+| `JsonViewer` node      | `.jv-key` / `.jv-colon` / `.jv-string` / `.jv-number` / `.jv-bracket` per token   |
 
-All paddings come from the spacing scale (4 / 8 / 12 / 16). Don't restyle them — userland
-that does is the single biggest source of "row gaps look different from the dashboard story".
+All paddings come from the spacing scale (4 / 8 / 12 / 16). Don't restyle them — userland that does
+is the single biggest source of "row gaps look different from the dashboard story".
 
 ## Usage
 
@@ -101,7 +98,6 @@ that does is the single biggest source of "row gaps look different from the dash
 
 ```tsx
 import { KVTable } from '@w5-ui/react'
-
 ;<KVTable
   caption="Device properties"
   rows={[
@@ -113,105 +109,101 @@ import { KVTable } from '@w5-ui/react'
 />
 ```
 
-Renders inside a `Drawer`, an `ExpandableRow` detail cell, or a `<Card>` body — never as a
-top-level tile on its own (it has no title chrome; use `<Card><CardTitle>…</CardTitle>…</Card>`).
+Renders inside a `Drawer`, an `ExpandableRow` detail cell, or a `<Card>` body — never as a top-level
+tile on its own (it has no title chrome; use `<Card><CardTitle>…</CardTitle>…</Card>`).
 
 ### Top-N comparison inside a card → `RankedList`
 
 ```tsx
 import { Card, CardTitle, CardMore, RankedList } from '@w5-ui/react'
-
 ;<Card span={6}>
-  <CardTitle>Top clients <CardMore href="/clients">All →</CardMore></CardTitle>
+  <CardTitle>
+    Top clients <CardMore href="/clients">All →</CardMore>
+  </CardTitle>
   <RankedList unit="GB" items={topClients} />
 </Card>
 ```
 
-`RankedList` infers `max` from the largest item; pass `max` explicitly when you need
-consistent bars across two side-by-side `<Card>`s.
+`RankedList` infers `max` from the largest item; pass `max` explicitly when you need consistent bars
+across two side-by-side `<Card>`s.
 
 ### Live activity stream → `ActivityFeed`
 
 ```tsx
 import { Card, CardTitle, ActivityFeed } from '@w5-ui/react'
-
 ;<Card span={6}>
   <CardTitle>Recent alarms</CardTitle>
   <ActivityFeed items={alarms} maxHeight={360} autoScroll />
 </Card>
 ```
 
-`autoScroll` only scrolls when new items arrive — set it for live feeds, leave it off for
-historical views the user is reading through.
+`autoScroll` only scrolls when new items arrive — set it for live feeds, leave it off for historical
+views the user is reading through.
 
 ### Animated KPI on mount → `CountUp`
 
 ```tsx
 import { Stat, CountUp } from '@w5-ui/react'
-
-;<Stat
-  span={4}
-  label="Clients"
-  value={<CountUp to={1248} separator="," />}
-  unit="online"
-/>
+;<Stat span={4} label="Clients" value={<CountUp to={1248} separator="," />} unit="online" />
 ```
 
-`CountUp` respects `prefers-reduced-motion` automatically — it jumps to the final value when
-the user has motion reduced.
+`CountUp` respects `prefers-reduced-motion` automatically — it jumps to the final value when the
+user has motion reduced.
 
 ### Inspecting an API response → `JsonViewer`
 
 ```tsx
 import { Card, CardTitle, JsonViewer } from '@w5-ui/react'
-
 ;<Card span={12}>
   <CardTitle>Device config</CardTitle>
   <JsonViewer data={config} defaultExpanded maxDepth={2} />
 </Card>
 ```
 
-Pick `maxDepth` so the first paint shows roughly one screen of content — deeper trees read
-as a wall and lock the user into expand-everything mode.
+Pick `maxDepth` so the first paint shows roughly one screen of content — deeper trees read as a wall
+and lock the user into expand-everything mode.
 
 ## Common mistakes (and the fix)
 
-| Symptom                                                | Likely cause                                                       | Fix                                                                                                  |
-| ------------------------------------------------------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| Drawer property rows have inconsistent column widths   | Hand-rolled `<div>` / `<dl>` per row with bespoke widths           | Replace with `<KVTable rows={…} />` — the two-column grid is one rule                                |
-| "Top N" tile bars look uneven across two cards         | Each `RankedList` infers its own `max` from local items            | Compute a shared `max` once and pass it to both `<RankedList max={…} />`                             |
-| Activity rows announce nothing to screen readers       | Built as a plain `<ul>` of `<li>` with custom styling              | Switch to `<ActivityFeed>` — it sets `role="feed"`, `aria-posinset`, `aria-setsize`                  |
-| Log rows reflow on every new entry                     | Custom auto-scroll keeps re-rendering the whole list               | Use `<LogViewer>` — the toolbar Follow toggle keeps the user in control                              |
-| Big JSON blob blows out the card height                | `<pre>{JSON.stringify(data, null, 2)}</pre>` raw                   | Use `<JsonViewer data={…} maxDepth={2} />` — collapses by depth, opens on demand                     |
-| Code snippet has no copy affordance                    | Plain `<pre><code>` with manual copy code                          | Use `<CodeBlock>` — `CopyButton` and `role="region"` ship in the component                           |
-| Stat number looks plain on first paint                 | Static `value` prop                                                | Wrap the number in `<CountUp to={n} />` — animates on mount, reduces motion when requested           |
-| Timeline reads as a wall of identical dots             | Hundreds of items rendered as `<Timeline>`                         | That's not a timeline — switch to `<ActivityFeed>` (or `<LogViewer>` if log-shaped)                  |
-| Expandable rows shift other rows when toggled          | Hand-built collapse with `display: none` + transition              | Use `<ExpandableRow>` — the detail row reserves its column span and animates cleanly                 |
-| Long description blows past the card edge              | No clip / overflow rule on the description                         | Wrap in `<Spoiler maxHeight={…}>…</Spoiler>` — toggles "Show more", auto-detects clipping            |
-| Grouped sections always expanded or always collapsed   | Each group built as a `<details>` with bespoke chrome              | Use `<GroupedList groups={…} collapsible />` — per-group `defaultOpen`, accessible chevrons          |
-| `KVTable` rendered as a top-level tile, looks chromed  | Dropped onto `.grid` without a wrapping `<Card>` + `<CardTitle>`   | Wrap in `<Card>` (or `<Drawer>` / `<ExpandableRow>` detail) — `KVTable` has no title of its own      |
-| `<Stat>` nested inside `<Card>` looks doubly padded    | `<Card><Stat /></Card>`                                            | `<Stat>` is a `<Card>` already. Render at the top level of `.grid`                                   |
+| Symptom                                               | Likely cause                                                     | Fix                                                                                             |
+| ----------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Drawer property rows have inconsistent column widths  | Hand-rolled `<div>` / `<dl>` per row with bespoke widths         | Replace with `<KVTable rows={…} />` — the two-column grid is one rule                           |
+| "Top N" tile bars look uneven across two cards        | Each `RankedList` infers its own `max` from local items          | Compute a shared `max` once and pass it to both `<RankedList max={…} />`                        |
+| Activity rows announce nothing to screen readers      | Built as a plain `<ul>` of `<li>` with custom styling            | Switch to `<ActivityFeed>` — it sets `role="feed"`, `aria-posinset`, `aria-setsize`             |
+| Log rows reflow on every new entry                    | Custom auto-scroll keeps re-rendering the whole list             | Use `<LogViewer>` — the toolbar Follow toggle keeps the user in control                         |
+| Big JSON blob blows out the card height               | `<pre>{JSON.stringify(data, null, 2)}</pre>` raw                 | Use `<JsonViewer data={…} maxDepth={2} />` — collapses by depth, opens on demand                |
+| Code snippet has no copy affordance                   | Plain `<pre><code>` with manual copy code                        | Use `<CodeBlock>` — `CopyButton` and `role="region"` ship in the component                      |
+| Stat number looks plain on first paint                | Static `value` prop                                              | Wrap the number in `<CountUp to={n} />` — animates on mount, reduces motion when requested      |
+| Timeline reads as a wall of identical dots            | Hundreds of items rendered as `<Timeline>`                       | That's not a timeline — switch to `<ActivityFeed>` (or `<LogViewer>` if log-shaped)             |
+| Expandable rows shift other rows when toggled         | Hand-built collapse with `display: none` + transition            | Use `<ExpandableRow>` — the detail row reserves its column span and animates cleanly            |
+| Long description blows past the card edge             | No clip / overflow rule on the description                       | Wrap in `<Spoiler maxHeight={…}>…</Spoiler>` — toggles "Show more", auto-detects clipping       |
+| Grouped sections always expanded or always collapsed  | Each group built as a `<details>` with bespoke chrome            | Use `<GroupedList groups={…} collapsible />` — per-group `defaultOpen`, accessible chevrons     |
+| `KVTable` rendered as a top-level tile, looks chromed | Dropped onto `.grid` without a wrapping `<Card>` + `<CardTitle>` | Wrap in `<Card>` (or `<Drawer>` / `<ExpandableRow>` detail) — `KVTable` has no title of its own |
+| `<Stat>` nested inside `<Card>` looks doubly padded   | `<Card><Stat /></Card>`                                          | `<Stat>` is a `<Card>` already. Render at the top level of `.grid`                              |
 
 ## CSS hooks userland can rely on
 
 Stable class names shipped by `@w5-ui/tokens/dashboard.css` (re-exported via
-`@w5-ui/react/styles.css` and `@w5-ui/svelte/styles.css`). Style around them, not inside
-them:
+`@w5-ui/react/styles.css` and `@w5-ui/svelte/styles.css`). Style around them, not inside them:
 
 - `.kv-table`, `.kv-table__row`, `.kv-table__label`, `.kv-table__value` — key/value rows
-- `.rl`, `.rl-row`, `.rl-rank`, `.rl-label`, `.rl-bar-track`, `.rl-bar-fill`, `.rl-val` — ranked rows
-- `.timeline`, `.timeline__item`, `.timeline__dot`, `.timeline__title`, `.timeline__time` — timeline rhythm
+- `.rl`, `.rl-row`, `.rl-rank`, `.rl-label`, `.rl-bar-track`, `.rl-bar-fill`, `.rl-val` — ranked
+  rows
+- `.timeline`, `.timeline__item`, `.timeline__dot`, `.timeline__title`, `.timeline__time` — timeline
+  rhythm
 - `.activity-feed`, `.af-item`, `.af-dot`, `.af-title`, `.af-time`, `.af-desc` — feed rhythm
 - `.lv`, `.lv__toolbar`, `.lv__body`, `.lv__sev--{info|warn|error|debug}` — log severity colours
 - `.code-block`, `.code-block__lang`, `.code-block__pre`, `.code-block__code` — code snippet chrome
-- `.json-viewer`, `.jv-key`, `.jv-string`, `.jv-number`, `.jv-boolean`, `.jv-null`, `.jv-bracket` — JSON tokens
+- `.json-viewer`, `.jv-key`, `.jv-string`, `.jv-number`, `.jv-boolean`, `.jv-null`, `.jv-bracket` —
+  JSON tokens
 - `.stat`, `.unit`, `.submeta`, `.delta-up`, `.delta-down` — Stat hero rhythm
-- `.gl`, `.gl-group`, `.gl-header`, `.gl-title`, `.gl-count`, `.gl-items`, `.gl-item` — grouped list rhythm
+- `.gl`, `.gl-group`, `.gl-header`, `.gl-title`, `.gl-count`, `.gl-items`, `.gl-item` — grouped list
+  rhythm
 - `.spoiler`, `.spoiler-outer`, `.spoiler-fade`, `.spoiler-toggle` — clip-and-reveal text
 - `.exp-tbody`, `.exp-row`, `.exp-toggle`, `.exp-detail`, `.exp-detail-cell` — expandable table rows
 
-Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values.
-See **Foundations / Spacing** and **Foundations / Colours**.
+Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values. See
+**Foundations / Spacing** and **Foundations / Colours**.
 
 ## See also
 
