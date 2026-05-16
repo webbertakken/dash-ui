@@ -1,9 +1,7 @@
 import { appLogos, logos } from '@w5-ui/assets'
 import { Fragment, type ReactNode } from 'react'
-import { CaretIcon, SearchIcon, UpdatesIcon, BellIcon, HelpIcon } from '../icons.js'
-import { Avatar } from './Avatar.js'
-import { IconButton } from './Button.js'
-import { NotifDot } from './NotifDot.js'
+import { CaretIcon } from '../icons.js'
+import { TopbarActions } from './TopbarActions.js'
 
 void logos
 
@@ -86,30 +84,7 @@ export function Topbar({
       </nav>
       <div className="topbar-spacer" />
       <div className="topbar-right">
-        {actions ?? (
-          <>
-            <IconButton aria-label="Search" title="Search">
-              <SearchIcon />
-            </IconButton>
-            <IconButton aria-label="Updates" title="Updates">
-              <UpdatesIcon />
-            </IconButton>
-            <IconButton
-              aria-label={
-                notificationCount > 0 ? `Notifications, ${notificationCount} new` : 'Notifications'
-              }
-              title="Notifications"
-              style={{ position: 'relative' }}
-            >
-              <BellIcon />
-              {notificationCount > 0 && <NotifDot />}
-            </IconButton>
-            <IconButton aria-label="Help" title="Help">
-              <HelpIcon />
-            </IconButton>
-            <Avatar initials={initials} size="sm" alt={`Account, ${initials}`} />
-          </>
-        )}
+        {actions ?? <TopbarActions initials={initials} notificationCount={notificationCount} />}
       </div>
     </header>
   )

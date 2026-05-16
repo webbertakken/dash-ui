@@ -188,6 +188,7 @@ import './elements/Toggle.wc.svelte'
 import './elements/ToggleGroup.wc.svelte'
 import './elements/Tooltip.wc.svelte'
 import './elements/Topbar.wc.svelte'
+import './elements/TopbarActions.wc.svelte'
 import './elements/TransferList.wc.svelte'
 import './elements/TreeMap.wc.svelte'
 import './elements/TreeView.wc.svelte'
@@ -388,6 +389,7 @@ export const REGISTERED_TAGS = [
   'uni-toggle-group',
   'uni-tooltip',
   'uni-topbar',
+  'uni-topbar-actions',
   'uni-transfer-list',
   'uni-tree-map',
   'uni-tree-view',

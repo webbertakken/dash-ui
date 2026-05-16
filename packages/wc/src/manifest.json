@@ -748,6 +748,10 @@
     "tag": "uni-topbar"
   },
   {
+    "name": "TopbarActions",
+    "tag": "uni-topbar-actions"
+  },
+  {
     "name": "TransferList",
     "tag": "uni-transfer-list"
   },
