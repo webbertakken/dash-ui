@@ -174,7 +174,7 @@ Drop in `<Field label hint error required>` for every input.
 // src/pages/Settings.tsx — React
 import {
   AppLayout, Topbar, Sidebar, PageHeader,
-  Card, Field, FieldStack, FormRow, FormActions,
+  Card, CardTitle, Field, FieldStack, FormRow, FormActions,
   Input, Select, Toggle, Button, Callout,
 } from '@w5-ui/react'
 
@@ -187,7 +187,7 @@ export function Settings() {
       />
       <form id="settings" className="grid" onSubmit={onSave}>
         <Card span={6}>
-          <h3>Site</h3>
+          <CardTitle>Site</CardTitle>
           <FieldStack>
             <Field label="Site name" required hint="Visible in the topbar">
               <Input value={name} onChange={…} />
@@ -203,7 +203,7 @@ export function Settings() {
         </Card>
 
         <Card span={6}>
-          <h3>Network</h3>
+          <CardTitle>Network</CardTitle>
           <Callout variant="info" title="Restart required">
             Changes to LAN subnet require a controller reboot.
           </Callout>
@@ -224,13 +224,14 @@ export function Settings() {
 }
 ```
 
-**What carries the look**: the form itself _is_ the grid — no extra wrapper. `<FieldStack>`
-ladders fields with 16 px gaps; `<FormRow>` two-columns inputs without bespoke gap
-overrides; `<FormActions>` right-aligns and adds the 16 px top offset. Replace these typed
-primitives with hand-rolled flex containers and the rhythm drifts within one PR. The
-underlying CSS hooks (`.field-stack`, `.form-row`, `.form-actions`) ship for parity, but the
-typed primitives are the preferred path — they are auto-importable and survive a class-name
-rename without touching userland.
+**What carries the look**: the form itself _is_ the grid — no extra wrapper. `<CardTitle>`
+keeps the section-title rhythm under the `.card h3` rule without leaking a raw `<h3>` into
+copy-paste templates; `<FieldStack>` ladders fields with 16 px gaps; `<FormRow>` two-columns
+inputs without bespoke gap overrides; `<FormActions>` right-aligns and adds the 16 px top
+offset. Replace these typed primitives with hand-rolled flex containers and the rhythm drifts
+within one PR. The underlying CSS hooks (`.card h3`, `.field-stack`, `.form-row`,
+`.form-actions`) ship for parity, but the typed primitives are the preferred path — they are
+auto-importable and survive a class-name rename without touching userland.
 
 ## Empty-state / loading shell
 
