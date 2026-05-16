@@ -18,8 +18,14 @@ html[data-motif='light'] {
   color-scheme: light;
 }
 
+/* Canvas-view stories: Storybook's addons panel (Controls/Actions/etc.) docks
+   along the bottom of the iframe. With only 16px padding, the last bit of a
+   tall chart sits flush against the iframe edge and gets visually clipped by
+   the panel handle / resize gutter — you have to nudge-scroll the iframe to
+   see the chart's baseline. Add a generous bottom gutter so the whole graph
+   stays visible even when the addons panel is open. */
 #storybook-root {
-  padding: 16px;
+  padding: 16px 16px 96px;
   min-height: 100vh;
 }
 
