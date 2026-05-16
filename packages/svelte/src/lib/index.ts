@@ -296,6 +296,7 @@ export { default as Eyebrow } from './components/Eyebrow.svelte'
 export { default as Mono } from './components/Mono.svelte'
 export { default as Caption } from './components/Caption.svelte'
 export { default as BodyLg } from './components/BodyLg.svelte'
+export { default as Body } from './components/Body.svelte'
 export { default as Label } from './components/Label.svelte'
 
 export * from './icons.js'

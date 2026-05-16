@@ -15,6 +15,7 @@ import './elements/Badge.wc.svelte'
 import './elements/Banner.wc.svelte'
 import './elements/BarChart.wc.svelte'
 import './elements/BeeswarmChart.wc.svelte'
+import './elements/Body.wc.svelte'
 import './elements/BodyLg.wc.svelte'
 import './elements/BoxPlot.wc.svelte'
 import './elements/Breadcrumb.wc.svelte'
@@ -208,6 +209,7 @@ export const REGISTERED_TAGS = [
   'uni-banner',
   'uni-bar-chart',
   'uni-beeswarm-chart',
+  'uni-body',
   'uni-body-lg',
   'uni-box-plot',
   'uni-breadcrumb',

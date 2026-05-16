@@ -56,6 +56,10 @@
     "tag": "uni-beeswarm-chart"
   },
   {
+    "name": "Body",
+    "tag": "uni-body"
+  },
+  {
     "name": "BodyLg",
     "tag": "uni-body-lg"
   },
