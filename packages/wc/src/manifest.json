@@ -20,6 +20,10 @@
     "tag": "uni-annotated-time-series"
   },
   {
+    "name": "AppLayout",
+    "tag": "uni-app-layout"
+  },
+  {
     "name": "ArcDiagram",
     "tag": "uni-arc-diagram"
   },

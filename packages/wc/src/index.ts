@@ -6,6 +6,7 @@ import './elements/ActionMenu.wc.svelte'
 import './elements/ActivityFeed.wc.svelte'
 import './elements/Alert.wc.svelte'
 import './elements/AnnotatedTimeSeries.wc.svelte'
+import './elements/AppLayout.wc.svelte'
 import './elements/ArcDiagram.wc.svelte'
 import './elements/AreaChart.wc.svelte'
 import './elements/Avatar.wc.svelte'
@@ -175,6 +176,7 @@ export const REGISTERED_TAGS = [
   'uni-activity-feed',
   'uni-alert',
   'uni-annotated-time-series',
+  'uni-app-layout',
   'uni-arc-diagram',
   'uni-area-chart',
   'uni-avatar',

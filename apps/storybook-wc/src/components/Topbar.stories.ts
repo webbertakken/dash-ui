@@ -12,7 +12,7 @@ type Story = StoryObj
 export const Variant0: Story = {
   name: 'default',
   render: () => {
-    const props: Record<string, unknown> = { siteName: 'HQ', activeApp: 'network' }
+    const props: Record<string, unknown> = { siteName: 'HQ', activeApp: 'system' }
     const el = document.createElement('uni-topbar') as HTMLElement & Record<string, unknown>
     for (const [k, v] of Object.entries(props)) el[k] = v
 
@@ -25,10 +25,62 @@ export const Variant1: Story = {
   render: () => {
     const props: Record<string, unknown> = {
       siteName: 'HQ',
-      activeApp: 'network',
+      activeApp: 'instances',
       onAppChange: () => {},
       initials: 'WB',
       notificationCount: 5,
+    }
+    const el = document.createElement('uni-topbar') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
+
+    return el
+  },
+}
+
+export const Variant2: Story = {
+  name: 'status=warn',
+  render: () => {
+    const props: Record<string, unknown> = { siteName: 'HQ', activeApp: 'system', status: 'warn' }
+    const el = document.createElement('uni-topbar') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
+
+    return el
+  },
+}
+
+export const Variant3: Story = {
+  name: 'status=danger',
+  render: () => {
+    const props: Record<string, unknown> = { siteName: 'HQ', activeApp: 'system', status: 'danger' }
+    const el = document.createElement('uni-topbar') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
+
+    return el
+  },
+}
+
+export const Variant4: Story = {
+  name: 'status=neutral',
+  render: () => {
+    const props: Record<string, unknown> = {
+      siteName: 'HQ',
+      activeApp: 'system',
+      status: 'neutral',
+    }
+    const el = document.createElement('uni-topbar') as HTMLElement & Record<string, unknown>
+    for (const [k, v] of Object.entries(props)) el[k] = v
+
+    return el
+  },
+}
+
+export const Variant5: Story = {
+  name: 'siteSwitchable=false',
+  render: () => {
+    const props: Record<string, unknown> = {
+      siteName: 'HQ',
+      activeApp: 'system',
+      siteSwitchable: false,
     }
     const el = document.createElement('uni-topbar') as HTMLElement & Record<string, unknown>
     for (const [k, v] of Object.entries(props)) el[k] = v

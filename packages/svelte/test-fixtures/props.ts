@@ -947,6 +947,7 @@ export const BUNDLES: Record<string, Bundle[]> = {
     { name: 'default', props: { title: 'Dashboard' } },
     { name: 'non-sticky', props: { title: 'Devices', sticky: false } },
   ],
+  AppLayout: [{ name: 'default', props: { pageLabel: 'Dashboard' }, slot: 'page body' }],
   Pagination: [
     { name: 'default', props: { page: 1, pageSize: 10, total: 50, onChange: noop } },
     { name: 'last', props: { page: 5, pageSize: 10, total: 50, onChange: noop } },

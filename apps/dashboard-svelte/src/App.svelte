@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    SkipLink,
+    AppLayout,
     Topbar,
     Sidebar,
     Modal,
@@ -116,32 +116,27 @@
   <title>{pageLabel} · Dash UI</title>
 </svelte:head>
 
-<div class="app">
-  <SkipLink />
-  <Topbar siteName="Demo cluster" bind:activeApp />
-  <div class="workspace">
-    <Sidebar sections={SECTIONS} bind:activeId={page} />
-    <main class="content" id="main-content" tabindex="-1" aria-labelledby="page-title">
-      <h1 id="page-title" class="sr-only">{pageLabel}</h1>
-      {#if page === 'dashboard'}<Dashboard onadopt={() => (adoptOpen = true)} />
-      {:else if page === 'devices'}<Devices onadopt={() => (adoptOpen = true)} />
-      {:else if page === 'clients'}<Clients />
-      {:else if page === 'topology'}<Topology />
-      {:else if page === 'alarms'}<Alarms />
-      {:else if page === 'logs'}<Logs />
-      {:else if page === 'wifi'}<Wifi />
-      {:else if page === 'ports'}<Ports />
-      {:else if page === 'vpn'}<Vpn />
-      {:else if page === 'security'}<Security />
-      {:else if page === 'settings'}<Settings />
-      {:else if page === 'wireless'}<Wireless />
-      {:else if page === 'infra'}<Infrastructure />
-      {:else if page === 'integrations'}<Integrations />
-      {/if}
-    </main>
-  </div>
+<AppLayout {pageLabel}>
+  {#snippet topbar()}<Topbar siteName="Demo cluster" bind:activeApp />{/snippet}
+  {#snippet sidebar()}<Sidebar sections={SECTIONS} bind:activeId={page} />{/snippet}
+  {#if page === 'dashboard'}<Dashboard onadopt={() => (adoptOpen = true)} />
+  {:else if page === 'devices'}<Devices onadopt={() => (adoptOpen = true)} />
+  {:else if page === 'clients'}<Clients />
+  {:else if page === 'topology'}<Topology />
+  {:else if page === 'alarms'}<Alarms />
+  {:else if page === 'logs'}<Logs />
+  {:else if page === 'wifi'}<Wifi />
+  {:else if page === 'ports'}<Ports />
+  {:else if page === 'vpn'}<Vpn />
+  {:else if page === 'security'}<Security />
+  {:else if page === 'settings'}<Settings />
+  {:else if page === 'wireless'}<Wireless />
+  {:else if page === 'infra'}<Infrastructure />
+  {:else if page === 'integrations'}<Integrations />
+  {/if}
+</AppLayout>
 
-  <Toaster />
+<Toaster />
 
   <CommandPalette
     open={cmdOpen}
@@ -168,4 +163,3 @@
       
       {/snippet}
   </Modal>
-</div>

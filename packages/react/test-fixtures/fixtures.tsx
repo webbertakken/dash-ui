@@ -1343,6 +1343,32 @@ export const FIXTURES: Record<string, Variant[]> = {
     { name: 'controlled', node: <U.OTPInput label="OTP" value="123" onChange={noop} length={4} /> },
     { name: 'disabled', node: <U.OTPInput label="OTP" disabled /> },
   ],
+  AppLayout: [
+    {
+      name: 'default',
+      node: (
+        <U.AppLayout
+          pageLabel="Dashboard"
+          topbar={<U.Topbar siteName="HQ" activeApp="system" />}
+          sidebar={
+            <U.Sidebar
+              activeId="dash"
+              sections={[
+                { title: 'Manage', items: [{ id: 'dash', label: 'Dashboard', icon: null }] },
+              ]}
+              onChange={noop}
+            />
+          }
+        >
+          <div className="grid">
+            <U.Card span={4}>One</U.Card>
+            <U.Card span={4}>Two</U.Card>
+            <U.Card span={4}>Three</U.Card>
+          </div>
+        </U.AppLayout>
+      ),
+    },
+  ],
   PageHeader: [
     { name: 'default', node: <U.PageHeader title="Dashboard" /> },
     {
