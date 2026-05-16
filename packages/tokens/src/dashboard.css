@@ -197,6 +197,26 @@ tbody tr:hover td {
   border-radius: 8px;
   overflow: hidden;
 }
+/* Form layout primitives: mirror the rhythm every reference Settings card
+   uses today (14px column gap, 6px top offset, 16px stack, right-aligned
+   action row) so userland can drop the inline styles. */
+.field-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 6px;
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
 .mac {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
