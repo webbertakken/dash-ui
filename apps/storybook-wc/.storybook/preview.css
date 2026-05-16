@@ -151,6 +151,31 @@ html[data-motif='light'] {
 .sbdocs a:focus-visible {
   text-decoration: none;
 }
+/* MDX heading anchor icons: Storybook wraps every MDX heading with an
+   `OcticonAnchor` (styled.a { color: inherit }) link icon for in-page
+   jump-to-section. Our `.sbdocs a` rule above wins on specificity and tints
+   the icon `--text-link` + adds an underline, painting a visible blue/orange
+   underlined link-icon to the left of every foundation page heading. Reset
+   the icon back to inheriting the heading colour and drop the underline so
+   the chrome stops competing with the heading text. The icon stays
+   click-able (and keeps its aria-hidden for SR users). */
+.sbdocs h1 > a,
+.sbdocs h2 > a,
+.sbdocs h3 > a,
+.sbdocs h4 > a,
+.sbdocs h5 > a,
+.sbdocs h6 > a {
+  color: inherit;
+  text-decoration: none;
+}
+.sbdocs h1 > a:hover,
+.sbdocs h2 > a:hover,
+.sbdocs h3 > a:hover,
+.sbdocs h4 > a:hover,
+.sbdocs h5 > a:hover,
+.sbdocs h6 > a:hover {
+  text-decoration: none;
+}
 
 /* MDX code blocks: dashboard.css doesn't style <pre>, and the inline-chip rule
    above bleeds into <pre><code>, making fenced code blocks render as a single
