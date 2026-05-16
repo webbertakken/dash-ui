@@ -139,17 +139,22 @@ emitted so screen readers announce the direction independent of any arrow glyph 
 
 ### Title with "More →" affordance
 
-The `.card h3 .more` rule already styles a trailing inline link. Use it for "View all" / "Open"
-affordances — don't roll your own button in the title row.
+The `.card h3 .more` rule already styles a trailing inline link. Use `<CardMore>` for the typed
+wrapper — don't roll your own button in the title row.
 
 ```tsx
+import { Card, CardMore, RankedList } from '@w5-ui/react'
+
 <Card span={6}>
   <h3>
-    Top clients <a className="more" href="/clients">All →</a>
+    Top clients <CardMore href="/clients">All →</CardMore>
   </h3>
   <RankedList items={topClients} />
 </Card>
 ```
+
+`<CardMore>` is a thin typed wrapper over `<a className="more">`. Forwards all anchor props (`href`,
+`target`, `onClick`, …) so it doubles as a button-shaped link without losing keyboard semantics.
 
 ### Mixed table tile
 
@@ -178,7 +183,7 @@ and `@w5-ui/svelte/styles.css`):
 
 - `.card` — the tile shell. Use through `<Card>` / `<Stat>`
 - `.card h3` — the title rhythm (size, weight, colour, flex). Use a plain `<h3>` and inherit it
-- `.card h3 .more` — the trailing "More →" affordance inside a title
+- `.card h3 .more` — the trailing "More →" affordance inside a title. Use through `<CardMore>`
 - `.submeta` — the muted supporting line under a `.stat` number. Use through `<Submeta>`
 - `.delta-up` / `.delta-down` — colour-coded trend text. Use through `<Delta dir="up | down | flat">`
 

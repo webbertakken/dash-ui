@@ -281,5 +281,6 @@ export { default as FormActions } from './components/FormActions.svelte'
 export { default as TableShell } from './components/TableShell.svelte'
 export { default as Submeta } from './components/Submeta.svelte'
 export { default as Delta } from './components/Delta.svelte'
+export { default as CardMore } from './components/CardMore.svelte'
 
 export * from './icons.js'
