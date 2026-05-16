@@ -232,6 +232,10 @@
     "tag": "uni-expandable-row"
   },
   {
+    "name": "Eyebrow",
+    "tag": "uni-eyebrow"
+  },
+  {
     "name": "Field",
     "tag": "uni-field"
   },

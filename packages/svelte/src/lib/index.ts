@@ -292,5 +292,6 @@ export { default as SrOnly } from './components/SrOnly.svelte'
 export { default as NotifDot } from './components/NotifDot.svelte'
 export { default as Muted } from './components/Muted.svelte'
 export { default as Code } from './components/Code.svelte'
+export { default as Eyebrow } from './components/Eyebrow.svelte'
 
 export * from './icons.js'

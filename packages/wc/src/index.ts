@@ -59,6 +59,7 @@ import './elements/DurationInput.wc.svelte'
 import './elements/EmptyState.wc.svelte'
 import './elements/ErrorBandChart.wc.svelte'
 import './elements/ExpandableRow.wc.svelte'
+import './elements/Eyebrow.wc.svelte'
 import './elements/Field.wc.svelte'
 import './elements/FieldStack.wc.svelte'
 import './elements/FileUpload.wc.svelte'
@@ -247,6 +248,7 @@ export const REGISTERED_TAGS = [
   'uni-empty-state',
   'uni-error-band-chart',
   'uni-expandable-row',
+  'uni-eyebrow',
   'uni-field',
   'uni-field-stack',
   'uni-file-upload',
