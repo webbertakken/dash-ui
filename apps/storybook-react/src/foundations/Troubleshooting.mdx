@@ -1,0 +1,77 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Troubleshooting" />
+
+# Troubleshooting
+
+When userland looks "almost right but off", the cause is almost always **one of fifteen things**.
+This page is a symptom-first index — pick the row that matches what you see, apply the one-line
+fix, then read the linked Foundations page if you need the deeper why.
+
+> If you only read one section: do the **30-second triage** below first. It catches 80 % of drift
+> before you start guessing.
+
+## 30-second triage
+
+Run these four checks before anything else. Each one rules out a whole class of drift.
+
+1. **Open DevTools → Elements → `<html>`.** Does it have `data-motif="dark"` (or `"light"`)? If
+   not, motif tokens fall back to the unstyled defaults and every spacing / colour rule looks
+   subtly wrong. → **Foundations / Motifs**.
+2. **Computed styles on `<body>` → `font-family`.** Does it start with `Inter`? If it shows
+   `system-ui` or `-apple-system`, the font import is missing and the type scale shifts every
+   element by ~1 px. → **Foundations / Setup §4**.
+3. **Inspect the root `.grid` element.** Computed `gap` should be `12px` and `padding` should be
+   `16px 24px`. If either is wrong, you have a wrapper `<div>` or a custom `gap:` override
+   nullifying `.grid`. → **Foundations / Spacing**.
+4. **Search the project for `@w5-ui/tokens/dashboard.css`.** If you import `tokens.css` but not
+   `dashboard.css`, you get the variables but none of the `.app` / `.grid` / `.card` rules — so
+   spacing falls back to browser defaults while colours still look correct. Easiest fix:
+   import `@w5-ui/react/styles.css` (or `@w5-ui/svelte/styles.css`), which bundles both.
+   → **Foundations / Setup §2**.
+
+If all four pass, jump to the symptom table.
+
+## Symptom → fix
+
+| Symptom you see in userland                                              | Likely cause                                                                  | One-line fix                                                                          | Read more                          |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------- |
+| Every gap feels slightly larger than the Storybook reference             | `tokens.css` is imported but `dashboard.css` is missing                       | Replace both imports with `@w5-ui/react/styles.css`                                   | Setup §2                           |
+| Page looks washed out / contrast is wrong                                | `<html>` is missing `data-motif="dark"`                                       | Set `<html data-motif="dark">` (or `"light"`) in `index.html`                         | Motifs                             |
+| Motif flashes the wrong colour on every refresh                          | `data-motif` is set in a `useEffect` instead of inline `<script>`             | Move the read from `localStorage` into a blocking `<script>` in `<head>`              | Motifs §4                          |
+| Cards float far apart — page feels "loose"                               | Custom `gap: 16px` (or 20 px) overrides `.grid`                               | Drop the override; `.grid` is already `gap: 12px`                                     | Spacing                            |
+| Page gutter is too wide / too narrow                                     | A wrapper `<div style={{ padding }}>` surrounds `.grid`                       | Remove the wrapper; `.grid` already pads `16px 24px`                                  | Spacing, Page layout               |
+| Topbar height shifts when notifications appear                           | The dot is a sibling sized in raw px                                          | Use the `Topbar` component — the dot uses `--status-danger` and reserves its slot     | Navigation                         |
+| Sidebar items look like raw `<a>` tags                                   | Hand-rolled markup without `.sb-item` / `.sb-group`                           | Use `<Sidebar>` from `@w5-ui/react` / `@w5-ui/svelte`                                 | Navigation                         |
+| Buttons in a row touch / hug too tightly                                 | Parent flex container has no `gap`                                            | `display: flex; gap: var(--space-2)` — the canonical topbar / page-header rhythm      | Spacing, Actions                   |
+| Stat tiles look thin or stretched                                        | Custom `<div className="card">` instead of the component                      | Use `<Stat>` / `<Card>` — they wire `span`, padding, and the title row for you        | Cards                              |
+| Charts get clipped behind the bottom selection toolbar                   | Page doesn't reserve `--bottom-panel-h`                                       | Render the toolbar inside `.grid` — `.grid:has(.sel-toolbar)` reserves room for you   | Charts                             |
+| Form fields stack too tightly / too loosely                              | Custom `margin-bottom` on every field                                         | Wrap fields in `<div className="field-stack">` (16 px gap)                            | Forms                              |
+| Two-column form columns drift to 12 / 16 / 20 px gaps                    | Free-typed `gap` on a hand-rolled grid                                        | Use `<div className="form-row">` (1fr 1fr, 14 px gap, 6 px top offset)                | Forms                              |
+| Form action row sits flush against the last field                        | Buttons rendered without an action wrapper                                    | Wrap in `<div className="form-actions">` (right-aligned, 8 px between, 16 px top)     | Forms                              |
+| Modal content looks cramped against the close button                     | Custom modal body without `--space-6` padding                                 | Use `<Modal>`; the body padding is already wired                                      | Overlays                           |
+| Random odd pixel values (10, 14, 18) creep into one section              | Free-typing px in inline styles                                               | Snap to the nearest token; `var(--space-*)`, not raw px                               | Spacing                            |
+| Round corners feel inconsistent across cards / buttons / modals          | Mixing `border-radius: 8px` with `--radius-md`                                | Cards / inputs / buttons use `--radius-md` (6 px); modals / drawers use `--radius-lg` | Spacing §Radius                    |
+| Light-mode text is almost invisible on hover                             | Hardcoded white text colour bypasses the motif token                          | Use `var(--text-1)` / `var(--text-2)`; never literal `#fff` / `#000`                  | Colours                            |
+| `Tailwind` user — utility classes set spacing but nothing else applies   | Tailwind v4 preflight strips the package's resets                             | Import `@w5-ui/tokens/tailwind-full.css` (tokens + dashboard, Tailwind-safe order)    | Setup §7                           |
+| App-logo squircles look pill-shaped                                      | `border-radius: 50%` or `--radius-pill` on the wrapper                        | Use `--radius-app` (22 %) on the squircle container                                   | Spacing §Radius                    |
+
+## Anti-patterns at a glance
+
+These four habits cause more drift than every other cause combined. If you see one in a code
+review, fix it before merging — it's cheaper than chasing the visual regression later.
+
+| Anti-pattern                                       | Why it drifts                                                         | Do this instead                                                                  |
+| -------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Inline `style={{ padding: 16, gap: 12 }}`          | Bypasses the token; future bumps don't propagate                      | Use the canonical class (`.grid`, `.card`, `.field-stack`) or the component      |
+| Re-implementing `Card` as a styled `<div>`         | Loses `span`, the title row, the padding ladder                       | `<Card span={n}>` — see Cards                                                    |
+| Hardcoded hex (`#1a1a1a`, `#fff`, `#006fff`)       | Doesn't react to motif flip; flat in light mode                       | Token: `var(--surface-1)`, `var(--text-1)`, `var(--brand)`                       |
+| Building your own page shell                       | Mismatched padding, no bottom-panel clearance, broken skip link       | `<AppLayout pageLabel topbar sidebar>` — see Page layout                         |
+
+## When all else fails
+
+If a userland page still looks wrong after the triage and the symptom table, open the matching
+**Dashboard** story in this Storybook and **inspect the rendered DOM**. Every class on the
+reference page (`.app`, `.workspace`, `.grid`, `.card`, `.ph-bar`, `.sb-item`) is documented under
+Foundations. The reference markup is the single source of truth — if your userland markup differs,
+that delta **is** the drift.
