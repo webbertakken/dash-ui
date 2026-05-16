@@ -48,6 +48,22 @@ html[data-motif='light'] {
   border-radius: 3px;
 }
 
+/* MDX prose links: dashboard.css resets `a { color: inherit; text-decoration: none }`
+   for app chrome, which makes links inside MDX docs visually indistinguishable from
+   surrounding prose (fails WCAG 1.4.1 use-of-colour). Restore the docs link
+   affordance: --text-link colour + underline by default, drop underline on hover. */
+.sbdocs a,
+.sbdocs a:link,
+.sbdocs a:visited {
+  color: var(--text-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sbdocs a:hover,
+.sbdocs a:focus-visible {
+  text-decoration: none;
+}
+
 /* MDX code blocks: dashboard.css doesn't style <pre>, and the inline-chip rule
    above bleeds into <pre><code>, making fenced code blocks render as a single
    dark chip with no padding or scroll. Reset <pre><code> back to a real code
