@@ -248,6 +248,10 @@
     "tag": "uni-gauge"
   },
   {
+    "name": "Grid",
+    "tag": "uni-grid"
+  },
+  {
     "name": "GroupedList",
     "tag": "uni-grouped-list"
   },

@@ -274,5 +274,6 @@ export type {
 } from './components/GroupedList.svelte'
 export { default as PageHeader } from './components/PageHeader.svelte'
 export { default as AppLayout } from './components/AppLayout.svelte'
+export { default as Grid } from './components/Grid.svelte'
 
 export * from './icons.js'

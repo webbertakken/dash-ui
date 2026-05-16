@@ -63,6 +63,7 @@ import './elements/ForceGraph.wc.svelte'
 import './elements/FunnelChart.wc.svelte'
 import './elements/GanttChart.wc.svelte'
 import './elements/Gauge.wc.svelte'
+import './elements/Grid.wc.svelte'
 import './elements/GroupedList.wc.svelte'
 import './elements/HealthBar.wc.svelte'
 import './elements/HeatMap.wc.svelte'
@@ -233,6 +234,7 @@ export const REGISTERED_TAGS = [
   'uni-funnel-chart',
   'uni-gantt-chart',
   'uni-gauge',
+  'uni-grid',
   'uni-grouped-list',
   'uni-health-bar',
   'uni-heat-map',

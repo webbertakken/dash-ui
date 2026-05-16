@@ -68,6 +68,18 @@ gap value the reference dashboards use. **Do not wrap them in extra containers**
 header, the 16px / 24px gutter, and the 12-column lanes only line up when they are direct children
 of the page root.
 
+Prefer the typed `<Grid>` import when you want an auto-importable component instead of a raw
+`<div className="grid">` — both render the same `.grid` element, so they are interchangeable:
+
+```tsx
+import { Grid, Card } from '@w5-ui/react'
+
+;<Grid>
+  <Card span={4}>…</Card>
+  <Card span={8}>…</Card>
+</Grid>
+```
+
 ## Anatomy
 
 | Layer              | Element                     | Where the values live                                        |
