@@ -114,15 +114,15 @@ import { KVTable } from '@w5-ui/react'
 ```
 
 Renders inside a `Drawer`, an `ExpandableRow` detail cell, or a `<Card>` body — never as a
-top-level tile on its own (it has no title chrome; use `<Card><h3>…</h3>…</Card>`).
+top-level tile on its own (it has no title chrome; use `<Card><CardTitle>…</CardTitle>…</Card>`).
 
 ### Top-N comparison inside a card → `RankedList`
 
 ```tsx
-import { Card, RankedList } from '@w5-ui/react'
+import { Card, CardTitle, CardMore, RankedList } from '@w5-ui/react'
 
 ;<Card span={6}>
-  <h3>Top clients <a className="more" href="/clients">All →</a></h3>
+  <CardTitle>Top clients <CardMore href="/clients">All →</CardMore></CardTitle>
   <RankedList unit="GB" items={topClients} />
 </Card>
 ```
@@ -133,10 +133,10 @@ consistent bars across two side-by-side `<Card>`s.
 ### Live activity stream → `ActivityFeed`
 
 ```tsx
-import { Card, ActivityFeed } from '@w5-ui/react'
+import { Card, CardTitle, ActivityFeed } from '@w5-ui/react'
 
 ;<Card span={6}>
-  <h3>Recent alarms</h3>
+  <CardTitle>Recent alarms</CardTitle>
   <ActivityFeed items={alarms} maxHeight={360} autoScroll />
 </Card>
 ```
@@ -163,10 +163,10 @@ the user has motion reduced.
 ### Inspecting an API response → `JsonViewer`
 
 ```tsx
-import { Card, JsonViewer } from '@w5-ui/react'
+import { Card, CardTitle, JsonViewer } from '@w5-ui/react'
 
 ;<Card span={12}>
-  <h3>Device config</h3>
+  <CardTitle>Device config</CardTitle>
   <JsonViewer data={config} defaultExpanded maxDepth={2} />
 </Card>
 ```
@@ -189,7 +189,7 @@ as a wall and lock the user into expand-everything mode.
 | Expandable rows shift other rows when toggled          | Hand-built collapse with `display: none` + transition              | Use `<ExpandableRow>` — the detail row reserves its column span and animates cleanly                 |
 | Long description blows past the card edge              | No clip / overflow rule on the description                         | Wrap in `<Spoiler maxHeight={…}>…</Spoiler>` — toggles "Show more", auto-detects clipping            |
 | Grouped sections always expanded or always collapsed   | Each group built as a `<details>` with bespoke chrome              | Use `<GroupedList groups={…} collapsible />` — per-group `defaultOpen`, accessible chevrons          |
-| `KVTable` rendered as a top-level tile, looks chromed  | Dropped onto `.grid` without a wrapping `<Card>` + `<h3>`          | Wrap in `<Card>` (or `<Drawer>` / `<ExpandableRow>` detail) — `KVTable` has no title of its own      |
+| `KVTable` rendered as a top-level tile, looks chromed  | Dropped onto `.grid` without a wrapping `<Card>` + `<CardTitle>`   | Wrap in `<Card>` (or `<Drawer>` / `<ExpandableRow>` detail) — `KVTable` has no title of its own      |
 | `<Stat>` nested inside `<Card>` looks doubly padded    | `<Card><Stat /></Card>`                                            | `<Stat>` is a `<Card>` already. Render at the top level of `.grid`                                   |
 
 ## CSS hooks userland can rely on
