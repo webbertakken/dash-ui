@@ -117,13 +117,13 @@
       oninput={onInputChange}
       onfocus={openList}
       onkeydown={onKeyDown}
-      class="box-border h-[34px] w-full rounded-md border border-white/10 bg-[#0a0a0b] py-0 pl-3 pr-9 text-13 leading-none text-white transition-colors duration-100 hover:border-white/20 focus:border-brand-05 focus:outline-none focus:shadow-[0_0_0_2px_rgba(0,111,255,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
+      class="box-border h-[34px] w-full rounded-md border border-border-2 bg-bg-page py-0 pl-3 pr-9 text-13 leading-none text-text-1 transition-colors duration-100 hover:border-border-3 focus:border-brand-05 focus:outline-none focus:shadow-[0_0_0_2px_rgba(0,111,255,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
     />
     <button
       type="button"
       tabindex={-1}
       aria-hidden="true"
-      class="absolute right-2 flex cursor-pointer items-center border-0 bg-transparent p-0.5 leading-none text-[#6e7079]"
+      class="absolute right-2 flex cursor-pointer items-center border-0 bg-transparent p-0.5 leading-none text-text-4"
       onclick={() => { if (open) { open = false; query = ''; } else { inputEl?.focus(); openList(); } }}
     >
       <svg
@@ -141,10 +141,10 @@
       id={listboxId}
       role="listbox"
       aria-label={label}
-      class="absolute left-0 top-[calc(100%+4px)] z-[9000] m-0 max-h-60 min-w-full list-none overflow-y-auto rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+      class="absolute left-0 top-[calc(100%+4px)] z-[9000] m-0 max-h-60 min-w-full list-none overflow-y-auto rounded-lg border border-border-3 bg-bg-2 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
     >
       {#if filtered.length === 0}
-        <li class="list-none p-2.5 text-center text-13 text-[#6e7079]">No results</li>
+        <li class="list-none p-2.5 text-center text-13 text-text-4">No results</li>
       {:else}
         {#each filtered as opt, idx (opt.value)}
           <li
@@ -152,7 +152,7 @@
             role="option"
             aria-selected={opt.value === value}
             data-active={idx === activeIdx ? 'true' : undefined}
-            class="flex cursor-pointer items-center rounded-[5px] px-2.5 py-1.5 text-13 text-[#c8c9d0] hover:bg-white/[0.06] hover:text-white data-[active=true]:bg-white/[0.06] data-[active=true]:text-white aria-selected:font-medium aria-selected:text-brand-05"
+            class="flex cursor-pointer items-center rounded-[5px] px-2.5 py-1.5 text-13 text-text-2 hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 aria-selected:font-medium aria-selected:text-brand-05"
             onmousedown={(e) => { e.preventDefault(); (() => pick(opt))(); }}
             onmouseenter={() => { activeIdx = idx; }}
           >{opt.label}</li>

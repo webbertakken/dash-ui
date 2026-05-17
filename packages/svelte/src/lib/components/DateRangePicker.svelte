@@ -133,17 +133,17 @@
   onDestroy(() => document.removeEventListener('mousedown', handleOutside));
 
   function dayCls(outside: boolean, isTodayDay: boolean, start: boolean, end: boolean, inRange: boolean) {
-    let cls = 'flex h-8 w-8 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-12 leading-none transition-colors duration-100 hover:bg-white/[0.06] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
-    if (outside) cls += ' text-[#4a4b53]';
-    else cls += ' text-[#c8c9d0]';
+    let cls = 'flex h-8 w-8 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-12 leading-none transition-colors duration-100 hover:bg-row-active focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
+    if (outside) cls += ' text-text-4';
+    else cls += ' text-text-2';
     if (isTodayDay && !start && !end) cls += ' ring-1 ring-inset ring-brand-05';
     if (start || end) cls += ' bg-brand-05 text-white hover:bg-brand-06';
-    else if (inRange) cls += ' bg-brand-05/20 text-white';
+    else if (inRange) cls += ' bg-brand-05/20 text-text-1';
     return cls;
   }
 
   const NAV_BTN =
-    'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
+    'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-text-4 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
 </script>
 
 <div class="relative inline-block" bind:this={triggerEl}>
@@ -164,7 +164,7 @@
       aria-modal="true"
       aria-label="Select date range"
       tabindex={-1}
-      class="absolute left-0 top-[calc(100%+4px)] z-[9100] rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-2 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+      class="absolute left-0 top-[calc(100%+4px)] z-[9100] rounded-lg border border-border-3 bg-bg-2 p-2 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
       onkeydown={(e) => {
         if (e.key === 'Escape') { e.preventDefault(); open = false; picking = null; }
       }}
@@ -178,12 +178,12 @@
                 <path d="M7 1L2 6l5 5" />
               </svg>
             </button>
-            <span class="text-13 font-medium text-white" aria-live="polite">{MONTHS[viewMonth]} {viewYear}</span>
+            <span class="text-13 font-medium text-text-1" aria-live="polite">{MONTHS[viewMonth]} {viewYear}</span>
             <span class="inline-block w-7" aria-hidden="true"></span>
           </div>
           <table role="grid" class="mt-1 border-collapse" aria-label={`${MONTHS[viewMonth]} ${viewYear}`}>
             <thead>
-              <tr>{#each DAYS as d}<th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-[#6e7079]">{d}</th>{/each}</tr>
+              <tr>{#each DAYS as d}<th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-text-4">{d}</th>{/each}</tr>
             </thead>
             <tbody>
               {#each Array(6) as _, row}
@@ -216,7 +216,7 @@
         <div>
           <div class="flex items-center justify-between px-1 py-1">
             <span class="inline-block w-7" aria-hidden="true"></span>
-            <span class="text-13 font-medium text-white" aria-live="polite">{MONTHS[rightMonth]} {rightYear}</span>
+            <span class="text-13 font-medium text-text-1" aria-live="polite">{MONTHS[rightMonth]} {rightYear}</span>
             <button type="button" class={NAV_BTN} onclick={nextMonth} aria-label="Next month">
               <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <path d="M1 1l5 5-5 5" />
@@ -225,7 +225,7 @@
           </div>
           <table role="grid" class="mt-1 border-collapse" aria-label={`${MONTHS[rightMonth]} ${rightYear}`}>
             <thead>
-              <tr>{#each DAYS as d}<th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-[#6e7079]">{d}</th>{/each}</tr>
+              <tr>{#each DAYS as d}<th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-text-4">{d}</th>{/each}</tr>
             </thead>
             <tbody>
               {#each Array(6) as _, row}
@@ -256,7 +256,7 @@
         </div>
       </div>
       {#if picking}
-        <p class="mt-2 px-1 text-12 text-[#7fb6ff]" aria-live="polite">Pick the end date</p>
+        <p class="mt-2 px-1 text-12 text-status-info" aria-live="polite">Pick the end date</p>
       {/if}
     </div>
   {/if}

@@ -97,20 +97,20 @@
   }
 
   const OCTET_CLS =
-    'w-9 border-0 bg-transparent p-0 text-center font-mono text-13 text-white outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none';
+    'w-9 border-0 bg-transparent p-0 text-center font-mono text-13 text-text-1 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none';
   const PREFIX_CLS =
-    'w-7 border-0 bg-transparent p-0 text-center font-mono text-13 text-white outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none';
+    'w-7 border-0 bg-transparent p-0 text-center font-mono text-13 text-text-1 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none';
 </script>
 
 <div class={className}>
   {#if label}
-    <label for="{uid}-0" class="text-12 text-[#6e7079]">{label}</label>
+    <label for="{uid}-0" class="text-12 text-text-4">{label}</label>
   {/if}
   <div
     role="group"
     aria-label={label ?? 'CIDR'}
     data-disabled={disabled ? 'true' : undefined}
-    class="inline-flex h-[34px] items-center gap-0.5 rounded-md border border-white/10 bg-[#0a0a0b] px-2 transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+    class="inline-flex h-[34px] items-center gap-0.5 rounded-md border border-border-2 bg-bg-page px-2 transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
   >
     {#each [0, 1, 2, 3] as i (i)}
       <input
@@ -133,7 +133,7 @@
         onpaste={handlePaste}
         onfocus={(e) => e.currentTarget.select()}
       />
-      <span aria-hidden="true" class="select-none text-13 leading-none text-[#6e7079]">{i < 3 ? '.' : '/'}</span>
+      <span aria-hidden="true" class="select-none text-13 leading-none text-text-4">{i < 3 ? '.' : '/'}</span>
     {/each}
     <input
       bind:this={inputs[4]}

@@ -78,8 +78,8 @@
   // Pre-composed variant chrome so Tailwind's static scanner sees the literals.
   const VARIANT: Record<NonNullable<Props['variant']>, string> = {
     primary: 'bg-brand-05 text-white hover:bg-brand-06 border-brand-05',
-    ghost: 'bg-transparent text-[#c8c9d0] border-white/10 hover:bg-white/[0.04] hover:text-white',
-    danger: 'bg-transparent text-[#ff7b7b] border-status-danger/30',
+    ghost: 'bg-transparent text-text-2 border-border-2 hover:bg-row-hover hover:text-text-1',
+    danger: 'bg-transparent text-status-danger border-status-danger/30',
   };
   // Shared button base — same metrics as the migrated Button.
   const BTN_BASE =
@@ -114,7 +114,7 @@
       id={menuId}
       role="menu"
       aria-label={`${label} options`}
-      class="absolute right-0 top-[calc(100%+4px)] z-[9100] m-0 min-w-[148px] list-none rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+      class="absolute right-0 top-[calc(100%+4px)] z-[9100] m-0 min-w-[148px] list-none rounded-lg border border-border-3 bg-bg-2 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
     >
       {#each items as item, idx (item.id)}
         <li
@@ -122,7 +122,7 @@
           tabindex={-1}
           aria-disabled={item.disabled}
           data-active={idx === activeIdx ? 'true' : undefined}
-          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-2.5 py-1.5 text-13 text-[#c8c9d0] outline-none hover:bg-white/[0.06] hover:text-white data-[active=true]:bg-white/[0.06] data-[active=true]:text-white aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
+          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-2.5 py-1.5 text-13 text-text-2 outline-none hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
           onmouseenter={() => { activeIdx = idx; }}
           onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(item.id); })(); }}
         >{item.label}</li>

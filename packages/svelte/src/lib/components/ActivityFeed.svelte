@@ -38,7 +38,7 @@
     success: 'bg-status-success',
     warn: 'bg-status-warning',
     error: 'bg-status-danger',
-    neutral: 'bg-white/30',
+    neutral: 'bg-status-neutral',
   };
 </script>
 
@@ -58,13 +58,13 @@
       aria-posinset={i + 1}
       aria-setsize={items.length}
       tabindex={0}
-      class="flex items-start gap-2 rounded-md px-2 py-1.5 text-13 hover:bg-white/[0.03] focus-visible:bg-white/[0.05] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
+      class="flex items-start gap-2 rounded-md px-2 py-1.5 text-13 hover:bg-divider focus-visible:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
     >
       <div class="mt-1.5 h-2 w-2 shrink-0 rounded-full {SEVERITY_DOT[sev]}" aria-hidden="true"></div>
       <div class="min-w-0 flex-1">
         <div class="flex items-baseline justify-between gap-2">
-          <span id="af-title-{item.id}" class="truncate font-medium text-white">{item.title}</span>
-          <span class="shrink-0 text-11 text-[#6e7079] tabular-nums">{item.time}</span>
+          <span id="af-title-{item.id}" class="truncate font-medium text-text-1">{item.title}</span>
+          <span class="shrink-0 text-11 text-text-4 tabular-nums">{item.time}</span>
         </div>
         {#if item.description}
           <p id="af-desc-{item.id}" class="m-0 mt-0.5 text-12 text-text-3">{item.description}</p>
@@ -73,7 +73,7 @@
     </article>
   {/each}
   {#if items.length === 0}
-    <div class="py-6 text-center text-12 text-[#6e7079]" role="status">No activity</div>
+    <div class="py-6 text-center text-12 text-text-4" role="status">No activity</div>
   {/if}
   <div bind:this={endEl}></div>
 </div>

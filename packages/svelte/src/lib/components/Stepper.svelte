@@ -21,19 +21,19 @@
   //   - connector line (::before via Tailwind arbitrary): bg colour
   const NUM: Record<'active' | 'done' | 'upcoming', string> = {
     active: 'border-brand-05 bg-brand-05 text-white',
-    done: 'border-brand-05 bg-brand-05/[0.18] text-[#7fb6ff]',
-    upcoming: 'border-[#2a2a2c] bg-neutral-09 text-[#6e7079]',
+    done: 'border-brand-05 bg-brand-05/[0.18] text-status-info',
+    upcoming: 'border-bg-3 bg-bg-1 text-text-4',
   };
   const LABEL: Record<'active' | 'done' | 'upcoming', string> = {
-    active: 'text-white font-medium',
-    done: 'text-[#7fb6ff]',
-    upcoming: 'text-[#6e7079]',
+    active: 'text-text-1 font-medium',
+    done: 'text-status-info',
+    upcoming: 'text-text-4',
   };
   // Connector tail to the left, drawn from item to item.
   const TAIL: Record<'active' | 'done' | 'upcoming', string> = {
     active: 'before:bg-brand-05',
     done: 'before:bg-brand-05',
-    upcoming: 'before:bg-[#2a2a2c]',
+    upcoming: 'before:bg-bg-3',
   };
 </script>
 

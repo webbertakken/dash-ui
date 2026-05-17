@@ -73,18 +73,18 @@
   }
 
   const FIELD_CLS =
-    'w-9 border-0 bg-transparent p-0 text-center font-mono text-13 text-white outline-none';
+    'w-9 border-0 bg-transparent p-0 text-center font-mono text-13 text-text-1 outline-none';
 </script>
 
 <div class={className}>
   {#if label}
-    <label for="{uid}-h" class="text-12 text-[#6e7079]">{label}</label>
+    <label for="{uid}-h" class="text-12 text-text-4">{label}</label>
   {/if}
   <div
     role="group"
     aria-label={label ?? 'Time'}
     data-disabled={disabled ? 'true' : undefined}
-    class="inline-flex h-[34px] items-center gap-0.5 rounded-md border border-white/10 bg-[#0a0a0b] px-2 transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+    class="inline-flex h-[34px] items-center gap-0.5 rounded-md border border-border-2 bg-bg-page px-2 transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
   >
     <input
       bind:this={inputs[0]}
@@ -106,7 +106,7 @@
       onkeydown={(e) => handleKey(0, e)}
       onfocus={(e) => e.currentTarget.select()}
     />
-    <span aria-hidden="true" class="select-none text-13 leading-none text-[#6e7079]">:</span>
+    <span aria-hidden="true" class="select-none text-13 leading-none text-text-4">:</span>
     <input
       bind:this={inputs[1]}
       type="text"

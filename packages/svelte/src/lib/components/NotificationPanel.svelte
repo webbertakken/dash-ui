@@ -103,15 +103,15 @@
 <div
   bind:this={panelEl}
   data-open={open ? 'true' : undefined}
-  class="fixed right-0 top-0 z-[9200] flex h-full w-[380px] max-w-[90vw] translate-x-full flex-col overflow-hidden border-l border-white/[0.08] bg-neutral-09 shadow-[0_0_40px_rgba(0,0,0,0.6)] transition-transform duration-200 data-[open=true]:translate-x-0 motion-reduce:transition-none"
+  class="fixed right-0 top-0 z-[9200] flex h-full w-[380px] max-w-[90vw] translate-x-full flex-col overflow-hidden border-l border-border-1 bg-bg-1 shadow-[0_0_40px_rgba(0,0,0,0.6)] transition-transform duration-200 data-[open=true]:translate-x-0 motion-reduce:transition-none"
   role="dialog"
   aria-modal="true"
   aria-labelledby={titleId}
   tabindex={-1}
 >
-  <div class="border-b border-white/[0.06] px-4 py-3">
+  <div class="border-b border-border-1 px-4 py-3">
     <div class="flex items-center justify-between gap-2">
-      <h2 id={titleId} class="m-0 flex items-center gap-2 text-15 font-semibold text-white">
+      <h2 id={titleId} class="m-0 flex items-center gap-2 text-15 font-semibold text-text-1">
         Notifications
         {#if unread > 0}
           <span class="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand-05 px-1.5 text-11 font-bold text-white tabular-nums" aria-label={`${unread} unread`}>{unread}</span>
@@ -121,14 +121,14 @@
         {#if unread > 0 && onMarkAllRead}
           <button
             type="button"
-            class="cursor-pointer rounded border-0 bg-transparent px-1.5 py-0.5 text-11 text-brand-05 hover:text-[#7fb6ff] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+            class="cursor-pointer rounded border-0 bg-transparent px-1.5 py-0.5 text-11 text-brand-05 hover:text-status-info focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
             onclick={onMarkAllRead}
           >Mark all read</button>
         {/if}
         <button
           type="button"
           aria-label="Close notifications"
-          class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+          class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-text-4 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
           onclick={onClose}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -144,7 +144,7 @@
           role="tab"
           aria-selected={filter === f}
           data-active={filter === f ? 'true' : undefined}
-          class="cursor-pointer rounded border border-white/10 bg-transparent px-2.5 py-0.5 text-11 text-text-3 hover:bg-white/[0.04] hover:text-white data-[active=true]:border-brand-05 data-[active=true]:bg-brand-05/[0.10] data-[active=true]:text-brand-05 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+          class="cursor-pointer rounded border border-border-2 bg-transparent px-2.5 py-0.5 text-11 text-text-3 hover:bg-row-hover hover:text-text-1 data-[active=true]:border-brand-05 data-[active=true]:bg-brand-05/[0.10] data-[active=true]:text-brand-05 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
           onclick={() => setFilter(f)}
         >
           {TYPE_LABEL[f] ?? f}
@@ -160,12 +160,12 @@
     aria-relevant="additions"
   >
     {#if filtered.length === 0}
-      <div class="p-6 text-center text-13 text-[#6e7079]">No notifications</div>
+      <div class="p-6 text-center text-13 text-text-4">No notifications</div>
     {:else}
       {#each filtered as n (n.id)}
         <div
           data-read={n.read ? 'true' : undefined}
-          class="flex items-start gap-2 border-b border-white/[0.04] px-4 py-3 last:border-b-0 data-[read=true]:opacity-60"
+          class="flex items-start gap-2 border-b border-border-1 px-4 py-3 last:border-b-0 data-[read=true]:opacity-60"
         >
           <span
             class="mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full"
@@ -174,13 +174,13 @@
           ></span>
           <div class="min-w-0 flex-1">
             <div class="flex items-baseline justify-between gap-2">
-              <span class="truncate text-13 font-medium text-white">{n.title}</span>
-              <span class="shrink-0 text-11 text-[#6e7079] tabular-nums">{n.time}</span>
+              <span class="truncate text-13 font-medium text-text-1">{n.title}</span>
+              <span class="shrink-0 text-11 text-text-4 tabular-nums">{n.time}</span>
             </div>
             {#if n.description}
               <p class="m-0 mt-0.5 text-12 text-text-3">{n.description}</p>
             {/if}
-            <span class="mt-1 inline-block rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.05em] text-[#6e7079]">{TYPE_LABEL[n.type]}</span>
+            <span class="mt-1 inline-block rounded bg-row-active px-1.5 py-0.5 text-[10px] uppercase tracking-[0.05em] text-text-4">{TYPE_LABEL[n.type]}</span>
           </div>
           {#if !n.read && onMarkRead}
             <button

@@ -104,7 +104,7 @@
   bind:this={rootEl}
   role="menubar"
   aria-label={label}
-  class="inline-flex items-center gap-0.5 rounded-md border border-white/[0.08] bg-white/[0.03] p-0.5 {klass}"
+  class="inline-flex items-center gap-0.5 rounded-md border border-border-1 bg-divider p-0.5 {klass}"
 >
   {#each menus as menu, idx (menu.id)}
     {@const isOpen = openIdx === idx}
@@ -119,7 +119,7 @@
         aria-expanded={isOpen}
         aria-controls={isOpen ? menuId : undefined}
         data-open={isOpen ? 'true' : undefined}
-        class="inline-flex cursor-pointer items-center rounded border-0 bg-transparent px-2.5 py-1.5 text-13 leading-none text-text-3 transition-[background-color,color] duration-100 hover:bg-white/[0.07] hover:text-[#e1e2e8] focus-visible:outline-2 focus-visible:outline-offset-[1px] focus-visible:outline-brand-05 data-[open=true]:bg-white/[0.07] data-[open=true]:text-[#e1e2e8]"
+        class="inline-flex cursor-pointer items-center rounded border-0 bg-transparent px-2.5 py-1.5 text-13 leading-none text-text-3 transition-[background-color,color] duration-100 hover:bg-row-active hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-[1px] focus-visible:outline-brand-05 data-[open=true]:bg-row-active data-[open=true]:text-text-1"
         onclick={() => { if (isOpen) closeMenu(); else openMenu(idx); }}
         onkeydown={(e) => handleTriggerKeyDown(e, idx)}
       >
@@ -130,11 +130,11 @@
           id={menuId}
           role="menu"
           aria-label={menu.label}
-          class="absolute left-0 top-[calc(100%+2px)] z-[200] m-0 min-w-[180px] list-none rounded-md border border-white/[0.12] bg-[#1f2329] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
+          class="absolute left-0 top-[calc(100%+2px)] z-[200] m-0 min-w-[180px] list-none rounded-md border border-border-3 bg-bg-2 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
         >
           {#each menu.items as item (item.id)}
             {#if item.separator}
-              <li role="separator" aria-hidden="true" class="my-[3px] h-px list-none bg-white/[0.08]"></li>
+              <li role="separator" aria-hidden="true" class="my-[3px] h-px list-none bg-row-active"></li>
             {:else}
               {@const eligIdx = elig.indexOf(item)}
               <li
@@ -142,7 +142,7 @@
                 tabindex={-1}
                 aria-disabled={item.disabled}
                 data-active={eligIdx === activeItemIdx && !item.disabled ? 'true' : undefined}
-                class="flex cursor-pointer select-none items-center whitespace-nowrap rounded px-2.5 py-1.5 text-13 text-text-3 transition-colors duration-75 hover:bg-white/[0.07] hover:text-[#e1e2e8] data-[active=true]:bg-white/[0.07] data-[active=true]:text-[#e1e2e8] aria-disabled:cursor-default aria-disabled:text-white/25 aria-disabled:pointer-events-none"
+                class="flex cursor-pointer select-none items-center whitespace-nowrap rounded px-2.5 py-1.5 text-13 text-text-3 transition-colors duration-75 hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 aria-disabled:cursor-default aria-disabled:text-white/25 aria-disabled:pointer-events-none"
                 onmouseenter={() => { if (!item.disabled) activeItemIdx = eligIdx; }}
                 onmousedown={(e) => { e.preventDefault(); (() => { if (!item.disabled) activate(menu.id, item.id); })(); }}
               >{item.label}</li>

@@ -45,15 +45,15 @@
   -->
   <h3>{label}</h3>
   <div
-    class="text-[28px] font-semibold leading-[1.05] tracking-[-0.01em] tabular-nums text-white"
+    class="text-[28px] font-semibold leading-[1.05] tracking-[-0.01em] tabular-nums text-text-1"
     style={color ? `color:${color};` : ''}
   >
     {#if valueSlot}{@render valueSlot()}{:else}{value}{/if}{#if unit}<span
-        class="ml-1 text-13 font-normal text-neutral-05"
+        class="ml-1 text-13 font-normal text-text-4"
       >{unit}</span>{/if}
   </div>
   {#if sub || delta}
-    <div class="text-[11px] tabular-nums text-neutral-05">
+    <div class="text-[11px] tabular-nums text-text-4">
       {#if sub}{sub}{/if}{#if sub && delta} \u00b7 {/if}{#if delta}<span class="sr-only">Trend: </span><span class={deltaClass}>{delta}</span>{/if}
     </div>
   {/if}

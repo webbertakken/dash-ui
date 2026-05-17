@@ -97,7 +97,7 @@
     aria-label={label}
     {disabled}
     type="button"
-    class="inline-flex h-[34px] cursor-pointer select-none items-center gap-1.5 whitespace-nowrap rounded-md border border-white/10 bg-[#0a0a0b] pl-3 pr-2.5 text-13 leading-none text-white transition-colors duration-100 hover:border-white/20 aria-expanded:border-brand-05 aria-expanded:shadow-[0_0_0_2px_rgba(0,111,255,0.2)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 disabled:cursor-not-allowed disabled:opacity-40"
+    class="inline-flex h-[34px] cursor-pointer select-none items-center gap-1.5 whitespace-nowrap rounded-md border border-border-2 bg-bg-page pl-3 pr-2.5 text-13 leading-none text-text-1 transition-colors duration-100 hover:border-border-3 aria-expanded:border-brand-05 aria-expanded:shadow-[0_0_0_2px_rgba(0,111,255,0.2)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 disabled:cursor-not-allowed disabled:opacity-40"
     onclick={toggle}
     onkeydown={onKeyDown}
   >
@@ -106,7 +106,7 @@
       viewBox="0 0 16 16"
       aria-hidden="true"
       focusable="false"
-      class="h-3.5 w-3.5 shrink-0 text-[#6e7079] transition-transform duration-100 motion-reduce:transition-none {open ? 'rotate-180' : ''}"
+      class="h-3.5 w-3.5 shrink-0 text-text-4 transition-transform duration-100 motion-reduce:transition-none {open ? 'rotate-180' : ''}"
     >
       <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
     </svg>
@@ -116,14 +116,14 @@
       id={listboxId}
       role="listbox"
       aria-label={label}
-      class="absolute left-0 top-[calc(100%+4px)] z-[9000] m-0 min-w-full list-none rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+      class="absolute left-0 top-[calc(100%+4px)] z-[9000] m-0 min-w-full list-none rounded-lg border border-border-3 bg-bg-2 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
     >
       {#each options as opt, idx (opt.value)}
         <li
           role="option"
           aria-selected={opt.value === value}
           data-active={idx === activeIdx ? 'true' : undefined}
-          class="flex cursor-pointer items-center rounded-[5px] px-2.5 py-1.5 text-13 text-[#c8c9d0] hover:bg-white/[0.06] hover:text-white data-[active=true]:bg-white/[0.06] data-[active=true]:text-white aria-selected:font-medium aria-selected:text-brand-05"
+          class="flex cursor-pointer items-center rounded-[5px] px-2.5 py-1.5 text-13 text-text-2 hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 aria-selected:font-medium aria-selected:text-brand-05"
           onmousedown={(e) => { e.preventDefault(); (() => pick(opt.value))(); }}
           onmouseenter={() => { activeIdx = idx; }}
         >{opt.label}</li>

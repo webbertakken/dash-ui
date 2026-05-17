@@ -131,9 +131,9 @@
   onDestroy(() => document.removeEventListener('mousedown', handleOutside));
 
   function dayCls(outside: boolean, isToday: boolean, isSelected: boolean) {
-    let cls = 'flex h-8 w-8 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-12 leading-none transition-colors duration-100 hover:bg-white/[0.06] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
-    if (outside) cls += ' text-[#4a4b53]';
-    else cls += ' text-[#c8c9d0]';
+    let cls = 'flex h-8 w-8 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-12 leading-none transition-colors duration-100 hover:bg-row-active focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
+    if (outside) cls += ' text-text-4';
+    else cls += ' text-text-2';
     if (isToday && !isSelected) cls += ' ring-1 ring-inset ring-brand-05';
     if (isSelected) cls += ' bg-brand-05 text-white hover:bg-brand-06';
     return cls;
@@ -156,16 +156,16 @@
       role="dialog"
       aria-modal="true"
       aria-label={`Choose date, ${label}`}
-      class="absolute left-0 top-[calc(100%+4px)] z-[9100] rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-2 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+      class="absolute left-0 top-[calc(100%+4px)] z-[9100] rounded-lg border border-border-3 bg-bg-2 p-2 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
     >
       <div class="flex items-center justify-between px-1 py-1">
-        <button type="button" class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05" onclick={prevMonth} aria-label="Previous month">
+        <button type="button" class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-text-4 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05" onclick={prevMonth} aria-label="Previous month">
           <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M7 1L2 6l5 5" />
           </svg>
         </button>
-        <span class="text-13 font-medium text-white" aria-live="polite">{label}</span>
-        <button type="button" class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05" onclick={nextMonth} aria-label="Next month">
+        <span class="text-13 font-medium text-text-1" aria-live="polite">{label}</span>
+        <button type="button" class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-text-4 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05" onclick={nextMonth} aria-label="Next month">
           <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M1 1l5 5-5 5" />
           </svg>
@@ -176,7 +176,7 @@
         <thead>
           <tr>
             {#each DAYS as d}
-              <th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-[#6e7079]">{d}</th>
+              <th scope="col" abbr={d} class="p-0 text-center text-11 font-semibold uppercase tracking-[0.05em] text-text-4">{d}</th>
             {/each}
           </tr>
         </thead>

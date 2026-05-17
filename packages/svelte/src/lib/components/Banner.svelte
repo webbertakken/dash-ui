@@ -31,16 +31,16 @@
   // Pre-composed variant pairs (banner + title tint). Backgrounds at 10%,
   // top border solid in the base colour, both matching dashboard.css.
   const BANNER: Record<BannerVariant, string> = {
-    info: 'bg-status-info/10 border-t-brand-05 text-[#7fb6ff]',
-    success: 'bg-status-success/10 border-t-status-success text-[#5ddb9f]',
-    warn: 'bg-status-warning/10 border-t-status-warning text-[#f5c26b]',
-    danger: 'bg-status-danger/10 border-t-status-danger text-[#ff7b7b]',
+    info: 'bg-status-info/10 border-t-brand-05 text-status-info',
+    success: 'bg-status-success/10 border-t-status-success text-status-success',
+    warn: 'bg-status-warning/10 border-t-status-warning text-status-warning',
+    danger: 'bg-status-danger/10 border-t-status-danger text-status-danger',
   };
   const TITLE: Record<BannerVariant, string> = {
-    info: 'text-[#b8dbff]',
-    success: 'text-[#a0edd0]',
-    warn: 'text-[#f5e1a8]',
-    danger: 'text-[#ffb8b8]',
+    info: 'text-status-info',
+    success: 'text-status-success',
+    warn: 'text-status-warning',
+    danger: 'text-status-danger',
   };
 </script>
 

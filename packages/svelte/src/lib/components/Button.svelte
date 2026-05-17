@@ -42,14 +42,15 @@
   }: Props = $props();
 
   // Pre-compose variant strings so Tailwind's static scanner picks them up.
-  // Values match dashboard.css exactly:
-  //   primary: #006fff bg / #fff text / hover #4797ff (brand-05 / brand-06)
-  //   ghost:   transparent / #c8c9d0 / rgba(255,255,255,0.1) border / hover bg-white/[0.04]
-  //   danger:  #ff7b7b text / rgba(240,58,58,0.3) border
+  // Motif-aware:
+  //   primary: brand-blue, always white text (works against blue in both motifs).
+  //   ghost:   transparent surface with motif-aware text/border + hover.
+  //   danger:  semantic status-danger text + faded border.
   const VARIANT: Record<NonNullable<Props['variant']>, string> = {
     primary: 'bg-brand-05 text-white hover:bg-brand-06 border-transparent',
-    ghost: 'bg-transparent text-[#c8c9d0] border-white/10 hover:bg-white/[0.04] hover:text-white',
-    danger: 'bg-transparent text-[#ff7b7b] border-status-danger/30',
+    ghost:
+      'bg-transparent text-text-2 border-border-2 hover:bg-row-hover hover:text-text-1',
+    danger: 'bg-transparent text-status-danger border-status-danger/30',
   };
 </script>
 

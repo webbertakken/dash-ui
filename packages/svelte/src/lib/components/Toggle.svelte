@@ -25,7 +25,7 @@
   aria-label={ariaLabel}
   aria-describedby={ariaDescribedBy}
   class="relative inline-block h-[18px] w-8 shrink-0 cursor-pointer appearance-none rounded-full border-0 p-0 font-[inherit] text-[inherit] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05
-    {on ? 'bg-brand-05' : 'bg-neutral-07'}"
+    {on ? 'bg-brand-05' : 'bg-text-4'}"
   onclick={flip}
 >
   <span

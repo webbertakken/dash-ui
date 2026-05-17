@@ -94,11 +94,11 @@
       bind:this={panelEl}
       role="dialog"
       aria-labelledby={title ? titleId : undefined}
-      class="absolute z-[9100] min-w-[200px] max-w-[320px] rounded-[10px] border border-white/[0.12] bg-[#1a1a1c] shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none {PLACEMENT[placement]}"
+      class="absolute z-[9100] min-w-[200px] max-w-[320px] rounded-[10px] border border-border-3 bg-bg-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none {PLACEMENT[placement]}"
       tabindex={-1}
     >
       {#if title}
-        <div id={titleId} class="border-b border-white/[0.06] px-3.5 pb-2 pt-2.5 text-11 font-semibold uppercase tracking-[0.06em] text-[#6e7079]">
+        <div id={titleId} class="border-b border-border-1 px-3.5 pb-2 pt-2.5 text-11 font-semibold uppercase tracking-[0.06em] text-text-4">
           {title}
         </div>
       {/if}

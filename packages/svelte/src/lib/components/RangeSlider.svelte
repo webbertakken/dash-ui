@@ -45,8 +45,8 @@
 <div class="flex flex-col gap-1.5">
   {#if label}
     <div class="flex items-center justify-between gap-2">
-      <span class="text-12 text-[#6e7079]">{label}</span>
-      <span class="text-12 font-medium text-white tabular-nums" aria-live="polite">{low}{suffix ?? ''} &ndash; {high}{suffix ?? ''}</span>
+      <span class="text-12 text-text-4">{label}</span>
+      <span class="text-12 font-medium text-text-1 tabular-nums" aria-live="polite">{low}{suffix ?? ''} &ndash; {high}{suffix ?? ''}</span>
     </div>
   {/if}
   <div
@@ -54,7 +54,7 @@
     role="group"
     aria-label={label}
   >
-    <div class="absolute left-0 right-0 top-1/2 h-1 -translate-y-1/2 rounded-sm bg-white/[0.12]"></div>
+    <div class="absolute left-0 right-0 top-1/2 h-1 -translate-y-1/2 rounded-sm bg-bg-3"></div>
     <div
       class="absolute top-1/2 h-1 -translate-y-1/2 rounded-sm bg-brand-05"
       style="left:{lowPct}%; right:{100 - highPct}%"

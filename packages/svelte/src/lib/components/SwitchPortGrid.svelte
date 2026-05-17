@@ -30,7 +30,7 @@
   const STATUS_BTN: Record<SwitchPortStatus, string> = {
     up: 'border-status-success/40 bg-status-success/[0.08] text-status-success hover:bg-status-success/15',
     poe: 'border-status-warning/40 bg-status-warning/[0.10] text-status-warning hover:bg-status-warning/20',
-    down: 'border-white/[0.08] bg-white/[0.02] text-[#6e7079] hover:bg-white/[0.04]',
+    down: 'border-border-1 bg-divider text-text-4 hover:bg-row-hover',
   };
 </script>
 

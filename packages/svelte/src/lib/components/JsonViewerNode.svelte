@@ -34,14 +34,17 @@
   let cb = $derived(isArr ? ']' : '}');
   let indent = $derived(depth * 14);
 
-  const KEY = 'text-[#9cdcfe]';
-  const COLON = 'text-[#6e7079]';
-  const NULL = 'text-[#6e7079] italic';
-  const STR = 'text-[#ce9178]';
-  const NUM = 'text-[#b5cea8]';
-  const BOOL = 'text-[#569cd6]';
-  const BRACKET = 'text-[#c8c9d0]';
-  const COUNT = 'text-[#6e7079] tabular-nums px-1';
+  // Syntax-highlight palette is motif-aware: dark uses the familiar
+  // VS Code dark-plus accents; light flips to a calmer, slightly
+  // higher-contrast set tuned for #ffffff page bg.
+  const KEY = 'text-[#9cdcfe] dark:text-[#9cdcfe] light:text-[#0451a5]';
+  const COLON = 'text-text-4';
+  const NULL = 'text-text-4 italic';
+  const STR = 'text-[#ce9178] dark:text-[#ce9178] light:text-[#a31515]';
+  const NUM = 'text-[#b5cea8] dark:text-[#b5cea8] light:text-[#098658]';
+  const BOOL = 'text-[#569cd6] dark:text-[#569cd6] light:text-[#0000ff]';
+  const BRACKET = 'text-text-2';
+  const COUNT = 'text-text-4 tabular-nums px-1';
 </script>
 
 {#if !expandable}
@@ -57,11 +60,11 @@
     <button
       type="button"
       aria-label={`${open ? 'Collapse' : 'Expand'} ${k ?? (isArr ? 'array' : 'object')}`}
-      class="flex w-full cursor-pointer items-baseline border-0 bg-transparent px-3 py-px text-left font-mono text-12 leading-[1.8] hover:bg-white/[0.03] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
+      class="flex w-full cursor-pointer items-baseline border-0 bg-transparent px-3 py-px text-left font-mono text-12 leading-[1.8] hover:bg-divider focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
       style:padding-left="{indent}px"
       onclick={() => (open = !open)}
     >
-      <span class="mr-1 inline-block w-3 text-[#6e7079]" aria-hidden="true">{open ? '▾' : '▸'}</span>
+      <span class="mr-1 inline-block w-3 text-text-4" aria-hidden="true">{open ? '▾' : '▸'}</span>
       {#if k != null}<span class={KEY}>"{k}"</span><span class={COLON}>: </span>{/if}
       <span class={BRACKET}>{ob}</span>
       {#if !open}<span class={COUNT}>&thinsp;{count}&thinsp;</span><span class={BRACKET}>{cb}</span>{/if}

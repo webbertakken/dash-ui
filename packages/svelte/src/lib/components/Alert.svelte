@@ -14,10 +14,10 @@
   // up. Values match dashboard.css exactly: 10% bg tint + left-border in
   // the variant base colour + hand-tuned readable text colour.
   const VARIANT: Record<NonNullable<Props['variant']>, string> = {
-    success: 'bg-status-success/10 border-l-status-success text-[#5ddb9f]',
-    warn: 'bg-status-warning/10 border-l-status-warning text-[#f5c26b]',
-    danger: 'bg-status-danger/10 border-l-status-danger text-[#ff7b7b]',
-    info: 'bg-status-info/10 border-l-brand-05 text-[#7fb6ff]',
+    success: 'bg-status-success/10 border-l-status-success text-status-success',
+    warn: 'bg-status-warning/10 border-l-status-warning text-status-warning',
+    danger: 'bg-status-danger/10 border-l-status-danger text-status-danger',
+    info: 'bg-status-info/10 border-l-brand-05 text-status-info',
   };
 </script>
 

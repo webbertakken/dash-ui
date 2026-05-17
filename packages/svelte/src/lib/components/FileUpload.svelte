@@ -73,7 +73,7 @@
   onkeydown={onKeyDown}
   tabindex={disabled ? -1 : 0}
   aria-label={done ?? label}
-  class="flex cursor-pointer select-none flex-col items-center justify-center gap-2.5 rounded-[10px] border-[1.5px] border-dashed border-white/[0.14] bg-white/[0.02] p-6 text-center transition-[border-color,background-color] duration-100 hover:border-white/30 data-[drag=true]:border-brand-05 data-[drag=true]:bg-brand-05/[0.08] data-[done=true]:border-status-success data-[done=true]:bg-status-success/[0.08] data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+  class="flex cursor-pointer select-none flex-col items-center justify-center gap-2.5 rounded-[10px] border-[1.5px] border-dashed border-border-3 bg-divider p-6 text-center transition-[border-color,background-color] duration-100 hover:border-text-3 data-[drag=true]:border-brand-05 data-[drag=true]:bg-brand-05/[0.08] data-[done=true]:border-status-success data-[done=true]:bg-status-success/[0.08] data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
 >
   <input
     bind:this={inputEl}
@@ -86,7 +86,7 @@
     tabindex={-1}
     onchange={onChange}
   />
-  <svg class="h-7 w-7 shrink-0 text-[#6e7079]" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <svg class="h-7 w-7 shrink-0 text-text-4" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     {#if done}
       <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
     {:else}
@@ -95,9 +95,9 @@
     {/if}
   </svg>
   <div>
-    <span class="block text-13 text-[#c8c9d0]">{done ?? label}</span>
+    <span class="block text-13 text-text-2">{done ?? label}</span>
     {#if !done && hint}
-      <p class="m-0 mt-1 text-11 text-[#6e7079]">{hint}</p>
+      <p class="m-0 mt-1 text-11 text-text-4">{hint}</p>
     {/if}
   </div>
 </div>

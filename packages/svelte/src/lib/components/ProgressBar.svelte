@@ -20,12 +20,12 @@
 <div class="flex flex-col gap-1">
   {#if hasHeader}
     <div class="flex justify-between text-12">
-      {#if label}<span class="text-[#c8c9d0]">{label}</span>{/if}
-      <span class="font-mono text-neutral-04">{displayed}</span>
+      {#if label}<span class="text-text-2">{label}</span>{/if}
+      <span class="font-mono text-text-3">{displayed}</span>
     </div>
   {/if}
   <div
-    class="h-1.5 overflow-hidden rounded-[3px] bg-white/[0.06]"
+    class="h-1.5 overflow-hidden rounded-[3px] bg-row-active"
     role="progressbar"
     aria-valuenow={Math.round(clamped)}
     aria-valuemin={0}

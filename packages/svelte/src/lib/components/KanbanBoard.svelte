@@ -100,7 +100,7 @@
       <div
         data-over={dragOverCol === col.id ? 'true' : undefined}
         role="listitem"
-        class="flex min-w-[240px] flex-1 flex-col gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] p-2 data-[over=true]:border-brand-05/40 data-[over=true]:bg-brand-05/[0.04]"
+        class="flex min-w-[240px] flex-1 flex-col gap-2 rounded-lg border border-border-1 bg-divider p-2 data-[over=true]:border-brand-05/40 data-[over=true]:bg-brand-05/[0.04]"
         ondragover={(e) => handleDragOver(e, col.id)}
         ondragleave={() => { dragOverCol = null; }}
         ondrop={(e) => handleDrop(e, col.id)}
@@ -111,7 +111,7 @@
           {/if}
           <span class="flex-1 text-12 font-semibold uppercase tracking-[0.05em] text-text-3">{col.title}</span>
           <span
-            class="rounded bg-white/[0.06] px-1.5 py-0.5 text-11 text-[#6e7079] tabular-nums"
+            class="rounded bg-row-active px-1.5 py-0.5 text-11 text-text-4 tabular-nums"
             aria-label={`${col.cards.length} card${col.cards.length !== 1 ? 's' : ''}`}
           >
             {col.cards.length}
@@ -129,19 +129,19 @@
                 aria-pressed={isGrabbed}
                 aria-label={`${card.title}${card.subtitle ? `, ${card.subtitle}` : ''}${card.meta ? `, ${card.meta}` : ''}. ${isGrabbed ? 'Moving. Use arrow keys to change column, Space to drop, Escape to cancel.' : 'Press Space to move.'}`}
                 data-grabbed={isGrabbed ? 'true' : undefined}
-                class="flex w-full cursor-grab flex-col items-start gap-0.5 rounded-md border border-white/[0.06] bg-neutral-09 p-2 text-left active:cursor-grabbing hover:border-white/[0.12] data-[grabbed=true]:border-brand-05 data-[grabbed=true]:bg-brand-05/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+                class="flex w-full cursor-grab flex-col items-start gap-0.5 rounded-md border border-border-1 bg-bg-1 p-2 text-left active:cursor-grabbing hover:border-border-3 data-[grabbed=true]:border-brand-05 data-[grabbed=true]:bg-brand-05/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
                 onkeydown={(e) => handleKeyDown(e, card, col)}
                 ondragstart={(e) => handleDragStart(e, card.id, col.id)}
                 ondragend={() => { dragSrc = null; dragOverCol = null; }}
               >
-                <span class="text-13 font-medium text-white">{card.title}</span>
+                <span class="text-13 font-medium text-text-1">{card.title}</span>
                 {#if card.subtitle}<span class="text-12 text-text-3">{card.subtitle}</span>{/if}
-                {#if card.meta}<span class="text-11 text-[#6e7079]">{card.meta}</span>{/if}
+                {#if card.meta}<span class="text-11 text-text-4">{card.meta}</span>{/if}
               </button>
             </li>
           {/each}
           {#if col.cards.length === 0}
-            <li class="rounded-md border border-dashed border-white/[0.06] p-3 text-center text-11 text-[#6e7079]" role="note" aria-label={`${col.title} is empty`}>Empty</li>
+            <li class="rounded-md border border-dashed border-border-1 p-3 text-center text-11 text-text-4" role="note" aria-label={`${col.title} is empty`}>Empty</li>
           {/if}
         </ul>
       </div>

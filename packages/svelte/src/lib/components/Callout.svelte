@@ -15,18 +15,18 @@
   // separate title colour. Pre-composed so Tailwind v4's static scanner
   // picks them up.
   const VARIANT: Record<CalloutVariant, string> = {
-    info: 'bg-brand-05/[0.08] border-l-brand-05 text-[#7fb6ff]',
-    success: 'bg-status-success/[0.08] border-l-status-success text-[#5ddb9f]',
-    warn: 'bg-status-warning/[0.08] border-l-status-warning text-[#f5c26b]',
-    danger: 'bg-status-danger/[0.08] border-l-status-danger text-[#ff9898]',
-    tip: 'bg-brand-04/[0.08] border-l-brand-04 text-[#7fb6ff]',
+    info: 'bg-brand-05/[0.08] border-l-brand-05 text-status-info',
+    success: 'bg-status-success/[0.08] border-l-status-success text-status-success',
+    warn: 'bg-status-warning/[0.08] border-l-status-warning text-status-warning',
+    danger: 'bg-status-danger/[0.08] border-l-status-danger text-status-danger',
+    tip: 'bg-brand-04/[0.08] border-l-brand-04 text-status-info',
   };
   const TITLE_COLOUR: Record<CalloutVariant, string> = {
-    info: 'text-[#b8dbff]',
-    success: 'text-[#a0edd0]',
-    warn: 'text-[#ffdb99]',
-    danger: 'text-[#ffc0c0]',
-    tip: 'text-[#b8dbff]',
+    info: 'text-status-info',
+    success: 'text-status-success',
+    warn: 'text-status-warning',
+    danger: 'text-status-danger',
+    tip: 'text-status-info',
   };
 </script>
 

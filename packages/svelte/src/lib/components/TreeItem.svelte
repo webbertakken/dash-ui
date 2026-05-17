@@ -34,14 +34,14 @@
 >
   <div
     data-selected={isSelected ? 'true' : undefined}
-    class="flex items-center gap-2 rounded px-2 py-1 text-13 text-[#c8c9d0] hover:bg-white/[0.04] data-[selected=true]:bg-brand-05/[0.18] data-[selected=true]:text-white"
+    class="flex items-center gap-2 rounded px-2 py-1 text-13 text-text-2 hover:bg-row-hover data-[selected=true]:bg-brand-05/[0.18] data-[selected=true]:text-text-1"
   >
     {#if hasChildren}
       <svg
         viewBox="0 0 12 12"
         fill="none"
         aria-hidden="true"
-        class="h-3 w-3 shrink-0 text-[#6e7079] transition-transform duration-100 motion-reduce:transition-none {isExpanded ? 'rotate-90' : ''}"
+        class="h-3 w-3 shrink-0 text-text-4 transition-transform duration-100 motion-reduce:transition-none {isExpanded ? 'rotate-90' : ''}"
       >
         <path
           d="M4 2l4 4-4 4"
@@ -55,7 +55,7 @@
       <span class="inline-block w-3 shrink-0" aria-hidden="true"></span>
     {/if}
     <span class="flex-1 truncate">{node.label}</span>
-    {#if node.meta}<span class="text-11 text-[#6e7079]">{node.meta}</span>{/if}
+    {#if node.meta}<span class="text-11 text-text-4">{node.meta}</span>{/if}
   </div>
   {#if hasChildren && isExpanded && node.children}
     <ul role="group" class="m-0 list-none pl-4">

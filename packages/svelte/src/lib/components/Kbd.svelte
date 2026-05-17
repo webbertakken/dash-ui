@@ -13,10 +13,10 @@
   {#each parts as key, i}
     <span class="inline-flex items-center gap-0.5">
       {#if i > 0}
-        <span class="px-px font-sans text-[10px] leading-none text-neutral-05" aria-hidden="true">+</span>
+        <span class="px-px font-sans text-[10px] leading-none text-text-4" aria-hidden="true">+</span>
       {/if}
       <kbd
-        class="inline-flex min-w-[18px] items-center justify-center rounded border border-b-2 border-white/14 bg-white/[0.06] px-1.5 py-0.5 font-[inherit] text-[#9899a6] [box-shadow:0_1px_0_rgba(0,0,0,0.4)]"
+        class="inline-flex min-w-[18px] items-center justify-center rounded border border-b-2 border-border-3 bg-row-active px-1.5 py-0.5 font-[inherit] text-text-3 [box-shadow:0_1px_0_rgba(0,0,0,0.4)]"
       >{key}</kbd>
     </span>
   {/each}

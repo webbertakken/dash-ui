@@ -36,7 +36,7 @@
   // to read clearly when stacked. Ring uses the chrome's literal
   // #0a0a0b (neutral-10) to match dashboard.css.
   const OVERLAP =
-    '[&_>*:not(:last-child)>span]:-ml-2 [&_>*>span]:border-2 [&_>*>span]:border-neutral-10';
+    '[&_>*:not(:last-child)>span]:-ml-2 [&_>*>span]:border-2 [&_>*>span]:border-bg-page';
 </script>
 
 <span
@@ -52,7 +52,7 @@
   {#if overflow > 0}
     <span
       role="listitem"
-      class="relative inline-flex shrink-0 select-none items-center justify-center overflow-visible rounded-full border-2 border-neutral-10 bg-neutral-07 font-bold text-neutral-04 {SIZE[
+      class="relative inline-flex shrink-0 select-none items-center justify-center overflow-visible rounded-full border-2 border-bg-page bg-neutral-07 font-bold text-text-3 {SIZE[
         size
       ]}"
       aria-label="{overflow} more"
