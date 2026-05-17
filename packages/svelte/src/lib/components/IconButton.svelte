@@ -25,7 +25,7 @@
 
 <button
   {type}
-  class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-neutral-04 hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 {className}"
+  class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-text-3 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 {className}"
   {title}
   {style}
   {...rest}

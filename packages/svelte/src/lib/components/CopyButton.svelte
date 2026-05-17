@@ -22,7 +22,7 @@
   type="button"
   data-copied={copied ? 'true' : undefined}
   aria-label={copied ? 'Copied!' : label}
-  class="inline-flex h-[22px] w-[22px] shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] transition-[color,background-color] duration-100 hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 data-[copied=true]:text-status-success data-[copied=true]:hover:bg-status-success/10 data-[copied=true]:hover:text-[#5ddb9f]"
+  class="inline-flex h-[22px] w-[22px] shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-text-4 transition-[color,background-color] duration-100 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 data-[copied=true]:text-status-success data-[copied=true]:hover:bg-status-success/10"
   onclick={handleCopy}
 >
   {#if copied}

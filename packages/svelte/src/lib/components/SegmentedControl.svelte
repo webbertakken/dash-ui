@@ -38,15 +38,18 @@
   }
 
   const BTN_BASE =
-    'flex-shrink-0 grow-0 inline-flex h-7 cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-md border-0 bg-transparent px-3 text-12 font-medium leading-none text-text-3 transition-[background-color,color] duration-100 hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
-  const BTN_ACTIVE = 'bg-[#1f2433] text-white shadow-[0_1px_3px_rgba(0,0,0,0.4)]';
+    'flex-shrink-0 grow-0 inline-flex h-7 cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-md border-0 bg-transparent px-3 text-12 font-medium leading-none text-text-3 transition-[background-color,color] duration-100 hover:bg-row-hover hover:text-text-1 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
+  // Active button uses the elevated `--depthBg-3` so the active pill
+  // is legible on both motifs (a darker step on dark, a softer grey on light).
+  const BTN_ACTIVE =
+    'bg-bg-3 text-text-1 shadow-[0_1px_3px_rgba(0,0,0,0.18)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.4)]';
 </script>
 
 <div
   bind:this={root}
   role="radiogroup"
   aria-label={label}
-  class="inline-flex gap-px rounded-lg bg-white/[0.04] p-0.5"
+  class="inline-flex gap-px rounded-lg bg-bg-2 p-0.5"
   tabindex={-1}
   onkeydown={handleKeyDown}
 >
