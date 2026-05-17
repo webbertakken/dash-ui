@@ -1,0 +1,346 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Navigation" />
+
+# Navigation
+
+There are seven ways to switch context in the reference dashboards. Pick the wrong one and userland
+either grows a second sidebar, double-stacks tabs above tabs, or invents a custom pill group that
+doesn't match the rhythm of the rest of the page. Dash UI ships every navigation primitive the
+reference pages use — reuse them and the chrome falls out at the right size.
+
+## Pick by question
+
+Start from the answer to "what is changing when the user clicks?".
+
+| The click…                                                       | Reach for                         |
+| ---------------------------------------------------------------- | --------------------------------- |
+| Switches the whole product surface (System / Instances / Agents) | `Topbar` apps                     |
+| Switches the active page inside the workspace                    | `Sidebar`                         |
+| Switches the section inside one page, with persistent URL        | `Tabs`                            |
+| Toggles between 2–4 mutually exclusive views of the same data    | `SegmentedControl`                |
+| Toggles 1–N independent filters (multi-select)                   | `ToggleGroup`                     |
+| Opens a top-level command (File / Edit / Help) with sub-commands | `Menubar`                         |
+| Shows where the user is inside a hierarchy                       | `Breadcrumb`                      |
+| Walks the user through an ordered, completable flow              | `Stepper`                         |
+| Triggers an action on one or more selected rows                  | `ActionMenu` / `SelectionToolbar` |
+| Jumps anywhere in the app via keyboard                           | `CommandPalette`                  |
+
+If the click _runs a single action_ instead of changing context, that's a `<uni-button>` — see
+**Foundations / Status & feedback** for confirmations.
+
+## The chrome stack
+
+`AppLayout` mounts the three persistent layers in the right order. Userland never reaches into this
+stack — it just supplies the `topbar` and `sidebar` props and the page content falls into `<main>`.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-app-layout
+  pageLabel="Devices"
+  topbar={<uni-topbar siteName="HQ" activeApp="system" onAppChange={setApp} />}
+  sidebar={<uni-sidebar sections={SECTIONS} activeId={page} onChange={setPage} />}
+>
+  <!-- page content -->
+</uni-app-layout>
+```
+
+| Layer            | Component                          | Lives for…            | Picks…                                |
+| ---------------- | ---------------------------------- | --------------------- | ------------------------------------- |
+| Product chrome   | `Topbar`                           | Whole session         | Site + app surface (System / Agents…) |
+| Workspace chrome | `Sidebar`                          | Whole session per app | Page inside the active app            |
+| Page chrome      | `Tabs`                             | One page              | Section inside the page               |
+| Section chrome   | `SegmentedControl` / `ToggleGroup` | One section           | View or filter inside the section     |
+
+These four layers correspond to four URL depths (`/system`, `/system/devices`,
+`/system/devices?tab=board`, `/system/devices?tab=board&view=grid`). If a click jumps two layers at
+once, you're rebuilding the chrome — surface the change through the existing layer instead.
+
+## Tabs vs SegmentedControl vs ToggleGroup vs Menubar
+
+These four look superficially similar (a row of pressable controls), but their semantics differ and
+screen-reader behaviour changes accordingly.
+
+| Component          | Selection         | ARIA role                      | Use when                                                               |
+| ------------------ | ----------------- | ------------------------------ | ---------------------------------------------------------------------- |
+| `Tabs`             | Single, exclusive | `tablist`+`tab`+`tabpanel`     | Switching panels of content inside one page (Overview / Board / Map)   |
+| `SegmentedControl` | Single, exclusive | `radiogroup`+`radio`           | Switching the same data's representation (Grid / List / Map)           |
+| `ToggleGroup`      | Multi-select      | `group`+`button[aria-pressed]` | Independent on/off filters that combine (Wired ∪ Wireless)             |
+| `Menubar`          | Action on click   | `menubar`+`menuitem`           | A persistent menu strip that opens nested actions (File / Edit / Help) |
+
+Rules of thumb:
+
+- `Tabs` reveal _different_ content. `SegmentedControl` reveals the _same_ content rendered
+  differently.
+- If the user can pick more than one, it is `ToggleGroup`, not `SegmentedControl`. A radio group
+  that allows multi-select breaks every screen reader's mental model.
+- `Menubar` runs commands; it never reveals content. If the click _shows_ a panel it's `Tabs`.
+
+## Topbar: what belongs and what doesn't
+
+`<uni-topbar>` is the only place in the chrome that knows about the _product_ (not the page). It
+carries three regions, in this order: site switch, app tabs, account / quick actions.
+
+```html
+<uni-topbar
+  siteName="HQ"
+  apps={[
+    { id: 'system', label: 'System', logo: 'system' },
+    { id: 'instances', label: 'Instances', logo: 'instances' },
+  ]}
+  activeApp="system"
+  onAppChange={setApp}
+  initials="WS"
+  notificationCount="3"
+/>
+```
+
+Belongs in the topbar:
+
+- Site / tenant / org switcher (the leftmost control)
+- App tabs that change the whole workspace
+- Global account, search, notifications, help icons
+
+Doesn't belong (move it down a layer):
+
+- Page-specific actions — those live in `PageHeader.actions`
+- Section toggles — those live in `Tabs` or `SegmentedControl` at the top of the page body
+- Per-row actions — those live in `ActionMenu` inside the table
+
+If you find yourself growing a second strip under the topbar, the page header or a `Tabs` strip is
+what you really wanted.
+
+### Custom actions: keep the canonical block
+
+When you slot your own controls into `<uni-topbar actions>` (theme toggle, status pill, environment
+switch) the default Search / Updates / Notifications / Help / Avatar block is replaced _wholesale_.
+Nine out of ten times userland wants the custom control _alongside_ the canonical group, not instead
+of it. Re-mount the canonical group with the typed `<uni-topbar-actions />` primitive — it ships the
+same five controls in the same order, with the `<uni-notif-dot>` overlay already wired up:
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-topbar
+  siteName="HQ"
+  activeApp="system"
+  onAppChange={setApp}
+  actions={
+    <>
+      <ThemeToggle />
+      <uni-topbar-actions notificationCount="3" initials="WS" />
+    </>
+  }
+/>
+```
+
+If you really do want to replace the bell with your own button, re-attach the unread indicator with
+the typed `<uni-notif-dot />` primitive instead of copying the `.topbar-notif-dot` class name into
+userland:
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-topbar
+  siteName="HQ"
+  activeApp="system"
+  onAppChange={setApp}
+  actions={
+    <uni-icon-button aria-label="Notifications, 3 new" style={{ position: 'relative' }}>
+      <BellIcon />
+      <uni-notif-dot />
+    </uni-icon-button>
+  }
+/>
+```
+
+The dot is presentational (`aria-hidden`); put the live count in the button's `aria-label` so screen
+readers announce it. The hosting button must be `position: relative` for the dot to anchor in the
+top-right corner.
+
+## Sidebar: sections and counts
+
+`<uni-sidebar>` holds the page-level navigation for one app. Items live inside named sections; each
+item gets an icon, label, optional `count`, and optional `pill` (alert badge).
+
+```html
+<uni-sidebar
+  sections={[
+    {
+      title: 'Network',
+      items: [
+        { id: 'dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
+        { id: 'devices', label: 'Devices', icon: <DevicesIcon />, count: 42 },
+        { id: 'alarms', label: 'Alarms', icon: <BellIcon />, pill: 3 },
+      ],
+    },
+  ]}
+  activeId={page}
+  onChange={setPage}
+/>
+```
+
+| Affordance | Use for                                                                    |
+| ---------- | -------------------------------------------------------------------------- |
+| `count`    | Stable totals ("42 devices") — neutral colour                              |
+| `pill`     | Outstanding alerts that need attention — red, includes sr-only " alert(s)" |
+
+Don't add a second `pill` for "new since last visit" — combine the count into the existing pill or
+surface it as a `Badge` on the page itself. Two pills per row turns into visual noise.
+
+## Tabs: page-level sectioning
+
+```html
+<!-- register all uni-* elements once at app entry -->
+
+const TABS = [ { id: 'overview', label: 'Overview' }, { id: 'board', label: 'Board', badge:
+<uni-badge count="3" variant="warn" /> }, { id: 'map', label: 'Map' }, ]
+
+<Tabs items="{TABS}" active="{tab}" onChange="{setTab}" ariaLabel="Devices sections" />
+<TabPanel id="overview" active="{tab}">…</TabPanel>
+<TabPanel id="board" active="{tab}">…</TabPanel>
+<TabPanel id="map" active="{tab}">…</TabPanel>
+```
+
+Render `<Tabs>` directly below `<uni-page-header>` and above `<div class="grid">`. The tab strip
+already carries its own bottom border — don't wrap it in a `<uni-card>` or add a divider.
+
+For arrow-key roving focus and `aria-selected` / `aria-controls` wiring you get from `<Tabs>` +
+`<TabPanel>` together, never roll your own. A `<button>` row with a manual `activeIndex` is missing
+keyboard nav and screen-reader announcements.
+
+## SegmentedControl: views of the same data
+
+```html
+<SegmentedControl
+  label="View"
+  options={[
+    { value: 'grid', label: 'Grid' },
+    { value: 'list', label: 'List' },
+    { value: 'map', label: 'Map' },
+  ]}
+  value={view}
+  onChange={setView}
+/>
+```
+
+Use 2–4 options. Five or more — switch to `Tabs` (if they reveal different content) or `Select` (if
+they're an ordered enum). The pill width is fixed; cramming six options in makes each label
+illegible.
+
+## ToggleGroup: independent multi-select filters
+
+```html
+<ToggleGroup
+  ariaLabel="Interface filter"
+  options={[
+    { value: 'wired', label: 'Wired' },
+    { value: 'wifi', label: 'Wi-Fi' },
+    { value: 'vpn', label: 'VPN' },
+  ]}
+  value={selected}
+  onChange={setSelected}
+/>
+```
+
+If the empty selection should mean _"show everything"_, that's the natural default — don't
+pre-select all options. If the empty selection should mean _"show nothing"_, switch to
+`SegmentedControl` plus an "All" segment instead.
+
+## Breadcrumb: location, not navigation
+
+```html
+<Breadcrumb
+  items={[
+    { label: 'System', href: '/system' },
+    { label: 'Devices', href: '/system/devices' },
+    { label: 'U6-Pro · a8:3f:…' },
+  ]}
+/>
+```
+
+Breadcrumbs say _where you are_. The last item is `aria-current="page"` and not clickable. Reserve
+breadcrumbs for pages nested three or more layers deep — at one or two levels they duplicate the
+sidebar.
+
+## Stepper: ordered, completable flows
+
+```html
+<Stepper
+  steps={[
+    { id: 'site', label: 'Site' },
+    { id: 'network', label: 'Network' },
+    { id: 'devices', label: 'Devices' },
+    { id: 'review', label: 'Review' },
+  ]}
+  active="network"
+/>
+```
+
+A stepper signals progress through an ordered flow with an end state. Use it for onboarding, setup
+wizards, and multi-step forms — not for everyday navigation. If the user can revisit any step in any
+order, that's `Tabs`, not a stepper.
+
+## Common mistakes (and the fix)
+
+| Symptom                                               | Likely cause                                                | Fix                                                                                                                             |
+| ----------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Two sidebars on one page                              | Page grew a second nav for sections                         | Move section nav into `<Tabs>` directly below `<uni-page-header>`                                                               |
+| Tabs above tabs                                       | `<Tabs>` reused for both page sections and view switching   | Outer = `<Tabs>`; inner view switch = `<SegmentedControl>`                                                                      |
+| Filter row drifts wider than the page                 | Custom chip row with hand-tuned gaps                        | Use `<ToggleGroup>` — the seg widths and gap are fixed                                                                          |
+| Arrow keys do nothing on the tab strip                | Plain `<button>` row with onClick                           | Use `<Tabs>` — roving tabindex + arrow / Home / End is built in                                                                 |
+| Screen reader announces tabs as plain buttons         | Missing `role="tablist"`/`role="tab"`                       | Use `<Tabs>` + `<TabPanel>`; the roles + `aria-controls`/`aria-selected` ship for free                                          |
+| Sidebar items overflow on narrow viewports            | Manual `width: 200px` on the sidebar                        | Don't size it. `AppLayout` reserves the column at the design width                                                              |
+| Topbar action triggers a page reload                  | `<a href>` used for an in-app app switch                    | Pass `onAppChange` — `Topbar` already renders `<button>` for accessibility                                                      |
+| Breadcrumb last item is a link                        | Forgot the leaf is the current page                         | Omit `href` on the last item — the component renders `aria-current="page"` and disables the link automatically                  |
+| Menubar opens twice on the same click                 | Two `<Menubar>`s mounted (e.g. one per route)               | Mount once at the page chrome layer; render its `menus` array from page state                                                   |
+| Stepper used for general nav                          | Reached for the visual treatment, not the semantics         | If the user can jump steps freely, switch to `<Tabs>` — `Stepper` carries `aria-current="step"` and a numbered ord              |
+| Segmented control with 6 options                      | Outgrew the radio-group affordance                          | Switch to `<Select>` (ordered enum) or `<Tabs>` (different content per option)                                                  |
+| Sidebar pill colour clashes with status               | Hand-picked colour                                          | Use the `pill` prop — it inherits the canonical alert palette                                                                   |
+| Custom topbar action wipes out Search / bell / avatar | `<uni-topbar actions>` replaces the default block wholesale | Compose your control alongside typed `<uni-topbar-actions />` — same five controls + `<uni-notif-dot>` overlay, no class copies |
+
+## ARIA recap
+
+You almost never need to add ARIA attributes yourself. The components above already wire up the
+right roles, states, and roving focus:
+
+- `Topbar`: `<header>` (banner landmark), each app tab is a `<button aria-current="page">`
+- `Sidebar`: `<nav aria-label="Primary">` + `<ul>` of `<li>` items, each item is a
+  `<button aria-current="page">`
+- `Tabs` + `TabPanel`: `role="tablist"` + roving `tabindex` + `aria-selected` + `aria-controls`
+- `SegmentedControl`: `role="radiogroup"` + `role="radio"` + arrow-key roving focus
+- `ToggleGroup`: `role="group"` + `aria-pressed` per button (true multi-select semantics)
+- `Menubar`: `role="menubar"` + `role="menuitem"` + arrow-key nav + `aria-haspopup`/`aria-expanded`
+- `Breadcrumb`: `<nav aria-label="Breadcrumb">` + `<ol>` + `aria-current="page"` on the leaf
+- `Stepper`: `<nav aria-label="Progress">` + `<ol>` + `aria-current="step"` on the active step
+
+If you find yourself sprinkling `role="tab"` or `aria-selected` on raw `<div>`s, you're rebuilding
+one of these primitives by hand — use the component instead.
+
+## CSS hooks userland can rely on
+
+These classes ship with `@w5-ui/tokens/dashboard.css` (re-exported by `@w5-ui/wc/styles.css` and
+`@w5-ui/svelte/styles.css`). They are the seams the reference dashboards stand on:
+
+- `.topbar`, `.site-switch`, `.app-tabs`, `.app-tab`, `.topbar-right` — the product chrome row.
+  Userland that extends `<uni-topbar actions>` should re-mount the canonical right-side block
+  through `<uni-topbar-actions />` instead of copying these class strings
+- `.topbar-notif-dot` — the 8 px red unread overlay on the notifications bell. Use through
+  `<uni-notif-dot />` instead of copying the class name
+- `.status-ring` — the 18 px translucent ring + 8 px inner dot (success colour) used next to the
+  site name and any tunnel / session / device row that needs a live-state pulse. Use through
+  `<uni-status-ring />` instead of copying the class name
+- `.sidebar`, `.sb-section`, `.sb-list`, `.sb-item`, `.sb-count`, `.sb-pill` — the workspace nav
+- `.tabs`, `.tab` — the page-level tab strip
+- `.seg-ctrl`, `.seg-ctrl__btn` — segmented control
+- `.tg-group`, `.tg-btn` — multi-select toggle group
+- `.menubar`, `.menubar-menu`, `.menubar-trigger`, `.menubar-dropdown`, `.menubar-item` — menubar
+- `.breadcrumb`, `.breadcrumb__list`, `.breadcrumb__item`, `.breadcrumb__current` — breadcrumb
+- `.stepper`, `.stepper__list`, `.stepper__item`, `.stepper__num`, `.stepper__label` — stepper
+
+Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values. See
+**Foundations / Spacing** and **Foundations / Colours**.
+
+## See also
+
+- **Foundations / Page layout** — `AppLayout` mounts `Topbar` + `Sidebar` + `<main>`
+- **Foundations / Tables** — `SelectionToolbar`, `ActionMenu`, `ColumnToggle` as table chrome
+- **Foundations / Status & feedback** — what the topbar bell, sidebar pills, and tab badges mean

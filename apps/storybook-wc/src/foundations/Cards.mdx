@@ -1,0 +1,203 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Cards" />
+
+# Cards
+
+`Card` is the workhorse of every reference page. It supplies the tile background, the rounded
+corner, the interior padding, and — critically — the `<h3>` title rhythm that everything else
+(charts, stats, tables, lists) sits below. Reproduce the card contract verbatim and userland tiles
+read the same as the Dashboard story.
+
+If you only learn one rule from this page: **render `<uni-card>` as a direct child of `.grid`, never
+wrap it.** Extra wrappers are the single biggest cause of card padding / radius / title drift.
+
+## The contract
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-card span="4">
+  <h3>Internet <uni-pill variant="success">Online</uni-pill></h3>
+  <!-- chart, list, table — whatever the tile shows -->
+</uni-card>
+```
+
+That is the whole thing. The `<h3>` becomes the tile title automatically because the `.card h3` CSS
+rule sets its size (12px), weight (500), colour (`--text-3`, the same muted tone as `.t-muted` and
+`.submeta`), and flex layout (title on the left, status / "More" link pushed to the right). Don't
+restyle the heading. Don't replace it with an `<h2>` or a custom `<div class="title">` — those skip
+the rule and the tile reads broken.
+
+## Card vs Stat
+
+A `<uni-stat>` is a `<uni-card>` with a pre-wired hero number, unit, sub-line, and delta. Reach for
+it any time the tile's primary content is one number you want the eye to land on.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-stat
+  span="4"
+  label="Internet"
+  value="847"
+  unit="Mbps · down"
+  sub="18 ms · 0.0% loss"
+  delta="+12% 24h"
+  deltaDir="up"
+/>
+```
+
+| Reach for…         | When the tile is…                                                            |
+| ------------------ | ---------------------------------------------------------------------------- |
+| `<uni-stat>`       | One headline number (with optional unit, sub-line, delta)                    |
+| `<uni-card>`       | Anything else — chart, table, list, mixed content                            |
+| `<uni-card-title>` | An `<h3>` rendered in markup where the raw element is awkward (codegen, MDX) |
+
+`<uni-stat>` already renders its own `<uni-card>`, so **never nest `<uni-stat>` inside
+`<uni-card>`**. Render it at the top level of `.grid` alongside other cards.
+
+## Sizing with `span`
+
+`span` controls the tile's column width on the 12-column `.grid`. Pick a value that divides 12
+cleanly:
+
+| Tile width | `span` | Typical use                            |
+| ---------- | ------ | -------------------------------------- |
+| Third      | `4`    | `<uni-stat>`, single donut, small list |
+| Half       | `6`    | Two-column comparison, mid-size chart  |
+| Two-thirds | `8`    | Wide table, line / area chart          |
+| Full       | `12`   | Full-bleed time series, sankey         |
+
+4+4+4, 8+4, 6+6, and 12 all snap to one row. **Avoid `span="5"` and `span="7"`** — they leave dead
+pixels and force the next row to wrap unevenly. If `span` is omitted, the card spans the row.
+
+## Anatomy
+
+| Layer            | Where the values live                                                                |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| `.card` shell    | 16px (`--space-4`) padding, `--radius-md` (6px) corner, `--surface-1` background     |
+| `.card h3` title | 12px / weight 500 / `--text-3` (muted), flex row with 8px (`--space-2`) inline gap   |
+| Title trailing   | Anything after the title text in the `<h3>` (Pill, More link) is pushed right        |
+| Body             | Any element after the `<h3>`. Charts auto-fill, lists / tables stack on the 4px grid |
+
+## Content patterns
+
+### Headline number → use `<uni-stat>`
+
+```html
+<uni-stat span="4" label="Clients" value="124" unit="online" delta="+3" deltaDir="up" />
+```
+
+### Headline number + chart → `<uni-submeta>` for the supporting line
+
+When the tile wants a hero number _and_ a chart underneath, `<uni-stat>` can't help (it owns the
+whole card body). Compose the parts by hand and use `<uni-submeta>` for the muted line that sits
+between the number and the chart — it matches the `.submeta` rhythm without an inline class string.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-card span="4">
+  <uni-card-title> Internet <uni-pill variant="success">Online</uni-pill> </uni-card-title>
+  <StatNumber> 847<uni-unit>Mbps · down</uni-unit> </StatNumber>
+  <uni-submeta>
+    ↑ 312 Mbps · 18 ms · 0.0% loss · <uni-delta dir="up">+12% 24h</uni-delta>
+  </uni-submeta>
+  <Sparkline />
+</uni-card>
+```
+
+`<uni-delta>` is the typed wrapper for the colour-coded trend span. Pass
+`dir="up" | "down" | "flat"` — green / red / neutral colours come from the tokens, and a
+visually-hidden "Trend: " prefix is emitted so screen readers announce the direction independent of
+any arrow glyph in the copy.
+
+`<uni-unit>` is the typed wrapper for the small trailing label that sits next to the hero number (or
+in a card title row): renders `<span class="unit">` so the canonical muted colour and 12 px size
+come from `dashboard.css` instead of an inline override. `<uni-stat>` already wires this internally;
+reach for `<uni-unit>` when you compose `.stat` by hand (number above a chart, or a unit suffix in
+an `<h3>` title).
+
+`<StatNumber>` is the typed wrapper for the hero-number row itself: renders `<div class="stat">` so
+the canonical 30 px size, semibold weight, tabular figures, and primary text colour come from
+`dashboard.css` rather than inline `font-size` / `font-weight` overrides. `<uni-stat>` (the prefab
+tile) wires this internally; reach for `<StatNumber>` when you compose `.stat` by hand inside a
+`<uni-card>` that also hosts a chart underneath.
+
+### Title + chart
+
+```html
+<uni-card span="8">
+  <uni-card-title>Throughput</uni-card-title>
+  <LineChart series="{series}" />
+</uni-card>
+```
+
+### Title with status pill
+
+```html
+<uni-card span="4">
+  <uni-card-title> Internet <uni-pill variant="success">Online</uni-pill> </uni-card-title>
+  <Sparkline data="{uplink}" />
+</uni-card>
+```
+
+### Title with "More →" affordance
+
+The `.card h3 .more` rule already styles a trailing inline link. Use `<CardMore>` for the typed
+wrapper — don't roll your own button in the title row.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-card span="6">
+  <uni-card-title> Top clients <CardMore href="/clients">All →</CardMore> </uni-card-title>
+  <RankedList items="{topClients}" />
+</uni-card>
+```
+
+`<CardMore>` is a thin typed wrapper over `<a class="more">`. Forwards all anchor props (`href`,
+`target`, `onClick`, …) so it doubles as a button-shaped link without losing keyboard semantics.
+
+### Mixed table tile
+
+Tables nested inside a card inherit the card's interior padding. For full-bleed tables that should
+sit edge-to-edge in the tile, lift them out of `<uni-card>` and wrap in `.table-shell` instead — see
+**Foundations / Tables**.
+
+## Common mistakes (and the fix)
+
+| Symptom                                     | Likely cause                                                 | Fix                                                                                                   |
+| ------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| Tile padding looks wrong                    | Re-implementing `.card` with a custom `<div>`                | Use `<uni-card>` — radius, padding, and `<h3>` rhythm ship together                                   |
+| Card has double padding inside              | A wrapper `<div style={{ padding }}>` inside `<uni-card>`    | Render the content directly inside `<uni-card>`; the card already pads 16px                           |
+| Title font / colour doesn't match dashboard | Custom `<h2>` / `<div>` instead of `<h3>`                    | Use `<uni-card-title>` (or a plain `<h3>`) inside `<uni-card>` — `.card h3` sets size, weight, colour |
+| Status pill in title is left-aligned        | Wrapped in an extra `<span>` or `<div>` after the title text | Place the `<uni-pill>` as a direct child of the `<h3>`; the flex rule pushes it right                 |
+| Two cards in a row don't line up vertically | Different `span` values, or one wrapped in an extra `<div>`  | Match `span` values. No wrappers between `.grid` and `<uni-card>`                                     |
+| Stat looks cramped or doubly-padded         | `<uni-stat>` nested inside another `<uni-card>`              | `<uni-stat>` is a card already — render at the top level of `.grid`                                   |
+| Card corner doesn't match modal corner      | Hand-typed `border-radius: 8px`                              | Cards use `--radius-md` (6px). Modals/drawers use `--radius-lg` (12px). Don't mix                     |
+| Card content bleeds past the rounded corner | Inner element with `border-radius: 0` and a coloured bg      | Add `overflow: hidden` only when you really need bleed; otherwise pad the inner edge                  |
+| Tile widths drift between motifs            | Card background hardcoded to a hex                           | Use `--surface-1` (or let `<uni-card>` set it). Tokens flip with `data-motif`                         |
+
+## CSS hooks userland can rely on
+
+Stable class names shipped by `@w5-ui/tokens/dashboard.css` (re-exported via `@w5-ui/wc/styles.css`
+and `@w5-ui/svelte/styles.css`):
+
+- `.card` — the tile shell. Use through `<uni-card>` / `<uni-stat>`
+- `.card h3` — the title rhythm (size, weight, colour, flex). Use a plain `<h3>` (or
+  `<uni-card-title>` when the raw element is awkward — codegen, MDX, mixed JSX trees) and inherit it
+- `.card h3 .more` — the trailing "More →" affordance inside a title. Use through `<CardMore>`
+- `.stat` — the hero-number row (30 px, semibold, tabular). Use through `<uni-stat>` /
+  `<StatNumber>`
+- `.submeta` — the muted supporting line under a `.stat` number. Use through `<uni-submeta>`
+- `.delta-up` / `.delta-down` — colour-coded trend text. Use through
+  `<uni-delta dir="up | down | flat">`
+- `.unit` — small trailing label after a hero number or inside a title row. Use through `<uni-unit>`
+
+Everything else (raw colours, ad-hoc paddings, custom radii) should come from tokens, not bespoke
+values. See **Foundations / Spacing** and **Foundations / Colours**.
+
+## See also
+
+- **Foundations / Page layout** — the `Banner` → `PageHeader` → `.grid` → `Card` skeleton
+- **Foundations / Charts** — picking a chart that fits a card span
+- **Foundations / Tables** — full-bleed tables that live outside a `<uni-card>` via `.table-shell`
+- **Foundations / Spacing** — the 12-token scale and the dashboard's rhythm rules

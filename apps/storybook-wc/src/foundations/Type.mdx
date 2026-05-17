@@ -1,0 +1,274 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Type" />
+
+# Typography
+
+The dashboard uses **two** typefaces. UI text — every label, button, table cell, paragraph, heading,
+caption — runs on **Inter**. Machine-shaped values — MAC addresses, IPs, hex IDs, ports, hostnames,
+firmware versions, config keys — run on **JetBrains Mono** so digits align and `0`/`O`/`I`/`l` stay
+distinguishable. We do not use display or serif faces; anything that doesn't fit one of those two
+roles is a design fork.
+
+> If you typed an ad-hoc `font-size: 15px` or `font-weight: 550`, you got it wrong. The scale is
+> fixed; pick a token or a semantic class.
+
+## How the layers fit together
+
+```text
+@w5-ui/tokens/tokens.css      ← raw scale (--fs-*, --fw-*, --lh-*, --tracking-*)
+                              ← typeface vars (--font-sans, --font-mono)
+                              ← semantic classes (.dash-ui-h1, .dash-ui-body, .dash-ui-stat, …)
+        │
+        └─ @w5-ui/tokens/tailwind.css  ← exposes the scale as Tailwind v4 utilities
+                                           (text-14, font-semibold, font-mono, …)
+```
+
+Import `@w5-ui/wc/styles.css` (or `@w5-ui/svelte/styles.css`) once at the app entry and you get all
+three transitively — raw tokens, Tailwind theme bindings, and the `.dash-ui-*` semantic classes.
+Userland should reach for the semantic classes first, Tailwind utilities second, raw `var(--fs-*)`
+third, and never type a px value directly.
+
+## The scale
+
+### Font sizes
+
+| Token     | px   | Tailwind  | Used for                                           |
+| --------- | ---- | --------- | -------------------------------------------------- |
+| `--fs-11` | 11px | `text-11` | Eyebrow / overline (uppercase, tracked)            |
+| `--fs-12` | 12px | `text-12` | Caption, metadata, table footnote, inline code     |
+| `--fs-13` | 13px | `text-13` | Form label, mono ID values                         |
+| `--fs-14` | 14px | `text-14` | **Default body.** Table cells, paragraphs          |
+| `--fs-15` | 15px | `text-15` | Reserved (uncommon)                                |
+| `--fs-16` | 16px | `text-16` | Body-lg — longer-form copy (settings descriptions) |
+| `--fs-18` | 18px | `text-18` | h4 — card titles, section heads inside a card      |
+| `--fs-20` | 20px | `text-20` | Reserved (uncommon)                                |
+| `--fs-24` | 24px | `text-24` | h3 — section heads on a page                       |
+| `--fs-30` | 30px | `text-30` | h2 / KPI stat number                               |
+| `--fs-38` | 38px | `text-38` | h1 — page title (rare in-app; usual in marketing)  |
+| `--fs-48` | 48px | `text-48` | display-2 — hero / login                           |
+| `--fs-64` | 64px | `text-64` | display-1 — onboarding splash, marketing hero      |
+
+The default in-app body size is **14px**. The default in-card title (`<uni-card>` / `.card h3`) is
+**18px**. The default KPI number (`<uni-stat>` / `.dash-ui-stat`) is **30px** with tabular numerals.
+Three sizes carry 90% of the dashboard chrome.
+
+### Font weights
+
+| Token            | Weight | Tailwind         | Used for                             |
+| ---------------- | ------ | ---------------- | ------------------------------------ |
+| `--fw-regular`   | 400    | `font-regular`   | Body, captions, paragraphs           |
+| `--fw-medium`    | 500    | `font-medium`    | Labels, mono values, tab text        |
+| `--fw-semibold`  | 600    | `font-semibold`  | h2 / h3 / h4 / stat number / eyebrow |
+| `--fw-bold`      | 700    | `font-bold`      | h1, display-1, display-2             |
+| `--fw-extrabold` | 800    | `font-extrabold` | Marketing only                       |
+
+Skip `300` and `550` entirely — Inter at 14px / 13px regresses on Windows ClearType at light
+weights. Never go below `400` for body text.
+
+### Line heights
+
+| Token          | Value | When to reach for it                                                    |
+| -------------- | ----- | ----------------------------------------------------------------------- |
+| `--lh-tight`   | 1.1   | Display-1, display-2, stat numbers — single-line, big                   |
+| `--lh-snug`    | 1.25  | h1 → h4, eyebrows, labels — short headings & one-liners                 |
+| `--lh-normal`  | 1.4   | **Default body.** Table cells, paragraphs, mono                         |
+| `--lh-relaxed` | 1.55  | body-lg — 16px multi-paragraph copy (settings descriptions, onboarding) |
+
+The cliff is between `1.25` (one-line) and `1.4` (multi-line). Don't park body copy at `1.25` — it
+looks dense and cramps on hyphenation; don't park headings at `1.4` — they read like paragraphs.
+
+### Letter spacing
+
+| Token                | Value   | Where it applies                    |
+| -------------------- | ------- | ----------------------------------- |
+| `--tracking-display` | -0.02em | display-1 / display-2 / h1          |
+| `--tracking-normal`  | 0       | Everything else                     |
+| `--tracking-eyebrow` | 0.08em  | Eyebrow / overline (uppercase 11px) |
+
+Negative tracking on big type optically tightens it; positive tracking on uppercase 11px stops it
+from reading as a typo. Don't apply either to body copy.
+
+## Semantic typography classes
+
+Reach for these in markup — they bundle family + size + weight + line-height + colour and they
+update if the design system shifts a value. Available everywhere `@w5-ui/*` styles are imported.
+
+| Class                | Size | Weight       | Line | Colour     | Use case                                 |
+| -------------------- | ---- | ------------ | ---- | ---------- | ---------------------------------------- |
+| `.dash-ui-display-1` | 64px | bold (700)   | 1.1  | `--text-1` | Hero / splash                            |
+| `.dash-ui-display-2` | 48px | bold (700)   | 1.1  | `--text-1` | Login / large marketing                  |
+| `.dash-ui-h1`        | 38px | bold (700)   | 1.25 | `--text-1` | Page title (marketing)                   |
+| `.dash-ui-h2`        | 30px | semibold     | 1.25 | `--text-1` | Page section head                        |
+| `.dash-ui-h3`        | 24px | semibold     | 1.25 | `--text-1` | Sub-section head                         |
+| `.dash-ui-h4`        | 18px | semibold     | 1.25 | `--text-1` | Card title (matches `.card h3` default)  |
+| `.dash-ui-body`      | 14px | regular      | 1.4  | `--text-2` | **Default body.** Paragraphs, tables     |
+| `.dash-ui-body-lg`   | 16px | regular      | 1.55 | `--text-2` | Longer-form copy (settings descriptions) |
+| `.dash-ui-label`     | 13px | medium (500) | 1.25 | `--text-2` | Form label, KPI label                    |
+| `.dash-ui-caption`   | 12px | regular      | 1.25 | `--text-3` | Metadata, helper text, table footnote    |
+| `.dash-ui-eyebrow`   | 11px | semibold     | 1    | `--text-3` | Uppercase tracked overline               |
+| `.dash-ui-stat`      | 30px | semibold     | 1    | `--text-1` | KPI number (tabular numerals, -0.01em)   |
+| `.dash-ui-mono`      | 13px | regular      | 1.4  | `--text-2` | MAC / IP / hex IDs inline (`<uni-mono>`) |
+| `.dash-ui-code`      | 12px | regular      | —    | `--text-2` | Inline `<code>` — boxed + bordered       |
+
+The `<uni-card>` component injects `.dash-ui-h4` on its title; `<uni-stat>` injects `.dash-ui-stat`
+on its number and `.dash-ui-label` on its label. If you build a tile by hand, use the same classes
+so it visually fits in a row of cards.
+
+## Preview
+
+<div style={{ display: 'grid', gap: 16, marginTop: 16 }}>
+  {[
+    {
+      name: 'Display 1 (.dash-ui-display-1) - 64 / 700',
+      size: 64,
+      weight: 700,
+      lh: 1.1,
+      ls: '-0.02em',
+    },
+    {
+      name: 'Display 2 (.dash-ui-display-2) - 48 / 700',
+      size: 48,
+      weight: 700,
+      lh: 1.1,
+      ls: '-0.02em',
+    },
+    { name: 'h1 (.dash-ui-h1) - 38 / 700', size: 38, weight: 700, lh: 1.25, ls: '-0.02em' },
+    { name: 'h2 (.dash-ui-h2) - 30 / 600', size: 30, weight: 600, lh: 1.25 },
+    { name: 'h3 (.dash-ui-h3) - 24 / 600', size: 24, weight: 600, lh: 1.25 },
+    { name: 'h4 (.dash-ui-h4) - 18 / 600', size: 18, weight: 600, lh: 1.25 },
+    { name: 'Body (.dash-ui-body) - 14 / 400', size: 14, weight: 400, lh: 1.4 },
+    { name: 'Body lg (.dash-ui-body-lg) - 16 / 400', size: 16, weight: 400, lh: 1.55 },
+    { name: 'Label (.dash-ui-label) - 13 / 500', size: 13, weight: 500, lh: 1.25 },
+    { name: 'Caption (.dash-ui-caption) - 12 / 400', size: 12, weight: 400, lh: 1.25 },
+    {
+      name: 'Eyebrow (.dash-ui-eyebrow) - 11 / 600 / uppercase / 0.08em',
+      size: 11,
+      weight: 600,
+      lh: 1,
+      ls: '0.08em',
+      upper: true,
+    },
+    {
+      name: 'Stat (.dash-ui-stat) - 30 / 600 / tabular-nums',
+      size: 30,
+      weight: 600,
+      lh: 1,
+      mono: false,
+      tab: true,
+      stat: true,
+    },
+    {
+      name: 'Mono (.dash-ui-mono) - 13 / 400 / JetBrains Mono',
+      size: 13,
+      weight: 400,
+      lh: 1.4,
+      mono: true,
+    },
+  ].map((t) => (
+    <div key={t.name} style={{ borderBottom: '1px solid var(--border-1)', paddingBottom: 12 }}>
+      <div style={{ color: 'var(--text-3)', fontSize: 12, marginBottom: 6 }}>{t.name}</div>
+      <div
+        style={{
+          fontSize: t.size,
+          fontWeight: t.weight,
+          lineHeight: t.lh,
+          letterSpacing: t.ls,
+          textTransform: t.upper ? 'uppercase' : undefined,
+          fontFamily: t.mono ? 'JetBrains Mono, monospace' : undefined,
+          fontVariantNumeric: t.tab ? 'tabular-nums' : undefined,
+          color: 'var(--text-1)',
+        }}
+      >
+        {t.mono
+          ? '00:1A:2B:3C:4D:5E - 10.0.42.17 - fe80::1c2b'
+          : t.stat
+            ? '1,284.06'
+            : t.upper
+              ? 'Section overline'
+              : 'The quick brown fox jumps over the lazy dog'}
+      </div>
+    </div>
+  ))}
+</div>
+
+## When to use mono (and when not to)
+
+JetBrains Mono is the dashboard signal that **this string is a machine value, not a sentence**. Use
+it when the user is going to copy it, diff it, or type it back somewhere. Skip it for prose, labels,
+button text, and free-form names.
+
+| Use mono                                 | Don't use mono                            |
+| ---------------------------------------- | ----------------------------------------- |
+| MAC address (`00:1A:2B:3C:4D:5E`)        | Device friendly name (`Living Room AP`)   |
+| IPv4 / IPv6 (`10.0.42.17`, `fe80::1c2b`) | Site / building name (`Amsterdam HQ`)     |
+| Port number in a table cell (`tcp/443`)  | Body copy, error message, paragraph       |
+| Firmware version (`7.4.158`)             | Username (`webber`), display name         |
+| Config key path (`wan.vlan.id`)          | Section heading, eyebrow                  |
+| Hex ID, hash, serial (`A8F3-…`)          | Numeric value in a sentence ("3 alarms")  |
+| Inline `<code>` snippet                  | KPI number — that's `.dash-ui-stat`, sans |
+
+The `<Code>` and `.dash-ui-mono` helpers also enable `font-variant-numeric: tabular-nums`, so a
+column of MACs / IPs / versions aligns vertically. That alignment is the whole point — bare `<span>`
+with `font-family: monospace` doesn't get it.
+
+## Pick the right class
+
+| You're rendering…                                | Reach for                                                        |
+| ------------------------------------------------ | ---------------------------------------------------------------- |
+| A page title in the page header                  | (already in `<uni-page-header>`) — don't re-style                |
+| A card / tile title                              | `<uni-card-title>` (or `<uni-card title="…">`, or `.dash-ui-h4`) |
+| The big number in a KPI tile                     | `.dash-ui-stat` (or `<uni-stat>`)                                |
+| The little label above a KPI number              | `<Label>` (or `<uni-stat>` label slot)                           |
+| Body paragraphs, table cells, default text       | `<uni-body>` (often inherited — leave alone)                     |
+| Longer settings descriptions (multi-paragraph)   | `<BodyLg>` (or `.dash-ui-body-lg`)                               |
+| Form field label                                 | (already in `<Field label="…">`)                                 |
+| Section overline / category eyebrow              | `.dash-ui-eyebrow`                                               |
+| MAC / IP / hex / port / firmware version         | `<uni-mono>` (or `.dash-ui-mono`)                                |
+| Inline `<code>` (key name, env var, config path) | `.dash-ui-code` or `<Code>`                                      |
+| Helper text, metadata, "last updated" stamp      | `<Caption>` (or `.dash-ui-caption`)                              |
+
+## Common mistakes (and the fix)
+
+| Symptom                                              | Likely cause                                                               | Fix                                                                                                 |
+| ---------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Page text looks "too big" vs the reference dashboard | `font-size: 16px` set globally (browser default) instead of 14px           | Use `.dash-ui-body` on body containers, or `text-14` on the page root                               |
+| KPI number renders narrow / variable-width           | Plain `font-weight: 600` with no `tabular-nums`                            | Use `.dash-ui-stat` or `<uni-stat>` — both opt in to `font-variant-numeric: tabular-nums`           |
+| MAC addresses in a table don't line up vertically    | `font-family: monospace` (Courier fallback) with proportional digits       | Use `.dash-ui-mono` — it pins JetBrains Mono **and** tabular-nums                                   |
+| Card title size doesn't match the reference          | `<h3 style={{ fontSize: 20 }}>` or `text-xl` instead of the scale          | Use `<uni-card-title>` (or `<uni-card title="…">`, or `.dash-ui-h4`) — that is the 18 / 600 default |
+| Headings feel cramped on one line                    | `line-height: 1.4` applied to an h2/h3                                     | Drop to `--lh-snug` (1.25). The cliff at 1.25 / 1.4 is "headline / paragraph"                       |
+| Headings break awkwardly across two lines            | `letter-spacing: 0` on display sizes                                       | Apply `--tracking-display` (-0.02em) on display-1 / display-2 / h1                                  |
+| Eyebrow text reads as a typo                         | Uppercase 11px with no letter-spacing                                      | Use `.dash-ui-eyebrow` — 0.08em + 11/600 is the canonical eyebrow                                   |
+| Form labels feel inconsistent across pages           | Free-typed `<label>` with bespoke 14/600 here, 12/500 there                | Use `<Field label="…">`. If hand-rolling, use `.dash-ui-label` (13 / 500)                           |
+| Inline code is unreadable against the card           | `<code>` with no styling — browser falls back to monospace serif on `#fff` | Use `<Code>` or `.dash-ui-code` — 12px JetBrains Mono on `--depthBg-2`                              |
+| Text colour drifts in light motif                    | Hardcoded `color: #c8c9d0` (the dark-motif `--text-2`)                     | Drop the override; semantic classes already point at `--text-1` / `--text-2` / `--text-3`           |
+| Font weight 550 / 350 sneaks in from Figma           | Designer used a variable-font weight in the mock                           | Snap to the 400 / 500 / 600 / 700 / 800 token. We don't ship 350 / 550 weights                      |
+| Inter doesn't render — falls back to Arial           | Forgot to import `@w5-ui/wc/styles.css` (or equivalent) at app entry       | Import it once at the entry. Tokens.css pulls Inter + JetBrains Mono via Google Fonts               |
+| New "display" face appears for one marketing page    | Designer added a serif / display typeface                                  | Stop. The dashboard is Inter + JetBrains Mono. Surface as a design fork before shipping             |
+
+## Accessibility
+
+- **Minimum body size is 14px** — the dashboard default. Don't go below 12px for any user-readable
+  text; below 12px fails WCAG SC 1.4.4 (Resize Text) on Windows ClearType at 100% zoom.
+- **Captions at `--text-3`** (`#a4a7b5` on dark / `#6e7079` on light) pass WCAG 2.2 AA on
+  `--depthBg-0` and `--depthBg-1`. On `--depthBg-3` (popovers, drawers) the contrast slides toward
+  4.0:1 — keep `--text-3` for non-essential metadata only.
+- **`--text-4`** is intentionally below AA. It's the disabled / placeholder colour — never primary
+  copy, error messages, or active labels.
+- **Don't disable user font-size scaling**: avoid `font-size` in px on the `<html>` element with a
+  hard override. The scale is in px tokens, but the browser still honours user zoom.
+- **Never rely on bold or colour alone** to convey state. Pair status colour with an icon or a text
+  label (the `<StatusIndicator>` and `<uni-pill>` components already do this).
+
+## The take-away
+
+- **Two faces.** Inter for everything user-readable, JetBrains Mono for everything copy-pasteable.
+- **Default body is 14 / 400 / 1.4 / `--text-2`** — almost always inherited, almost never
+  overridden.
+- **Six semantic heading classes** (`display-1` → `h4`) cover the page hierarchy. Don't invent a
+  19px or 22px in between.
+- **`.dash-ui-stat` for KPI numbers, `.dash-ui-mono` for machine values.** Both enable tabular-nums
+  so columns align.
+- **Tailwind defaults are wrong.** `text-base`, `font-normal`, and the default Tailwind type scale
+  don't match the dashboard. Stick to `text-14` / `font-semibold` / the Dash UI utilities and your
+  page tracks every future type-scale tweak for free.

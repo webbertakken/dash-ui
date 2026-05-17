@@ -1,0 +1,230 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Actions" />
+
+# Actions
+
+Buttons, icon buttons, split buttons, action menus, toggles and segmented controls all answer the
+same question — _what can the user do here?_ Userland that picks the wrong one of these (or styles a
+plain `<button>` from scratch) is the third biggest source of visual drift after page-grid gutters
+and overlay sizing. The trigger types are not interchangeable; each one carries a specific shape,
+spacing rhythm, and accessibility contract.
+
+> Reach for a named component every time. Variant, size, focus ring, disabled treatment, busy state,
+> and keyboard semantics are already wired up — userland never has to own that surface area.
+
+## Pick the right trigger
+
+| You need to…                                                                  | Reach for                        | Why                                                              |
+| ----------------------------------------------------------------------------- | -------------------------------- | ---------------------------------------------------------------- |
+| Submit a form, confirm a change, advance a wizard                             | `<uni-button variant="primary">` | One per row. Carries the page's only filled affordance           |
+| Offer a neutral side action (Cancel, Back, View details)                      | `<uni-button variant="ghost">`   | Default variant. No fill, only label + hover                     |
+| Run a destructive action inline (Delete row, Remove member)                   | `<uni-button variant="danger">`  | Red label/border; pair with a `<ConfirmDialog variant="danger">` |
+| Trigger a control that only needs an icon (close, copy, expand, kebab)        | `<uni-icon-button>`              | 28×28 square, `aria-label` mandatory, no text label              |
+| Offer a default action with a few related variants ("Save" + "Save as draft") | `<SplitButton>`                  | Primary half + caret half. The menu lists peer actions           |
+| Surface 3–6 row-level actions behind a kebab (Edit, Duplicate, Delete…)       | `<ActionMenu>`                   | Single `…` trigger, items rendered in a portal-free menu         |
+| Switch one binary state in place (Wi-Fi on/off, dark mode)                    | `<Toggle>`                       | `role="switch"`, no label of its own — wrap with `<Field>`       |
+| Pick **one** option from a small set (Day / Week / Month)                     | `<SegmentedControl>`             | Single-selection, radio-group semantics, flat row                |
+| Filter by **many** flags (severity: error + warn)                             | `<ToggleGroup>`                  | Multi-selection, `aria-pressed` per option                       |
+| Copy a value (IP, hash, key) to the clipboard                                 | `<CopyButton>`                   | Owns the success state ("Copied") and the timing                 |
+| Show a keyboard shortcut next to an action                                    | `<Kbd>`                          | Renders `Cmd + K` as styled key caps; pairs with menu items      |
+
+If two answers look right, default to the **lower-emphasis** one. A page with three `primary`
+buttons has no primary. A toolbar with five filled buttons reads as a wall of noise.
+
+## Variants, sizes, and the one-primary rule
+
+`Button` ships three variants. Anything else is a bug in the call site, not a missing feature.
+
+| Variant   | When to use                                                           | Visual                             |
+| --------- | --------------------------------------------------------------------- | ---------------------------------- |
+| `primary` | The single most important action on a page, modal, or row             | Blue fill, white text              |
+| `ghost`   | **Default.** Cancel, secondary, "View details", neutral toolbar slots | No fill, neutral text, hover bg    |
+| `danger`  | Inline destructive verbs ("Delete", "Revoke", "Disconnect")           | Red text/border, red fill on hover |
+
+- **One `primary` per visible region.** A page can have a primary action in the `PageHeader` and
+  another primary inside a Modal — but never two primaries in the same toolbar.
+- Use the verb of the action as the label: `Save changes`, `Delete site`, `Invite admin`. Avoid
+  generic `OK` / `Submit` / `Confirm` (except inside `ConfirmDialog`, where the variant carries the
+  meaning).
+- `disabled` is for "this action is not available right now"; `loading` is for "this action is in
+  flight". `loading` automatically sets `aria-busy` and renders a built-in `<Spinner>` — don't add a
+  second one.
+- There is no `size` prop. The dashboard uses one button height (32px) for everything except the
+  topbar's `IconButton` (28×28). Userland that introduces `lg` / `sm` variants ends up with rows
+  that don't line up vertically.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-page-header title="Site HQ">
+  <uni-button variant="ghost" onClick="{cancel}"> Cancel </uni-button>
+  <uni-button variant="primary" onClick="{save}" loading="{saving}"> Save changes </uni-button>
+</uni-page-header>
+```
+
+## IconButton
+
+For controls where the icon **is** the label — close (×), expand (›), copy, kebab (⋮), pin. Anything
+text-bearing belongs in a regular `<uni-button>`.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-icon-button aria-label="Close" onClick="{onClose}">
+  <CloseIcon />
+</uni-icon-button>
+```
+
+- `aria-label` is mandatory. If you set `title`, the component reuses it as the accessible name
+  automatically — but only one of the two.
+- 28×28 hit target keeps it level with topbar slots and table-row chrome.
+- Don't put text inside. If you need an icon **and** a label, use `<uni-button>` with the icon as
+  the first child; the built-in flex gap (`8px`) already spaces them.
+
+## Cluster spacing — the 8px rule
+
+Every toolbar, footer, page-header action slot, and overlay footer in the reference dashboard uses
+the same horizontal gap: **`8px` / `--space-2`**. The destructive button (`danger`) goes left, the
+secondary (`ghost`) in the middle, the primary on the right.
+
+```html
+<uni-page-header
+  title="Members"
+  actions={
+    <>
+      <uni-button variant="danger" onClick={removeSelected}>
+        Remove
+      </uni-button>
+      <uni-button variant="ghost" onClick={exportCsv}>
+        Export
+      </uni-button>
+      <uni-button variant="primary" onClick={invite}>
+        Invite admin
+      </uni-button>
+    </>
+  }
+/>
+```
+
+- **Don't wrap actions in a `<div style={{ display: 'flex', gap: 12 }}>`.** The container
+  (PageHeader `.ph-bar`, Modal `.modal-f`, Drawer body) is already flex with `gap: var(--space-2)`.
+  Any wrapper resets the gap and adds drift.
+- Primary action goes **last** (right-most) in left-to-right languages. ConfirmDialog enforces this
+  for you; the rest is your responsibility.
+- Don't stack action buttons vertically in toolbars. If you have more than three, collapse the
+  overflow into an `<ActionMenu>`.
+
+## SplitButton
+
+For a default action that has 2–4 close cousins. The primary half runs the default; the caret half
+opens a menu of the alternatives.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<SplitButton
+  label="Save"
+  variant="primary"
+  onPrimaryClick={save}
+  items={[
+    { id: 'draft', label: 'Save as draft' },
+    { id: 'template', label: 'Save as template' },
+  ]}
+  onAction={runAction}
+/>
+```
+
+- The menu items are **peers** of the primary action, not a settings list. "Save / Save as draft /
+  Save as template" yes; "Save / Cancel / Help" no.
+- Caret keyboard model: `↓` / `Enter` / `Space` open the menu, arrow keys move within it, `Esc`
+  closes and restores focus to the caret.
+- Don't mix `danger` and `primary` items in the same SplitButton — the trigger variant colours every
+  row.
+
+## ActionMenu (kebab) and ContextMenu (right-click)
+
+`ActionMenu` is the row-level kebab (`…`) that owns 3–6 actions that don't fit in a toolbar.
+`ContextMenu` is the right-click / long-press equivalent for tables and lists.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<ActionMenu
+  label="Row actions"
+  items={[
+    { id: 'edit', label: 'Edit' },
+    { id: 'duplicate', label: 'Duplicate' },
+    { id: 'delete', label: 'Delete', danger: true },
+  ]}
+  onAction={runAction}
+/>
+```
+
+- One kebab per row, anchored in the right-most column. Don't pair a kebab with a duplicate "Edit"
+  button in the same row — pick one entry point.
+- Mark the destructive item with `danger: true`; it paints the row red and is the only place where
+  destructive verbs live in a menu (kebab > inline `danger` button for row-level deletes).
+- Don't reach for `ActionMenu` for 1–2 items. If there are only two, render them as inline
+  `IconButton`s.
+
+## Toggle vs SegmentedControl vs ToggleGroup
+
+These three look similar at a glance and trip up almost every userland implementation.
+
+| Component            | Selection model           | When to use                                          | ARIA                      |
+| -------------------- | ------------------------- | ---------------------------------------------------- | ------------------------- |
+| `<Toggle>`           | Single on/off             | Binary state in place ("Notifications", "Dark mode") | `role="switch"`           |
+| `<SegmentedControl>` | Single from N (radio)     | "Day / Week / Month", "Cosy / Compact"               | `role="radiogroup"`       |
+| `<ToggleGroup>`      | Many from N (multi-press) | Severity filter (error + warn), feature flags        | `aria-pressed` per option |
+
+- A `Toggle` has no label of its own. Wrap it in a `<Field label="Notifications">` or pair it with a
+  row label inside a settings list.
+- `SegmentedControl` always shows **all** options on the row. If you have more than 4–5 options,
+  switch to a `<Select>` or `<Tabs>`.
+- `ToggleGroup` is the only one that can show zero pressed at once (multi-select with no filter).
+  Don't enforce "at least one pressed" — that's a `SegmentedControl`.
+
+## CopyButton and Kbd — small but consistent
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<>
+  <CopyButton value="10.0.0.42" label="Copy IP" />
+  <Kbd keys="Cmd+K" />
+</>
+```
+
+- `CopyButton` owns the "Copied" announcement and resets after ~1.2s; don't wrap it with your own
+  timeout.
+- `Kbd` renders combos as space-separated key caps. Use `+` in the source (`"Cmd+K"`); the component
+  paints the joiner.
+
+## Common mistakes (and the fix)
+
+| Symptom                                                     | Likely cause                                              | Fix                                                                                         |
+| ----------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Three filled buttons in one toolbar fight for attention     | Multiple `variant="primary"` on the same page region      | Demote two to `ghost`. There is exactly one primary per visible surface                     |
+| Buttons in a row are spaced inconsistently (12, 16, custom) | Custom `<div style={{ gap }}>` wrapper around the actions | Drop the wrapper. The parent (`.ph-bar`, `.modal-f`, drawer footer) already sets `gap: 8px` |
+| Icon-only button reads "button" in screen readers           | Missing `aria-label`                                      | Pass `aria-label`. `<uni-icon-button aria-label="Close">…</uni-icon-button>`                |
+| Toggle and Segmented look the same in code reviews          | Picking by visual, not by semantics                       | Toggle = boolean; Segmented = pick-one; ToggleGroup = pick-many                             |
+| Loading button shows two spinners                           | Spinner rendered manually inside `children`               | Drop the inline spinner; pass `loading` and the built-in one renders                        |
+| Kebab menu opens but `Esc` doesn't close it                 | Custom `<details>` or click-outside handler               | Use `<ActionMenu>` — `Esc`, click-outside, and focus restore are wired up                   |
+| Destructive button next to primary delete-by-mistake        | `Delete` rendered as `variant="primary"` red              | Use `variant="danger"`. Reserve the filled blue for the safe path                           |
+| Save button stays clickable while the request is in flight  | No `loading` state                                        | Pass `loading={saving}`. It disables the button **and** sets `aria-busy`                    |
+| Long button row wraps onto two lines on narrow viewports    | Five+ inline buttons in a toolbar                         | Collapse overflow into an `<ActionMenu>`; keep the primary outside                          |
+| SegmentedControl with 8 options scrolls horizontally        | Wrong picker for the cardinality                          | Switch to `<Select>` or `<Tabs>`. Segmented is for 2–5 options                              |
+
+## CSS hooks userland can rely on
+
+These class names ship with `@w5-ui/tokens/dashboard.css` and the framework component files. Lean on
+them if you need to extend a trigger; don't replace them with bespoke selectors.
+
+- `.btn`, `.btn-primary`, `.btn-ghost`, `.btn-danger`, `.btn-icon` — `Button` chrome and variants
+- `.icon-btn` — square 28×28 IconButton
+- `.split-btn`, `.split-btn-primary`, `.split-btn-caret` — SplitButton halves
+- `.am-trigger`, `.am-menu`, `.am-item`, `.am-item--danger` — ActionMenu trigger + items
+- `.seg`, `.seg-option`, `.seg-option[aria-checked='true']` — SegmentedControl row
+- `.tg`, `.tg-option`, `.tg-option[aria-pressed='true']` — ToggleGroup row
+- `.toggle-track`, `.toggle-track .knob`, `.toggle-track.on` — Toggle switch
+- `.kbd`, `.kbd__segment`, `.kbd__key`, `.kbd__plus` — Kbd key caps
+
+See **Foundations / Spacing** for the underlying `--space-*` tokens these classes consume, and
+**Foundations / Status & feedback** for how to pair actions with banners, callouts, and toast
+confirmation messages.

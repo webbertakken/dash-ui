@@ -1,0 +1,346 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Recipes" />
+
+# Recipes
+
+Complete, copy-paste page templates for Web Components userland. Each recipe is a working file —
+drop it into a fresh vanilla / Vite / Eleventy app, import `@w5-ui/wc/styles.css`, register the
+elements with `import '@w5-ui/wc'`, set `<html data-motif="dark">`, and it renders pixel-for-pixel
+like the matching Dashboard story.
+
+If you are wiring a brand-new userland app, copy from here first; tune later. The recipes
+deliberately favour the canonical `uni-*` elements (`uni-app-layout`, `uni-page-header`, `uni-card`,
+`uni-stat`, `uni-table-shell`) and the framework-agnostic `.app` / `.grid` / `.card` CSS hooks over
+hand-rolled markup — that is the difference between userland that matches and userland that drifts.
+
+> Every recipe assumes `@w5-ui/wc/styles.css` is imported once at the entry, the side-effect
+> register `import '@w5-ui/wc'` has run, and `<html data-motif="dark">` is set inline in
+> `index.html`. See **Foundations / Setup** for the entry-file walkthrough.
+
+## Recipe 1 — Dashboard overview
+
+A landing page: hero stats across the top, two wide charts underneath, one full-width tile at the
+bottom. Mirrors the **Dashboard** story tile-for-tile.
+
+```html
+<!-- src/index.html -->
+<!doctype html>
+<html lang="en" data-motif="dark">
+  <head>
+    <link rel="stylesheet" href="@w5-ui/wc/styles.css" />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <div class="app">
+      <uni-topbar id="topbar"></uni-topbar>
+      <div class="workspace">
+        <uni-sidebar id="sidebar"></uni-sidebar>
+        <main class="content" id="main-content" tabindex="-1">
+          <uni-page-header title="Dashboard"></uni-page-header>
+          <div class="grid">
+            <uni-stat
+              span="4"
+              label="Internet"
+              value="847"
+              unit="Mbps · down"
+              sub="18 ms · 0.0% loss"
+              delta="+12% 24h"
+              delta-dir="up"
+            ></uni-stat>
+            <uni-stat
+              span="4"
+              label="Clients"
+              value="312"
+              unit="active"
+              sub="42 wired · 270 wireless"
+              delta="+4 24h"
+              delta-dir="up"
+            ></uni-stat>
+            <uni-stat
+              span="4"
+              label="Alerts"
+              value="3"
+              unit="open"
+              sub="1 critical · 2 warn"
+              delta="-2 24h"
+              delta-dir="down"
+            ></uni-stat>
+
+            <uni-card span="8">
+              <uni-card-title>Throughput</uni-card-title>
+              <uni-line-chart id="throughput"></uni-line-chart>
+            </uni-card>
+            <uni-card span="4">
+              <uni-card-title>Top clients</uni-card-title>
+              <uni-sparkline id="top"></uni-sparkline>
+            </uni-card>
+
+            <uni-card span="12">
+              <uni-card-title>Traffic by device</uni-card-title>
+              <uni-bar-chart id="traffic"></uni-bar-chart>
+            </uni-card>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+```ts
+// src/main.ts — wire complex props as JS properties
+import '@w5-ui/wc/styles.css'
+import '@w5-ui/wc'
+
+const topbar = document.querySelector('#topbar')!
+topbar.siteName = 'HQ'
+topbar.activeApp = 'system'
+topbar.apps = APPS
+
+document.querySelector('#sidebar')!.sections = SECTIONS
+document.querySelector('#throughput')!.data = throughputSeries
+document.querySelector('#top')!.data = topClientsSeries
+document.querySelector('#traffic')!.data = trafficSeries
+```
+
+**What carries the look**: `.app` / `.workspace` / `.content` lay out the canonical viewport grid.
+`<uni-page-header>` owns the sticky header rhythm. `.grid` owns the 12-column gutter (`<uni-grid>`
+also works as a typed alias). `<uni-stat>` and `<uni-card span="n">` own tile padding;
+`<uni-card-title>` is the typed sibling of `<h3>` so the `.card h3` rhythm survives codegen or
+templating. Nothing else needs to be set.
+
+> **Attributes vs properties.** Primitive props (`span`, `label`, `value`) ride on HTML attributes
+> as strings. Complex props (arrays, objects, callbacks) must be set as JS properties via
+> `el.prop = ...` — passing them as attributes serialises to `[object Object]` and silently breaks.
+
+## Recipe 2 — List page with table
+
+Devices-style page: page header with primary action + search, table with sortable headers,
+pagination underneath, bottom selection toolbar when rows are checked. The selection toolbar
+triggers `.grid:has(.sel-toolbar)` automatically — no extra padding required.
+
+```html
+<main class="content">
+  <uni-page-header title="Devices">
+    <uni-search-box slot="actions" placeholder="Search devices…"></uni-search-box>
+    <uni-button slot="actions" variant="primary">Adopt</uni-button>
+  </uni-page-header>
+
+  <div class="grid">
+    <uni-card span="12">
+      <uni-table-shell>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"><uni-checkbox aria-label="Select all"></uni-checkbox></th>
+              <th scope="col" aria-sort="ascending">
+                <uni-sort-header sort="asc">Name</uni-sort-header>
+              </th>
+              <th scope="col">Model</th>
+              <th scope="col" class="mac">MAC</th>
+              <th scope="col"><uni-sort-header>Clients</uni-sort-header></th>
+            </tr>
+          </thead>
+          <tbody id="devices-tbody"></tbody>
+        </table>
+      </uni-table-shell>
+      <uni-table-pager>
+        <uni-pagination id="pager"></uni-pagination>
+      </uni-table-pager>
+    </uni-card>
+
+    <uni-selection-toolbar id="sel" hidden>
+      <uni-button>Move</uni-button>
+      <uni-button variant="danger">Forget</uni-button>
+    </uni-selection-toolbar>
+  </div>
+</main>
+```
+
+```ts
+import '@w5-ui/wc'
+
+const tbody = document.querySelector('#devices-tbody')!
+tbody.innerHTML = rows
+  .map(
+    (r) => `
+    <tr>
+      <td><uni-checkbox data-id="${r.id}"></uni-checkbox></td>
+      <td>${r.name}</td>
+      <td>${r.model}</td>
+      <td><uni-mac>${r.mac}</uni-mac></td>
+      <td>${r.clients}</td>
+    </tr>`,
+  )
+  .join('')
+
+const pager = document.querySelector('#pager')!
+pager.page = 1
+pager.total = rows.length
+pager.addEventListener('change', (e) => {
+  pager.page = e.detail.page
+  /* refresh tbody */
+})
+
+const sel = document.querySelector('#sel')!
+const selected = new Set<string>()
+tbody.addEventListener('change', (e) => {
+  const cb = e.target as HTMLElement & { checked: boolean; dataset: { id: string } }
+  if (cb.tagName === 'UNI-CHECKBOX') {
+    cb.checked ? selected.add(cb.dataset.id) : selected.delete(cb.dataset.id)
+    sel.hidden = selected.size === 0
+    sel.count = selected.size
+  }
+})
+```
+
+**What carries the look**: `.grid` is the typed page grid. `<uni-table-shell>` wraps the plain
+`<table>` for the inset rhythm. `<th scope="col">` carries a11y. `<uni-sort-header>` owns the sort
+icon + `aria-sort`. The selection toolbar is rendered **inside** `.grid` so the
+`.grid:has(.sel-toolbar)` rule reserves room for it — never as a sibling of `<main>` or a
+fixed-positioned overlay you styled yourself.
+
+## Recipe 3 — Settings / form page
+
+Two-column form with grouped sections. `.field-stack` owns the 16 px vertical rhythm, `.form-row`
+owns the 14 px column gap, `.form-actions` owns the right-aligned button row. Drop in
+`<uni-field label hint error required>` for every input.
+
+```html
+<main class="content">
+  <uni-page-header title="Settings">
+    <uni-button slot="actions" variant="primary" form="settings" type="submit">Save</uni-button>
+  </uni-page-header>
+
+  <form id="settings" class="grid">
+    <uni-card span="6">
+      <uni-card-title>Site</uni-card-title>
+      <div class="field-stack">
+        <uni-field label="Site name" required hint="Visible in the topbar">
+          <uni-input id="name" value="HQ"></uni-input>
+        </uni-field>
+        <div class="form-row">
+          <uni-field label="Country">
+            <uni-select id="country"></uni-select>
+          </uni-field>
+          <uni-field label="Timezone">
+            <uni-select id="timezone"></uni-select>
+          </uni-field>
+        </div>
+        <uni-field label="Maintenance window" hint="Daily 04:00 local">
+          <uni-toggle id="maint" checked></uni-toggle>
+        </uni-field>
+      </div>
+    </uni-card>
+
+    <uni-card span="6">
+      <uni-card-title>Network</uni-card-title>
+      <uni-callout variant="info" title="Restart required">
+        Changes to LAN subnet require a controller reboot.
+      </uni-callout>
+      <div class="field-stack">
+        <uni-field label="LAN subnet">
+          <uni-input id="cidr" value="10.0.0.0/24"></uni-input>
+        </uni-field>
+        <uni-field label="MTU">
+          <uni-input id="mtu" value="1500"></uni-input>
+        </uni-field>
+      </div>
+      <div class="form-actions">
+        <uni-button>Cancel</uni-button>
+        <uni-button variant="primary" type="submit">Apply</uni-button>
+      </div>
+    </uni-card>
+  </form>
+</main>
+```
+
+```ts
+import '@w5-ui/wc'
+
+document.querySelector('#country')!.options = [
+  { label: 'Netherlands', value: 'NL' },
+  { label: 'Germany', value: 'DE' },
+  // …
+]
+document.querySelector('#timezone')!.options = [
+  { label: 'Europe/Amsterdam', value: 'Europe/Amsterdam' },
+  // …
+]
+
+document.querySelector('#settings')!.addEventListener('submit', (e) => {
+  e.preventDefault()
+  /* persist */
+})
+```
+
+**What carries the look**: the `<form class="grid">` _is_ the grid — no extra wrapper.
+`<uni-card-title>` keeps the section-title rhythm under the `.card h3` rule without leaking a raw
+`<h3>` into copy-paste templates; `.field-stack` ladders fields with 16 px gaps; `.form-row`
+two-columns inputs without bespoke gap overrides; `.form-actions` right-aligns and adds the 16 px
+top offset. Replace these typed primitives / class hooks with hand-rolled flex containers and the
+rhythm drifts within one PR.
+
+## Empty-state / loading shell
+
+When data is still loading or empty, render the same shell so layout doesn't jump:
+
+```html
+<div class="grid">
+  <uni-card span="12">
+    <uni-skeleton id="loading" lines="6"></uni-skeleton>
+    <uni-empty-state id="empty" hidden title="No devices yet" hint="Adopt one to get started">
+    </uni-empty-state>
+    <uni-table-shell id="tableShell" hidden
+      ><table>
+        …
+      </table></uni-table-shell
+    >
+  </uni-card>
+</div>
+```
+
+```ts
+async function load() {
+  const loading = document.querySelector('#loading')!
+  const empty = document.querySelector('#empty')!
+  const tableShell = document.querySelector('#tableShell')!
+
+  const items = await fetchDevices()
+  loading.hidden = true
+  if (items.length === 0) {
+    empty.hidden = false
+  } else {
+    tableShell.hidden = false
+    /* fill the table body */
+  }
+}
+load()
+```
+
+`<uni-skeleton>` and `<uni-empty-state>` both reserve the same vertical room as the eventual table,
+so the page never jolts when data arrives. Never conditionally render the `<uni-card>` itself — the
+grid lane goes with it and your other tiles reflow.
+
+## What every recipe omits (on purpose)
+
+- **No inline `style="padding: ...; gap: ..."`.** Everything spatial comes from `.grid` / `.card` /
+  `.field-stack` / `.form-row` / `.form-actions`.
+- **No raw hex colours.** Status comes from `<uni-pill>` / `<uni-callout>` / `<uni-banner>`; copy
+  comes from `var(--text-1)` and `var(--text-2)`.
+- **No bespoke page header.** `<uni-page-header>` (or the `.ph-bar` / `.ph-title` / `.ph-actions`
+  primitives) owns the sticky border + padding.
+- **No wrapper `<div>` around `.grid`.** The grid is a direct child of `.content`. Wrappers nullify
+  the 16 × 24 page gutter.
+
+If a recipe needs to bend one of those rules, that delta belongs in **Foundations** as a new
+primitive — not as a one-off override in userland. Surface it instead of hand-rolling.
+
+## See also
+
+- **Foundations / Setup** — the entry-file wiring every recipe assumes
+- **Foundations / Page layout** — the shell skeleton and grid math
+- **Foundations / Forms** — the field / row / action primitives used in Recipe 3
+- **Foundations / Tables** — the `<uni-table-shell>` + `<uni-sort-header>` recipe in Recipe 2
+- **Foundations / Troubleshooting** — when a recipe renders but looks "almost right"

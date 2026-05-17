@@ -1,0 +1,261 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Setup" />
+
+# Setup
+
+This page is the **end-to-end recipe** for getting a fresh Web Components userland app to render
+like the Dashboard story. Follow it top-to-bottom once. Skip ahead and a single missing line (the
+styles import, the `data-motif` attribute, the side-effect register, an opinionated body reset)
+silently re-introduces all of the spacing and contrast drift the design system was meant to
+eliminate.
+
+> If your userland looks "almost right but the gaps are off and the colours are washed out", or
+> elements render as **empty boxes**, you almost certainly missed exactly one step below. Re-read in
+> order, don't cherry-pick.
+
+## 1. Install
+
+```bash
+yarn add @w5-ui/wc @w5-ui/tokens @w5-ui/assets
+```
+
+`@w5-ui/wc` already depends on `@w5-ui/tokens` and `@w5-ui/assets` transitively — listing them
+explicitly is optional, but it makes deduping in monorepos predictable.
+
+| Package         | What it ships                                                         |
+| --------------- | --------------------------------------------------------------------- |
+| `@w5-ui/wc`     | `uni-*` custom elements, `styles.css` (re-exports tokens + dashboard) |
+| `@w5-ui/tokens` | `tokens.css` (motif tokens), `dashboard.css` (`.app`/`.grid`/`.card`) |
+| `@w5-ui/assets` | Brand SVGs (logo, product marks) consumed by `<uni-topbar>`           |
+
+React users swap the first row for `@w5-ui/react`; Svelte users swap it for `@w5-ui/svelte`. The
+remaining two packages are framework-agnostic — never install them per-app twice.
+
+## 2. The HTML shell
+
+Set `data-motif` on `<html>` **before the bundle parses**. This is the single source of truth for
+every semantic colour, border, and shadow in the system.
+
+```html
+<!-- index.html -->
+<!doctype html>
+<html lang="en" data-motif="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acme Console</title>
+    <link rel="stylesheet" href="@w5-ui/wc/styles.css" />
+    <script type="module">
+      import '@w5-ui/wc' // registers all uni-* elements as a side effect
+    </script>
+  </head>
+  <body>
+    <!-- uni-* elements are available everywhere below -->
+  </body>
+</html>
+```
+
+That's it for the shell. Don't add `body { background: #fff }`, don't add `html { height: 100% }`,
+don't wrap the body content in a flex container — the `.app` / `.workspace` grid hooks already own
+the viewport.
+
+> **Side-effect register is mandatory.** Without `import '@w5-ui/wc'`, every `<uni-x>` element falls
+> back to `HTMLUnknownElement` and renders as an empty inline element. If you load the stylesheet
+> but skip the script, the page looks blank with no errors.
+
+## 3. The entry
+
+Most bundlers (Vite, Rollup, esbuild) inline the side-effect import. The pattern is identical
+regardless of which userland framework wraps the WC bundle:
+
+```ts
+// src/main.ts
+import '@w5-ui/wc/styles.css' // tokens + dashboard.css in one file
+import '@w5-ui/wc' // side-effect register for all uni-* elements
+
+// then mount your framework-of-choice, or just render plain HTML
+```
+
+Two things go wrong here often enough to call out:
+
+- **Duplicate imports.** If you also `import '@w5-ui/tokens/tokens.css'` somewhere later, the
+  cascade order changes and component overrides (e.g. `uni-card` corner radii) lose to the raw token
+  layer. Import once via `styles.css` and stop there.
+- **Late register.** Importing `@w5-ui/wc` inside a feature module means the first batch of `uni-*`
+  elements parses **before** their constructors are defined; they upgrade later, but the initial
+  render can flash empty boxes. Keep the register at the entry.
+
+## 4. The app shell
+
+`<uni-app-layout>` accepts a single default slot only — custom elements cannot forward Svelte 5
+snippet props across the framework boundary. For full Topbar / Sidebar composition, render the
+canonical `.app` / `.workspace` / `.content` chrome with raw HTML class hooks and nest the
+`uni-topbar` / `uni-sidebar` at the matching positions.
+
+```html
+<body>
+  <div class="app">
+    <uni-topbar id="topbar"></uni-topbar>
+    <div class="workspace">
+      <uni-sidebar id="sidebar"></uni-sidebar>
+      <main class="content" id="main-content" tabindex="-1">
+        <uni-page-header title="Dashboard"></uni-page-header>
+        <div class="grid">
+          <uni-stat span="4" label="Internet" value="847" unit="Mbps"></uni-stat>
+          <uni-card span="8">…</uni-card>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module">
+    import '@w5-ui/wc'
+    // Complex props (arrays, objects, callbacks) must be set as JS properties.
+    // HTML attributes only serialise to strings — passing them attributes
+    // produces `[object Object]` placeholders or silent no-ops.
+    const topbar = document.querySelector('#topbar')
+    topbar.siteName = 'HQ'
+    topbar.activeApp = 'system'
+    topbar.apps = APPS
+
+    document.querySelector('#sidebar').sections = SECTIONS
+  </script>
+</body>
+```
+
+Inside the content area, the canonical body is `<uni-banner>` → `<uni-page-header>` → `<uni-grid>`
+of `<uni-card>` / `<uni-stat>`. See **Foundations / Page layout** for the full skeleton and grid
+math.
+
+## 5. Anti-FOUC: pick the motif before paint (optional)
+
+Skip if your app is dark-only. If users can flip light/dark, inline a tiny script in `index.html`
+that sets `data-motif` before the bundle loads.
+
+```html
+<script>
+  ;(function () {
+    var m = localStorage.getItem('motif')
+    if (m !== 'dark' && m !== 'light') {
+      m = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+    }
+    document.documentElement.setAttribute('data-motif', m)
+  })()
+</script>
+```
+
+When the user toggles, write back to `localStorage` and update the attribute — the WC elements
+re-resolve their tokens via CSS, no JS-side re-render needed. The pattern lives in **Foundations /
+Motifs**. Doing the initial read after the bundle parses causes a one-frame flash of the wrong motif
+on every refresh.
+
+## 6. Fonts
+
+`@w5-ui/tokens` declares **Inter** for body and **JetBrains Mono** for tabular text (IPs, MACs,
+SKUs). Self-host or load via Google Fonts in `index.html`:
+
+```html
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+/>
+```
+
+If a custom system font is preferred, override `--dash-ui-font-sans` / `--dash-ui-font-mono` once on
+`:root` — never per element. See **Foundations / Type**.
+
+## 7. Tailwind (optional)
+
+Userland that already uses Tailwind v4 can pull in the token utilities and the motif-aware `dark:`
+variant alongside the chrome classes. Reach for the **one-stop** entry — single import, no ordering
+footguns:
+
+```css
+/* src/app.css */
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind-full.css'; /* tokens + @theme bridge + chrome classes */
+```
+
+If you need fine-grained control over which layers land in the bundle, the two layers are also
+available separately, in this exact order:
+
+```css
+/* src/app.css */
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind.css'; /* tokens + @theme bridge + dark: variant */
+@import '@w5-ui/tokens/dashboard.css'; /* .app / .workspace / .grid / .card / .ph-bar */
+```
+
+`tailwind.css` ships only the token vars and the `@theme inline { ... }` bridge — it deliberately
+does **not** include `dashboard.css`. If you stop after one import, every Tailwind utility works but
+the canonical chrome classes are missing, and `.app` / `.grid` / `.card` fall back to unstyled
+`<div>`s. That's the single biggest cause of "spacing looks off" when a Tailwind userland mounts a
+w5-ui app — the elements render, but the 12-column grid, 16/24 px page padding, 12 px gap, and card
+shell are gone.
+
+If you'd rather one-stop the import, use the bundle instead — it ships both layers:
+
+```ts
+import '@w5-ui/wc/styles.css'
+```
+
+`tailwind.css` declares `@custom-variant dark (&[data-motif='dark'], [data-motif='dark'] &)`, so
+`dark:bg-bg-1` already tracks the motif attribute — no `darkMode: 'class'` / `'media'` override
+needed.
+
+```html
+<div class="bg-bg-1 dark:bg-bg-2"><!-- … --></div>
+```
+
+See **Foundations / Motifs** for the full rationale and **Foundations / Colours** for the token
+class names (`bg-bg-*`, `text-text-*`, `border-border-*`, `bg-status-*-bg`, …).
+
+## 8. Sanity checklist
+
+Open the running app next to the **Dashboard** story in Storybook. Each row below should match. If
+one doesn't, the fix is in the named foundations page — don't tweak in userland.
+
+| Check                                                                                      | If it fails, read…               |
+| ------------------------------------------------------------------------------------------ | -------------------------------- |
+| Page background is the deep dark surface, not pure black or white                          | Foundations / Motifs             |
+| `.content` has 16 px top / 24 px side padding around the grid                              | Foundations / Page layout        |
+| Cards have 6 px radius, 16 px padding, 12 px gap between them                              | Foundations / Cards              |
+| `<uni-stat span="4">` tiles line up 3-across, 8 + 4 lines up 2-across                      | Foundations / Page layout (grid) |
+| `<uni-card-title>` (or raw `<h3>`) inside `<uni-card>` reads 14 px / weight 500 / `text-1` | Foundations / Cards              |
+| Pills render rounded full, status-tinted, never bare hex colours                           | Foundations / Status & feedback  |
+| Sidebar links highlight on hover with `--row-hover`, not a custom one                      | Foundations / Navigation         |
+| Every `<uni-*>` element has rendered children visible — not blank inline boxes             | This page (step 2 + 3)           |
+
+If three or more rows fail at once, suspect the side-effect register (step 3) or the styles import
+(step 2). Both fix the symptoms in bulk.
+
+## Common mistakes (and the fix)
+
+| Symptom                                                              | Likely cause                                                                                              | Fix                                                                                                                                         |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<uni-*>` elements render as empty inline boxes                      | Forgot `import '@w5-ui/wc'`; the browser falls back to `HTMLUnknownElement`                               | Add the side-effect register at the entry (step 3)                                                                                          |
+| Bundle loads, screen is blank white, no errors                       | `@w5-ui/wc/styles.css` not imported in the entry                                                          | Add it as the **first** import in `main.ts` / `<link>` in `<head>`                                                                          |
+| Elements render but colours look raw — neutral greys, blue link blue | `data-motif` missing from `<html>`, tokens fall through to default `:root`                                | Add `data-motif="dark"` to `<html>` (step 2). See **Foundations / Motifs**                                                                  |
+| Topbar app-switcher shows `[object Object]` or never highlights      | Set complex props (`apps`, `activeApp`, callbacks) as HTML attributes — attributes only serialise strings | Set as JS properties after `querySelector`: `el.apps = [...]`, `el.activeApp = 'system'`                                                    |
+| Topbar / Sidebar render **inside** the main content area             | Tried to use `<uni-app-layout>` with named slots; the WC build exposes a single default slot only         | Compose the shell with raw `.app` / `.workspace` / `.content` CSS hooks; nest `uni-topbar` / `uni-sidebar` at the matching positions        |
+| Card padding looks fine but the page edges feel too tight / too wide | A custom `<div style="padding: ...">` wraps the page below `<main>`                                       | Render `<uni-banner>` / `<uni-page-header>` / `.grid` as siblings inside `.content` — see Page layout                                       |
+| Gaps between cards look wrong (8 px or 16 px instead of 12 px)       | Re-implementing `.grid` with `display: flex; gap: 1rem`                                                   | Use `<uni-grid>` (or raw `<div class="grid">` as escape hatch) — `repeat(12, 1fr)` + 12 px gap                                              |
+| Cards render but no shadow / depth                                   | Imported only `tokens.css`, not `dashboard.css`                                                           | Use `@w5-ui/wc/styles.css` (step 3) — it bundles both                                                                                       |
+| Tailwind app: spacing wrong, `.grid` and `.card` un-styled           | Imported `@w5-ui/tokens/tailwind.css` but skipped `@w5-ui/tokens/dashboard.css`                           | Switch to `@w5-ui/tokens/tailwind-full.css` (one import, ships both), or add the `dashboard.css` import right after `tailwind.css` (step 7) |
+| First batch of `<uni-*>` elements flashes empty, then upgrades       | `import '@w5-ui/wc'` lives in a lazily-loaded module instead of the entry                                 | Move the register to `main.ts` (step 3)                                                                                                     |
+| Two scrollbars, page won't scroll the content area                   | `html, body { height: 100% }` plus `body { display: flex }`                                               | Delete those resets. The `.app` grid already sets up the viewport                                                                           |
+| Tailwind `dark:` classes never trigger                               | Tailwind config sets `darkMode: 'media'` / `'class'` and beats the variant                                | Remove the override; `@w5-ui/tokens/tailwind.css` already binds `dark:` to `data-motif`                                                     |
+| First paint flashes the wrong motif on refresh                       | Motif read happens after the bundle parses                                                                | Move it to an inline `<script>` in `index.html` (step 5)                                                                                    |
+| Fonts look like the system default, not Inter                        | Font link tag missing or `font-family` overridden somewhere in userland CSS                               | Add the `<link>` (step 6); don't set `body { font-family: ... }`                                                                            |
+| Status pills are the right colour in dark but garish in light        | Hardcoded `bg-red-500/10` reproduces the tint manually                                                    | Use `bg-status-danger-bg` / `text-status-danger` — both flip per motif                                                                      |
+
+## See also
+
+- **Foundations / Overview** — the package layout in one screen
+- **Foundations / Motifs** — `data-motif`, the `dark:` variant, runtime toggle
+- **Foundations / Page layout** — the canonical `.app` → `.workspace` → `.content` → `.grid`
+- **Foundations / Cards** — the `<uni-card>` / `<uni-stat>` contract that powers `.grid` tiles
+- **Foundations / Type** — font stack and the 13-size scale
+- **Foundations / Colours** — semantic token picker and Tailwind class names

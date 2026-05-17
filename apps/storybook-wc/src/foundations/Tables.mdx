@@ -1,0 +1,182 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Tables" />
+
+# Tables
+
+Lists of devices, clients, leases, ports, alarms — every dashboard page that isn't a chart-grid ends
+up rendering a table. Dash UI ships the chrome and a few primitives, and lets you keep the markup
+plain HTML. Reproduce the recipe and userland tables read exactly like the reference Devices and
+Clients pages — no inline borders, no hand-rolled sort UI, no ad-hoc paging widget.
+
+## The recipe
+
+```html
+<!-- register all uni-* elements once at app entry -->
+
+export function DevicesTable({ rows }) {
+  const { sortKey, dir, onSort } = useSortable()
+  return (
+    <uni-table-shell>
+      <table>
+        <caption class="sr-only">Devices</caption>
+        <thead>
+          <tr>
+            <SortHeader sortKey="name" activeKey={sortKey} dir={dir} onSort={onSort}>
+              Name
+            </SortHeader>
+            <th scope="col">MAC</th>
+            <th scope="col" style={{ textAlign: 'right' }}>
+              Uptime
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.id}>
+              <td>{r.name}</td>
+              <td>
+                <uni-mac>{r.mac}</uni-mac>
+              </td>
+              <td style={{ textAlign: 'right' }}>{r.uptime}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </uni-table-shell>
+  )
+}
+```
+
+That is the contract. `<uni-table-shell>` renders the canonical `<div class="table-shell">` so the
+rounded border, elevated background, and overflow-clip come from one class — no
+`style={{ background, border, borderRadius }}` repetition. The `<table>`, `<th>` and `<td>`
+selectors already carry the dashboard's typography, padding, and hover row. `<uni-mac>` renders the
+`<span class="mac">` monospace label without copying the class name into userland.
+
+`<uni-table-shell>` and `<div class="table-shell">` are interchangeable — both render the same
+wrapper, so a raw class string is a valid fallback when an auto-importable component is not
+available. Same goes for `<uni-mac>` vs `class="mac"` on a `<td>`.
+
+## Anatomy
+
+| Layer           | Element                     | Where the values live                                         |
+| --------------- | --------------------------- | ------------------------------------------------------------- |
+| Page wrapper    | `<div class="table-shell">` | Rounded 8px border, `--neutral-09` bg, `overflow: hidden`     |
+| Caption (sr)    | `<caption class="sr-only">` | WCAG 1.3.1 — names the table for screen readers               |
+| Header row      | `<th scope="col">`          | 10px uppercase tracking, sticky `top: 0`                      |
+| Sortable header | `<SortHeader>`              | Renders `<th scope="col" aria-sort>` + sort button + chevrons |
+| Body row        | `<tr>` `<td>`               | 9px × 12px padding, 40px row height, hover row tint           |
+| Monospace cell  | `<td class="mac">`          | JetBrains Mono — MACs, IPs, SKUs                              |
+| Avatar + name   | `<uni-name-cell thumb={…}>` | 28px thumb + label, used in the first column of most lists    |
+
+## Pick the right primitive
+
+| You want…                                          | Reach for                                            |
+| -------------------------------------------------- | ---------------------------------------------------- |
+| A list of similar items (devices, clients, leases) | `<table>` inside `.table-shell`                      |
+| A property sheet (key / value pairs)               | `<KVTable>` — drawers, detail panels                 |
+| One row of inline metrics inside a `<uni-card>`    | `<uni-stat>` cards in `.grid`                        |
+| A sortable column                                  | `<SortHeader>` + `useSortable()`                     |
+| Page-level paging                                  | `<Pagination>` + `<Select>` rows-per-page            |
+| Row selection                                      | `<Checkbox>` first column + `<SelectionToolbar>`     |
+| Per-row actions menu                               | `<ActionMenu>` in the last column                    |
+| Expandable detail row                              | `<ExpandableRow>`                                    |
+| Inline editing of a cell                           | `<InlineEdit>`                                       |
+| Column show / hide                                 | `<ColumnToggle>` in the page header                  |
+| Filtering                                          | `<Tag>` chips + `<FilterBuilder>` for compound rules |
+| Very long lists (10k+ rows)                        | `<VirtualList>` instead of a `<table>`               |
+
+## Selection + bulk actions
+
+```html
+<!-- register all uni-* elements once at app entry -->
+
+const [selected, setSelected] = useState<Set<string>>(new Set())
+
+return (
+  <>
+    <uni-table-shell>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" style={{ width: 32 }}>
+              <Checkbox
+                checked={selected.size === rows.length}
+                indeterminate={selected.size > 0 && selected.size < rows.length}
+                onChange={toggleAll}
+                ariaLabel="Select all rows"
+              />
+            </th>
+            <th scope="col">Name</th>
+          </tr>
+        </thead>
+        <tbody><!-- … --></tbody>
+      </table>
+    </uni-table-shell>
+    <SelectionToolbar
+      count={selected.size}
+      actions={[{ label: 'Forget', onClick: forget, variant: 'danger' }]}
+      onClear={() => setSelected(new Set())}
+    />
+  </>
+)
+```
+
+`SelectionToolbar` is `position: fixed` along the bottom — it floats over the page until the
+selection is cleared. The rest of the page keeps its own scroll; no manual padding-bottom is needed
+because the toolbar disappears once `count === 0`.
+
+## Pagination + rows-per-page
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<TablePager>
+  <Field label="Rows per page">
+    <Select value={pageSize} onChange={setPageSize} options={[25, 50, 100]} />
+  </Field>
+  <Pagination page={page} pageCount={Math.ceil(rows.length / pageSize)} onChange={setPage} />
+</TablePager>
+```
+
+`<TablePager>` renders the canonical `<div class="table-pager">` so the flex / space-between / 12 px
+top margin come from `@w5-ui/tokens/dashboard.css` instead of inline styles. Render it as a sibling
+of the `.table-shell`, not inside it — the shell clips its overflow and the focus ring on the pager
+buttons would get cut off otherwise.
+
+## Common mistakes (and the fix)
+
+| Symptom                               | Likely cause                                              | Fix                                                                                 |
+| ------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Table corners aren't rounded          | `<table>` rendered without a wrapper                      | Wrap in `<uni-table-shell>` (or `<div class="table-shell">`)                        |
+| Border looks doubled along the rim    | The wrapper has its own border _and_ each `<td>` has one  | Drop the wrapper border. `<uni-table-shell>` already supplies a single 1px border   |
+| Sortable header behaves like a label  | Plain `<th>` with an onClick                              | Use `<SortHeader>` — it renders `<th scope="col" aria-sort>` and a real button      |
+| Screen readers skip the table         | No `<caption>`                                            | Add `<caption class="sr-only">{name}</caption>` — WCAG 1.3.1                        |
+| MAC / IP column is hard to scan       | Default proportional font                                 | Wrap the value with `<uni-mac>` (or apply `class="mac"` directly to the `<td>`)     |
+| Selection toolbar covers the last row | Manual padding-bottom on the page that fights the toolbar | Remove it. The toolbar is fixed; the page scroll already reveals every row          |
+| Pager buttons are clipped             | Pager rendered inside `.table-shell` (overflow: hidden)   | Render the pager as a sibling, below the shell                                      |
+| Header doesn't stick when scrolling   | `.table-shell` wraps the table _and_ scrolls vertically   | Let the page scroll. `<th>` is `position: sticky; top: 0` against the page viewport |
+
+## CSS hooks userland can rely on
+
+- `.table-shell` — rounded, bordered wrapper for any full-width table on a page. Use through
+  `<uni-table-shell>`
+- `.table-pager` — flex / space-between / 12 px top-margin row that hosts rows-per-page +
+  `<Pagination>` directly below the shell. Use through `<TablePager>`
+- `.mac` — monospace cell for MACs, IPs, SKUs. Use through `<uni-mac>` (or apply the class directly
+  to a `<td>`)
+- `.name-cell`, `.nc-thumb` — avatar + label layout for the first column. Use through
+  `<uni-name-cell thumb={…}>` (pass `thumbClassName="cam"` for the camera gradient variant)
+- `.sr-only` — visually-hidden text kept available to assistive tech (the table `<caption>` rides on
+  this; WCAG 1.3.1). Use through `<SrOnly>` (or apply the class directly to a `<caption>` /
+  `<label>`)
+
+Anything else (raw colours, ad-hoc paddings) should come from tokens, not bespoke values. See
+**Foundations / Spacing** and **Foundations / Colours**.
+
+## See also
+
+- **Foundations / Page layout** — the `Banner` → `PageHeader` → `.grid` → `Card` skeleton tables
+  live inside
+- **Foundations / Forms** — inputs, validation, and the `Field` wrapper that filter / search
+  controls reuse
