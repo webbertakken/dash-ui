@@ -1,0 +1,156 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Forms" />
+
+# Forms
+
+Settings panels, drawers, and modal editors all share one rhythm: a stack of `Field`s, a 2-column
+grid above the fold, a row of buttons at the bottom. Reproduce that skeleton and userland forms read
+exactly like the reference Settings page — no inline label styles, no hand-tuned gaps.
+
+## The Field wrapper
+
+`Field` owns the **label + control + hint + error** stack. It generates an `id`, wires
+`htmlFor`/`aria-describedby`/`aria-invalid`, draws the required asterisk, and pads the surrounding
+gap. Drop a control inside as the child — `Field` will not double-render the `<input>`.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<Field label="Site name" defaultValue="Edge Gateway" />
+<Field label="Country" hint="ISO 3166 alpha-2">
+  <Combobox options={COUNTRIES} value={country} onChange={setCountry} />
+</Field>
+<Field label="MTU" error={mtu < 576 ? 'Must be ≥ 576' : undefined} required>
+  <NumberInput value={mtu} onChange={setMtu} min="576" max="9216" />
+</Field>
+```
+
+The bare `<Field label="…">` form renders an `<Input>` for you — useful for plain text fields. Pass
+a child whenever you need a richer control (`Combobox`, `NumberInput`, `Toggle`, `Slider`,
+`Textarea`, `Select`).
+
+## Layout
+
+Forms live inside `<uni-card>` tiles like every other page region. Inside the card, choose one of
+two shapes:
+
+```html
+<!-- register all uni-* elements once at app entry -->
+
+{ /* Single column — narrow forms, modal bodies */ }
+<uni-card span="4">
+  <uni-card-title>Profile</uni-card-title>
+  <FieldStack>
+    <Field label="Display name" defaultValue="Maya S." />
+    <Field label="Email" defaultValue="maya@example.com" />
+    <Field label="Role">
+      <select options="{ROLES}" value="{role}" onChange="{setRole}" />
+    </Field>
+  </FieldStack>
+</uni-card>
+
+{ /* Two-column grid — Settings cards, dense editors */ }
+<uni-card span="8">
+  <uni-card-title>System</uni-card-title>
+  <FormRow>
+    <Field label="Site name" defaultValue="Edge Gateway" />
+    <Field label="Country">
+      <Combobox options="{COUNTRIES}" value="{country}" onChange="{setCountry}" />
+    </Field>
+    <Field label="Timezone">
+      <Combobox options="{TZ}" value="{tz}" onChange="{setTz}" />
+    </Field>
+    <Field label="Maintenance window">
+      <TimePicker label="Start" value="{start}" onChange="{setStart}" />
+    </Field>
+  </FormRow>
+</uni-card>
+```
+
+`<FieldStack>` and `<FormRow>` are typed wrappers around the canonical `.field-stack` / `.form-row`
+classes from `@w5-ui/tokens/dashboard.css` (re-exported by the React and Svelte style bundles).
+`.form-row` is **14px** gap with a **6px** top offset — the same rhythm Settings uses. Wider gaps
+(16, 20, 24) make fields feel disconnected; tighter (≤ 10) lets labels and controls collide
+visually. Reach for the typed primitive (or the class) instead of typing the values inline.
+
+## Choose the right control
+
+| Data shape                                 | Reach for                                                 |
+| ------------------------------------------ | --------------------------------------------------------- |
+| Free-text string                           | `<Field>` (renders `Input`)                               |
+| Multi-line text, code, keys                | `<Textarea>`                                              |
+| One of a short fixed list (≤ 6)            | `<RadioGroup>` or `<SegmentedControl>`                    |
+| One of many (search needed)                | `<Select>` or `<Combobox>`                                |
+| Many of many                               | `<MultiSelect>`                                           |
+| Tagged free-form (DNS, emails, allow-list) | `<TagInput>`                                              |
+| Integer / float with bounds                | `<NumberInput>`                                           |
+| Range with two ends                        | `<RangeSlider>`                                           |
+| Boolean toggle                             | `<Toggle>` (state) or `<Checkbox>` (selection in a list)  |
+| IP / CIDR / MAC / port                     | `<IPInput>`, `<CIDRInput>`, `<MACInput>`, `<NumberInput>` |
+| Time / date / range                        | `<TimePicker>`, `<DatePicker>`, `<DateRangePicker>`       |
+| Duration (HH:MM:SS)                        | `<DurationInput>`                                         |
+| Password with show/hide                    | `<PasswordInput>`                                         |
+| One-time code                              | `<OTPInput>`                                              |
+| Hex colour                                 | `<ColorPicker>`                                           |
+| Prefix / suffix decoration (units, @, $)   | `<InputGroup>` around the control                         |
+
+Pick the most specific control available — `<IPInput>` enforces octets and tab-between-fields where
+a bare `<Input maxlength=15>` cannot. Specific controls also get correct accessibility (spinbutton,
+combobox, listbox roles) automatically.
+
+## Validation
+
+Pass `error` to surface a message under the field. `Field` flips `aria-invalid` on the control and
+links the error via `aria-describedby` — screen readers announce the message on focus.
+
+```html
+<Field label="MTU" hint="576 – 9216, default 1500" error="{errors.mtu}" required>
+  <NumberInput value="{mtu}" onChange="{setMtu}" min="576" max="9216" />
+</Field>
+```
+
+For form-wide success or warnings, render a `<Callout>` above the fields and a `<Toast>` on submit.
+Don't render error banners between fields — they break the field rhythm.
+
+## Action row
+
+Buttons live below the fields, right-aligned, with the destructive / cancel action on the left:
+
+```html
+<FormActions>
+  <uni-button variant="ghost" onClick={onCancel}>
+    Cancel
+  </uni-button>
+  <SplitButton
+    primary={{ label: 'Save', onClick: onSave }}
+    items={[{ label: 'Save and close', onClick: onSaveClose }]}
+  />
+</FormActions>
+```
+
+`<FormActions>` is a typed wrapper around the canonical `.form-actions` class
+(`display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px`) — the same right-aligned
+button row every Settings card and modal footer uses.
+
+For Settings cards where there is no per-card save button (the page saves on blur), drop the row
+entirely. For modal dialogs, the `Modal` footer slot owns this row — don't re-implement it.
+
+## Common mistakes (and the fix)
+
+| Symptom                                          | Likely cause                                                     | Fix                                                                                   |
+| ------------------------------------------------ | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Labels look pale / wrong size in React           | Hand-rolled `<label style={{ fontSize, color }}>` next to fields | Use `<Field label="…">`. Don't reach past it to style labels                          |
+| Fields touch each other vertically               | Form wrapped in `<div style={{ display: 'flex' }}>`              | Wrap in `<FieldStack>` — 16px gap, no margin hacks                                    |
+| Two-column form columns drift on resize          | `gridTemplateColumns: 'auto auto'`                               | Use `<FormRow>` — 1fr 1fr with the canonical 14px gap                                 |
+| Inline 14px gap drifts to 12 / 16 across pages   | Free-typed `gap: 14` on every form grid                          | Replace inline styles with `<FormRow>` so the rhythm is centralised                   |
+| Action row clings to the last field              | Buttons rendered as a sibling without `margin-top`               | Wrap in `<FormActions>` — right-aligned, 16px top offset                              |
+| Required asterisk is announced to SR users       | Manual `*` appended to label text                                | Use the `required` prop. `Field` renders `aria-hidden` asterisk and `required` attr   |
+| Error message not announced on focus             | Error rendered in a sibling `<div>` outside `Field`              | Pass `error` to `Field` — it wires `aria-describedby` and `role="alert"`              |
+| Combobox shows browser default underline         | `<Combobox>` rendered outside `<Field>`                          | Wrap in `<Field label="…">` — Field owns the label rhythm                             |
+| Save button activates on Enter inside a Combobox | `<form onSubmit>` wraps everything                               | Either drop the `<form>` (per-page save) or set `type="button"` on non-submit buttons |
+
+## See also
+
+- **Foundations / Page layout** — where the form `<uni-card>`s sit on the page
+- **Foundations / Spacing** — the 14px / 16px tokens form rhythm rests on
+- **Specialised / Field** — runnable Field variants

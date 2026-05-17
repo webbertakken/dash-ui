@@ -1,0 +1,246 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Setup" />
+
+# Setup
+
+This page is the **end-to-end recipe** for getting a fresh Svelte 5 userland app to render like the
+Dashboard story. Follow it top-to-bottom once. Skip ahead and a single missing line (the styles
+import, the `data-motif` attribute, an opinionated body reset) silently re-introduces all of the
+spacing and contrast drift the design system was meant to eliminate.
+
+> If your userland looks "almost right but the gaps are off and the colours are washed out", you
+> almost certainly missed exactly one step below. Re-read in order, don't cherry-pick.
+
+## 1. Install
+
+```bash
+yarn add @w5-ui/svelte @w5-ui/tokens @w5-ui/assets
+```
+
+`@w5-ui/svelte` already depends on `@w5-ui/tokens` and `@w5-ui/assets` transitively — listing them
+explicitly is optional, but it makes deduping in monorepos predictable.
+
+| Package         | What it ships                                                         |
+| --------------- | --------------------------------------------------------------------- |
+| `@w5-ui/svelte` | Components, `styles.css` (re-exports tokens + dashboard CSS)          |
+| `@w5-ui/tokens` | `tokens.css` (motif tokens), `dashboard.css` (`.app`/`.grid`/`.card`) |
+| `@w5-ui/assets` | Brand SVGs (logo, product marks) consumed by `Topbar`                 |
+
+React users swap the first row for `@w5-ui/react`; Web Components users swap it for `@w5-ui/wc`. The
+remaining two packages are framework-agnostic — never install them per-app twice.
+
+## 2. The HTML shell
+
+Set `data-motif` on `<html>` **before the bundle parses**. This is the single source of truth for
+every semantic colour, border, and shadow in the system.
+
+```html
+<!-- index.html -->
+<!doctype html>
+<html lang="en" data-motif="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acme Console</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+```
+
+That's it for the shell. Don't add `body { background: #fff }`, don't add `html { height: 100% }`,
+don't wrap `#app` in a flex container — `AppLayout` already owns the viewport grid.
+
+## 3. The entry
+
+Import the styles **once**, at the very top of your entry, before the first component import.
+
+```ts
+// src/main.ts
+import '@w5-ui/svelte/styles.css' // re-exports @w5-ui/tokens/tokens.css + dashboard.css
+import { mount } from 'svelte'
+import App from './App.svelte'
+
+mount(App, { target: document.getElementById('app')! })
+```
+
+Two things go wrong here often enough to call out:
+
+- **Duplicate imports.** If you also `import '@w5-ui/tokens/tokens.css'` somewhere later, the
+  cascade order changes and component overrides (e.g. `Card` corner radii) lose to the raw token
+  layer. Import once via `styles.css` and stop there.
+- **Late imports.** Importing `styles.css` inside a feature module makes its rules win against the
+  components — `@layer` order is decided by first-encounter. Keep it at the entry.
+
+## 4. The app root
+
+Render `AppLayout` exactly once. The dashboard chrome (skip link, topbar, sidebar, sticky page
+header, `<main>`) lives inside it. The `topbar` and `sidebar` slots are **snippet props** in Svelte
+5 — pass them via `{#snippet name()}...{/snippet}` blocks, not as children.
+
+```svelte
+<!-- src/App.svelte -->
+<script lang="ts">
+  import {
+    AppLayout,
+    Topbar,
+    Sidebar,
+    type SidebarSectionDef,
+  } from '@w5-ui/svelte'
+  import Dashboard from './pages/Dashboard.svelte'
+
+  const SECTIONS: SidebarSectionDef[] = [
+    /* ...see Foundations / Navigation for the canonical shape... */
+  ]
+  let page = $state('dashboard')
+</script>
+
+<AppLayout pageLabel="Dashboard">
+  {#snippet topbar()}<Topbar siteName="HQ" bind:activeApp={page} />{/snippet}
+  {#snippet sidebar()}<Sidebar sections={SECTIONS} bind:activeId={page} />{/snippet}
+
+  {#if page === 'dashboard'}<Dashboard />{/if}
+  <!-- ...other pages... -->
+</AppLayout>
+```
+
+Inside a page, the canonical body is `Banner` → `PageHeader` → `<Grid>` of `Card` / `Stat`. See
+**Foundations / Page layout** for the full skeleton and grid math.
+
+> `bind:activeApp` and `bind:activeId` are required because both props are `$bindable()` — without
+> the `bind:` directive the parent never sees the user's selection and the sidebar / app-switcher
+> never highlights.
+
+## 5. Anti-FOUC: pick the motif before paint (optional)
+
+Skip if your app is dark-only. If users can flip light/dark, inline a tiny script in `index.html`
+that sets `data-motif` before the Svelte bundle loads.
+
+```html
+<script>
+  ;(function () {
+    var m = localStorage.getItem('motif')
+    if (m !== 'dark' && m !== 'light') {
+      m = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+    }
+    document.documentElement.setAttribute('data-motif', m)
+  })()
+</script>
+```
+
+Then expose a tiny `$effect` in `App.svelte` that mirrors writes back to `localStorage`. The pattern
+lives in **Foundations / Motifs**. Doing this inside an `onMount` instead of an inline script causes
+a one-frame flash of the wrong motif on every refresh.
+
+## 6. Fonts
+
+`@w5-ui/tokens` declares **Inter** for body and **JetBrains Mono** for tabular text (IPs, MACs,
+SKUs). Self-host or load via Google Fonts in `index.html`:
+
+```html
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+/>
+```
+
+If a custom system font is preferred, override `--dash-ui-font-sans` / `--dash-ui-font-mono` once on
+`:root` — never per component. See **Foundations / Type**.
+
+## 7. Tailwind (optional)
+
+Userland that already uses Tailwind v4 can pull in the token utilities and the motif-aware `dark:`
+variant alongside the chrome classes. Reach for the **one-stop** entry — single import, no ordering
+footguns:
+
+```css
+/* src/app.css */
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind-full.css'; /* tokens + @theme bridge + chrome classes */
+```
+
+If you need fine-grained control over which layers land in the bundle, the two layers are also
+available separately, in this exact order:
+
+```css
+/* src/app.css */
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind.css'; /* tokens + @theme bridge + dark: variant */
+@import '@w5-ui/tokens/dashboard.css'; /* .app / .workspace / .grid / .card / .ph-bar */
+```
+
+`tailwind.css` ships only the token vars and the `@theme inline { ... }` bridge — it deliberately
+does **not** include `dashboard.css`. If you stop after one import, every Tailwind utility works but
+the canonical chrome classes are missing, and `AppLayout` / `<div class="grid">` / `<Card>` fall
+back to unstyled `<div>`s. That's the single biggest cause of "spacing looks off" when a Tailwind
+userland mounts a w5-ui app — the components render, but the 12-column grid, 16/24 px page padding,
+12 px gap, and card shell are gone.
+
+If you'd rather one-stop the import, use the framework bundle instead — it ships both layers:
+
+```ts
+import '@w5-ui/svelte/styles.css'
+```
+
+`tailwind.css` declares `@custom-variant dark (&[data-motif='dark'], [data-motif='dark'] &)`, so
+`dark:bg-bg-1` already tracks the motif attribute — no `darkMode: 'class'` / `'media'` override
+needed.
+
+```svelte
+<div class="bg-bg-1 dark:bg-bg-2"><!-- … --></div>
+```
+
+See **Foundations / Motifs** for the full rationale and **Foundations / Colours** for the token
+class names (`bg-bg-*`, `text-text-*`, `border-border-*`, `bg-status-*-bg`, …).
+
+## 8. Sanity checklist
+
+Open the running app next to the **Dashboard** story in Storybook. Each row below should match. If
+one doesn't, the fix is in the named foundations page — don't tweak in userland.
+
+| Check                                                                                                                  | If it fails, read…               |
+| ---------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Page background is the deep dark surface, not pure black or white                                                      | Foundations / Motifs             |
+| `<main>` has 16 px top / 24 px side padding around the grid                                                            | Foundations / Page layout        |
+| Cards have 6 px radius, 16 px padding, 12 px gap between them                                                          | Foundations / Cards              |
+| `<Stat span={4}>` cards line up 3-across, 8 + 4 lines up 2-across                                                      | Foundations / Page layout (grid) |
+| `<CardTitle>` inside a `<Card>` renders 14 px / weight 500 / `text-1` (raw `<h3>` still works via the `.card h3` rule) | Foundations / Cards              |
+| Pills render rounded full, status-tinted, never bare hex colours                                                       | Foundations / Status & feedback  |
+| Sidebar links highlight on hover with `--row-hover`, not a custom one                                                  | Foundations / Navigation         |
+| `body`, `#app`, and the page wrapper have **no** margin or padding                                                     | This page (step 2)               |
+
+If three or more rows fail at once, suspect the styles import (step 3) or the motif attribute (step
+2). Both fix the symptoms in bulk.
+
+## Common mistakes (and the fix)
+
+| Symptom                                                                | Likely cause                                                                          | Fix                                                                                                                                         |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Bundle loads, screen is blank white, no errors                         | `@w5-ui/svelte/styles.css` not imported in the entry                                  | Add it as the **first** import in `main.ts`                                                                                                 |
+| Components render but colours look raw — neutral greys, blue link blue | `data-motif` missing from `<html>`, tokens fall through to default `:root`            | Add `data-motif="dark"` to `<html>` (step 2). See **Foundations / Motifs**                                                                  |
+| `Topbar` / `Sidebar` render as empty slots inside `AppLayout`          | Passed as children (`<AppLayout><Topbar /></AppLayout>`) instead of via snippet props | Use `{#snippet topbar()}<Topbar /> {/snippet}` (step 4). They are `Snippet` props, not children                                             |
+| Topbar app-switcher caret never highlights the active app              | Forgot `bind:` on `activeApp` — it is a `$bindable()` prop                            | `<Topbar bind:activeApp={page} />`                                                                                                          |
+| Card padding looks fine but the page edges feel too tight / too wide   | A custom `<div style="padding: ...">` wraps the page below `<main>`                   | Render `Banner` / `PageHeader` / `<Grid>` as siblings of `<main>` — see Page layout                                                         |
+| Gaps between cards look wrong (8 px or 16 px instead of 12 px)         | Re-implementing `.grid` with `display: flex; gap: 1rem`                               | Use the typed `<Grid>` primitive (or raw `<div class="grid">` as escape hatch) — `repeat(12, 1fr)` + 12 px gap                              |
+| Cards render but no shadow / depth                                     | Imported only `tokens.css`, not `dashboard.css`                                       | Use `@w5-ui/svelte/styles.css` (step 3) — it bundles both                                                                                   |
+| Tailwind app: spacing wrong, `.grid` and `.card` un-styled             | Imported `@w5-ui/tokens/tailwind.css` but skipped `@w5-ui/tokens/dashboard.css`       | Switch to `@w5-ui/tokens/tailwind-full.css` (one import, ships both), or add the `dashboard.css` import right after `tailwind.css` (step 7) |
+| Two scrollbars, page won't scroll the content area                     | `html, body { height: 100% }` plus `#app { display: flex }`                           | Delete those resets. `AppLayout` already sets up the viewport grid                                                                          |
+| Topbar / Sidebar render twice when navigating                          | `AppLayout` rendered inside a page component instead of once at App root              | Move `AppLayout` to `App.svelte`; pages render inside it                                                                                    |
+| Tailwind `dark:` classes never trigger                                 | Tailwind config sets `darkMode: 'media'` / `'class'` and beats the variant            | Remove the override; `@w5-ui/tokens/tailwind.css` already binds `dark:` to `data-motif`                                                     |
+| First paint flashes the wrong motif on refresh                         | Motif read happens in an `onMount` after the bundle parses                            | Move it to an inline `<script>` in `index.html` (step 5)                                                                                    |
+| Fonts look like the system default, not Inter                          | Font link tag missing or `font-family` overridden somewhere in userland CSS           | Add the `<link>` (step 6); don't set `body { font-family: ... }`                                                                            |
+| Status pills are the right colour in dark but garish in light          | Hardcoded `bg-red-500/10` reproduces the tint manually                                | Use `bg-status-danger-bg` / `text-status-danger` — both flip per motif                                                                      |
+| `class:my-class` directive throws a TS error on a primitive            | Wrote the Svelte `class:` directive instead of forwarding a string `class` prop       | Pass a string: `<Card class="my-extra" />` — every primitive forwards it                                                                    |
+
+## See also
+
+- **Foundations / Overview** — the package layout in one screen
+- **Foundations / Motifs** — `data-motif`, the `dark:` variant, runtime toggle
+- **Foundations / Page layout** — the canonical `Banner` → `PageHeader` → `<Grid>` skeleton
+- **Foundations / Cards** — the `Card` / `Stat` contract that powers `.grid` tiles
+- **Foundations / Type** — font stack and the 13-size scale
+- **Foundations / Colours** — semantic token picker and Tailwind class names

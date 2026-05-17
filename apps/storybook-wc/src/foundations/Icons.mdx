@@ -1,0 +1,207 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Icons" />
+
+# Icons
+
+The dashboard ships a small, intentional icon set — currently 23 marks, all hand-drawn on a 16×16
+grid with a single 1.5 stroke and no fills. They are imported as React (or Svelte) components, not
+as font glyphs or SVG sprites. That is the entire icon vocabulary; if a feature needs a glyph that
+isn't in the set, the right move is to extend the set in `@w5-ui/react` / `@w5-ui/svelte`, not to
+pull in a second icon library in userland.
+
+> One stroke, one weight, one library. The moment a page ships a 2px Lucide icon next to a 1.5px
+> Dash icon, the whole row looks broken — even if every other token is correct.
+
+## Pick the right icon
+
+These are the slot-specific marks. Each one is bound to a section of the reference dashboard;
+reusing them keeps the sidebar, breadcrumbs, and empty states aligned across apps.
+
+| Use case                           | Reach for              | Notes                          |
+| ---------------------------------- | ---------------------- | ------------------------------ |
+| Dashboard / home                   | `<DashboardIcon />`    | 2×2 tile grid; sidebar default |
+| Clients (people, leases, sessions) | `<ClientsIcon />`      | Head + shoulders               |
+| Devices (APs, switches, gateways)  | `<DevicesIcon />`      | Stacked-bar device             |
+| Topology / network map             | `<TopologyIcon />`     | Three connected nodes          |
+| Alarms / alerts                    | `<AlarmIcon />`        | Filled triangle bang           |
+| Logs / activity feed               | `<LogsIcon />`         | Page with three lines          |
+| Wi-Fi radios / SSIDs               | `<WifiIcon />`         | Curved waves + dot             |
+| Wired ports / patch panel          | `<PortsIcon />`        | Switch with two pins           |
+| VPN tunnels                        | `<VpnIcon />`          | Padlock body                   |
+| Security policies                  | `<SecurityIcon />`     | Shield outline                 |
+| Infrastructure (clusters, hosts)   | `<InfraIcon />`        | Quad blocks                    |
+| Wireless tuning (AirView, RF)      | `<WirelessIcon />`     | Stacked arcs                   |
+| Integrations / extensions          | `<IntegrationsIcon />` | Two interlocked circles        |
+| App / global settings              | `<SettingsIcon />`     | Gear                           |
+
+These are the chrome icons — they live inside generic components and you usually get them for free,
+but you can import them directly if you are rolling a bespoke trigger.
+
+| Use case                               | Reach for          | Comes from                                            |
+| -------------------------------------- | ------------------ | ----------------------------------------------------- |
+| Close a modal / drawer / popover / tag | `<CloseIcon />`    | Already wired in `Modal`, `Drawer`, `Tag`             |
+| Open / close a disclosure or menu      | `<CaretIcon />`    | Already wired in `Select`, `Accordion`, `SplitButton` |
+| Search input adornment                 | `<SearchIcon />`   | Already wired in `SearchBox`                          |
+| Add / create row                       | `<PlusIcon />`     | Pair with a `primary` `<uni-button>`                  |
+| Download / export                      | `<DownloadIcon />` | Pair with a `ghost` `<uni-button>`                    |
+| Notifications bell (topbar slot)       | `<BellIcon />`     | Already wired in `Topbar`                             |
+| Contextual help (?)                    | `<HelpIcon />`     | Already wired in `ContextualHelp`                     |
+| Firmware / app updates                 | `<UpdatesIcon />`  | Topbar updates slot                                   |
+
+If a feature genuinely needs a new mark (e.g. "QoS" or "Captive portal"), add it to
+`packages/react/src/icons.tsx` and mirror it in `packages/svelte/src/icons.ts`. Hand-drawing the
+mark on the same 16×16 / 1.5-stroke grid is a five-minute job and keeps the family coherent.
+
+## The contract every icon honours
+
+Every export in `@w5-ui/react`'s `icons.tsx` is built from the same `base()` helper. That helper
+sets four defaults that userland almost always wants and almost always forgets:
+
+| Prop             | Default | Why                                                                              |
+| ---------------- | ------- | -------------------------------------------------------------------------------- |
+| `width`/`height` | `16`    | Matches body-row + topbar slot height. Override with `size={n}` only when needed |
+| `fill`           | `none`  | All icons are stroke-only; `fill` collapses them into solid blobs                |
+| `aria-hidden`    | `true`  | Icons are decorative by default; the surrounding control owns the label          |
+| `focusable`      | `false` | Stops IE/Edge legacy from tab-stopping the SVG                                   |
+
+That gives you a single rule for userland: **drop the icon in, don't restyle it.** Override only if
+the icon is the accessible name (see below) or you need a non-default size.
+
+```html
+<!-- register all uni-* elements once at app entry -->
+<uni-button variant="ghost"> <DevicesIcon /> Devices </uni-button>
+```
+
+## Sizing
+
+Default 16 covers ~95% of placements: sidebar rows, topbar slots, button leading glyphs, table-cell
+chrome, badge counters. The handful of exceptions ship in the file itself so you don't have to think
+about them:
+
+- `PlusIcon` ships at **12** — sized for the `primary` action button leading glyph
+- `DownloadIcon`, `CaretIcon`, `CloseIcon` ship at **14** — sized for their components' chrome
+
+Override with `size={n}` only when the icon is the centrepiece of the slot — for example the
+EmptyState illustration (`size="32"`) or a large empty-card hero. Don't shrink to 12 inside a button
+just because "it looks tighter"; that breaks the topbar/sidebar/button row baseline.
+
+```html
+<EmptyState
+  icon={<DevicesIcon size="32" />}
+  title="No devices yet"
+  body="Add an AP, switch, or gateway to get started."
+/>
+```
+
+## Colour: lean on `currentColor`
+
+Every path uses `stroke="currentColor"`. The icon inherits the colour of its parent text. That is
+the entire colour contract — don't pass `stroke` or `color` props.
+
+```html
+{ /* Inherits the tertiary text colour (--text-3) from the .t-muted wrapper */ }
+<Muted> <ClientsIcon /> 124 active </Muted>
+
+{ /* Inherits danger red from
+<uni-button variant="danger">
+  */ } <uni-button variant="danger"> <CloseIcon /> Remove </uni-button></uni-button
+>
+```
+
+The typed `<Muted>` primitive from `@w5-ui/react` (`<uni-muted>` in WC) wraps the canonical
+`.t-muted` rule in `@w5-ui/tokens/dashboard.css`. Reach for it instead of inventing a one-off
+`color: #...` override when an inline phrase (counter, caption, sub-line beside an icon) needs to
+sit visually below the primary label.
+
+- Don't paint icons brand-blue by default. Brand-blue is reserved for the **one** primary action on
+  a page; the navigation icons sit on `--text-1` or `--text-3` (via `.t-muted`) like the rest of the
+  chrome.
+- Don't fight contrast by hard-coding `#fff`. The motif's `--text-1` is already AA against every
+  surface variable; sticking with `currentColor` keeps you compliant when the user flips the motif.
+
+## Accessibility: decorative vs meaningful
+
+By default every icon is `aria-hidden`. That is the right answer **when the icon sits next to a
+visible text label** — the label is the accessible name, the icon is decoration. If you remove the
+visible label (icon-only trigger, status-only badge), the icon becomes meaningful and you have to
+restore the name on the parent control.
+
+| Pattern                                     | Where the accessible name comes from         |
+| ------------------------------------------- | -------------------------------------------- |
+| Icon + visible text inside a `<uni-button>` | The button text. Keep `aria-hidden` on icon  |
+| Icon-only `<uni-icon-button>`               | `aria-label="Close"` on the button           |
+| Icon inside a sidebar item with text        | The link text. Keep `aria-hidden`            |
+| Icon used as an EmptyState illustration     | The `title` prop of `EmptyState`             |
+| Icon that _is_ the status (no label at all) | Wrap with `<span role="img" aria-label="…">` |
+
+Don't add `aria-label` directly to the SVG when the parent control already names it — that creates
+two accessible names and screen readers announce both.
+
+```html
+{ /* Right: icon decorative, button labelled */ }
+<uni-icon-button aria-label="Close" onClick="{onClose}">
+  <CloseIcon />
+</uni-icon-button>
+
+{ /* Wrong: both icon and button labelled */ }
+<uni-icon-button aria-label="Close" onClick="{onClose}">
+  <CloseIcon aria-label="Close" />
+</uni-icon-button>
+```
+
+## Spacing: rely on the parent gap
+
+When you put an icon next to a label, the gap is **always** `--space-1` (4px) for tight inline
+pairings (chip, table-cell glyph) or `--space-2` (8px) for button/menu rows. Both are already wired
+into `.btn`, `.icon-btn`, `.sb-item`, `.menu-item`, and `.pill`. Don't add `margin-right` on the
+icon or wrap it in a `<span style={{ paddingRight }}>`.
+
+```html
+{
+  /* Right: gap comes from .btn's flex-gap */
+}
+<button class="btn btn-primary">
+  <PlusIcon /> Add device
+</button>
+
+{
+  /* Wrong: hand-tuned spacing drifts on every page */
+}
+<button>
+  <PlusIcon style={{ marginRight: 6 }} />
+  Add device
+</button>
+```
+
+If you are building a bespoke composite (not a `.btn`), `gap: var(--space-1)` on the flex parent is
+the right reach.
+
+## Common mistakes (and the fix)
+
+| Symptom                                                                     | Likely cause                                                     | Fix                                                                                                                                              |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Icons look "filled in" / solid blobs                                        | App-wide `svg { fill: currentColor }` override                   | Drop the global rule. Every dash icon is stroke-only with `fill="none"`                                                                          |
+| Two icon styles on one page (some 1.5-stroke, some 2-stroke)                | Pulled in `lucide-react` (or similar) alongside `@w5-ui`         | Use only `@w5-ui/react` icons. Extend `icons.tsx` if a glyph is missing                                                                          |
+| Icons in topbar/sidebar look chunkier than the reference                    | Custom `width=20`/`height=20` to "make them readable"            | Keep default 16. The reference dashboard is 16 across the board                                                                                  |
+| Icon-only close button reads as just "button" in screen readers             | `<uni-icon-button>` with no `aria-label`                         | Pass `aria-label` (or `title` — IconButton falls back to it)                                                                                     |
+| Icon + label have inconsistent spacing across buttons                       | `margin-right` set manually on each icon                         | Remove the margin. `.btn` / `.icon-btn` already supply `gap: var(--space-1)`                                                                     |
+| Icon "doesn't change colour" in danger / primary buttons                    | Hard-coded `stroke="#666"` or `color="#…"`                       | Don't pass a stroke. The icon inherits `currentColor` from the button                                                                            |
+| Empty-state illustration looks lost / lonely                                | `<DevicesIcon />` at default 16 in a big card                    | Size up explicitly: `<DevicesIcon size="32" />` (the only place to deviate from 16)                                                              |
+| Sidebar icons announce twice ("Devices… Devices")                           | Both `<DevicesIcon aria-label="Devices" />` and link text        | Drop the icon's label; the link text is the accessible name                                                                                      |
+| Random emoji glyph (📊, ⚠️) shows up in the reference dashboard             | Stand-in while the right `@w5-ui` icon wasn't picked             | Swap the emoji for the named icon. Emojis ship colour and won't track the motif                                                                  |
+| Hand-rolled `<button>` for icon + label drifts vs the rest of the dashboard | Bespoke trigger built around the icon instead of typed primitive | Reach for `<uni-button variant>` (icon + label) or `<uni-icon-button aria-label>` (icon-only). `.btn` / `.icon-btn` are the underlying CSS hooks |
+
+## Where the icons live
+
+- React: `packages/react/src/icons.tsx` — exported from `@w5-ui/react`
+- Svelte: `packages/svelte/src/icons.ts` — exported from `@w5-ui/svelte`
+- Web Components: compiled from Svelte sources, available as `<w5-icon-…>` elements
+
+Add a new mark by exporting it from the React file with the existing `base()` helper, then mirror
+the shape into the Svelte file. Keep the `viewBox` on a 16×16 grid (or 12/14 if you need a smaller
+mark) and the stroke at 1.5 — that is what holds the family together.
+
+See **Foundations / Actions** for `IconButton` and the icon-plus-label pairing rules, **Foundations
+/ Status & feedback** for status dots and badges (which use icons sparingly), and **Foundations /
+Spacing** for the `--space-*` tokens that govern icon ↔ label gaps.

@@ -1,0 +1,201 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Charts" />
+
+# Charts
+
+Dash UI ships ~80 chart components. They share one job: turn a number into a shape your eye picks up
+in under a second. Picking the right shape is half the battle — this page is the cheat sheet.
+
+Every chart is a regular component. Drop it inside a `<uni-card>` (or a `<uni-stat>` for hero
+numbers) and the page-level rhythm just works:
+
+```html
+<!-- register all uni-* elements once at app entry -->
+
+<uni-card span="8">
+  <uni-card-title>Throughput</uni-card-title>
+  <LineChart series="{...}" />
+</uni-card>
+```
+
+No chart owns its own padding or its own title. The card supplies both. Sizing follows the grid: a
+`span="4"` card gives you a third-width chart, `span="8"` a two-thirds, `span="12"` a full row. See
+**Foundations / Page layout** for the grid math.
+
+> The typed `<uni-card-title>` primitive renders the exact `<h3>` the `.card h3` rule already styles
+> — use it so userland tracks every future title tweak for free. Plain `<h3>` still works as the
+> documented CSS-hook escape hatch.
+
+## Pick by question
+
+Start from the question, not the picture. The chart that answers your question is usually obvious
+once the question is sharp.
+
+| You want to show…                             | Reach for                                                  |
+| --------------------------------------------- | ---------------------------------------------------------- |
+| One number that matters right now             | `Stat`, `CountUp`, `Gauge`, `HealthBar`                    |
+| One number trending over time, ambient        | `Sparkline`, `SparklineMatrix`                             |
+| Many numbers trending over time               | `LineChart`, `AreaChart`, `StepChart`, `DualAxisChart`     |
+| Time-series with confidence bounds            | `ErrorBandChart`, `ThresholdAreaChart`                     |
+| Time-series with events / deploys / incidents | `AnnotatedTimeSeries`, `GanttChart`, `UptimeTimeline`      |
+| Dense long history at a glance                | `HorizonChart`, `StreamGraph`, `CandlestickChart`          |
+| Ranking N items right now                     | `BarChart`, `LollipopChart`, `DotPlot`, `RankedList`       |
+| Ranking change between two points             | `SlopeChart`, `BumpChart`, `DumbbellChart`                 |
+| Parts of a whole, ≤ 6 slices                  | `Donut`, `PieChart`                                        |
+| Parts of a whole, many slices or hierarchy    | `TreeMap`, `SunburstChart`, `IcicleChart`, `CirclePacking` |
+| Stacked composition over a categorical axis   | `StackedBarChart`, `MarimekkoChart`, `WaffleChart`         |
+| One-shot KPI vs target                        | `BulletChart`, `Gauge`, `RadialBarChart`                   |
+| 20/80 cumulative breakdown                    | `ParetoChart`                                              |
+| Two values per item, side-by-side             | `MirroredBarChart`, `DumbbellChart`                        |
+| Multi-dimensional radar of attributes         | `RadarChart`, `NightingaleChart`, `ParallelCoordinates`    |
+| Distribution of a numeric variable            | `Histogram`, `BoxPlot`, `ViolinPlot`, `RidgelinePlot`      |
+| Each individual sample (small N)              | `BeeswarmChart`, `StripeChart`, `DotPlot`                  |
+| Two variables — do they correlate?            | `ScatterPlot`, `BubbleChart`, `QuadrantChart`              |
+| Density when scatter would overplot           | `HexbinChart`, `ContourPlot`                               |
+| Correlation across many variables             | `CorrelationMatrix`, `MatrixChart`, `ParallelCoordinates`  |
+| 2-D grid of values (heat)                     | `HeatMap`, `PolarHeatmap`, `CalendarHeatmap`, `PunchCard`  |
+| Funnel / drop-off through stages              | `FunnelChart`, `SankeyDiagram`                             |
+| Flows between many nodes                      | `SankeyDiagram`, `ChordDiagram`, `ArcDiagram`              |
+| Network / topology / dependency graph         | `ForceGraph`, `Dendrogram`                                 |
+| Profile / stack trace by self-time            | `FlameGraph`, `IcicleChart`                                |
+| Step-by-step budget changes                   | `WaterfallChart`                                           |
+| Set overlap                                   | `VennDiagram`                                              |
+| Text frequency                                | `WordCloud`                                                |
+
+## By category
+
+The Storybook sidebar groups charts the same way. Each row gives a one-line "use when" and the
+typical card span — start there, swap in real data, and the chart is done.
+
+### Charts: comparison
+
+How big is each item relative to the others, right now?
+
+| Chart              | Use when                                                           | Span       |
+| ------------------ | ------------------------------------------------------------------ | ---------- |
+| `BarChart`         | Default for ranked categoricals. Horizontal if labels are long     | 6, 8 or 12 |
+| `StackedBarChart`  | Bars that decompose into sub-categories that share a total         | 8 or 12    |
+| `MirroredBarChart` | Two related quantities per item (rx vs tx, in vs out)              | 6 or 8     |
+| `LollipopChart`    | Like a bar chart but with breathing room — good for dense rankings | 6 or 8     |
+| `DotPlot`          | A single value per item with optional reference markers            | 6 or 8     |
+| `BulletChart`      | One KPI vs target with qualitative bands (poor / ok / good)        | 4 or 6     |
+| `BumpChart`        | Rank position changes across a small number of moments             | 8 or 12    |
+| `SlopeChart`       | Two-point comparison: before vs after for many items               | 6 or 8     |
+| `DumbbellChart`    | The gap between two values per item (min/max, prev/now)            | 6 or 8     |
+| `ParetoChart`      | 20/80 break with bars + cumulative curve                           | 8          |
+| `MarimekkoChart`   | Two stacked dimensions with proportional widths (segment × share)  | 8 or 12    |
+| `WaffleChart`      | Proportion as 10×10 unit squares — readable parts of a whole       | 4 or 6     |
+| `RadialBarChart`   | Compact ranking with a radial accent — works as a hero card        | 4          |
+| `NightingaleChart` | Cyclical categoricals (hours, weekdays) with magnitude per wedge   | 6          |
+| `RadarChart`       | 3-8 attributes scored on the same scale (capability profile)       | 4 or 6     |
+
+### Charts: time-series
+
+What happened over time?
+
+| Chart                 | Use when                                                                 | Span     |
+| --------------------- | ------------------------------------------------------------------------ | -------- |
+| `LineChart`           | Default for one or several numeric series over time                      | 8 or 12  |
+| `AreaChart`           | Same as line but a single magnitude you want filled                      | 8 or 12  |
+| `StepChart`           | Values that change discretely (counters, gear settings, on/off)          | 8 or 12  |
+| `ErrorBandChart`      | Mean line with a shaded confidence / min-max band                        | 8 or 12  |
+| `ThresholdAreaChart`  | Area chart with a horizontal threshold and "above/below" fills           | 8 or 12  |
+| `AnnotatedTimeSeries` | Line chart with event markers (deploys, incidents, releases)             | 8 or 12  |
+| `StreamGraph`         | Many small stacked series — pattern matters more than exact values       | 12       |
+| `HorizonChart`        | Many series with same scale, dense screen real estate (band-folded line) | 12       |
+| `CandlestickChart`    | Open/high/low/close per period — finance, latency percentiles            | 8 or 12  |
+| `GanttChart`          | Schedule of tasks / jobs / windows along a timeline                      | 12       |
+| `UptimeTimeline`      | A row per service with up/down/degraded segments                         | 12       |
+| `DualAxisChart`       | Two correlated series with different units (req/s + p99 latency)         | 8 or 12  |
+| `Sparkline`           | Ambient micro-chart inside a `<uni-stat>` or table cell — no axes        | 4 (Stat) |
+| `SparklineMatrix`     | A grid of sparklines, one per entity (host, port, region)                | 8 or 12  |
+
+### Charts: distribution
+
+How is the data spread? Where do outliers sit?
+
+| Chart                    | Use when                                                                | Span    |
+| ------------------------ | ----------------------------------------------------------------------- | ------- |
+| `Histogram`              | Single numeric distribution. Default for "is this normal?"              | 6 or 8  |
+| `BoxPlot`                | Compare distributions across a few categories with quartiles            | 6 or 8  |
+| `ViolinPlot`             | Like a box plot but shape-aware — see bimodality                        | 6 or 8  |
+| `RidgelinePlot`          | Many distributions stacked vertically to compare shapes over groups     | 8 or 12 |
+| `BeeswarmChart`          | Every individual data point, jittered to avoid overlap (small-medium N) | 6 or 8  |
+| `StripeChart`            | 1-D scatter with no jitter — great for tiny N                           | 4 or 6  |
+| `ScatterPlot`            | Two numeric variables — correlation or no?                              | 8       |
+| `BubbleChart`            | Scatter + a third magnitude as size                                     | 8       |
+| `QuadrantChart`          | Scatter divided into 4 quadrants (importance vs urgency, etc.)          | 8       |
+| `HexbinChart`            | Scatter density when there are too many points to dot                   | 8       |
+| `ContourPlot`            | Smooth density contours over a 2-D plane                                | 8       |
+| `CumulativeDistribution` | Empirical CDF — "what % of x is below y?"                               | 6 or 8  |
+| `ParallelCoordinates`    | Many numeric attributes per row — find sub-populations by line bundle   | 12      |
+| `CorrelationMatrix`      | Pairwise Pearson/Spearman across many variables                         | 8 or 12 |
+| `MatrixChart`            | Generic value-per-cell grid (confusion matrix, eval scores)             | 8 or 12 |
+| `HeatMap`                | 2-D categorical grid coloured by value                                  | 8 or 12 |
+| `PolarHeatmap`           | Cyclic dimension (hour × weekday, direction × frequency)                | 6 or 8  |
+| `CalendarHeatmap`        | One value per day across a year — activity, uptime                      | 12      |
+| `PunchCard`              | Hour × weekday density — when do events happen?                         | 8 or 12 |
+| `WordCloud`              | Free-form text — relative frequency of terms                            | 6 or 8  |
+
+### Charts: hierarchy & flow
+
+How does the whole break down? How does mass move through stages?
+
+| Chart            | Use when                                                               | Span    |
+| ---------------- | ---------------------------------------------------------------------- | ------- |
+| `Donut`          | 3-6 segments of a single whole, with the total in the centre           | 4       |
+| `PieChart`       | Same as donut but no centre. Prefer donut when there's a total to show | 4       |
+| `TreeMap`        | Many hierarchical parts of a whole — relative areas matter             | 8 or 12 |
+| `SunburstChart`  | Hierarchical parts with depth, radial layout                           | 6 or 8  |
+| `IcicleChart`    | Hierarchy laid out left-to-right or top-down (rectangular sunburst)    | 8 or 12 |
+| `CirclePacking`  | Hierarchy as nested circles — good for two levels                      | 6 or 8  |
+| `Dendrogram`     | Pure tree topology — taxonomy, clustering                              | 8 or 12 |
+| `ChordDiagram`   | Flows between every pair of categories (mutual)                        | 6 or 8  |
+| `SankeyDiagram`  | Directed flow through stages — bytes, dollars, users                   | 8 or 12 |
+| `FunnelChart`    | Drop-off through ordered stages — sign-up funnel, troubleshooting      | 6 or 8  |
+| `WaterfallChart` | Cumulative effect of sequential gains and losses                       | 8       |
+| `ArcDiagram`     | Linear nodes with arcs between them — call graphs, citations           | 8 or 12 |
+| `ForceGraph`     | Free-form network — topology, dependencies, peers                      | 8 or 12 |
+| `VennDiagram`    | 2-3 set overlaps with cardinalities                                    | 4 or 6  |
+| `FlameGraph`     | Stack samples — wider = more self-time. Profilers, slow queries        | 12      |
+
+## Sizing & styling
+
+Charts read line-thickness, label size, and colour from tokens — never hardcode. Userland that
+respects these contracts gets pixel parity with the Dashboard story automatically.
+
+- **Height:** Charts auto-fill their `<uni-card>` height. For aspect-ratio fixed charts (Donut,
+  Gauge, RadarChart), the card grows to the chart's natural size — pick a `span` that matches.
+- **Colour palette:** Categorical series use the brand palette (`--chart-1` … `--chart-8`). Don't
+  pass custom colour arrays unless the data has a semantic colour (status: ok/warn/crit).
+- **Status colours:** `--status-ok`, `--status-warn`, `--status-crit` carry the dashboard's red /
+  amber / green. Use these for thresholds, not raw hex.
+- **Type:** Numbers in charts are typeset with the JetBrains Mono `--font-mono` stack for tabular
+  alignment. Don't override.
+- **Animations:** Enter animations are on by default. Pass `animate={false}` for dashboards that
+  refresh more than once every few seconds, otherwise the chart re-mount looks jittery.
+- **Bottom panel clearance:** Pages with a fixed bottom bar (`SelectionToolbar`, or any userland
+  toolbar that sets `--bottom-panel-h`) auto-reserve room under `.grid` so the last row of charts
+  isn't hidden behind it. Don't add manual `padding-bottom` to the page — it stacks. To wire a
+  custom bottom bar, set `--bottom-panel-h: 76px` on `:root` while it is mounted.
+
+## Common mistakes (and the fix)
+
+| Symptom                                     | Likely cause                                                  | Fix                                                                                |
+| ------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Chart looks crammed                         | Wrapped in a `<div>` with its own padding inside `<uni-card>` | Render the chart directly inside `<uni-card>` — the card owns padding              |
+| Title font / colour doesn't match dashboard | Custom `<h2>` instead of `<uni-card-title>` inside the card   | Use `<uni-card-title>` (renders the `<h3>` `.card h3` styles); chart sits below it |
+| Two charts side-by-side don't line up       | Different `span` or one wrapped in an extra container         | Use the same `span`. No wrappers between `.grid` and `<uni-card>`                  |
+| Pie slices are unreadable                   | Too many slices (>6) on `Donut` / `PieChart`                  | Switch to `TreeMap`, `BarChart`, or roll the small slices into an "Other" bucket   |
+| Time-series flickers on refresh             | `animate` left on with sub-second polling                     | Pass `animate={false}` once polling is faster than ~3s                             |
+| Series colour clashes with status           | Hand-picked colour matches an existing status token           | Use `--chart-n` for categorical, `--status-*` only when the value _is_ a status    |
+| Chart bleeds under the bottom panel         | Manual `padding-bottom` on the page                           | Remove it. The `.grid` already reserves `--bottom-panel-h`                         |
+| Sparkline overflows its `<uni-stat>`        | `<uni-stat>` wrapped in another card                          | `<uni-stat>` is a card already — render at the top level of `.grid`                |
+
+## See also
+
+- **Foundations / Chart gallery** — one tile per chart, grouped by category, for visual picking
+- **Foundations / Page layout** — `Banner` → `PageHeader` → `.grid` → `Card` skeleton
+- **Foundations / Colours** — chart and status palette tokens
+- **Foundations / Spacing** — the gutter and gap values cards inherit

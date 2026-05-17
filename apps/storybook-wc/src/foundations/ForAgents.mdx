@@ -1,0 +1,391 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/For agents" />
+
+# For agents
+
+A single condensed brief for **agentic implementers** (Claude Code, Cursor, Copilot, etc.) wiring a
+Web Components userland app on top of `@w5-ui/wc`. The other Foundations pages explain **why** the
+contract is shaped the way it is; this page is the **what** in directive form, sized to drop
+straight into a userland `AGENTS.md` / `CLAUDE.md` / Cursor rules file.
+
+> If you are a human, skim this once and bookmark **Foundations / Setup** + **Recipes**. The wording
+> below is deliberately terse so an LLM can keep the whole contract in its working set.
+
+## Paste-into-userland brief
+
+Copy this block verbatim into `AGENTS.md` (or `CLAUDE.md`, or `.cursor/rules/dash-ui.md`) at the
+root of any Web Components userland project that consumes `@w5-ui/wc`. It is written as imperative
+rules — keep it short so it stays inside the model's prompt budget.
+
+```md
+# Dash UI — Web Components implementation contract
+
+Userland renders like the reference dashboard **only** when these rules hold. Every visual drift
+("spacing feels off", "colours look washed out", "elements render as empty boxes") maps to a rule
+below.
+
+## Setup (do once)
+
+- Import `@w5-ui/wc/styles.css` **once** at the app entry. Never import `@w5-ui/tokens/tokens.css`
+  alone — `dashboard.css` is what wires `.app` / `.grid` / `.card`.
+- Register the elements: `import '@w5-ui/wc'` at the entry. Without it every `<uni-*>` is an
+  `HTMLUnknownElement` and renders as an empty inline box.
+- Set `<html data-motif="dark">` (or `"light"`) **inline in `index.html`**, never after the bundle
+  parses. Anti-FOUC requires the attribute before the first paint.
+- Load Inter (UI) + JetBrains Mono (numeric cells). System fonts shift the type scale ~1px.
+
+## Page shell (every page, no exceptions)
+
+- Compose the shell with raw `.app` / `.workspace` / `.content` CSS hooks. Nest `<uni-topbar>` and
+  `<uni-sidebar>` at the matching positions. `<uni-app-layout>` exposes only the default slot, so
+  Topbar / Sidebar do **not** travel through it.
+- Inside `.content`, render at most three siblings: optional `<uni-banner>`, then
+  `<uni-page-header>`, then `.grid` (or `<uni-grid>`). No extra wrapper around the grid.
+- `<uni-page-header title="…">` owns the sticky header. Slot custom actions into the `actions` named
+  slot; never re-implement `.ph-bar` / `.ph-title` / `.ph-actions` by hand.
+
+## Attribute vs property
+
+- **Primitive props** (string / number / boolean): pass as HTML attributes (`<uni-stat span="4">`,
+  `<uni-toggle checked>`).
+- **Complex props** (array, object, callback, Date): set as JS properties after `querySelector` /
+  `createElement`. Attributes serialise to strings only and will render `[object Object]` or trigger
+  silent no-ops.
+- **Events**: every `uni-*` element dispatches plain `CustomEvent`s — wire with
+  `el.addEventListener('change', (e) => …)`. Don't try to pass `onchange={…}` as an attribute.
+
+## Inside the grid
+
+- `.grid` is `repeat(12, 1fr)`, 12 px gap, 16 px × 24 px padding. **Never** override `gap` /
+  `padding` on `.grid` or wrap it.
+- Every direct child is `<uni-card span="n">` or `<uni-stat span="n">`. Use `span` in {4, 6, 8, 12}
+  — never 5 or 7.
+- For a hero number, use `<uni-stat>` (it _is_ a `<uni-card>`). For richer tiles, compose inside
+  `<uni-card>` and let `.card h3` style the title — don't restyle `<h3>`.
+- Selection toolbars render **inside** `.grid` as `<uni-selection-toolbar>`.
+  `.grid:has(.sel-toolbar)` reserves the bottom room automatically; never use `position: fixed`.
+
+## Forms
+
+- `<uni-field label hint error required>` wraps every input. Inside a card, group fields in
+  `<div class="field-stack">` (16 px gap).
+- Two-column rows use `<div class="form-row">` (1fr 1fr, 14 px gap, 6 px top offset). Never
+  free-type the gap.
+- Action rows use `<div class="form-actions">` (right-aligned, 8 px between, 16 px top).
+- Two-way binding: listen to the element's `change` event and assign the new value back to your
+  state. The DOM is the source of truth.
+
+## Tables
+
+- Wrap a plain `<table>` in `<uni-table-shell>` for the inset rhythm — rounded border, surface bg,
+  `overflow: hidden` come from one class. Never hand-roll `border` / `border-radius` / `background`
+  on the table itself.
+- Headers use `<uni-sort-header>` (owns `aria-sort` + sort icon). Pagination renders below the shell
+  in a `<uni-table-pager>` hosting `<uni-pagination>` + rows-per-page `<uni-select>` — keep it as a
+  **sibling** of `<uni-table-shell>`, never inside it.
+- Monospace cells use `<uni-mac>` (or `class="mac"`) for MAC / IP / SKU columns. First-column
+  avatar + label uses `<uni-name-cell>`. Screen-reader-only captions use `<uni-sr-only>` (or
+  `class="sr-only"`) — every `<table>` needs one for WCAG 1.3.1.
+
+## Colour, type, icons
+
+- Colours: tokens only. `var(--surface-1)`, `var(--text-1)`, `var(--text-2)`, `var(--border)`,
+  `var(--brand)`, `var(--status-ok|warn|danger)`. **Never** literal hex / rgb / `#fff` / `#000`.
+- Status copy: `<uni-pill variant="success|warn|danger|neutral">`, `<uni-badge>`,
+  `<uni-status-indicator>`. Never `<span style="color: green">`.
+- Type: prefer typed primitives (`<uni-display1>` / `<uni-display2>` / `<uni-h1>`-`<uni-h4>` /
+  `<uni-body>` / `<uni-body-lg>` / `<uni-label>` / `<uni-caption>` / `<uni-eyebrow>` / `<uni-stat>`
+  / `<uni-mono>` / `<uni-code>`). The underlying classes are `.dash-ui-display-1|2`,
+  `.dash-ui-h1|2|3|4`, `.dash-ui-body|body-lg`, `.dash-ui-label|caption|eyebrow`,
+  `.dash-ui-stat|mono|code`. Use the class form only when you can't reach a primitive. Inter for UI,
+  JetBrains Mono for numeric.
+- Icons: `<uni-search-icon>`, `<uni-bell-icon>`, etc. (23-icon canonical set). Size 16 / 20 / 24
+  only via the `size` attribute.
+
+## Spacing — the only escape hatch
+
+If a layout truly needs custom spacing, use `var(--space-1…12)` tokens. Never raw px in inline
+styles. Radius: `--radius-md` (6 px, default), `--radius-lg` (12 px, modals), `--radius-pill`,
+`--radius-app` (22 % for app squircles).
+
+## Anti-patterns (auto-reject in code review)
+
+- `<uni-*>` element without the side-effect `import '@w5-ui/wc'` at the entry
+- Complex props (`apps`, `sections`, callbacks, dates) passed as HTML attributes
+- Inline `style="padding: ...; gap: ...; margin: ..."` on shell / grid / card elements
+- Re-implementing `<uni-card>` / `<uni-stat>` / `<uni-page-header>` as styled `<div>`s
+- Hardcoded hex (`#1a1a1a`, `#006fff`, `#fff`)
+- Wrapper `<div>` around `.grid`, or `display: flex; gap: …` on the page root
+- `border-radius: 50%` on app-logo squircles (use `--radius-app`)
+- `tokens.css` imported without `dashboard.css` (or without `styles.css`)
+
+## When something looks "almost right"
+
+Open the matching **Dashboard** story in Storybook, inspect the rendered DOM, and diff your markup
+against it. The reference DOM is the single source of truth. If your class names or element tags
+differ, that delta **is** the drift.
+```
+
+That block is intentionally WC-specific on the attribute-vs-property contract and the side-effect
+register — both are pitfalls that React / Svelte userland never hits and that the React-flavoured
+brief does not mention.
+
+## Self-check protocol (run before declaring "done")
+
+When an agent finishes a userland page, it should run this checklist against the final markup and
+DOM. Every miss is documented in **Foundations / Troubleshooting** with a one-line fix.
+
+1. **`<html data-motif>` present** and set inline in `index.html`.
+2. **`@w5-ui/wc/styles.css` imported exactly once** at the app entry. No bare `tokens.css` imports.
+3. **`import '@w5-ui/wc'` runs at the entry.** Verify every `<uni-*>` element on the page has
+   children rendered, not an empty inline box.
+4. **One `.app` shell at the page root.** Inside it: `<uni-topbar>` → `.workspace` →
+   (`<uni-sidebar>` + `<main class="content">`).
+5. **Page body is `<uni-banner>?` + `<uni-page-header>` + `.grid`** as direct siblings. No wrapper
+   around `.grid`. No `display: flex` on the page root.
+6. **Every `.grid` child is `<uni-card>` or `<uni-stat>`** with `span ∈ {4, 6, 8, 12}`. No
+   `span="5"`, no `span="7"`, no bare `<div>` lanes.
+7. **No inline `style` for `padding` / `gap` / `margin`** on shell, header, or grid elements.
+8. **No literal hex / rgb colour** in markup. Grep the diff for `#[0-9a-f]{3,8}` and replace with
+   `var(--…)` tokens.
+9. **Complex props set as JS properties**, not HTML attributes. Grep the diff for
+   `<uni-\w+\s+(apps|sections|items|options|onChange|onAction)=` and lift those to JS-side property
+   assignments.
+10. **Computed style on root `.grid`:** `gap: 12px`, `padding: 16px 24px`. If either differs, a
+    wrapper or override is in the way.
+
+A passing run on those ten points reproduces the reference dashboard 1:1.
+
+### Copy-paste DevTools probe
+
+Open the running userland app, paste the snippet below into the browser console, and read the
+report. It exercises seven of the ten self-check points against the **live DOM** — the three
+remaining (`styles.css` once, no inline shell `style`, forms use `.field-stack` / `.form-row` /
+`.form-actions`) are diff-time checks that don't surface in the computed style. Every failure prints
+the offending element so you can jump to it in Elements.
+
+```js
+;(() => {
+  const fail = []
+  const ok = []
+  const note = (cond, msg, el) => (cond ? ok : fail).push(el ? { msg, el } : msg)
+
+  const motif = document.documentElement.getAttribute('data-motif')
+  note(motif === 'dark' || motif === 'light', `<html data-motif="${motif ?? 'unset'}">`)
+
+  const probe = getComputedStyle(document.documentElement).getPropertyValue('--space-3').trim()
+  note(probe === '12px', `--space-3 resolves to "${probe || 'unset'}" (expected 12px)`)
+
+  const font = getComputedStyle(document.body).fontFamily
+  note(/inter/i.test(font), `body font-family is "${font}" (expected Inter)`)
+
+  // Every uni-* element must be registered (i.e. an upgraded custom element).
+  const unupgraded = [...document.querySelectorAll('*')].filter(
+    (el) =>
+      el.tagName.toLowerCase().startsWith('uni-') && !customElements.get(el.tagName.toLowerCase()),
+  )
+  note(
+    unupgraded.length === 0,
+    `${unupgraded.length} unupgraded uni-* element(s) — missing register?`,
+    unupgraded[0],
+  )
+
+  const grid = document.querySelector('.grid')
+  if (!grid) {
+    fail.push('no `.grid` element found — page body is missing the canonical grid')
+  } else {
+    const cs = getComputedStyle(grid)
+    note(cs.gap === '12px', `.grid gap is ${cs.gap} (expected 12px)`, grid)
+    note(
+      cs.paddingTop === '16px' && cs.paddingLeft === '24px',
+      `.grid padding is ${cs.padding} (expected 16px 24px)`,
+      grid,
+    )
+    const lanes = [...grid.children].filter(
+      (c) => !c.classList.contains('card') && !c.classList.contains('sel-toolbar'),
+    )
+    note(lanes.length === 0, `.grid has ${lanes.length} non-card child lane(s)`, lanes[0])
+    const badSpans = [...grid.children].filter((c) => {
+      const m = /span (\d+)/.exec(c.style.gridColumn || '')
+      return m && ![4, 6, 8, 12].includes(Number(m[1]))
+    })
+    note(badSpans.length === 0, `${badSpans.length} card(s) with span ∉ {4,6,8,12}`, badSpans[0])
+  }
+
+  console.log(`%c✓ ${ok.length} pass`, 'color:#3ad07b', ok)
+  console.log(`%c✗ ${fail.length} fail`, 'color:#ff6b6b', fail)
+  return { ok, fail }
+})()
+```
+
+Zero failures means the contract holds at the DOM level. Any failure points at the exact node that
+drifts — paste the snippet again after each fix to confirm the regression collapses.
+
+## Tailwind drift → typed primitive
+
+The single biggest WC userland drift in practice: hand-rolled Tailwind class strings
+(`text-12 text-text-3`, `text-13 font-semibold text-text-1`,
+`text-[10px] font-semibold uppercase tracking-[0.06em] text-text-3`) where a typed `<uni-*>` element
+already encodes the same contract. Tailwind tokens line up with the type scale, but free-typed
+combinations re-derive what `<uni-body>` / `<uni-label>` / `<uni-eyebrow>` already bundle — and as
+soon as one site uses 10 px and the next uses 11 px, the rhythm splits. Reach for the element; if
+the page truly needs something off-scale, surface it as a design fork before shipping.
+
+| You typed…                                                                                                    | Use instead                                                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text-14 text-text-2` (or `text-base text-text-2`)                                                            | `<uni-body>`                                                                                                                                            |
+| `text-16 text-text-2` (multi-paragraph settings copy)                                                         | `<uni-body-lg>`                                                                                                                                         |
+| `text-13 font-medium text-text-2` (KPI / form label)                                                          | `<uni-label>`                                                                                                                                           |
+| `text-12 text-text-3` (helper, metadata, "last updated")                                                      | `<uni-caption>`                                                                                                                                         |
+| `text-[10px]` / `text-11 font-semibold uppercase tracking-[0.06em] text-text-3`                               | `<uni-eyebrow>`                                                                                                                                         |
+| `text-30 font-semibold tabular-nums text-text-1` (KPI number)                                                 | `<uni-stat-number>` (or `<uni-stat>`)                                                                                                                   |
+| `text-13 font-mono text-text-2` (inline MAC / IP / hex / port)                                                | `<uni-mono>` (or `<uni-mac>`)                                                                                                                           |
+| `text-12 font-mono px-1.5 py-px border rounded bg-bg-2` (inline code chip)                                    | `<uni-code>`                                                                                                                                            |
+| `text-13 font-semibold text-text-1` (panel / section title)                                                   | `<uni-h4>` (or `<uni-card-title>`)                                                                                                                      |
+| `text-24 font-semibold text-text-1` (page sub-section head)                                                   | `<uni-h3>`                                                                                                                                              |
+| `text-30 font-semibold text-text-1` (page section head)                                                       | `<uni-h2>`                                                                                                                                              |
+| `text-38 font-bold tracking-[-0.02em] text-text-1` (marketing page title)                                     | `<uni-h1>`                                                                                                                                              |
+| `text-48 font-bold tracking-[-0.02em] text-text-1` (login / large marketing)                                  | `<uni-display2>`                                                                                                                                        |
+| `text-64 font-bold tracking-[-0.02em] text-text-1` (onboarding / hero)                                        | `<uni-display1>`                                                                                                                                        |
+| `text-text-3` on prose to "look muted"                                                                        | `<uni-muted>` (inline span)                                                                                                                             |
+| `class="sr-only"` for a visually-hidden caption / label                                                       | `<uni-sr-only>` (or the class)                                                                                                                          |
+| `bg-bg-1 border border-border-2 rounded-md p-3` (hand-rolled card)                                            | `<uni-card>` (or `<uni-stat>`)                                                                                                                          |
+| `<div class="search">` + raw `<input type="search">` + magnifying glass SVG                                   | `<uni-search-box>`                                                                                                                                      |
+| Bell `<uni-icon-button>` + bespoke red dot positioned in CSS                                                  | `<uni-icon-button>` + `<uni-notif-dot>`                                                                                                                 |
+| `<span class="dot status-ok">` for a coloured site-health ring                                                | `<uni-status-ring status="ok">`                                                                                                                         |
+| Bespoke Search / Updates / Bell / Help / Avatar block in a custom `<uni-topbar>`                              | `<uni-topbar-actions></uni-topbar-actions>`                                                                                                             |
+| `<h3 class="m-0 text-13 font-semibold text-text-1">` as a card title                                          | `<uni-card-title>`                                                                                                                                      |
+| `<a class="text-12 text-text-3 ml-auto">More →</a>` in a card title row                                       | `<uni-card-more>`                                                                                                                                       |
+| `<p class="m-0 text-12 text-text-3">` muted sub-line under a hero number                                      | `<uni-submeta>`                                                                                                                                         |
+| `<span class="text-12 font-mono text-text-3">` unit trailing a hero number                                    | `<uni-unit>`                                                                                                                                            |
+| `<span class="text-12 text-status-{ok\|danger}">↑ 12%</span>` trend chip                                      | `<uni-delta dir="up\|down\|flat">`                                                                                                                      |
+| `<td>` with `<img class="w-7 h-7 rounded">` + stacked name + 12 px sub                                        | `<uni-name-cell>` (set `thumb` via JS property)                                                                                                         |
+| Hand-rolled `<div class="flex justify-between mt-3">` under a `<table>`                                       | `<uni-table-pager>`                                                                                                                                     |
+| `<div class="grid gap-4">` for stacked fields in a card / modal                                               | `<div class="field-stack">` (or `<uni-field-stack>`)                                                                                                    |
+| `<div class="grid grid-cols-2 gap-[14px] mt-[6px]">` two-column form row                                      | `<div class="form-row">` (or `<uni-form-row>`)                                                                                                          |
+| `<div class="flex justify-end gap-2 mt-4">` action button row under a form                                    | `<div class="form-actions">` (or `<uni-form-actions>`)                                                                                                  |
+| `<div class="grid grid-cols-12 gap-3 px-6 py-4">` page body grid                                              | `<uni-grid>` (or `<div class="grid">`)                                                                                                                  |
+| `<span class="px-2 py-0.5 rounded-full text-12 bg-status-ok-bg text-status-ok">Active</span>`                 | `<uni-pill variant="success">Active</uni-pill>`                                                                                                         |
+| `<span class="px-2 py-0.5 rounded-md bg-bg-2 text-12 inline-flex items-center gap-1">router</span>`           | `<uni-tag label="router"></uni-tag>`                                                                                                                    |
+| `<kbd class="px-1.5 py-0.5 rounded border bg-bg-2 text-12 font-mono">⌘K</kbd>`                                | `<uni-kbd keys="⌘+K"></uni-kbd>`                                                                                                                        |
+| `<button class="btn btn-primary">Save</button>` (or `btn-ghost` / `btn-danger`)                               | `<uni-button variant="primary\|ghost\|danger">Save</uni-button>`                                                                                        |
+| `<button class="icon-btn" aria-label="Close"><svg>…</svg></button>`                                           | `<uni-icon-button aria-label="Close"><svg>…</svg></uni-icon-button>`                                                                                    |
+| `<input type="checkbox" role="switch">` + hand-rolled track / knob CSS                                        | `<uni-toggle checked aria-label="…"></uni-toggle>` + `change` event listener                                                                            |
+| `<input type="checkbox">` + bespoke check / indeterminate SVG + label `<span>`                                | `<uni-checkbox checked indeterminate label="…"></uni-checkbox>`                                                                                         |
+| Native `<select>` with Tailwind chrome (`bg-bg-2 border border-border-1 …`)                                   | `<uni-select></uni-select>` + `.options = […]` JS property (WAI-ARIA combobox/listbox)                                                                  |
+| Hand-rolled radio cluster (`<input type="radio">` + label + flex stack)                                       | `<uni-radio-group></uni-radio-group>` + `.options = […]` JS property                                                                                    |
+| `<input type="number">` + bespoke `+` / `−` `<uni-icon-button>`s for step                                     | `<uni-number-input min="…" max="…" step="…"></uni-number-input>` (WAI-ARIA spinbutton)                                                                  |
+| `<textarea class="bg-bg-2 border border-border-1 rounded p-2 …">` for multi-line                              | `<uni-textarea rows="…"></uni-textarea>`                                                                                                                |
+| Hand-rolled "Prev / 1 2 3 / Next" pager (`<button>` row + bespoke page-state)                                 | `<uni-pagination></uni-pagination>` + `.page` / `.pageCount` properties                                                                                 |
+| `<div class="bg-status-info-bg text-status-info border-l-4 px-4 py-3 …">` page-level notice                   | `<uni-banner variant="info\|success\|warn\|danger" title="…">…</uni-banner>`                                                                            |
+| `<aside class="border-l-4 border-status-info bg-bg-2 p-3 text-13 …">Tip: …</aside>` inline note               | `<uni-callout variant="info\|success\|warn\|danger\|tip" title="…">…</uni-callout>` (`role="note"`)                                                     |
+| `<div role="alert" class="bg-status-danger-bg text-status-danger px-3 py-2 …">` toast-shaped block            | `<uni-alert variant="success\|warn\|danger\|info">…</uni-alert>` (`role="alert"` + `aria-live`)                                                         |
+| Hand-rolled fixed-corner notification stack (`position: fixed; bottom: 16px …`)                               | `<uni-toaster></uni-toaster>` once at app root + dispatch `uni-toast` `CustomEvent` to show one                                                         |
+| `<div class="animate-spin w-5 h-5 border-2 border-current border-r-transparent rounded-full" />`              | `<uni-spinner size="sm\|md\|lg" label="Loading"></uni-spinner>` (`role="status"`)                                                                       |
+| `<div class="h-1 bg-bg-2 rounded"><div class="h-full bg-brand" style="width: …" /></div>`                     | `<uni-progress-bar value="…" label="…"></uni-progress-bar>` (labelled `<progress>`)                                                                     |
+| Hand-rolled tablist (`<button role="tab" class="border-b-2 …">` row + manual active state)                    | `<uni-tabs></uni-tabs>` + `.items = […]` + `change` event (roving tabindex + arrow keys)                                                                |
+| `<nav class="text-12 text-text-3"><ol class="flex gap-1"><li>…</li></ol></nav>` breadcrumb trail              | `<uni-breadcrumb></uni-breadcrumb>` + `.items = […]` (WAI-ARIA + `aria-current="page"`)                                                                 |
+| `<details class="border-b border-border-1"><summary class="py-2 …">…</summary>…</details>`                    | `<uni-accordion><uni-accordion-item title="…" default-open>…</uni-accordion-item></uni-accordion>`                                                      |
+| `<input type="range" class="w-full accent-brand" />` + bespoke value label / ticks                            | `<uni-slider min="…" max="…" step="…"></uni-slider>` (WAI-ARIA + label/value formatting)                                                                |
+| Two `<input type="range">`s overlapping + manual low/high clamp                                               | `<uni-range-slider label="…" min="0" max="100" suffix="…"></uni-range-slider>` + `.low` / `.high` / `change` event                                      |
+| `<dialog open class="fixed inset-0 …">` or hand-rolled overlay + close `<button>`                             | `<uni-modal open title="…">…</uni-modal>` (`role="dialog"` + focus trap + body-scroll lock)                                                             |
+| `<uni-modal>` re-implementation for "Are you sure?" delete flows                                              | `<uni-confirm-dialog open title="Delete user?" variant="danger" confirm-label="Delete"></uni-confirm-dialog>` + `confirm` / `cancel` events             |
+| Hand-rolled side panel (`fixed right-0 top-0 h-full w-80 translate-x-0 …`)                                    | `<uni-drawer open title="…">…</uni-drawer>` (`role="dialog"` + focus trap + slide-in)                                                                   |
+| `<img class="w-8 h-8 rounded-full">` + fallback `<div>` initials + bespoke ring                               | `<uni-avatar src="…" initials="WN" size="sm\|md\|lg" status="online\|busy\|offline"></uni-avatar>`                                                      |
+| Hand-rolled stack of overlapping `<img>` thumbs + `+N` chip                                                   | `<uni-avatar-group max="5" size="md" aria-label="Members"></uni-avatar-group>` + `.avatars = […]`                                                       |
+| `<span class="relative">…<span class="absolute -top-1 -right-1 …">3</span></span>`                            | `<uni-badge count="3" max="99" color="danger\|brand\|neutral">…</uni-badge>` (auto `99+`)                                                               |
+| `<span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-status-danger rounded-full" />` notification dot        | `<uni-badge dot color="danger">…</uni-badge>` (or `<uni-notif-dot>` on a `<uni-topbar-actions>` bell)                                                   |
+| `title="…"` attribute (no styling, no a11y wiring) or hand-rolled `position:absolute` bubble                  | `<uni-tooltip label="…" placement="top\|bottom\|left\|right">{trigger}</uni-tooltip>` (`aria-describedby` + `role="tooltip"`)                           |
+| Hand-rolled hover-triggered preview card (`mouseenter` + bespoke `absolute` panel)                            | `<uni-hover-card placement="top" delay="200">…</uni-hover-card>` + `.content` (hover/focus + delay)                                                     |
+| `<button>` + bespoke `position:absolute` panel + click-outside listener for a menu                            | `<uni-popover label="Filters" title="…" placement="bottom">…</uni-popover>` (focus trap + ESC + outside-click)                                          |
+| Kebab `<uni-icon-button>` (`⋯`) + hand-rolled `position:absolute` menu + manual roving-tabindex               | `<uni-action-menu label="Row actions"></uni-action-menu>` + `.items = […]` + `action` event (canonical kebab menu + arrow-key roving + ESC)             |
+| `contextmenu` handler + bespoke `position:fixed` panel at `{x, y}` + manual viewport-edge clamp               | `<uni-context-menu open x="…" y="…"></uni-context-menu>` + `.items = […]` + `action` / `close` events                                                   |
+| `Cmd+K` listener + bespoke `<uni-modal>` with `<input>` + manual fuzzy-search + grouped result list           | `<uni-command-palette open placeholder="Search…"></uni-command-palette>` + `.items = […]` + `select` event                                              |
+| `<div class="animate-pulse bg-bg-2 h-4 w-32 rounded">` placeholder block                                      | `<uni-skeleton variant="text\|rect\|circle" width="…" height="…" aria-label="Loading"></uni-skeleton>`                                                  |
+| Hand-rolled coloured dot + label (`<span class="w-2 h-2 rounded-full bg-status-ok" /> Online`)                | `<uni-status-indicator color="var(--color-status-ok)" text="Online"></uni-status-indicator>` (or `<uni-status-ring status="ok">` for site-health rings) |
+| `<input type="date">` with Tailwind chrome + bespoke calendar popover                                         | `<uni-date-picker></uni-date-picker>` + `.value` Date property                                                                                          |
+| Two `<input type="date">`s + manual "from / to" validation + popover plumbing                                 | `<uni-date-range-picker></uni-date-range-picker>` + `.value = { from, to }` object                                                                      |
+| `<input type="time">` styled with Tailwind + hand-rolled hour/minute steppers                                 | `<uni-time-picker label="…"></uni-time-picker>` + `.value` (HH:MM string)                                                                               |
+| `<input type="file" hidden>` + bespoke drag-and-drop zone (`dragover` / Tailwind ring)                        | `<uni-file-upload accept="…" multiple label="…" hint="…"></uni-file-upload>` + `files` event                                                            |
+| Native `<select>` with hand-typed search input filtering the option list                                      | `<uni-combobox placeholder="Search…"></uni-combobox>` + `.options = […]` + `change` event                                                               |
+| Multiple `<input type="checkbox">`s in a popover with manual chip-readout                                     | `<uni-multi-select placeholder="Select…"></uni-multi-select>` + `.options = […]` + `.value = […]`                                                       |
+| Hand-rolled colour swatch grid + `<input type="color">` fallback + hex text input                             | `<uni-color-picker label="…"></uni-color-picker>` + `.value` (hex string)                                                                               |
+| `<input>` + array-state-on-Enter + bespoke tag chip rendering + backspace-to-remove                           | `<uni-tag-input placeholder="Type and press Enter…"></uni-tag-input>` + `.value = […]`                                                                  |
+| `<input type="password">` + hand-rolled show/hide eye `<uni-icon-button>` toggling `type`                     | `<uni-password-input autocomplete="current-password" label="…"></uni-password-input>`                                                                   |
+| Six `<input maxlength=1>` boxes + manual focus-advance + paste-split-across-inputs                            | `<uni-otp-input length="6" label="One-time code"></uni-otp-input>` (auto-advance + paste handling)                                                      |
+| Hand-rolled radio-as-pill group (`<button class="px-3 py-1 …">A</button>` + active state)                     | `<uni-segmented-control label="…"></uni-segmented-control>` + `.options = […]` + `.value`                                                               |
+| Multiple `<uni-toggle>`s in a `<div class="flex gap-1">` for a multi-select toolbar                           | `<uni-toggle-group aria-label="…" size="sm\|md"></uni-toggle-group>` + `.options = […]` + `.value = […]`                                                |
+| Click-to-edit `<span>` swapping to `<input>` on focus with manual confirm/cancel logic                        | `<uni-inline-edit label="…" placeholder="…"></uni-inline-edit>` + `.value` + `confirm` event                                                            |
+| `<uni-button>` + adjacent caret `<uni-icon-button>` + bespoke menu popover for secondary actions              | `<uni-split-button label="Save"></uni-split-button>` + `.items = […]` + `primaryclick` / `action` events                                                |
+| `<uni-icon-button>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" tooltip                      | `<uni-copy-button text="…" label="Copy"></uni-copy-button>` (clipboard + transient confirm + a11y live)                                                 |
+| Hand-rolled "no results" panel (`<div class="text-center py-10 text-text-3">…</div>`)                         | `<uni-empty-state title="…" description="…"></uni-empty-state>` + optional `action` slot                                                                |
+| Hand-rolled wizard progress bar (`<ol class="flex gap-2">` + active/complete CSS state)                       | `<uni-stepper active="2"></uni-stepper>` + `.steps = […]` (`aria-current="step"` + complete/upcoming state)                                             |
+| Four `<input maxlength=3>` octet boxes + manual `.` separator + 0-255 clamp logic                             | `<uni-ip-input label="…" value="10.0.0.1"></uni-ip-input>` (WAI-ARIA spinbutton per octet)                                                              |
+| Six `<input maxlength=2>` hex boxes + manual `:` separator + `[0-9a-f]` mask                                  | `<uni-mac-input label="…" value="aa:bb:cc:dd:ee:ff"></uni-mac-input>` (WAI-ARIA spinbutton per octet)                                                   |
+| `<input>` + bespoke regex for `0.0.0.0/24` + manual prefix-length clamp (0-32)                                | `<uni-cidr-input label="…" value="192.168.1.0/24"></uni-cidr-input>` (octets + prefix in one row)                                                       |
+| Three `<input type=number>` for HH/MM/SS + bespoke `:` separator + step plumbing                              | `<uni-duration-input label="…" value="01:30:00"></uni-duration-input>` (WAI-ARIA spinbutton + clamp)                                                    |
+| `<div class="flex"><span class="bg-bg-2 px-2 …">https://</span><input class="flex-1 …">…<span>…</span></div>` | `<uni-input-group prefix="https://" suffix=".com"><input … /></uni-input-group>` (flush addon + focus ring)                                             |
+| Hand-rolled `<dl>` or two-column `<table>` for device drawer key/value rows                                   | `<uni-kv-table caption="…"></uni-kv-table>` + `.rows = […]` (semantic `<th scope="row">` + zebra rhythm)                                                |
+| `<pre class="bg-bg-2 rounded p-3 text-12 font-mono overflow-auto">…</pre>` + manual copy button               | `<uni-code-block language="ts" label="Example"></uni-code-block>` + `.code = src` (`role="region"` + integrated `<uni-copy-button>`)                    |
+| `import { LineChart } from 'chart.js'` (or hand-rolled `<svg>` with `<polyline>` + manual scale)              | `<uni-line-chart height="160" aria-label="…"></uni-line-chart>` + `.series = […]` + `.labels = […]` (zero-dep typed SVG)                                |
+| `<svg>` with `<path d="M…L…">` filled gradient hand-rolled per series                                         | `<uni-area-chart height="160" aria-label="…"></uni-area-chart>` + `.series = […]` (token-aligned gradients)                                             |
+| Hand-rolled `<svg>` with one `<rect>` per bar + manual min/max scale                                          | `<uni-bar-chart height="160" aria-label="…"></uni-bar-chart>` + `.series = […]` (typed series + token colours)                                          |
+| Stacked `<rect>`s in raw `<svg>` with manual cumulative-sum offsets per series                                | `<uni-stacked-bar-chart height="160" aria-label="…"></uni-stacked-bar-chart>` + `.series = […]` + `normalized` (cumulative stack)                       |
+| Inline `<svg width=120 height=24>` with hand-tweaked bars for a KPI trend chip                                | `<uni-sparkline bars="24" active seed="42" aria-label="Trend, last 24h"></uni-sparkline>`                                                               |
+| Hand-rolled `<svg>` with two arcs + manual `pathLength` / `stroke-dasharray` for a donut KPI                  | `<uni-donut size="160" center-value="…" center-label="Healthy" aria-label="Health breakdown"></uni-donut>` + `.segments = […]`                          |
+| Half-arc `<svg>` with manual angle math + hand-positioned value label for a gauge meter                       | `<uni-gauge value="0.62" label="CPU" color="var(--color-brand)" size="120"></uni-gauge>`                                                                |
+| `<table>` of `<td style="background: hsl(…)">` cells + manual colour-ramp interpolation                       | `<uni-heat-map height="200" cell-gap="2" aria-label="Activity by hour × day"></uni-heat-map>` + `.data = number[][]` + `.colors = […]`                  |
+| Hand-rolled `<svg>` with one `<circle>` per point + manual `xRange` / `yRange` projection                     | `<uni-scatter-plot height="200" aria-label="…"></uni-scatter-plot>` + `.points = […]` + `x-range` / `y-range`                                           |
+
+> Chart drift in particular: every `<uni-*-chart>` element ships as zero-dependency typed SVG that
+> already matches the Dashboard chart rhythm (gridlines, padding, gradient stops, motif colours).
+> Pulling in `chart.js` / `d3` re-derives the same picture with a 60 KB+ runtime, a different
+> tooltip chrome, and a colour palette that drifts from `--color-brand` / `--color-status-*`. If the
+> typed element truly can't express the chart, surface it as a design fork first — don't silently
+> widen the dependency footprint.
+
+The pattern: the typed `<uni-*>` element renders the **exact same DOM + class** that the Dashboard
+reference uses, so userland tracks every future tweak (token shift, contrast bump, motion
+preference) for free. Tailwind utilities remain the right tool for one-off layout glue (`flex`,
+`gap-3`, `min-w-0`, `overflow-hidden`) — just don't re-derive typography or the canonical chrome
+with them.
+
+## Lookup table — symptom → page
+
+Agents debugging a drift should jump straight to the matching Foundations page rather than
+re-deriving the contract:
+
+| If userland looks…                                                                           | Read first                          |
+| -------------------------------------------------------------------------------------------- | ----------------------------------- |
+| Fresh app, nothing styled yet                                                                | **Foundations / Setup**             |
+| Elements render as empty inline boxes                                                        | **Foundations / Setup §3**          |
+| Complex prop shows `[object Object]` or never updates                                        | **Foundations / Setup §4**          |
+| Spacing off, gaps too large                                                                  | **Foundations / Spacing**           |
+| Page chrome / sidebar / header off                                                           | **Foundations / Page layout**       |
+| Topbar / sidebar / `<uni-page-header>` actions drift                                         | **Foundations / Navigation**        |
+| Want a whole page template, not primitives                                                   | **Foundations / Recipes**           |
+| Want primitive-first userland shell at a glance                                              | **Foundations / Overview**          |
+| Colour tokens picked wrong (`text-1` vs `text-2`, bg ladder)                                 | **Foundations / Colours**           |
+| Colours wash out / motif flashes                                                             | **Foundations / Motifs**            |
+| Three primaries fighting / wrong `Button` variant / `<uni-icon-button>` missing `aria-label` | **Foundations / Actions**           |
+| Modal / Drawer / Popover / ConfirmDialog drift                                               | **Foundations / Overlays**          |
+| Cards have wrong `<h3>` rhythm or `<uni-card-title>` / `<uni-card-more>` missing             | **Foundations / Cards**             |
+| KPI / stats / KVTable / list hierarchy drifts                                                | **Foundations / Data display**      |
+| Status text inconsistent                                                                     | **Foundations / Status & feedback** |
+| Form rhythm drifts                                                                           | **Foundations / Forms**             |
+| Charts clipped behind bottom panel                                                           | **Foundations / Charts**            |
+| Table headers misalign / no sort indicator                                                   | **Foundations / Tables**            |
+| Type scale drifts (free-typed `text-12`/`text-13` instead of typed `<uni-*>` elements)       | **Foundations / Type**              |
+| Icons look chunky / two icon styles on the page                                              | **Foundations / Icons**             |
+| Tailwind v4 user — utilities work but resets vanish                                          | **Foundations / Setup §7**          |
+| Symptom doesn't match anything obvious                                                       | **Foundations / Troubleshooting**   |
+
+## Why an agent brief at all?
+
+Documentation that works for humans assumes the reader can navigate sixteen MDX pages, follow
+cross-references, and skim for the relevant section. An agent's prompt budget rewards the opposite:
+**one** flat directive list, no chrome, every rule actionable from its own line. The brief above is
+sized to fit comfortably inside a project-level `AGENTS.md` alongside whatever else the project
+needs. The Foundations pages remain the long-form source of truth — this page is just the executive
+summary an agent can keep in working memory.
