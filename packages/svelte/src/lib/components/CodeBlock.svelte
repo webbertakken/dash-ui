@@ -29,10 +29,10 @@
   onDestroy(() => { if (timer) clearTimeout(timer); });
 </script>
 
-<div role="region" aria-label={label} class="overflow-hidden rounded-lg border border-white/10 bg-[#0a0a0b] {className}">
-  <div class="flex min-h-8 items-center justify-between border-b border-white/[0.07] bg-[#111113] py-1.5 pl-3 pr-2">
+<div role="region" aria-label={label} class="overflow-hidden rounded-lg border border-border-2 bg-bg-page {className}">
+  <div class="flex min-h-8 items-center justify-between border-b border-border-1 bg-bg-page py-1.5 pl-3 pr-2">
     {#if language}
-      <span class="font-mono text-11 uppercase tracking-[0.05em] text-[#6e7079]">{language}</span>
+      <span class="font-mono text-11 uppercase tracking-[0.05em] text-text-4">{language}</span>
     {:else}
       <span></span>
     {/if}
@@ -40,7 +40,7 @@
       type="button"
       data-copied={copied ? 'true' : undefined}
       aria-label={copied ? 'Copied!' : 'Copy code'}
-      class="inline-flex h-[22px] w-[22px] shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-[#6e7079] transition-[color,background-color] duration-100 hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 data-[copied=true]:text-status-success data-[copied=true]:hover:bg-status-success/10 data-[copied=true]:hover:text-[#5ddb9f]"
+      class="inline-flex h-[22px] w-[22px] shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-text-4 transition-[color,background-color] duration-100 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 data-[copied=true]:text-status-success data-[copied=true]:hover:bg-status-success/10 data-[copied=true]:hover:text-status-success"
       onclick={handleCopy}
     >
       {#if copied}
@@ -55,5 +55,5 @@
       {/if}
     </button>
   </div>
-  <pre class="m-0 overflow-x-auto px-3.5 py-3"><code class="whitespace-pre font-mono text-12 leading-[1.6] text-[#c8c9d0]">{code}</code></pre>
+  <pre class="m-0 overflow-x-auto px-3.5 py-3"><code class="whitespace-pre font-mono text-12 leading-[1.6] text-text-2">{code}</code></pre>
 </div>

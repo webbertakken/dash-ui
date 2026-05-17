@@ -53,12 +53,12 @@
   let bgImage = $derived(indeterminate ? DASH_SVG : checked ? CHECK_SVG : 'none');
 
   const INPUT_CLS =
-    'relative inline-block h-4 w-4 min-w-4 cursor-pointer appearance-none rounded-sm border-[1.5px] border-white/25 bg-[#141415] align-middle bg-[length:100%_100%] bg-center bg-no-repeat transition-[border-color,background-color] duration-100 hover:border-white/45 checked:border-brand-05 checked:bg-brand-05 indeterminate:border-brand-05 indeterminate:bg-brand-05 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
+    'relative inline-block h-4 w-4 min-w-4 cursor-pointer appearance-none rounded-sm border-[1.5px] border-border-3 bg-bg-1 align-middle bg-[length:100%_100%] bg-center bg-no-repeat transition-[border-color,background-color] duration-100 hover:border-text-3 checked:border-brand-05 checked:bg-brand-05 indeterminate:border-brand-05 indeterminate:bg-brand-05 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
 </script>
 
 {#if label}
   <label
-    class="inline-flex cursor-pointer select-none items-center gap-2 text-13 text-[#c8c9d0] has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-40"
+    class="inline-flex cursor-pointer select-none items-center gap-2 text-13 text-text-2 has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-40"
     for={inputId}
   >
     <input

@@ -21,7 +21,7 @@
         aria-expanded={open}
         aria-controls={detailId}
         aria-label={open ? 'Collapse row' : 'Expand row'}
-        class="inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded border-0 bg-transparent p-0 text-[#6e7079] transition-colors duration-100 hover:text-[#c8c9d0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+        class="inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded border-0 bg-transparent p-0 text-text-4 transition-colors duration-100 hover:text-text-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
         onclick={() => (open = !open)}
       >
         <svg
@@ -41,7 +41,7 @@
     aria-hidden={!open}
     class="{open ? 'table-row' : 'hidden'}"
   >
-    <td colspan={colSpan + 1} class="border-b border-white/[0.06] bg-white/[0.02] pb-3 pl-9 pr-3 pt-2">
+    <td colspan={colSpan + 1} class="border-b border-border-1 bg-divider pb-3 pl-9 pr-3 pt-2">
       {@render detail?.()}
     </td>
   </tr>

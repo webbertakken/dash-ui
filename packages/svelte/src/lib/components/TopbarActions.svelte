@@ -44,7 +44,7 @@
   {#if notificationCount > 0}
     <span
       aria-hidden="true"
-      class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border-[1.5px] border-neutral-10 bg-status-danger"
+      class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border-[1.5px] border-bg-page bg-status-danger"
     ></span>
   {/if}
 </IconButton>

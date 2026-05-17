@@ -16,7 +16,7 @@
 </script>
 
 <div
-  class="h-1 overflow-hidden rounded-sm bg-white/[0.06]"
+  class="h-1 overflow-hidden rounded-sm bg-row-active"
   role="progressbar"
   aria-valuenow={Math.round(clamped)}
   aria-valuemin={0}

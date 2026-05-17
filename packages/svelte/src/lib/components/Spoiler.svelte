@@ -45,7 +45,7 @@
     <button
       type="button"
       aria-expanded={expanded}
-      class="mt-1 inline-flex items-center border-0 bg-transparent px-0 py-1 text-12 leading-none text-brand-05 cursor-pointer hover:text-[#7fb6ff] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+      class="mt-1 inline-flex items-center border-0 bg-transparent px-0 py-1 text-12 leading-none text-brand-05 cursor-pointer hover:text-status-info focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
       onclick={() => (expanded = !expanded)}
     >
       {expanded ? hideLabel : showLabel}

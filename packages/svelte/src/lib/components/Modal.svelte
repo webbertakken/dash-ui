@@ -90,13 +90,13 @@
 >
   <div
     bind:this={modalEl}
-    class="w-[520px] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-neutral-09 shadow-modal"
+    class="w-[520px] max-w-[90vw] overflow-hidden rounded-xl border border-border-2 bg-bg-1 shadow-modal"
     role="dialog"
     aria-modal="true"
     aria-labelledby={titleId}
     tabindex="-1"
   >
-    <div class="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
+    <div class="flex items-center justify-between border-b border-border-1 px-5 py-4">
       <h2 id={titleId} class="m-0 text-16 font-semibold">{title}</h2>
       <IconButton title="Close" onclick={() => (open = false)}>
         <CloseIcon />
@@ -105,7 +105,7 @@
     <div class="px-5 py-4">{@render children?.()}</div>
     {#if footer}
       <div
-        class="flex justify-end gap-2 border-t border-white/[0.06] bg-[#0f0f10] px-5 py-3.5"
+        class="flex justify-end gap-2 border-t border-border-1 bg-bg-0 px-5 py-3.5"
       >{@render footer?.()}</div>
     {/if}
   </div>

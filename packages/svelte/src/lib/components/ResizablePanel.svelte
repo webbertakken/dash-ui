@@ -94,7 +94,7 @@
     aria-valuemax={max}
     aria-label={label}
     data-orientation={orientation}
-    class="shrink-0 cursor-col-resize bg-white/[0.06] hover:bg-brand-05/40 data-[orientation=horizontal]:cursor-row-resize data-[orientation=vertical]:w-1 data-[orientation=horizontal]:h-1 focus-visible:bg-brand-05 focus-visible:outline-none"
+    class="shrink-0 cursor-col-resize bg-row-active hover:bg-brand-05/40 data-[orientation=horizontal]:cursor-row-resize data-[orientation=vertical]:w-1 data-[orientation=horizontal]:h-1 focus-visible:bg-brand-05 focus-visible:outline-none"
     onmousedown={onMouseDown}
     onkeydown={onKeyDown}
   ></div>

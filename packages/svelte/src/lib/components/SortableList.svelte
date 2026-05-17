@@ -58,7 +58,7 @@
       data-grabbed={grabbed === item.id ? 'true' : undefined}
       data-dragover={dragOver === item.id ? 'true' : undefined}
       draggable="true"
-      class="flex items-center gap-2 rounded-md border border-white/[0.06] bg-white/[0.02] px-2 py-1.5 transition-colors duration-100 data-[grabbed=true]:border-brand-05 data-[grabbed=true]:bg-brand-05/[0.08] data-[dragover=true]:border-brand-05"
+      class="flex items-center gap-2 rounded-md border border-border-1 bg-divider px-2 py-1.5 transition-colors duration-100 data-[grabbed=true]:border-brand-05 data-[grabbed=true]:bg-brand-05/[0.08] data-[dragover=true]:border-brand-05"
       ondragstart={(e) => { e.dataTransfer?.setData('text/plain', item.id); if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; dragSrc = item.id; }}
       ondragend={() => { dragSrc = null; dragOver = null; }}
       ondragover={(e) => { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'move'; dragOver = item.id; }}
@@ -69,7 +69,7 @@
         type="button"
         aria-label={`${grabbed === item.id ? 'Release' : 'Grab'} ${item.label}. Use arrow keys to reorder.`}
         aria-pressed={grabbed === item.id}
-        class="flex h-6 w-6 cursor-grab items-center justify-center rounded border-0 bg-transparent p-0 text-[#6e7079] hover:bg-white/[0.04] hover:text-white active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+        class="flex h-6 w-6 cursor-grab items-center justify-center rounded border-0 bg-transparent p-0 text-text-4 hover:bg-row-hover hover:text-text-1 active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
         onkeydown={(e) => handleKeyDown(e, item.id)}
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true" focusable="false">
@@ -82,12 +82,12 @@
         </svg>
       </button>
       <span class="flex min-w-0 flex-1 flex-col">
-        <span class="truncate text-13 text-white">{item.label}</span>
+        <span class="truncate text-13 text-text-1">{item.label}</span>
         {#if item.meta}
-          <span class="truncate text-11 text-[#6e7079]">{item.meta}</span>
+          <span class="truncate text-11 text-text-4">{item.meta}</span>
         {/if}
       </span>
-      <span class="shrink-0 text-11 text-[#6e7079] tabular-nums" aria-hidden="true">{idx + 1}</span>
+      <span class="shrink-0 text-11 text-text-4 tabular-nums" aria-hidden="true">{idx + 1}</span>
     </li>
   {/each}
 </ol>

@@ -79,39 +79,39 @@
     'background-image:url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'6\' viewBox=\'0 0 10 6\'%3E%3Cpath d=\'M1 1l4 4 4-4\' stroke=\'%236E7079\' stroke-width=\'1.5\' fill=\'none\' stroke-linecap=\'round\'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;';
 
   const SELECT_CLS =
-    'h-[30px] cursor-pointer appearance-none rounded border border-white/10 bg-white/[0.06] px-2 pr-6 text-13 leading-none text-[#e1e2e8] outline-none transition-colors duration-100 hover:border-white/20 focus:border-brand-05';
+    'h-[30px] cursor-pointer appearance-none rounded border border-border-2 bg-row-active px-2 pr-6 text-13 leading-none text-text-1 outline-none transition-colors duration-100 hover:border-border-3 focus:border-brand-05';
   const INPUT_CLS =
-    'h-[30px] min-w-[140px] flex-1 rounded border border-white/10 bg-white/[0.06] px-2 text-13 leading-none text-[#e1e2e8] outline-none transition-colors duration-100 placeholder:text-[#6e7079] hover:border-white/20 focus:border-brand-05';
+    'h-[30px] min-w-[140px] flex-1 rounded border border-border-2 bg-row-active px-2 text-13 leading-none text-text-1 outline-none transition-colors duration-100 placeholder:text-text-4 hover:border-border-3 focus:border-brand-05';
 </script>
 
 <div class="flex flex-col gap-1.5" role="group" aria-label={ariaLabel}>
   <div class="flex min-h-8 flex-wrap items-center gap-2">
     <span class="mr-1 text-12 font-semibold uppercase tracking-[0.05em] text-text-3">Filters</span>
     {#if value.length > 0}
-      <span class="text-13 text-[#6e7079]">Match</span>
-      <div class="flex overflow-hidden rounded border border-white/10" role="group" aria-label="Conjunction">
+      <span class="text-13 text-text-4">Match</span>
+      <div class="flex overflow-hidden rounded border border-border-2" role="group" aria-label="Conjunction">
         {#each CONJUNCTIONS as c}
           <button
             type="button"
             aria-pressed={conjunction === c}
-            class="cursor-pointer border-0 bg-transparent px-2.5 py-0.5 text-11 font-bold uppercase tracking-[0.06em] text-[#6e7079] hover:bg-white/[0.06] hover:text-[#e1e2e8] aria-pressed:bg-brand-05/[0.18] aria-pressed:text-[#7fb6ff] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
+            class="cursor-pointer border-0 bg-transparent px-2.5 py-0.5 text-11 font-bold uppercase tracking-[0.06em] text-text-4 hover:bg-row-active hover:text-text-1 aria-pressed:bg-brand-05/[0.18] aria-pressed:text-status-info focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
             onclick={() => emit(value, c)}
           >{c.toUpperCase()}</button>
         {/each}
       </div>
-      <span class="text-13 text-[#6e7079]">conditions</span>
+      <span class="text-13 text-text-4">conditions</span>
     {/if}
     <button
       type="button"
       aria-label="Add filter rule"
-      class="ml-auto cursor-pointer rounded border border-dashed border-white/[0.14] bg-transparent px-2.5 py-1 text-12 leading-none text-brand-05 hover:border-brand-05 hover:bg-brand-05/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+      class="ml-auto cursor-pointer rounded border border-dashed border-border-3 bg-transparent px-2.5 py-1 text-12 leading-none text-brand-05 hover:border-brand-05 hover:bg-brand-05/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
       onclick={addRule}
     >+ Add rule</button>
     {#if value.length > 0}
       <button
         type="button"
         aria-label="Clear all filters"
-        class="cursor-pointer border-0 bg-transparent px-1.5 py-1 text-12 leading-none text-[#6e7079] hover:text-[#e1e2e8] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+        class="cursor-pointer border-0 bg-transparent px-1.5 py-1 text-12 leading-none text-text-4 hover:text-text-1 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
         onclick={() => emit([])}
       >Clear</button>
     {/if}
@@ -180,7 +180,7 @@
           <button
             type="button"
             aria-label={`Remove rule ${i + 1}`}
-            class="flex h-[26px] w-[26px] shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-[#6e7079] hover:bg-status-danger/10 hover:text-status-danger focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+            class="flex h-[26px] w-[26px] shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-text-4 hover:bg-status-danger/10 hover:text-status-danger focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
             onclick={() => removeRule(rule.id)}
           >
             <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" fill="currentColor">

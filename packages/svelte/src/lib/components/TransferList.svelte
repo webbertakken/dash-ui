@@ -108,13 +108,13 @@
     }
   }
 
-  const PANEL_CLS = 'flex min-w-0 flex-1 flex-col gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] p-2';
+  const PANEL_CLS = 'flex min-w-0 flex-1 flex-col gap-1.5 rounded-lg border border-border-1 bg-divider p-2';
   const HEADER_CLS = 'flex items-center justify-between px-1 text-12 font-semibold uppercase tracking-[0.05em] text-text-3';
-  const COUNT_CLS = 'rounded bg-white/[0.06] px-1.5 py-0.5 text-11 text-[#6e7079] tabular-nums';
+  const COUNT_CLS = 'rounded bg-row-active px-1.5 py-0.5 text-11 text-text-4 tabular-nums';
   const LIST_CLS = 'm-0 flex max-h-[240px] list-none flex-col gap-0.5 overflow-y-auto p-0 focus:outline-none';
-  const ITEM_CLS = 'flex cursor-pointer flex-col items-start gap-0 rounded px-2 py-1.5 text-13 text-[#c8c9d0] hover:bg-white/[0.04] aria-selected:bg-brand-05/[0.18] aria-selected:text-white focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
-  const EMPTY_CLS = 'rounded px-2 py-3 text-center text-11 text-[#6e7079]';
-  const BTN_CLS = 'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border border-white/10 bg-transparent text-13 text-text-3 hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
+  const ITEM_CLS = 'flex cursor-pointer flex-col items-start gap-0 rounded px-2 py-1.5 text-13 text-text-2 hover:bg-row-hover aria-selected:bg-brand-05/[0.18] aria-selected:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05';
+  const EMPTY_CLS = 'rounded px-2 py-3 text-center text-11 text-text-4';
+  const BTN_CLS = 'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border border-border-2 bg-transparent text-13 text-text-3 hover:bg-row-hover hover:text-text-1 disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
 </script>
 
 <div class="flex items-start gap-3 {className}">
@@ -143,7 +143,7 @@
             onkeydown={(e) => { if (e.key === ' ') { e.preventDefault(); focSrc = i; toggleSrc(item.id); } }}
           >
             <span>{item.label}</span>
-            {#if item.description}<span class="text-11 text-[#6e7079]">{item.description}</span>{/if}
+            {#if item.description}<span class="text-11 text-text-4">{item.description}</span>{/if}
           </li>
         {/each}
       {/if}
@@ -190,7 +190,7 @@
             onkeydown={(e) => { if (e.key === ' ') { e.preventDefault(); focTgt = i; toggleTgt(item.id); } }}
           >
             <span>{item.label}</span>
-            {#if item.description}<span class="text-11 text-[#6e7079]">{item.description}</span>{/if}
+            {#if item.description}<span class="text-11 text-text-4">{item.description}</span>{/if}
           </li>
         {/each}
       {/if}

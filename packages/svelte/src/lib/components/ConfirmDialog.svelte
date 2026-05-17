@@ -100,20 +100,20 @@
 >
   <div
     bind:this={dialogEl}
-    class="w-[400px] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-neutral-09 shadow-modal"
+    class="w-[400px] max-w-[90vw] overflow-hidden rounded-xl border border-border-2 bg-bg-1 shadow-modal"
     role="alertdialog"
     aria-modal="true"
     aria-labelledby="cd-title"
     aria-describedby={description ? 'cd-desc' : undefined}
     tabindex={-1}
   >
-    <div class="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
+    <div class="flex items-center justify-between border-b border-border-1 px-5 py-4">
       <h2 id="cd-title" class="m-0 text-16 font-semibold">{title}</h2>
     </div>
     {#if description}
       <div id="cd-desc" class="px-5 py-3.5 text-13 leading-[1.5] text-text-3">{description}</div>
     {/if}
-    <div class="flex justify-end gap-2 border-t border-white/[0.06] bg-[#0f0f10] px-5 py-3.5">
+    <div class="flex justify-end gap-2 border-t border-border-1 bg-bg-0 px-5 py-3.5">
       <Button variant="ghost" onclick={onCancel}>{cancelLabel}</Button>
       <Button variant={CONFIRM_VARIANT[variant]} class={CONFIRM_EXTRA[variant]} onclick={onConfirm}>{confirmLabel}</Button>
     </div>

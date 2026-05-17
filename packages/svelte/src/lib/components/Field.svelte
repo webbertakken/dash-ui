@@ -30,17 +30,17 @@
 </script>
 
 <div class="mb-3 flex flex-col gap-1.5">
-  <label for={inputId} class="text-12 font-medium text-neutral-04">
+  <label for={inputId} class="text-12 font-medium text-text-3">
     {label}{#if required}<span class="text-status-danger" aria-hidden="true"> *</span>{/if}
   </label>
   {#if hint}
-    <div class="text-12 text-neutral-04" id={hintId}>{hint}</div>
+    <div class="text-12 text-text-3" id={hintId}>{hint}</div>
   {/if}
   {#if children}
     {@render children?.()}
   {:else}
     <input
-      class="h-[34px] w-full rounded-md border border-white/10 bg-neutral-10 px-3 text-13 text-white outline-none transition-[border-color] duration-100 focus:border-brand-05 focus:[box-shadow:0_0_0_2px_rgba(0,111,255,0.2)] aria-[invalid='true']:border-status-danger aria-[invalid='true']:focus:[box-shadow:0_0_0_2px_rgba(240,58,58,0.12)]"
+      class="h-[34px] w-full rounded-md border border-border-2 bg-bg-page px-3 text-13 text-text-1 outline-none transition-[border-color] duration-100 focus:border-brand-05 focus:[box-shadow:0_0_0_2px_rgba(0,111,255,0.2)] aria-[invalid='true']:border-status-danger aria-[invalid='true']:focus:[box-shadow:0_0_0_2px_rgba(240,58,58,0.12)]"
       id={inputId}
       bind:value
       {required}

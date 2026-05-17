@@ -20,22 +20,22 @@
         {#if isLast}
           <span
             aria-current="page"
-            class="font-medium text-[#c8c9d0]"
+            class="font-medium text-text-2"
           >{item.label}</span>
         {:else if item.href}
           <a
             href={item.href}
-            class="cursor-pointer text-neutral-05 no-underline transition-colors duration-100 hover:text-[#c8c9d0] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+            class="cursor-pointer text-text-4 no-underline transition-colors duration-100 hover:text-text-2 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
           >{item.label}</a>
         {:else}
           <button
             type="button"
-            class="cursor-pointer border-0 bg-transparent p-0 font-[inherit] text-neutral-05 transition-colors duration-100 hover:text-[#c8c9d0] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+            class="cursor-pointer border-0 bg-transparent p-0 font-[inherit] text-text-4 transition-colors duration-100 hover:text-text-2 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
             onclick={() => onnavigate?.(i)}
           >{item.label}</button>
         {/if}
         {#if !isLast}
-          <span class="select-none text-[#3e3e45]" aria-hidden="true">/</span>
+          <span class="select-none text-border-3" aria-hidden="true">/</span>
         {/if}
       </li>
     {/each}

@@ -35,7 +35,7 @@
   const DOT_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='3' fill='%23fff'/%3E%3C/svg%3E")`;
 
   const INPUT_CLS =
-    'mt-px relative inline-block h-4 w-4 min-w-4 shrink-0 cursor-pointer appearance-none rounded-full border-[1.5px] border-white/25 bg-[#141415] align-middle bg-center bg-no-repeat transition-[border-color,background-color] duration-100 hover:border-white/45 checked:border-brand-05 checked:bg-brand-05 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
+    'mt-px relative inline-block h-4 w-4 min-w-4 shrink-0 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-3 bg-bg-1 align-middle bg-center bg-no-repeat transition-[border-color,background-color] duration-100 hover:border-text-3 checked:border-brand-05 checked:bg-brand-05 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
 
   // Horizontal layout uses flex-wrap row gap; vertical stacks the options.
   let groupCls = $derived(
@@ -49,7 +49,7 @@
     {@const optId = `${groupName}-${opt.value}`}
     <label
       for={optId}
-      class="flex cursor-pointer select-none items-start gap-2 py-1.5 text-13 text-[#c8c9d0] {opt.disabled
+      class="flex cursor-pointer select-none items-start gap-2 py-1.5 text-13 text-text-2 {opt.disabled
         ? 'cursor-not-allowed opacity-40'
         : ''}"
     >

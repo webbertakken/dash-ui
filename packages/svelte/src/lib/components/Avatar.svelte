@@ -52,7 +52,7 @@
   {/if}
   {#if status}
     <span
-      class="absolute bottom-0 right-0 h-2 w-2 rounded-full border-[1.5px] border-neutral-10 {STATUS_BG[status]}"
+      class="absolute bottom-0 right-0 h-2 w-2 rounded-full border-[1.5px] border-bg-page {STATUS_BG[status]}"
       aria-hidden="true"
     ></span>
   {/if}

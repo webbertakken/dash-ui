@@ -102,11 +102,11 @@
       role="dialog"
       aria-modal="true"
       aria-label="Command palette"
-      class="w-[520px] max-w-[90vw] overflow-hidden rounded-xl border border-white/[0.12] bg-[#141415] shadow-[0_24px_64px_rgba(0,0,0,0.6)]"
+      class="w-[520px] max-w-[90vw] overflow-hidden rounded-xl border border-border-3 bg-bg-1 shadow-[0_24px_64px_rgba(0,0,0,0.6)]"
     >
-      <div class="flex items-center gap-2.5 border-b border-white/[0.06] px-4 py-3">
+      <div class="flex items-center gap-2.5 border-b border-border-1 px-4 py-3">
         <svg
-          class="shrink-0 text-[#6e7079]"
+          class="shrink-0 text-text-4"
           width="16"
           height="16"
           viewBox="0 0 16 16"
@@ -131,9 +131,9 @@
           {placeholder}
           bind:value={query}
           onkeydown={handleKey}
-          class="min-w-0 flex-1 border-0 bg-transparent text-[15px] leading-none text-white outline-none placeholder:text-[#6e7079]"
+          class="min-w-0 flex-1 border-0 bg-transparent text-[15px] leading-none text-text-1 outline-none placeholder:text-text-4"
         />
-        <span class="shrink-0 whitespace-nowrap rounded border border-white/10 bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-[#6e7079]">Esc</span>
+        <span class="shrink-0 whitespace-nowrap rounded border border-border-2 bg-row-active px-1.5 py-0.5 text-[10px] text-text-4">Esc</span>
       </div>
       <ul
         id={listboxId}
@@ -142,12 +142,12 @@
         class="m-0 max-h-[360px] list-none overflow-y-auto p-1.5"
       >
         {#if filtered.length === 0}
-          <li class="list-none p-6 text-center text-13 text-[#6e7079]">No results for &ldquo;{query}&rdquo;</li>
+          <li class="list-none p-6 text-center text-13 text-text-4">No results for &ldquo;{query}&rdquo;</li>
         {:else}
           {#each grouped as { group, items: groupItems }}
             <li role="presentation">
               {#if group}
-                <div class="px-2.5 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.06em] text-[#6e7079]">{group}</div>
+                <div class="px-2.5 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.06em] text-text-4">{group}</div>
               {/if}
               {#each groupItems as item}
                 {@const idx = filtered.indexOf(item)}
@@ -157,7 +157,7 @@
                   tabindex={-1}
                   aria-selected={idx === activeIdx}
                   data-active={idx === activeIdx ? 'true' : undefined}
-                  class="flex cursor-pointer list-none items-center gap-2.5 rounded-md px-2.5 py-2 text-13 text-[#c8c9d0] outline-none data-[active=true]:bg-brand-05/15 data-[active=true]:text-white"
+                  class="flex cursor-pointer list-none items-center gap-2.5 rounded-md px-2.5 py-2 text-13 text-text-2 outline-none data-[active=true]:bg-brand-05/15 data-[active=true]:text-text-1"
                   onclick={() => commit(item.id)}
                   onmouseenter={() => (activeIdx = idx)}
                 >

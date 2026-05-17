@@ -43,9 +43,9 @@
   }
 
   const HEADER_CLS =
-    'flex w-full items-center gap-2 rounded-md border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-13 text-white';
+    'flex w-full items-center gap-2 rounded-md border border-border-1 bg-divider px-3 py-2 text-13 text-text-1';
   const HEADER_BTN =
-    HEADER_CLS + ' cursor-pointer hover:bg-white/[0.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
+    HEADER_CLS + ' cursor-pointer hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
 </script>
 
 <div class="flex flex-col gap-1.5" aria-label={ariaLabel}>
@@ -65,11 +65,11 @@
             <span class="inline-block h-2 w-2 shrink-0 rounded-full" style="background:{group.color}" aria-hidden="true"></span>
           {/if}
           <span class="flex-1 text-left font-medium">{group.label}</span>
-          <span class="rounded bg-white/[0.06] px-1.5 py-0.5 text-11 text-text-3 tabular-nums">{group.items.length}</span>
+          <span class="rounded bg-row-active px-1.5 py-0.5 text-11 text-text-3 tabular-nums">{group.items.length}</span>
           <svg
             width="12" height="12" viewBox="0 0 12 12"
             aria-hidden="true" focusable="false"
-            class="text-[#6e7079] transition-transform duration-100 motion-reduce:transition-none {isOpen ? 'rotate-180' : ''}"
+            class="text-text-4 transition-transform duration-100 motion-reduce:transition-none {isOpen ? 'rotate-180' : ''}"
           >
             <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -80,13 +80,13 @@
             <span class="inline-block h-2 w-2 shrink-0 rounded-full" style="background:{group.color}" aria-hidden="true"></span>
           {/if}
           <span class="flex-1 text-left font-medium">{group.label}</span>
-          <span class="rounded bg-white/[0.06] px-1.5 py-0.5 text-11 text-text-3 tabular-nums">{group.items.length}</span>
+          <span class="rounded bg-row-active px-1.5 py-0.5 text-11 text-text-3 tabular-nums">{group.items.length}</span>
         </div>
       {/if}
       {#if !collapsible || isOpen}
         <ul id={panelId} class="m-0 flex list-none flex-col gap-0.5 p-0 pl-4" role="list">
           {#each group.items as item}
-            <li class="flex items-center gap-2 rounded px-2 py-1.5 text-13 hover:bg-white/[0.03]">
+            <li class="flex items-center gap-2 rounded px-2 py-1.5 text-13 hover:bg-divider">
               {#if item.status}
                 <span
                   class="inline-block h-2 w-2 shrink-0 rounded-full"
@@ -95,10 +95,10 @@
                 ></span>
               {/if}
               <div class="min-w-0 flex-1">
-                <div class="truncate text-[#c8c9d0]">{item.label}</div>
-                {#if item.sublabel}<div class="truncate text-11 text-[#6e7079]">{item.sublabel}</div>{/if}
+                <div class="truncate text-text-2">{item.label}</div>
+                {#if item.sublabel}<div class="truncate text-11 text-text-4">{item.sublabel}</div>{/if}
               </div>
-              {#if item.meta}<span class="shrink-0 text-11 text-[#6e7079] tabular-nums">{item.meta}</span>{/if}
+              {#if item.meta}<span class="shrink-0 text-11 text-text-4 tabular-nums">{item.meta}</span>{/if}
             </li>
           {/each}
         </ul>

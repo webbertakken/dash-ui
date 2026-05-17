@@ -60,7 +60,7 @@
     <div
       {id}
       role="tooltip"
-      class="absolute z-[9998] min-w-[200px] max-w-[280px] rounded-[10px] border border-white/[0.12] bg-[#1a1a1c] p-3 text-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)] {PLACEMENT[placement]}"
+      class="absolute z-[9998] min-w-[200px] max-w-[280px] rounded-[10px] border border-border-3 bg-bg-2 p-3 text-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)] {PLACEMENT[placement]}"
     >
       {@render content?.()}
     </div>
