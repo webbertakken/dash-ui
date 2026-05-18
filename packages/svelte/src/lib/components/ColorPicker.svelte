@@ -65,7 +65,7 @@
   data-disabled={disabled ? 'true' : undefined}
   class="inline-flex flex-col gap-1.5 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
 >
-  <div id="{groupId}-label" class={srOnlyLabel ? 'sr-only' : 'text-12 text-[#6e7079]'}>{label}</div>
+  <div id="{groupId}-label" class={srOnlyLabel ? 'sr-only' : 'text-12 text-text-4'}>{label}</div>
   <div
     role="radiogroup"
     aria-labelledby="{groupId}-label"

@@ -35,10 +35,10 @@
   // Backgrounds at 16% (matches dashboard.css), left border solid, text
   // colour the legibility-tuned literal hue.
   const TOAST: Record<ToastVariant, string> = {
-    success: 'bg-status-success/16 border-l-status-success text-[#5ddb9f]',
-    warn: 'bg-status-warning/16 border-l-status-warning text-[#f5c26b]',
-    danger: 'bg-status-danger/16 border-l-status-danger text-[#ff7b7b]',
-    info: 'bg-status-info/16 border-l-brand-05 text-[#7fb6ff]',
+    success: 'bg-status-success/16 border-l-status-success text-status-success',
+    warn: 'bg-status-warning/16 border-l-status-warning text-status-warning',
+    danger: 'bg-status-danger/16 border-l-status-danger text-status-danger',
+    info: 'bg-status-info/16 border-l-brand-05 text-status-info',
   };
 </script>
 
@@ -58,7 +58,7 @@
       <span class="flex-1">{item.message}</span>
       <button
         type="button"
-        class="ml-auto inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-current hover:bg-white/[0.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+        class="ml-auto inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-current hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
         onclick={() => dismiss(item.id)}
         aria-label="Dismiss notification"
       >

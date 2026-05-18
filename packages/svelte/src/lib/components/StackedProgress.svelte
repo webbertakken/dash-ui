@@ -28,7 +28,7 @@
 
 <div class="flex w-full flex-col gap-2" role="img" aria-label={text}>
   <div
-    class="flex h-2 w-full overflow-hidden rounded-sm bg-white/[0.06]"
+    class="flex h-2 w-full overflow-hidden rounded-sm bg-row-active"
     aria-hidden="true"
   >
     {#each segments as { label, value, color }}
@@ -41,10 +41,10 @@
   {#if showLegend}
     <div class="flex flex-wrap items-center gap-3" aria-hidden="true">
       {#each segments as { label, value, color }}
-        <span class="inline-flex items-center gap-1.5 text-12 text-[#c8c9d0]">
+        <span class="inline-flex items-center gap-1.5 text-12 text-text-2">
           <span class="inline-block h-2 w-2 shrink-0 rounded-full" style="background:{color}"></span>
           {label}
-          <span class="text-[#6e7079] tabular-nums">{Math.round((value / sum) * 100)}%</span>
+          <span class="text-text-4 tabular-nums">{Math.round((value / sum) * 100)}%</span>
         </span>
       {/each}
     </div>

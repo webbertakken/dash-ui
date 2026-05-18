@@ -51,14 +51,14 @@
 ></div>
 <div
   bind:this={panelEl}
-  class="fixed right-0 top-0 z-[61] flex h-full w-[380px] max-w-[90vw] flex-col border-l border-white/10 bg-neutral-09 transition-transform duration-200 ease-out [box-shadow:-24px_0_64px_rgba(0,0,0,0.6)]
+  class="fixed right-0 top-0 z-[61] flex h-full w-[380px] max-w-[90vw] flex-col border-l border-border-2 bg-bg-1 transition-transform duration-200 ease-out [box-shadow:-24px_0_64px_rgba(0,0,0,0.6)]
     {open ? 'translate-x-0' : 'translate-x-full'}"
   role="dialog"
   aria-modal="true"
   aria-labelledby={titleId}
   tabindex="-1"
 >
-  <div class="flex shrink-0 items-center justify-between border-b border-white/[0.06] px-5 py-4">
+  <div class="flex shrink-0 items-center justify-between border-b border-border-1 px-5 py-4">
     <h2 id={titleId} class="m-0 text-16 font-semibold">{title}</h2>
     <IconButton title="Close" onclick={() => (open = false)}>
       <CloseIcon />

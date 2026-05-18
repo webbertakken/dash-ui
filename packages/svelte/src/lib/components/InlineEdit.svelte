@@ -48,7 +48,7 @@
   <span class="inline-flex items-center gap-1">
     <input
       bind:this={inputEl}
-      class="min-w-[80px] max-w-[200px] rounded-[5px] border border-brand-05/50 bg-white/[0.08] px-[7px] py-0.5 text-13 leading-none text-white outline-none focus:border-brand-05 focus:bg-brand-05/[0.08]"
+      class="min-w-[80px] max-w-[200px] rounded-[5px] border border-brand-05/50 bg-row-active px-[7px] py-0.5 text-13 leading-none text-text-1 outline-none focus:border-brand-05 focus:bg-brand-05/[0.08]"
       aria-label={`Edit ${label}`}
       bind:value={draft}
       {placeholder}
@@ -67,7 +67,7 @@
     <button
       type="button"
       aria-label="Cancel"
-      class="inline-flex cursor-pointer items-center rounded border-0 bg-transparent px-1 py-0.5 text-[#6e7079] transition-[color,background-color] duration-100 hover:bg-white/[0.06] hover:text-[#c8c9d0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+      class="inline-flex cursor-pointer items-center rounded border-0 bg-transparent px-1 py-0.5 text-text-4 transition-[color,background-color] duration-100 hover:bg-row-active hover:text-text-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
       onclick={cancel}
     >
       <svg viewBox="0 0 14 14" width="12" height="12" fill="none" aria-hidden="true" focusable="false">
@@ -77,12 +77,12 @@
   </span>
 {:else}
   <span class="group/ie inline-flex items-center gap-1">
-    <span class="text-13 text-white">{value}</span>
+    <span class="text-13 text-text-1">{value}</span>
     <button
       bind:this={editBtnEl}
       type="button"
       aria-label={`Edit ${label}`}
-      class="inline-flex cursor-pointer items-center rounded border-0 bg-transparent px-1 py-0.5 text-[#6e7079] opacity-0 transition-[opacity,color] duration-100 hover:text-[#c8c9d0] focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 group-hover/ie:opacity-100"
+      class="inline-flex cursor-pointer items-center rounded border-0 bg-transparent px-1 py-0.5 text-text-4 opacity-0 transition-[opacity,color] duration-100 hover:text-text-2 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 group-hover/ie:opacity-100"
       onclick={startEdit}
     >
       <svg viewBox="0 0 14 14" width="12" height="12" fill="none" aria-hidden="true" focusable="false">

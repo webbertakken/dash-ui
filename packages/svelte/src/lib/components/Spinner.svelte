@@ -20,6 +20,6 @@
 <span
   role="status"
   aria-label={label}
-  class="inline-block shrink-0 animate-spin rounded-full border-white/18 border-t-current [animation-duration:0.65s] motion-reduce:[animation-duration:10s]
+  class="inline-block shrink-0 animate-spin rounded-full border-border-3 border-t-current [animation-duration:0.65s] motion-reduce:[animation-duration:10s]
     {SIZE[size]}"
 ></span>

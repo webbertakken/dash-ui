@@ -21,10 +21,10 @@
     {suffix === undefined ? '[&_input]:rounded-r-md' : ''}"
 >
   {#if prefix !== undefined}
-    <span class="flex shrink-0 select-none items-center whitespace-nowrap rounded-l-md border border-r-0 border-white/10 bg-white/[0.06] px-2.5 text-13 text-[#6e7079]">{prefix}</span>
+    <span class="flex shrink-0 select-none items-center whitespace-nowrap rounded-l-md border border-r-0 border-border-2 bg-row-active px-2.5 text-13 text-text-4">{prefix}</span>
   {/if}
   {@render children?.()}
   {#if suffix !== undefined}
-    <span class="flex shrink-0 select-none items-center whitespace-nowrap rounded-r-md border border-l-0 border-white/10 bg-white/[0.06] px-2.5 text-13 text-[#6e7079]">{suffix}</span>
+    <span class="flex shrink-0 select-none items-center whitespace-nowrap rounded-r-md border border-l-0 border-border-2 bg-row-active px-2.5 text-13 text-text-4">{suffix}</span>
   {/if}
 </div>

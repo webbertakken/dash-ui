@@ -21,14 +21,16 @@
 
   // Pre-compose so Tailwind's static scanner picks up every variant.
   // Backgrounds use the literal 14% opacity from `dashboard.css`; text
-  // colours match the hand-tuned values that were unique to each variant
-  // (and are NOT motif-aware in baseline either).
+  // colours resolve to the semantic status tokens so they stay legible
+  // against the 14% tinted background in both motifs. The neutral variant
+  // sits on `--row-active` (brand-blue tint) so it stays visible on a
+  // white page bg.
   const PILL: Record<PillVariant, string> = {
-    success: 'bg-status-success/14 text-[#5ddb9f]',
-    warn: 'bg-status-warning/14 text-[#f5c26b]',
-    danger: 'bg-status-danger/14 text-[#ff7b7b]',
-    info: 'bg-status-info/14 text-[#7fb6ff]',
-    neutral: 'bg-white/[0.06] text-neutral-04',
+    success: 'bg-status-success/14 text-status-success',
+    warn: 'bg-status-warning/14 text-status-warning',
+    danger: 'bg-status-danger/14 text-status-danger',
+    info: 'bg-status-info/14 text-status-info',
+    neutral: 'bg-row-active text-text-2',
   };
   const DOT: Record<PillVariant, string> = {
     success: 'bg-status-success',

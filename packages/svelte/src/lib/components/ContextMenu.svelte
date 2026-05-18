@@ -95,13 +95,13 @@
     role="menu"
     aria-label={label}
     tabindex={-1}
-    class="fixed z-[9200] m-0 min-w-[168px] list-none rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)] focus:outline-none"
+    class="fixed z-[9200] m-0 min-w-[168px] list-none rounded-lg border border-border-3 bg-bg-2 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)] focus:outline-none"
     style="left:{cx}px;top:{cy}px"
     onkeydown={handleKeyDown}
   >
     {#each items as entry, i (i)}
       {#if 'separator' in entry}
-        <li role="separator" class="my-1 h-px bg-white/[0.08]"></li>
+        <li role="separator" class="my-1 h-px bg-row-active"></li>
       {:else}
         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <li
@@ -110,7 +110,7 @@
           aria-disabled={entry.disabled || undefined}
           data-active={actionIndex(entry) === activeIdx ? 'true' : undefined}
           data-danger={entry.danger || undefined}
-          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-3 py-1.5 text-13 text-[#c8c9d0] outline-none hover:bg-white/[0.06] hover:text-white data-[active=true]:bg-white/[0.06] data-[active=true]:text-white data-[danger=true]:text-status-danger data-[danger=true]:hover:bg-status-danger/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
+          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-3 py-1.5 text-13 text-text-2 outline-none hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 data-[danger=true]:text-status-danger data-[danger=true]:hover:bg-status-danger/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
           onmouseenter={() => (activeIdx = actionIndex(entry))}
           onmousedown={(e) => { e.preventDefault(); (() => { if (!entry.disabled) activate(entry.id); })(); }}
         >{entry.label}</li>

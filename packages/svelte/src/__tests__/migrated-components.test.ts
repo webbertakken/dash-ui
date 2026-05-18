@@ -138,7 +138,9 @@ describe('Pill (Tailwind)', () => {
       ['warn', 'bg-status-warning'],
       ['danger', 'bg-status-danger'],
       ['info', 'bg-status-info'],
-      ['neutral', 'bg-white'],
+      // Neutral variant now uses the motif-aware `--row-active` token so the
+      // pill stays visible on a white page bg.
+      ['neutral', 'bg-row-active'],
     ] as const) {
       const { container, unmount } = render(Pill, { props: { variant } })
       expect((container.firstChild as HTMLElement).className).toMatch(cls)

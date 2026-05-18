@@ -73,12 +73,12 @@
   }
 
   const DIGIT_CLS =
-    'h-9 w-9 rounded-md border border-white/10 bg-[#0a0a0b] text-center font-mono text-15 text-white outline-none transition-colors duration-100 focus:border-brand-05 focus:shadow-[0_0_0_2px_rgba(0,111,255,0.2)]';
+    'h-9 w-9 rounded-md border border-border-2 bg-bg-page text-center font-mono text-15 text-text-1 outline-none transition-colors duration-100 focus:border-brand-05 focus:shadow-[0_0_0_2px_rgba(0,111,255,0.2)]';
 </script>
 
 <div class={className}>
   {#if label}
-    <label for="{uid}-0" class="text-12 text-[#6e7079]">{label}</label>
+    <label for="{uid}-0" class="text-12 text-text-4">{label}</label>
   {/if}
   <div
     role="group"
@@ -88,7 +88,7 @@
   >
     {#each digits as d, i}
       {#if i === half}
-        <span aria-hidden="true" class="select-none text-13 text-[#6e7079]">&ndash;</span>
+        <span aria-hidden="true" class="select-none text-13 text-text-4">&ndash;</span>
       {/if}
       <input
         bind:this={inputs[i]}

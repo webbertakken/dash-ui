@@ -35,7 +35,7 @@
 </script>
 
 <div
-  class="flex gap-0 overflow-x-auto border-b border-white/[0.06] px-6"
+  class="flex gap-0 overflow-x-auto border-b border-border-1 px-6"
   role="tablist"
   aria-label={ariaLabel}
 >
@@ -45,8 +45,8 @@
       type="button"
       class="-mb-px cursor-pointer select-none whitespace-nowrap border-0 border-b-2 bg-transparent px-3.5 py-[11px] text-13 leading-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-05
         {t.id === active
-          ? 'border-b-brand-05 text-white'
-          : 'border-b-transparent text-neutral-04 hover:text-white'}"
+          ? 'border-b-brand-05 text-text-1'
+          : 'border-b-transparent text-text-3 hover:text-text-1'}"
       role="tab"
       id="tab-{t.id}"
       aria-selected={t.id === active}
@@ -57,7 +57,7 @@
     >
       {t.label}
       {#if t.badge !== undefined}
-        <span class="ml-1.5 tabular-nums text-neutral-05">{t.badge}</span>
+        <span class="ml-1.5 tabular-nums text-text-4">{t.badge}</span>
       {/if}
     </button>
   {/each}

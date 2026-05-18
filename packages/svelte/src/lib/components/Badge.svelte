@@ -30,7 +30,9 @@
   // dashboard.css's `color: #111` (legible on the orange chip).
   const COLOR: Record<BadgeColor, string> = {
     danger: 'bg-status-danger text-white',
-    warn: 'bg-status-warning text-[#111]',
+    // Status-warning is yellow in both motifs; near-black text stays
+    // legible against it. `text-neutral-10` resolves to `#0a0a0b`.
+    warn: 'bg-status-warning text-neutral-10',
     info: 'bg-brand-05 text-white',
     success: 'bg-status-success text-white',
     neutral: 'bg-status-neutral text-white',
@@ -41,7 +43,7 @@
   {@render children?.()}
   {#if show}
     <span
-      class="pointer-events-none absolute z-10 flex items-center justify-center whitespace-nowrap rounded-lg border-[1.5px] border-neutral-10 text-[10px] font-bold leading-none
+      class="pointer-events-none absolute z-10 flex items-center justify-center whitespace-nowrap rounded-lg border-[1.5px] border-bg-page text-[10px] font-bold leading-none
         {COLOR[color]}
         {dot
           ? '-right-0.5 -top-0.5 h-2 w-2 min-w-2 p-0'

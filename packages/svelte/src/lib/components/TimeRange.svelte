@@ -82,7 +82,7 @@
       id={listId}
       role="listbox"
       aria-label="Time range"
-      class="absolute right-0 top-[calc(100%+4px)] z-[9100] m-0 min-w-[152px] list-none rounded-lg border border-white/[0.12] bg-[#1a1a1c] p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+      class="absolute right-0 top-[calc(100%+4px)] z-[9100] m-0 min-w-[152px] list-none rounded-lg border border-border-3 bg-bg-2 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
     >
       {#each PRESETS as p, idx (p.id)}
         <li
@@ -90,7 +90,7 @@
           aria-selected={p.id === value}
           tabindex={-1}
           data-active={idx === activeIdx ? 'true' : undefined}
-          class="flex cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-[5px] px-2.5 py-1.5 text-13 text-[#c8c9d0] outline-none hover:bg-white/[0.06] hover:text-white data-[active=true]:bg-white/[0.06] data-[active=true]:text-white aria-selected:text-[#7fb6ff]"
+          class="flex cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-[5px] px-2.5 py-1.5 text-13 text-text-2 outline-none hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 aria-selected:text-status-info"
           onmouseenter={() => { activeIdx = idx; }}
           onmousedown={(e) => { e.preventDefault(); (() => select(p.id))(); }}
         >

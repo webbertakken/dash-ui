@@ -34,16 +34,16 @@
 
 <div class={className}>
   {#if label}
-    <label for={uid} class="text-12 text-[#6e7079]">{label}</label>
+    <label for={uid} class="text-12 text-text-4">{label}</label>
   {/if}
   <div
     data-disabled={disabled ? 'true' : undefined}
-    class="flex h-[34px] items-stretch overflow-hidden rounded-md border border-white/10 bg-[#0a0a0b] transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
+    class="flex h-[34px] items-stretch overflow-hidden rounded-md border border-border-2 bg-bg-page transition-colors duration-100 focus-within:border-brand-05 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40"
   >
     <input
       id={uid}
       type={shown ? 'text' : 'password'}
-      class="min-w-0 flex-1 border-0 bg-transparent px-3 text-13 text-white outline-none placeholder:text-[#6e7079]"
+      class="min-w-0 flex-1 border-0 bg-transparent px-3 text-13 text-text-1 outline-none placeholder:text-text-4"
       {value}
       {placeholder}
       {disabled}
@@ -55,7 +55,7 @@
       aria-pressed={shown}
       aria-label={shown ? 'Hide password' : 'Show password'}
       {disabled}
-      class="inline-flex h-full w-9 shrink-0 cursor-pointer items-center justify-center border-0 border-l border-l-white/[0.08] bg-transparent text-[#6e7079] transition-colors duration-100 hover:bg-white/[0.04] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
+      class="inline-flex h-full w-9 shrink-0 cursor-pointer items-center justify-center border-0 border-l border-l-white/[0.08] bg-transparent text-text-4 transition-colors duration-100 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
       onclick={() => (shown = !shown)}
     >
       {#if shown}

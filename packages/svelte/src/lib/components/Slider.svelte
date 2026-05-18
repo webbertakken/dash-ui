@@ -46,9 +46,9 @@
 <div class="flex flex-col gap-1.5">
   {#if label}
     <div class="flex items-center justify-between gap-2">
-      <label for={inputId} class="text-12 text-[#6e7079]">{label}</label>
-      <span class="flex items-baseline gap-px text-12 font-medium text-white tabular-nums" aria-live="polite">
-        {value}{#if suffix}<span class="ml-px text-11 text-[#6e7079]">{suffix}</span>{/if}
+      <label for={inputId} class="text-12 text-text-4">{label}</label>
+      <span class="flex items-baseline gap-px text-12 font-medium text-text-1 tabular-nums" aria-live="polite">
+        {value}{#if suffix}<span class="ml-px text-11 text-text-4">{suffix}</span>{/if}
       </span>
     </div>
   {/if}

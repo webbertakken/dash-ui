@@ -35,7 +35,7 @@
   <span
     {id}
     role="tooltip"
-    class="pointer-events-none absolute z-[9999] whitespace-nowrap rounded border border-white/[0.08] bg-[#1e2028] px-2 py-1 text-[11px] leading-[1.3] text-[#c8c9d0] opacity-0 transition-opacity duration-100 group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none
+    class="pointer-events-none absolute z-[9999] whitespace-nowrap rounded border border-border-1 bg-bg-2 px-2 py-1 text-[11px] leading-[1.3] text-text-2 opacity-0 transition-opacity duration-100 group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none
       {PLACEMENT[placement]}"
   >{label}</span>
 </span>

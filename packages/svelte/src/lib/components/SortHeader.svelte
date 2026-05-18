@@ -27,7 +27,7 @@
 <th scope="col" aria-sort={ariaSort}>
   <button
     type="button"
-    class="inline-flex w-full cursor-pointer items-center gap-1.5 whitespace-nowrap border-0 bg-transparent px-3 py-2 font-inherit text-inherit hover:text-[#c8c9d0] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
+    class="inline-flex w-full cursor-pointer items-center gap-1.5 whitespace-nowrap border-0 bg-transparent px-3 py-2 font-inherit text-inherit hover:text-text-2 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-05"
     onclick={() => onsort?.(sortKey)}
   >
     {@render children?.()}

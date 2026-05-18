@@ -23,7 +23,7 @@
 </script>
 
 <div
-  class="overflow-auto rounded-md border border-white/[0.08] bg-[#0a0a0b] py-2 font-mono text-12 leading-[1.8]"
+  class="overflow-auto rounded-md border border-border-1 bg-bg-page py-2 font-mono text-12 leading-[1.8]"
   role="tree"
   aria-label={label}
 >
