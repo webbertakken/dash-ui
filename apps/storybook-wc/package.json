@@ -12,7 +12,7 @@
     "@w5-ui/tokens": "workspace:*",
     "@w5-ui/wc": "workspace:*",
     "lit": "^3.2.1",
-    "lit-html": "^3.2.1",
+    "lit-html": "^3.3.3",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   },
