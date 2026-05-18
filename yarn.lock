@@ -6107,12 +6107,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lit-html@npm:^3.2.1, lit-html@npm:^3.3.0":
+"lit-html@npm:^3.3.0":
   version: 3.3.2
   resolution: "lit-html@npm:3.3.2"
   dependencies:
     "@types/trusted-types": "npm:^2.0.2"
   checksum: 10c0/0a6763875acd03dfc5d4483ea74ca4bfe5d71a90b05bfc484e8201721c8603db982760fd27566a69a834f21d34437f7c390e21cd4c6bff149ca7e3a46d3b217a
+  languageName: node
+  linkType: hard
+
+"lit-html@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "lit-html@npm:3.3.3"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.2"
+  checksum: 10c0/84e57314412ff385cc67fc482d26b77057370e2cfe3c6495cc45f692bdad840d5ed0519ddddcfae1d043bb098c66daa7e807593d5a21ac72094da14274497879
   languageName: node
   linkType: hard
 
@@ -8523,7 +8532,7 @@ __metadata:
     "@w5-ui/tokens": "workspace:*"
     "@w5-ui/wc": "workspace:*"
     lit: "npm:^3.2.1"
-    lit-html: "npm:^3.2.1"
+    lit-html: "npm:^3.3.3"
     react: "npm:^18.3.0"
     react-dom: "npm:^18.3.0"
     remark-gfm: "npm:^4.0.0"
