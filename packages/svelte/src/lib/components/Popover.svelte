@@ -11,6 +11,15 @@
     variant?: 'ghost' | 'primary';
     title?: string | undefined;
     placement?: 'bottom-start' | 'bottom-end' | 'bottom';
+    /**
+     * Controlled open state. Default uncontrolled (`$bindable(false)`):
+     * the trigger button toggles it and outside-clicks close it.
+     * Callers can `bind:open` to drive it programmatically (e.g. close
+     * the popover after a form submit) or to coordinate with other
+     * UI. When the trigger button is used, the bound variable updates
+     * automatically.
+     */
+    open?: boolean;
     children?: import('svelte').Snippet;
   }
 
@@ -19,6 +28,7 @@
     variant = 'ghost',
     title = undefined,
     placement = 'bottom-start',
+    open = $bindable(false),
     children,
   }: Props = $props();
 
@@ -28,7 +38,6 @@
   const FOCUSABLE =
     'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
-  let open = $state(false);
   let rootEl = $state<HTMLDivElement | undefined>(undefined);
   let triggerEl = $state<HTMLElement | undefined>(undefined);
   let panelEl = $state<HTMLDivElement | undefined>(undefined);
