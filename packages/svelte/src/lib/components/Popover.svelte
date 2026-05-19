@@ -20,6 +20,17 @@
      * automatically.
      */
     open?: boolean;
+    /**
+     * Optional custom trigger snippet. When provided, renders inline
+     * with the rest of the popover root and receives a `toggle` fn so
+     * the snippet can drive open/close. The default `label`-Button
+     * trigger renders only when no `trigger` snippet is passed.
+     *
+     * Use for icon-only triggers (eye-icon view-options menus, gear
+     * icons, etc.) where the upstream `<Button label>` chrome doesn't
+     * fit the surrounding UI.
+     */
+    trigger?: import('svelte').Snippet<[{ toggle: () => void; open: boolean }]>;
     children?: import('svelte').Snippet;
   }
 
@@ -29,6 +40,7 @@
     title = undefined,
     placement = 'bottom-start',
     open = $bindable(false),
+    trigger,
     children,
   }: Props = $props();
 
@@ -95,9 +107,13 @@
 </script>
 
 <div class="relative inline-block" bind:this={rootEl}>
-  <Button {variant} aria-label={label} onclick={toggle}>
-    {label}
-  </Button>
+  {#if trigger}
+    {@render trigger({ toggle, open })}
+  {:else}
+    <Button {variant} aria-label={label} onclick={toggle}>
+      {label}
+    </Button>
+  {/if}
   {#if open}
     <div
       bind:this={panelEl}
