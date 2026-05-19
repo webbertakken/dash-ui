@@ -47,6 +47,16 @@ describe('Topbar', () => {
     expect(container.querySelector('button[aria-haspopup="menu"]')).toBeNull()
   })
 
+  it('paints the active app tab with bg-bg-1 (merges into bg-bg-1 content)', () => {
+    const { getByRole } = render(Topbar, {
+      props: { siteName: 'Demo', activeApp: 'agents' },
+    })
+    const active = getByRole('button', { name: /Agents/ })
+    const cls = active.getAttribute('class') ?? ''
+    expect(cls, 'active tab should use bg-bg-1').toMatch(/(?:^|\s)bg-bg-1(?:\s|$)/)
+    expect(cls, 'active tab must not regress to bg-bg-2').not.toMatch(/(?:^|\s)bg-bg-2(?:\s|$)/)
+  })
+
   it('emits onappchange and updates bound activeApp on tab click', async () => {
     const onappchange = vi.fn()
     const { getByRole } = render(Topbar, {
