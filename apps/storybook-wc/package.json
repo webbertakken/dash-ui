@@ -11,7 +11,7 @@
     "@w5-ui/storybook-meta": "workspace:*",
     "@w5-ui/tokens": "workspace:*",
     "@w5-ui/wc": "workspace:*",
-    "lit": "^3.2.1",
+    "lit": "^3.3.3",
     "lit-html": "^3.3.3",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
