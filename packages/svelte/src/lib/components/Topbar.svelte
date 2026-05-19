@@ -82,7 +82,7 @@
   flips them to `#ffffff` / `#0a0a0b` / `#ececee`.
 -->
 <header
-  class="flex h-12 shrink-0 items-center gap-0 border-b border-border-1 bg-bg-page px-2"
+  class="flex h-12 shrink-0 items-center gap-0 border-b border-border-1 bg-bg-1 px-2"
 >
   {#if siteSwitchable}
     <button
