@@ -108,7 +108,7 @@
         type="button"
         class="flex h-12 w-16 cursor-pointer flex-col items-center justify-center py-1.5 transition-colors duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05
           {a.id === activeApp
-            ? 'bg-bg-1 text-text-1'
+            ? 'bg-bg-2 text-text-1'
             : 'bg-transparent text-text-3 hover:text-text-1'}"
         aria-current={a.id === activeApp ? 'page' : undefined}
         onclick={() => { activeApp = a.id; onappchange?.(a.id); }}
