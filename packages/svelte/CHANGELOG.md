@@ -1,5 +1,19 @@
 # @w5-ui/svelte
 
+## 0.3.0
+
+### Minor Changes
+
+- [#24](https://github.com/webbertakken/dash-ui/pull/24) [`16ea623`](https://github.com/webbertakken/dash-ui/commit/16ea6232315cf6aec6d81ee00e7a0ce8bdcba404) Thanks [@webbertakken](https://github.com/webbertakken)! - Motif-aware chrome: Topbar, Sidebar, Card, Pill, IconButton, Button, CopyButton, RowToggle, EmptyState, SegmentedControl, Input, Textarea, AccordionItem, KVTable, and Stat now resolve their surfaces and text via the motif tokens (`--bg-page`, `--depthBg-1`, `--text-1..4`, `--border-1..2`, `--row-hover`, `--row-active`) instead of hard-coded `#0a0a0b` / `[#141415](https://github.com/webbertakken/dash-ui/issues/141415)` / `text-white` / `text-neutral-04` literals. Dark motif renders pixel-identically to before; light motif now produces a proper light chrome (white surfaces, dark text, brand-blue active rows). The `dark:` Tailwind variant is used in two places (`Topbar` active-tab logo brightness, `SegmentedControl` active shadow) where the visual treatment genuinely differs per motif.
+
+  The Pill `neutral` variant now sits on `--row-active` (subtle brand-blue tint) so it stays visible on a white page bg, replacing the previous `bg-white/[0.06]` literal. Status-variant text colours switched from hand-tuned hex (`#5ddb9f`, `#f5c26b`, `#ff7b7b`, `#7fb6ff`) to the semantic `--status-{success|warning|danger|info}` tokens.
+
+  Breaking-ish (caught by tests): if a consumer asserted `bg-white` on a neutral Pill, update to `bg-row-active`.
+
+- [#32](https://github.com/webbertakken/dash-ui/pull/32) [`079f5a2`](https://github.com/webbertakken/dash-ui/commit/079f5a2b953822a01b48339ecc9c5286a836dbf6) Thanks [@webbertakken](https://github.com/webbertakken)! - Popover: `open` is now bindable, accepts a custom `trigger` snippet, and the panel is rendered with `position: fixed` and clamped inside the viewport on open + resize so it can no longer overflow when its trigger sits near a screen edge.
+
+  Topbar: visual polish on the header chrome and active tab treatment (flatter surfaces on `--bg-1`, no bottom border, no active underline). Pure styling, no API change.
+
 ## 0.2.1
 
 ### Patch Changes

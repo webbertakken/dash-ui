@@ -1,5 +1,12 @@
 # @w5-ui/wc
 
+## 0.3.0
+
+### Patch Changes
+
+- Updated dependencies [[`16ea623`](https://github.com/webbertakken/dash-ui/commit/16ea6232315cf6aec6d81ee00e7a0ce8bdcba404), [`079f5a2`](https://github.com/webbertakken/dash-ui/commit/079f5a2b953822a01b48339ecc9c5286a836dbf6)]:
+  - @w5-ui/svelte@0.3.0
+
 ## 0.2.1
 
 ### Patch Changes
