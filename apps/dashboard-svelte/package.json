@@ -20,7 +20,7 @@
     "@w5-ui/assets": "workspace:*",
     "@w5-ui/svelte": "workspace:*",
     "@w5-ui/tokens": "workspace:*",
-    "svelte": "^5.43.5"
+    "svelte": "^5.55.8"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
