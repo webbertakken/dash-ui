@@ -53,11 +53,35 @@
   let rootEl = $state<HTMLDivElement | undefined>(undefined);
   let triggerEl = $state<HTMLElement | undefined>(undefined);
   let panelEl = $state<HTMLDivElement | undefined>(undefined);
+  /** Horizontal correction applied to nudge the panel back inside the
+   *  viewport when its natural placement spills past either edge.
+   *  Recomputed every time the panel opens + on window resize. */
+  let viewportOffsetX = $state(0);
+
+  /** Measure the panel's bounding rect against the viewport and adjust
+   *  `viewportOffsetX` so it sits inside an 8-px gutter on either side.
+   *  Called after open and on resize. */
+  function clampToViewport() {
+    if (!panelEl) return;
+    viewportOffsetX = 0;
+    // Force layout flush so we measure the already-positioned panel
+    // before applying the offset.
+    const rect = panelEl.getBoundingClientRect();
+    const margin = 8;
+    const overflowLeft = margin - rect.left;
+    const overflowRight = rect.right - (window.innerWidth - margin);
+    if (overflowLeft > 0) {
+      viewportOffsetX = overflowLeft;
+    } else if (overflowRight > 0) {
+      viewportOffsetX = -overflowRight;
+    }
+  }
 
   async function toggle() {
     if (!open) {
       open = true;
       await tick();
+      clampToViewport();
       const first = panelEl?.querySelector<HTMLElement>(FOCUSABLE);
       (first ?? panelEl)?.focus();
     } else {
@@ -88,13 +112,19 @@
     if (open && !rootEl?.contains(e.target as Node)) open = false;
   }
 
+  function onResize() {
+    if (open) clampToViewport();
+  }
+
   onMount(() => {
     window.addEventListener('keydown', onKey);
+    window.addEventListener('resize', onResize);
     document.addEventListener('pointerdown', onPointer);
     triggerEl = rootEl?.querySelector<HTMLButtonElement>('button[aria-haspopup="dialog"]') ?? undefined;
   });
   onDestroy(() => {
     window.removeEventListener('keydown', onKey);
+    window.removeEventListener('resize', onResize);
     document.removeEventListener('pointerdown', onPointer);
   });
 
@@ -120,6 +150,7 @@
       role="dialog"
       aria-labelledby={title ? titleId : undefined}
       class="absolute z-[9100] min-w-[200px] max-w-[320px] rounded-[10px] border border-border-3 bg-bg-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none {PLACEMENT[placement]}"
+      style={viewportOffsetX === 0 ? '' : `margin-left: ${viewportOffsetX}px`}
       tabindex={-1}
     >
       {#if title}
