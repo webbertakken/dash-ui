@@ -75,7 +75,7 @@
     "oxlint": "^1.63.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "svelte": "^5.43.5",
+    "svelte": "^5.55.8",
     "svelte-migrate": "^1.10",
     "tailwindcss": "^4.3.0",
     "tsx": "^4.19.2",
