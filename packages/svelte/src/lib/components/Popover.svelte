@@ -53,35 +53,37 @@
   let rootEl = $state<HTMLDivElement | undefined>(undefined);
   let triggerEl = $state<HTMLElement | undefined>(undefined);
   let panelEl = $state<HTMLDivElement | undefined>(undefined);
-  /** Horizontal correction applied to nudge the panel back inside the
-   *  viewport when its natural placement spills past either edge.
-   *  Recomputed every time the panel opens + on window resize. */
-  let viewportOffsetX = $state(0);
+  /** Top + left in viewport coordinates. Computed from the trigger's
+   *  bounding rect every time the panel opens / window resizes /
+   *  the user scrolls. The panel uses `position: fixed` so we never
+   *  get clipped by an ancestor's `overflow: hidden`. */
+  let panelTop = $state(0);
+  let panelLeft = $state(0);
 
-  /** Measure the panel's bounding rect against the viewport and adjust
-   *  `viewportOffsetX` so it sits inside an 8-px gutter on either side.
-   *  Called after open and on resize. */
-  function clampToViewport() {
-    if (!panelEl) return;
-    viewportOffsetX = 0;
-    // Force layout flush so we measure the already-positioned panel
-    // before applying the offset.
-    const rect = panelEl.getBoundingClientRect();
+  /** Recompute the panel's viewport coords. The panel itself must be
+   *  rendered (size > 0) for accurate measurement; call after the
+   *  open + tick + paint. */
+  function recomputePosition() {
+    if (!triggerEl || !panelEl) return;
+    const tr = triggerEl.getBoundingClientRect();
     const margin = 8;
-    const overflowLeft = margin - rect.left;
-    const overflowRight = rect.right - (window.innerWidth - margin);
-    if (overflowLeft > 0) {
-      viewportOffsetX = overflowLeft;
-    } else if (overflowRight > 0) {
-      viewportOffsetX = -overflowRight;
-    }
+    const offset = 6; // gap between trigger bottom and panel top
+    const panelWidth = panelEl.offsetWidth;
+    let left: number;
+    if (placement === 'bottom-start') left = tr.left;
+    else if (placement === 'bottom-end') left = tr.right - panelWidth;
+    else left = tr.left + tr.width / 2 - panelWidth / 2; // 'bottom'
+    // Clamp into the visible viewport with the configured gutter.
+    left = Math.max(margin, Math.min(left, window.innerWidth - panelWidth - margin));
+    panelLeft = left;
+    panelTop = tr.bottom + offset;
   }
 
   async function toggle() {
     if (!open) {
       open = true;
       await tick();
-      clampToViewport();
+      recomputePosition();
       const first = panelEl?.querySelector<HTMLElement>(FOCUSABLE);
       (first ?? panelEl)?.focus();
     } else {
@@ -113,27 +115,30 @@
   }
 
   function onResize() {
-    if (open) clampToViewport();
+    if (open) recomputePosition();
+  }
+
+  function onScroll() {
+    if (open) recomputePosition();
   }
 
   onMount(() => {
     window.addEventListener('keydown', onKey);
     window.addEventListener('resize', onResize);
+    // Capture-phase scroll listener picks up scrolls in ANY ancestor
+    // (the sidebar's own overflow, the page itself, etc.) so the
+    // fixed-positioned panel tracks the trigger as it moves.
+    window.addEventListener('scroll', onScroll, true);
     document.addEventListener('pointerdown', onPointer);
-    triggerEl = rootEl?.querySelector<HTMLButtonElement>('button[aria-haspopup="dialog"]') ?? undefined;
+    triggerEl =
+      rootEl?.querySelector<HTMLButtonElement>('button[aria-haspopup="dialog"]') ?? undefined;
   });
   onDestroy(() => {
     window.removeEventListener('keydown', onKey);
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('scroll', onScroll, true);
     document.removeEventListener('pointerdown', onPointer);
   });
-
-  // Placement -> Tailwind utility classes for the floating panel.
-  const PLACEMENT: Record<NonNullable<Props['placement']>, string> = {
-    'bottom-start': 'top-[calc(100%+6px)] left-0',
-    'bottom-end': 'top-[calc(100%+6px)] right-0',
-    bottom: 'top-[calc(100%+6px)] left-1/2 -translate-x-1/2',
-  };
 </script>
 
 <div class="relative inline-block" bind:this={rootEl}>
@@ -145,12 +150,18 @@
     </Button>
   {/if}
   {#if open}
+    <!--
+      `position: fixed` so the panel can extend outside any ancestor
+      with `overflow: hidden` (the sidebar's session-list scroll, the
+      app's main grid columns, etc.). Coords are computed from the
+      trigger's `getBoundingClientRect()` in `recomputePosition`.
+    -->
     <div
       bind:this={panelEl}
       role="dialog"
       aria-labelledby={title ? titleId : undefined}
-      class="absolute z-[9100] min-w-[200px] max-w-[320px] rounded-[10px] border border-border-3 bg-bg-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none {PLACEMENT[placement]}"
-      style={viewportOffsetX === 0 ? '' : `margin-left: ${viewportOffsetX}px`}
+      class="fixed z-[9100] min-w-[200px] max-w-[320px] rounded-[10px] border border-border-3 bg-bg-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none"
+      style={`top: ${panelTop}px; left: ${panelLeft}px`}
       tabindex={-1}
     >
       {#if title}
