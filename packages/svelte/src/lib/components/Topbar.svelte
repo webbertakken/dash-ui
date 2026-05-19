@@ -106,10 +106,10 @@
     {#each apps as a (a.id)}
       <button
         type="button"
-        class="flex h-12 w-16 cursor-pointer flex-col items-center justify-center border-b-2 bg-transparent py-1.5 transition-colors duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05
+        class="flex h-12 w-16 cursor-pointer flex-col items-center justify-center border-b-2 py-1.5 transition-colors duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05
           {a.id === activeApp
-            ? 'border-b-brand-05 text-text-1'
-            : 'border-b-transparent text-text-3 hover:text-text-1'}"
+            ? 'border-b-brand-05 bg-bg-1 text-text-1'
+            : 'border-b-transparent bg-transparent text-text-3 hover:text-text-1'}"
         aria-current={a.id === activeApp ? 'page' : undefined}
         onclick={() => { activeApp = a.id; onappchange?.(a.id); }}
       >
