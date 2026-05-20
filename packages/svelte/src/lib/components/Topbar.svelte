@@ -44,6 +44,12 @@
     notificationCount?: number;
     /** Health colour of the site-name status ring. Defaults to 'ok' (green). */
     status?: TopbarStatus;
+    /** Optional URL of a square logo (or w5-ui `AppLogoKey`) to render in
+     *  place of the status dot, next to `siteName`. The status colour
+     *  becomes a thin ring AROUND the logo so the health signal is
+     *  preserved without claiming a dedicated dot. Falls back to the
+     *  classic status-dot layout when undefined. */
+    siteLogo?: AppLogo;
     /** When false, the site label renders as a static element instead of a
      * site-switcher dropdown trigger. Use for single-site dashboards. */
     siteSwitchable?: boolean;
@@ -61,6 +67,7 @@
     initials = 'MS',
     notificationCount = 1,
     status = 'ok',
+    siteLogo,
     siteSwitchable = true,
     actions,
     onappchange,
@@ -83,11 +90,23 @@
     danger: 'bg-status-danger',
     neutral: 'bg-status-neutral',
   };
+  /** Solid-colour ring drawn AROUND the site logo (when `siteLogo` is
+   *  set) so the health signal stays visible without the dot+halo
+   *  treatment. Pre-composed for the Tailwind static scanner. */
+  const LOGO_RING: Record<TopbarStatus, string> = {
+    ok: 'ring-status-success',
+    warn: 'ring-status-warning',
+    danger: 'ring-status-danger',
+    neutral: 'ring-status-neutral',
+  };
 
   let ringWrapClass = $derived(
     `inline-flex h-[18px] w-[18px] items-center justify-center rounded-full ${RING_BG[status]}`,
   );
   let ringDotClass = $derived(`h-2 w-2 rounded-full ${RING_DOT[status]}`);
+  let logoRingClass = $derived(
+    `inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded-full ring-2 ring-inset ${LOGO_RING[status]}`,
+  );
 </script>
 
 <!--
@@ -106,14 +125,31 @@
       class="flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
       aria-label="Switch site: {siteName}"
       aria-haspopup="menu"
+      title={`${siteName} — status: ${status}`}
     >
-      <span class={ringWrapClass}><span class={ringDotClass}></span></span>
+      {#if siteLogo !== undefined}
+        <span class={logoRingClass} aria-hidden="true">
+          <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+        </span>
+      {:else}
+        <span class={ringWrapClass}><span class={ringDotClass}></span></span>
+      {/if}
       <span class="text-13 font-medium text-text-1" aria-hidden="true">{siteName}</span>
       <CaretIcon class="h-3.5 w-3.5 text-text-3" />
     </button>
   {:else}
-    <div class="flex items-center gap-2 px-2.5 py-1.5" role="presentation">
-      <span class={ringWrapClass}><span class={ringDotClass}></span></span>
+    <div
+      class="flex items-center gap-2 px-2.5 py-1.5"
+      role="presentation"
+      title={`${siteName} — status: ${status}`}
+    >
+      {#if siteLogo !== undefined}
+        <span class={logoRingClass} aria-hidden="true">
+          <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+        </span>
+      {:else}
+        <span class={ringWrapClass}><span class={ringDotClass}></span></span>
+      {/if}
       <span class="text-13 font-medium text-text-1">{siteName}</span>
     </div>
   {/if}
