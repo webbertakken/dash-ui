@@ -1,11 +1,27 @@
 <script module lang="ts">
+  import type { AppLogoKey } from '@w5-ui/assets';
+
+  /** Logo identifier. Either a built-in `AppLogoKey` (resolved via
+   *  `@w5-ui/assets`'s `appLogos` map) or a raw URL string — use the
+   *  latter when the consuming app wants to brand an entry with its
+   *  own image without having to upstream a new asset into the
+   *  design system. */
+  export type AppLogo = AppLogoKey | (string & {})
   export interface AppDef { id: string; label: string; logo: AppLogo }
   export type TopbarStatus = 'ok' | 'warn' | 'danger' | 'neutral';
 </script>
 
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { appLogos, type AppLogoKey as AppLogo } from '@w5-ui/assets';
+  import { appLogos, type AppLogoKey } from '@w5-ui/assets';
+
+  /** Resolve an `AppLogo` to an `<img src>` URL. Known keys go
+   *  through the bundled `appLogos` map; anything else is treated as
+   *  a URL the consumer supplied directly. */
+  function resolveLogo(logo: string): string {
+    if (logo in appLogos) return appLogos[logo as AppLogoKey]
+    return logo
+  }
   import IconButton from './IconButton.svelte';
   import Avatar from './Avatar.svelte';
   import CaretIcon from '../icons/CaretIcon.svelte';
@@ -114,7 +130,7 @@
         onclick={() => { activeApp = a.id; onappchange?.(a.id); }}
       >
         <img
-          src={appLogos[a.logo]}
+          src={resolveLogo(a.logo)}
           alt=""
           width="24"
           height="24"
