@@ -141,7 +141,7 @@
   });
 </script>
 
-<div class="relative inline-block" bind:this={rootEl}>
+<div class="relative inline-flex items-center" bind:this={rootEl}>
   {#if trigger}
     {@render trigger({ toggle, open })}
   {:else}
