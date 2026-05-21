@@ -367,12 +367,35 @@ describe('Popover (Tailwind)', () => {
   })
 
   it('opens on click + applies the listbox-style panel classes', async () => {
-    const { getByRole, container } = render(Popover, { props: { label: 'Open' } })
+    const { getByRole } = render(Popover, { props: { label: 'Open' } })
     await fireEvent.click(getByRole('button', { name: /Open/ }))
-    const panel = container.querySelector('[role="dialog"]') as HTMLElement
+    // The panel is portalled to document.body, so look it up there
+    // rather than inside the testing-library `container`.
+    const panel = document.body.querySelector('[role="dialog"]') as HTMLElement
     expect(panel).toBeTruthy()
     expect(panel.className).not.toMatch(/popover-panel/)
     expect(panel.className).toMatch(/rounded/)
+  })
+
+  it('renders the panel inside document.body (portalled)', async () => {
+    const { getByRole, container } = render(Popover, { props: { label: 'Open' } })
+    await fireEvent.click(getByRole('button', { name: /Open/ }))
+    const panel = document.body.querySelector('[role="dialog"]') as HTMLElement
+    expect(panel).toBeTruthy()
+    expect(container.contains(panel)).toBe(false)
+    expect(panel.parentElement).toBe(document.body)
+  })
+
+  it('keeps the popover open when clicking content INSIDE the portalled panel', async () => {
+    const { getByRole } = render(Popover, { props: { label: 'Open' } })
+    await fireEvent.click(getByRole('button', { name: /Open/ }))
+    const panel = document.body.querySelector('[role="dialog"]') as HTMLElement
+    expect(panel).toBeTruthy()
+    // Simulate a pointerdown on the panel — the click-outside
+    // listener must NOT close the popover. Use a plain Event so the
+    // test passes under jsdom (no PointerEvent constructor).
+    panel.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    expect(document.body.querySelector('[role="dialog"]')).toBeTruthy()
   })
 })
 
