@@ -1,5 +1,21 @@
 # @w5-ui/svelte
 
+## 0.4.0
+
+### Minor Changes
+
+- [#35](https://github.com/webbertakken/dash-ui/pull/35) [`d9d5558`](https://github.com/webbertakken/dash-ui/commit/d9d5558ee05e29ff4e6e10a1fb5ae42859ed049d) Thanks [@webbertakken](https://github.com/webbertakken)! - Add a `portal` Svelte action and wire it into `Popover`: the panel is now rendered inside `document.body` instead of as an inline sibling of the trigger. This makes the popover immune to ancestor `overflow: hidden`, `transform`-based containing blocks, and stacking-context traps — the panel's `position: fixed` + `z-index` always escape to the viewport.
+
+  Click-outside detection now treats the portalled panel as "inside" so clicks within the panel no longer dismiss it.
+
+  The `portal` action is also exported from the package root for use by consumer floating-UI primitives that want the same behaviour.
+
+- [#35](https://github.com/webbertakken/dash-ui/pull/35) [`d9d5558`](https://github.com/webbertakken/dash-ui/commit/d9d5558ee05e29ff4e6e10a1fb5ae42859ed049d) Thanks [@webbertakken](https://github.com/webbertakken)! - `Topbar` accepts an optional `siteLogo: AppLogo` prop. When set, the site-name area renders a 24x24 logo image in place of the classic status dot + halo; the status colour becomes a thin `ring-2 ring-inset ring-status-*` AROUND the logo so the health signal stays visible. The dot + halo layout still applies as a fallback when `siteLogo` is undefined, so existing consumers keep their look without changes.
+
+  A `title` attribute on the site-name wrapper exposes the textual status (e.g. `"Spinner — status: ok"`) for hover-tooltip provenance.
+
+- [#35](https://github.com/webbertakken/dash-ui/pull/35) [`d9d5558`](https://github.com/webbertakken/dash-ui/commit/d9d5558ee05e29ff4e6e10a1fb5ae42859ed049d) Thanks [@webbertakken](https://github.com/webbertakken)! - `Topbar` widens `AppLogo` from `AppLogoKey` to `AppLogoKey | (string & {})` so consumers can pass a raw image URL as `AppDef.logo` and brand an app entry with their own glyph without upstreaming an asset into `@w5-ui/assets`. Known keys still resolve through the bundled `appLogos` map; unknown values are used directly as the `<img src>`. The `(string & {})` trick keeps autocomplete working for the known keys while accepting any other string.
+
 ## 0.3.0
 
 ### Minor Changes
