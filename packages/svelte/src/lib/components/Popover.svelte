@@ -5,6 +5,7 @@
 <script lang="ts">
   import { onMount, onDestroy, tick } from 'svelte';
   import Button from './Button.svelte';
+  import { portal } from '../actions/portal.ts';
 
   interface Props {
     label: string;
@@ -111,7 +112,14 @@
   }
 
   function onPointer(e: PointerEvent) {
-    if (open && !rootEl?.contains(e.target as Node)) open = false;
+    if (!open) return;
+    const target = e.target as Node;
+    // The panel is portalled to <body> so it's no longer a descendant
+    // of rootEl. Check both so clicks INSIDE the panel don't count as
+    // outside-clicks and immediately close the popover.
+    if (rootEl?.contains(target)) return;
+    if (panelEl?.contains(target)) return;
+    open = false;
   }
 
   function onResize() {
@@ -158,6 +166,7 @@
     -->
     <div
       bind:this={panelEl}
+      use:portal
       role="dialog"
       aria-labelledby={title ? titleId : undefined}
       class="fixed z-[9100] min-w-[200px] max-w-[320px] rounded-[10px] border border-border-3 bg-bg-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none"

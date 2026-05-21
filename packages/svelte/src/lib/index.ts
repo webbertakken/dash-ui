@@ -308,3 +308,5 @@ export { default as H3 } from './components/H3.svelte'
 export { default as H4 } from './components/H4.svelte'
 
 export * from './icons.js'
+
+export { portal } from './actions/portal.ts'
