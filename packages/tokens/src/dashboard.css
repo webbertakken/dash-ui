@@ -3244,6 +3244,13 @@ tr:hover .action-menu-trigger,
 .ctx-menu-item[data-danger][data-active='true'] {
   background: rgba(255, 50, 50, 0.1);
 }
+.ctx-menu-item[data-warning] {
+  color: var(--status-warning, #f5a623);
+}
+.ctx-menu-item[data-warning]:hover,
+.ctx-menu-item[data-warning][data-active='true'] {
+  background: rgba(245, 166, 35, 0.1);
+}
 .ctx-menu-item[aria-disabled='true'] {
   opacity: 0.4;
   cursor: not-allowed;

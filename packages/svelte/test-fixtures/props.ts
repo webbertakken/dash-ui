@@ -383,6 +383,7 @@ export const BUNDLES: Record<string, Bundle[]> = {
         items: [
           { id: 'a', label: 'A' },
           { id: 'b', label: 'B', danger: true, disabled: true },
+          { id: 'c', label: 'Heads up', warning: true },
         ],
       },
     },
