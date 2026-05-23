@@ -4,7 +4,10 @@ import type { KeyboardEvent } from 'react'
 export interface ContextMenuItem {
   id: string
   label: string
+  /** Red tone (destructive). Mutually exclusive with `warning`. */
   danger?: boolean
+  /** Yellow tone (caution / heads-up). Mutually exclusive with `danger`. */
+  warning?: boolean
   disabled?: boolean
 }
 
@@ -111,6 +114,7 @@ export function ContextMenu({
             aria-disabled={entry.disabled || undefined}
             data-active={ai === activeIdx ? 'true' : undefined}
             data-danger={entry.danger || undefined}
+            data-warning={entry.warning || undefined}
             className="ctx-menu-item"
             onMouseEnter={() => setActiveIdx(ai)}
             onMouseDown={(e) => {

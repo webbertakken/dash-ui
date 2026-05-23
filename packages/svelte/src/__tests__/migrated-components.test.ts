@@ -429,6 +429,32 @@ describe('ContextMenu (Tailwind)', () => {
     expect(menu.className).not.toMatch(/(^|\s)ctx-menu(\s|$)/)
     expect(menu.className).toMatch(/fixed/)
   })
+
+  it('marks an item as warning via data-warning + status-warning text class', () => {
+    const { container } = render(ContextMenu, {
+      props: {
+        open: true,
+        items: [
+          { id: 'plain', label: 'Plain' },
+          { id: 'warn', label: 'Heads up', warning: true },
+        ],
+      },
+    })
+    const items = container.querySelectorAll('[role="menuitem"]')
+    expect(items).toHaveLength(2)
+    expect(items[0].getAttribute('data-warning')).toBeNull()
+    expect(items[1].getAttribute('data-warning')).toBe('true')
+    expect((items[1] as HTMLElement).className).toMatch(/data-\[warning=true\]:text-status-warning/)
+  })
+
+  it('keeps warning + danger mutually exclusive markers when only warning is set', () => {
+    const { container } = render(ContextMenu, {
+      props: { open: true, items: [{ id: 'warn', label: 'Heads up', warning: true }] },
+    })
+    const item = container.querySelector('[role="menuitem"]') as HTMLElement
+    expect(item.getAttribute('data-warning')).toBe('true')
+    expect(item.getAttribute('data-danger')).toBeNull()
+  })
 })
 
 describe('Menubar (Tailwind)', () => {
