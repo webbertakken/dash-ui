@@ -2,6 +2,7 @@
 // Importing this module registers every uni-* custom element on the page.
 
 import './elements/Accordion.wc.svelte'
+import './elements/AccordionItem.wc.svelte'
 import './elements/ActionMenu.wc.svelte'
 import './elements/ActivityFeed.wc.svelte'
 import './elements/Alert.wc.svelte'
@@ -204,6 +205,7 @@ import './elements/WordCloud.wc.svelte'
 
 export const REGISTERED_TAGS = [
   'uni-accordion',
+  'uni-accordion-item',
   'uni-action-menu',
   'uni-activity-feed',
   'uni-alert',

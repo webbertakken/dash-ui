@@ -4,6 +4,10 @@
     "tag": "uni-accordion"
   },
   {
+    "name": "AccordionItem",
+    "tag": "uni-accordion-item"
+  },
+  {
     "name": "ActionMenu",
     "tag": "uni-action-menu"
   },

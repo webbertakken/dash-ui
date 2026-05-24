@@ -25,12 +25,21 @@ const INDEX_PATH = path.join(REPO_ROOT, 'packages/wc/src/index.ts')
 const MANIFEST_PATH = path.join(REPO_ROOT, 'packages/wc/src/manifest.json')
 
 // Components we deliberately don't ship as custom elements.
+//
+// `AccordionItem` USED to live here on the assumption that it only makes
+// sense inside an `<Accordion>`. In practice each AccordionItem manages
+// its own open/close state and its props (`title`, `defaultOpen`) are
+// HTML-attribute friendly, so composing `<uni-accordion-item>` inside
+// `<uni-accordion>` works fine and matches the Svelte/React APIs.
+// Parity test in `src/__tests__/parity.test.ts` keeps us honest.
+//
+// `TreeItem` stays skipped: it's a recursive renderer that takes a Set
+// (`expanded`) and a node object as props — neither round-trip through
+// HTML attributes, and the Svelte index doesn't export it.
 const SKIP = new Set<string>([
-  // Sub-components that only make sense inside a parent
-  'AccordionItem',
   'TreeItem',
-  'CenterNode',
-  // Components whose API uses callback children / render props heavily
+  // CenterNode used to be skipped pre-emptively but the component never
+  // landed; remove if/when it ships.
 ])
 
 function kebab(name: string): string {

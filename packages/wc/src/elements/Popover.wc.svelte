@@ -5,10 +5,11 @@
     label = undefined,
     variant = 'ghost',
     title = undefined,
-    placement = 'bottom-start'
+    placement = 'bottom-start',
+    open = false
   } = $props();
 </script>
 
-<Original {label} {variant} {title} {placement}>
+<Original {label} {variant} {title} {placement} {open}>
   <slot />
 </Original>
