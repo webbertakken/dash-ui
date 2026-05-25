@@ -6,6 +6,7 @@
   import { onMount, onDestroy, tick } from 'svelte';
   import Button from './Button.svelte';
   import { portal } from '../actions/portal.ts';
+  import { computePanelPosition } from './popover-position.ts';
 
   interface Props {
     label: string;
@@ -67,17 +68,28 @@
   function recomputePosition() {
     if (!triggerEl || !panelEl) return;
     const tr = triggerEl.getBoundingClientRect();
-    const margin = 8;
-    const offset = 6; // gap between trigger bottom and panel top
-    const panelWidth = panelEl.offsetWidth;
-    let left: number;
-    if (placement === 'bottom-start') left = tr.left;
-    else if (placement === 'bottom-end') left = tr.right - panelWidth;
-    else left = tr.left + tr.width / 2 - panelWidth / 2; // 'bottom'
-    // Clamp into the visible viewport with the configured gutter.
-    left = Math.max(margin, Math.min(left, window.innerWidth - panelWidth - margin));
+    // Delegate the actual math to a pure helper so the auto-flip
+    // rule (panel goes above the trigger when below would overflow
+    // AND above has more room) is unit-testable without mounting
+    // the component. See `popover-position.ts`.
+    const { top, left } = computePanelPosition({
+      triggerRect: {
+        top: tr.top,
+        bottom: tr.bottom,
+        left: tr.left,
+        right: tr.right,
+        width: tr.width,
+      },
+      panelWidth: panelEl.offsetWidth,
+      panelHeight: panelEl.offsetHeight,
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
+      placement,
+      margin: 8,
+      offset: 6,
+    });
+    panelTop = top;
     panelLeft = left;
-    panelTop = tr.bottom + offset;
   }
 
   async function toggle() {
