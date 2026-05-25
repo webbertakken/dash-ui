@@ -6283,3 +6283,604 @@ tr:hover .action-menu-trigger,
     transition: none;
   }
 }
+
+/* =====================================================================
+ * React-build component styles.
+ *
+ * The Svelte siblings of these components embed visual rules as inline
+ * Tailwind utilities; the legacy SPA's Tailwind compiler picks them up
+ * at build time. The React siblings ship plain class hooks (`.modal`,
+ * `.tabs`, `.field`, ...) and rely on rules in this file. This section
+ * is the audited, parity-tested set of those rules. Each block matches
+ * the visual intent of the corresponding `.svelte` file 1:1.
+ *
+ * Adding a new React component? Add its markup classes here AND extend
+ * the React `style-parity.test.ts` so the gate fails when a class is
+ * shipped without a matching rule.
+ * ===================================================================== */
+
+/* ---- Alert (Alert.tsx) ----------------------------------------------- */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--status-info);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  background: var(--status-info-bg);
+  color: var(--status-info);
+}
+.alert-success {
+  border-left-color: var(--status-success);
+  background: var(--status-success-bg);
+  color: var(--status-success);
+}
+.alert-warn {
+  border-left-color: var(--status-warning);
+  background: var(--status-warning-bg);
+  color: var(--status-warning);
+}
+.alert-danger {
+  border-left-color: var(--status-danger);
+  background: var(--status-danger-bg);
+  color: var(--status-danger);
+}
+.alert-info {
+  border-left-color: var(--status-info);
+  background: var(--status-info-bg);
+  color: var(--status-info);
+}
+.alert-body {
+  flex: 1;
+}
+.alert-dismiss {
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* ---- Modal (Modal.tsx) ----------------------------------------------- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(16px);
+}
+.backdrop.show {
+  display: flex;
+}
+.modal {
+  width: 520px;
+  max-width: 90vw;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border-2);
+  background: var(--bg-1);
+  box-shadow: var(--shadow-modal);
+}
+.modal-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-1);
+  padding: 14px 20px;
+}
+.modal-h h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.modal-b {
+  padding: 14px 20px;
+}
+
+/* ---- Drawer (Drawer.tsx) --------------------------------------------- */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+}
+.drawer-overlay.show {
+  display: block;
+}
+.drawer-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 61;
+  display: flex;
+  height: 100%;
+  width: 380px;
+  max-width: 90vw;
+  flex-direction: column;
+  border-left: 1px solid var(--border-2);
+  background: var(--bg-1);
+  box-shadow: -24px 0 64px rgba(0, 0, 0, 0.6);
+  transform: translateX(100%);
+  transition: transform 200ms var(--ease-out);
+}
+.drawer-panel.show {
+  transform: translateX(0);
+}
+.drawer-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-1);
+  padding: 14px 20px;
+  flex-shrink: 0;
+}
+.drawer-h h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.drawer-b {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 20px;
+}
+
+/* ---- Tabs (Tabs.tsx) ------------------------------------------------- */
+.tabs {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border-1);
+  padding: 0 24px;
+}
+.tabs .tab {
+  margin-bottom: -1px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  padding: 11px 14px;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--text-3);
+  transition: color 100ms var(--ease-out);
+}
+.tabs .tab:hover {
+  color: var(--text-2);
+}
+.tabs .tab.active {
+  color: var(--text-1);
+  border-bottom-color: var(--brand-05);
+}
+.tabs .tab:focus-visible {
+  outline: 2px solid var(--brand-05);
+  outline-offset: -2px;
+  border-radius: 2px;
+}
+.tabs .tab .badge {
+  margin-left: 6px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-4);
+}
+.tabpanel {
+  padding: 16px 0;
+}
+
+/* ---- Tooltip (Tooltip.tsx) ------------------------------------------- */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+.tooltip-trigger {
+  display: inline-flex;
+}
+.tooltip-content {
+  pointer-events: none;
+  position: absolute;
+  z-index: 9999;
+  white-space: nowrap;
+  border-radius: 4px;
+  border: 1px solid var(--border-1);
+  background: var(--bg-2);
+  padding: 4px 8px;
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--text-2);
+  opacity: 0;
+  transition: opacity 100ms var(--ease-out);
+}
+.tooltip-wrapper:hover .tooltip-content,
+.tooltip-wrapper:focus-within .tooltip-content {
+  opacity: 1;
+}
+.tooltip-top .tooltip-content {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+}
+.tooltip-bottom .tooltip-content {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 6px;
+}
+.tooltip-left .tooltip-content {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 6px;
+}
+.tooltip-right .tooltip-content {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 6px;
+}
+
+/* ---- EmptyState (EmptyState.tsx) ------------------------------------- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 48px 24px;
+  text-align: center;
+}
+.empty-state__icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  color: var(--border-3);
+}
+.empty-state__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-3);
+}
+.empty-state__desc {
+  margin: 0;
+  max-width: 280px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-4);
+}
+.empty-state__action {
+  margin-top: 6px;
+}
+
+/* ---- Field (Input.tsx -> Field) -------------------------------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.field > label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-3);
+}
+.field .req {
+  color: var(--status-danger);
+}
+.field-hint {
+  font-size: 12px;
+  color: var(--text-3);
+}
+.field-error {
+  font-size: 12px;
+  color: var(--status-danger);
+}
+
+/* ---- ProgressBar (ProgressBar.tsx) ----------------------------------- */
+.pb {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pb-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.pb-label {
+  color: var(--text-2);
+}
+.pb-value {
+  font-family: var(--font-mono);
+  color: var(--text-3);
+}
+.pb-track {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--row-active);
+}
+.pb-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--brand-05);
+  transition: width 300ms var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pb-fill {
+    transition: none;
+  }
+}
+
+/* ---- Spoiler (Spoiler.tsx) ------------------------------------------- */
+.spoiler {
+  display: flex;
+  flex-direction: column;
+}
+.spoiler-outer {
+  position: relative;
+}
+
+/* ---- Kbd (Kbd.tsx) --------------------------------------------------- */
+.kbd {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 1px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+}
+.kbd__segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.kbd__plus {
+  padding: 0 1px;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  line-height: 1;
+  color: var(--text-4);
+}
+.kbd__key {
+  display: inline-flex;
+  min-width: 18px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px solid var(--border-3);
+  border-bottom-width: 2px;
+  background: var(--row-active);
+  padding: 2px 6px;
+  font: inherit;
+  color: var(--text-3);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ---- ExpandableRow (ExpandableRow.tsx) ------------------------------- */
+.exp-tbody {
+  /* Container for an expandable-row pair (trigger row + detail row).
+     No layout rules — the inner `.exp-row` / `.exp-detail` handle
+     visual structure. */
+}
+.exp-row {
+  /* Trigger row. Visual structure handled by `.exp-toggle-cell` and
+     the tds inside; this hook is for userland overrides only. */
+}
+
+/* ---- Accordion (Accordion.tsx) --------------------------------------- */
+/* The Accordion uses both `accordion-content` (legacy class shipped
+   pre-React) and `accordion-panel` (used by `Accordion.tsx`). Alias
+   the new name to the existing rule so both render identically. */
+.accordion-panel {
+  padding: 0 0 12px;
+}
+
+/* ---- AvatarGroup (AvatarGroup.tsx) ----------------------------------- */
+.avatar-group {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+.avatar-group-item {
+  display: contents;
+}
+
+/* ---- JsonViewer (JsonViewer.tsx) ------------------------------------- */
+.jv-close {
+  /* The closing bracket span emitted by the JsonViewer recursion;
+     visual style cascades from the wrapper, no rules needed here. */
+}
+
+/* ---- Standalone .dot ------------------------------------------------- */
+/* Many primitives use `<span class="dot" />` outside the `.pill` scope
+   (StatusIndicator, Signal, etc). Default to a 6px circle whose colour
+   inherits from the surrounding text token. */
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+/* ---- Pill (Pill.tsx) -------------------------------------------------
+   Note: the Svelte sibling embeds the entire pill as Tailwind utilities
+   so this set of rules only feeds the React + WC builds. Mirror the
+   `dashboard-css` colour math: 14% tinted background, semantic
+   foreground colour, 6px round dot. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
+.pill-success {
+  background: var(--status-success-bg);
+  color: var(--status-success);
+}
+.pill-warn {
+  background: var(--status-warning-bg);
+  color: var(--status-warning);
+}
+.pill-danger {
+  background: var(--status-danger-bg);
+  color: var(--status-danger);
+}
+.pill-info {
+  background: var(--status-info-bg);
+  color: var(--status-info);
+}
+.pill-neutral {
+  background: rgba(110, 112, 121, 0.16);
+  color: var(--text-2);
+}
+.pill-neutral .dot {
+  background: var(--status-neutral);
+}
+
+/* ---- Avatar status + overflow (Avatar.tsx, AvatarGroup.tsx) --------- */
+.avatar-status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 2px solid var(--bg-page);
+}
+.avatar-status-online {
+  background: var(--status-success);
+}
+.avatar-status-offline {
+  background: var(--status-neutral);
+}
+.avatar-status-away {
+  background: var(--status-warning);
+}
+.avatar-overflow {
+  /* `+N` chip rendered after the last avatar in a clipped AvatarGroup.
+     The inherited `.avatar` rules handle the chrome; this hook is
+     reserved for userland overrides (e.g. changing the chip colour). */
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Breadcrumb (Breadcrumb.tsx) ------------------------------------ */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-3);
+}
+.breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.breadcrumb__link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--text-2);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+}
+.breadcrumb__link:hover {
+  color: var(--brand-05);
+}
+.breadcrumb__link:focus-visible {
+  outline: 2px solid var(--brand-05);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.breadcrumb__current {
+  color: var(--text-1);
+  font-weight: 500;
+}
+.breadcrumb__sep {
+  color: var(--text-4);
+}
+
+/* ---- Spinner (Spinner.tsx) ------------------------------------------ */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-2);
+  border-top-color: var(--brand-05);
+  border-radius: 999px;
+  animation: dash-ui-spin 650ms linear infinite;
+}
+.spinner.sm {
+  width: 12px;
+  height: 12px;
+  border-width: 2px;
+}
+.spinner.lg {
+  width: 22px;
+  height: 22px;
+  border-width: 3px;
+}
+@keyframes dash-ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
+
+/* ---- Textarea (Textarea.tsx) ---------------------------------------- */
+.input.textarea,
+textarea.textarea {
+  min-height: 80px;
+  padding: 8px 10px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* ---- SkipLink (SkipLink.tsx) ---------------------------------------- */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  z-index: 999;
+  padding: 6px 10px;
+  background: var(--brand-05);
+  color: var(--neutral-00);
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 8px;
+}

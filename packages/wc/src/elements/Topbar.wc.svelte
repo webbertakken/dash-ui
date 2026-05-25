@@ -8,10 +8,11 @@
     initials = 'MS',
     notificationCount = 1,
     status = 'ok',
+    siteLogo = undefined,
     siteSwitchable = true
   } = $props();
 </script>
 
-<Original {siteName} {activeApp} {apps} {initials} {notificationCount} {status} {siteSwitchable}>
+<Original {siteName} {activeApp} {apps} {initials} {notificationCount} {status} {siteLogo} {siteSwitchable}>
   <slot />
 </Original>
