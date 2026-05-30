@@ -2,18 +2,32 @@ import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { CloseIcon } from '../icons.js'
 import { IconButton } from './Button.js'
 
+export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+
 export interface ModalProps {
   open: boolean
   title: string
+  /** Panel width. `md` (520px) is the default; larger sizes suit
+   *  data-dense or editor-style dialogs. Always capped at 90vw. */
+  size?: ModalSize
   onClose: () => void
   children?: ReactNode
   footer?: ReactNode
 }
 
+/** Width modifier appended to `.modal`; `md` is the base rule. */
+const MODAL_SIZE: Record<ModalSize, string> = {
+  sm: 'modal--sm',
+  md: '',
+  lg: 'modal--lg',
+  xl: 'modal--xl',
+  '2xl': 'modal--2xl',
+}
+
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
 
-export function Modal({ open, title, onClose, children, footer }: ModalProps) {
+export function Modal({ open, title, size = 'md', onClose, children, footer }: ModalProps) {
   const titleId = useId()
   const modalRef = useRef<HTMLDivElement>(null)
   const downOnBackdropRef = useRef(false)
@@ -67,7 +81,7 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
     >
       <div
         ref={modalRef}
-        className="modal"
+        className={`modal ${MODAL_SIZE[size]}`.trim()}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
