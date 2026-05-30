@@ -1,3 +1,7 @@
+<script module lang="ts">
+  export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+</script>
+
 <script lang="ts">
   import { tick } from 'svelte';
   import IconButton from './IconButton.svelte';
@@ -5,6 +9,9 @@
   interface Props {
     open?: boolean;
     title: string;
+    /** Panel width. `md` (520px) is the default; larger sizes suit
+     *  data-dense or editor-style dialogs. Always capped at 90vw. */
+    size?: ModalSize;
     children?: import('svelte').Snippet;
     footer?: import('svelte').Snippet;
   }
@@ -12,9 +19,21 @@
   let {
     open = $bindable(false),
     title,
+    size = 'md',
     children,
     footer
   }: Props = $props();
+
+  // Pre-composed width utilities so Tailwind's static scanner keeps
+  // each class in the build. The React sibling expresses the same
+  // scale via `.modal--*` rules in dashboard.css.
+  const SIZE: Record<ModalSize, string> = {
+    sm: 'w-[400px]',
+    md: 'w-[520px]',
+    lg: 'w-[720px]',
+    xl: 'w-[960px]',
+    '2xl': 'w-[1200px]'
+  };
   const titleId = `modal-title-${Math.random().toString(36).slice(2, 9)}`;
   const FOCUSABLE =
     'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
@@ -90,7 +109,7 @@
 >
   <div
     bind:this={modalEl}
-    class="w-[520px] max-w-[90vw] overflow-hidden rounded-xl border border-border-2 bg-bg-1 shadow-modal"
+    class="{SIZE[size]} max-w-[90vw] overflow-hidden rounded-xl border border-border-2 bg-bg-1 shadow-modal"
     role="dialog"
     aria-modal="true"
     aria-labelledby={titleId}

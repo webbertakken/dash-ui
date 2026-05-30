@@ -1261,6 +1261,14 @@ export const FIXTURES: Record<string, Variant[]> = {
     },
     { name: 'closed', node: <U.Modal open={false} title="t" onClose={noop} /> },
     { name: 'open empty', node: <U.Modal open title="t" onClose={noop} /> },
+    {
+      name: 'large',
+      node: (
+        <U.Modal open title="t" size="xl" onClose={noop}>
+          body
+        </U.Modal>
+      ),
+    },
   ],
   MultiSelect: [
     {

@@ -6365,6 +6365,20 @@ tr:hover .action-menu-trigger,
   background: var(--bg-1);
   box-shadow: var(--shadow-modal);
 }
+/* Width scale (mirrors the Svelte SIZE map). `md` is the base rule
+ * above; modifiers below widen the panel, still clamped to 90vw. */
+.modal--sm {
+  width: 400px;
+}
+.modal--lg {
+  width: 720px;
+}
+.modal--xl {
+  width: 960px;
+}
+.modal--2xl {
+  width: 1200px;
+}
 .modal-h {
   display: flex;
   align-items: center;

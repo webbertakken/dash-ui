@@ -3,10 +3,11 @@
   import Original from '@w5-ui/svelte/components/Modal.svelte';
   let {
     open = false,
-    title = undefined
+    title = undefined,
+    size = 'md'
   } = $props();
 </script>
 
-<Original {open} {title}>
+<Original {open} {title} {size}>
   <slot />
 </Original>
