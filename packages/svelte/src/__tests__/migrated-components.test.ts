@@ -455,6 +455,23 @@ describe('ContextMenu (Tailwind)', () => {
     expect(item.getAttribute('data-warning')).toBe('true')
     expect(item.getAttribute('data-danger')).toBeNull()
   })
+
+  it('marks an item as success via data-success + status-success text class', () => {
+    const { container } = render(ContextMenu, {
+      props: {
+        open: true,
+        items: [
+          { id: 'plain', label: 'Plain' },
+          { id: 'ok', label: 'Stop focus', success: true },
+        ],
+      },
+    })
+    const items = container.querySelectorAll('[role="menuitem"]')
+    expect(items).toHaveLength(2)
+    expect(items[0].getAttribute('data-success')).toBeNull()
+    expect(items[1].getAttribute('data-success')).toBe('true')
+    expect((items[1] as HTMLElement).className).toMatch(/data-\[success=true\]:text-status-success/)
+  })
 })
 
 describe('Menubar (Tailwind)', () => {

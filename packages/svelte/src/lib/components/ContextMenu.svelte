@@ -6,6 +6,8 @@
     danger?: boolean;
     /** Yellow tone (caution / heads-up). Mutually exclusive with `danger`. */
     warning?: boolean;
+    /** Green tone (active / positive state). Mutually exclusive with `danger` + `warning`. */
+    success?: boolean;
     disabled?: boolean;
   }
   export type ContextMenuEntry = ContextMenuItem | { separator: true };
@@ -114,7 +116,8 @@
           data-active={actionIndex(entry) === activeIdx ? 'true' : undefined}
           data-danger={entry.danger || undefined}
           data-warning={entry.warning || undefined}
-          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-3 py-1.5 text-13 text-text-2 outline-none hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 data-[danger=true]:text-status-danger data-[danger=true]:hover:bg-status-danger/10 data-[warning=true]:text-status-warning data-[warning=true]:hover:bg-status-warning/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
+          data-success={entry.success || undefined}
+          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-3 py-1.5 text-13 text-text-2 outline-none hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 data-[danger=true]:text-status-danger data-[danger=true]:hover:bg-status-danger/10 data-[warning=true]:text-status-warning data-[warning=true]:hover:bg-status-warning/10 data-[success=true]:text-status-success data-[success=true]:hover:bg-status-success/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
           onmouseenter={() => (activeIdx = actionIndex(entry))}
           onmousedown={(e) => { e.preventDefault(); (() => { if (!entry.disabled) activate(entry.id); })(); }}
         >{entry.label}</li>
