@@ -15,7 +15,7 @@
     "dashboard-svelte": "workspace:*",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "svelte": "^5.55.8"
+    "svelte": "^5.55.9"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.6.14",
