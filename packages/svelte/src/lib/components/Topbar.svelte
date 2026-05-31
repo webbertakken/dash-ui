@@ -107,6 +107,28 @@
   let logoRingClass = $derived(
     `inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded-full ring-2 ring-inset ${LOGO_RING[status]}`,
   );
+
+  // Status-coloured glow drawn behind the site logo. Replaces the old
+  // "N down" headline pill as the at-a-glance health signal: green when
+  // healthy, amber when degraded, red when something is down. Rendered
+  // as a blurred radial puddle behind the logo so the colour bleeds
+  // softly past the rim rather than reading as a hard second ring.
+  // Neutral (no data yet) gets no glow so a cold-start chrome stays calm.
+  const GLOW_TOKEN: Record<TopbarStatus, string | null> = {
+    ok: '--status-success',
+    warn: '--status-warning',
+    danger: '--status-danger',
+    neutral: null,
+  };
+  let logoGlowStyle = $derived.by(() => {
+    const token = GLOW_TOKEN[status];
+    if (token === null) return 'opacity: 0;';
+    const colour = `var(${token})`;
+    return (
+      `background: radial-gradient(closest-side, ${colour}, transparent);` +
+      ' opacity: 0.85; filter: blur(5px);'
+    );
+  });
 </script>
 
 <!--
@@ -128,8 +150,16 @@
       title={`${siteName} — status: ${status}`}
     >
       {#if siteLogo !== undefined}
-        <span class={logoRingClass} aria-hidden="true">
-          <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+        <span class="relative inline-flex h-6 w-6 items-center justify-center">
+          <span
+            data-testid="site-logo-glow"
+            aria-hidden="true"
+            class="pointer-events-none absolute -inset-1.5 rounded-full transition-opacity duration-300"
+            style={logoGlowStyle}
+          ></span>
+          <span class={`relative ${logoRingClass}`} aria-hidden="true">
+            <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+          </span>
         </span>
       {:else}
         <span class={ringWrapClass}><span class={ringDotClass}></span></span>
@@ -144,8 +174,16 @@
       title={`${siteName} — status: ${status}`}
     >
       {#if siteLogo !== undefined}
-        <span class={logoRingClass} aria-hidden="true">
-          <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+        <span class="relative inline-flex h-6 w-6 items-center justify-center">
+          <span
+            data-testid="site-logo-glow"
+            aria-hidden="true"
+            class="pointer-events-none absolute -inset-1.5 rounded-full transition-opacity duration-300"
+            style={logoGlowStyle}
+          ></span>
+          <span class={`relative ${logoRingClass}`} aria-hidden="true">
+            <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+          </span>
         </span>
       {:else}
         <span class={ringWrapClass}><span class={ringDotClass}></span></span>
