@@ -149,7 +149,7 @@
         >{#if pillParts(entry)}{@const parts = pillParts(entry)}{parts?.before}<Pill
             variant={entry.pill?.variant ?? 'neutral'}
             showDot={false}
-            class="!px-1.5 !py-0 text-[10px] font-semibold leading-[1]"
+            class="mx-0.5 !px-1.5 !py-0 text-[10px] font-semibold leading-[1]"
           >{entry.pill?.text}</Pill>{parts?.after}{:else}{entry.label}{/if}</li>
       {/if}
     {/each}
