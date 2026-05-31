@@ -1,5 +1,23 @@
 # @w5-ui/react
 
+## 0.5.1
+
+### Patch Changes
+
+- [#49](https://github.com/webbertakken/dash-ui/pull/49) [`f1bd2e8`](https://github.com/webbertakken/dash-ui/commit/f1bd2e8b5af76db1eb34fd3a76a96d69431f7c50) Thanks [@webbertakken](https://github.com/webbertakken)! - fix(a11y): give controls accessible labels (oxlint 1.66 jsx-a11y)
+
+  Resolves `jsx-a11y/control-has-associated-label` and
+  `no-noninteractive-element-interactions` flagged by oxlint 1.66:
+
+  - `aria-label` on the `ColumnToggle`, `NumberInput`, `PasswordInput`
+    controls and `aria-labelledby` on `RadioGroup` options.
+  - `CommandPalette` combobox labelled by its placeholder.
+  - `ExpandableRow` toggle button gains an Expand/Collapse label.
+  - `ContextMenu` decorative separators marked `aria-hidden`.
+  - `DateRangePicker` Escape handling moved to a document listener (off
+    the non-interactive dialog element); `TagInput` click-to-focus moved
+    to the presentational wrapper.
+
 ## 0.5.0
 
 ### Minor Changes
