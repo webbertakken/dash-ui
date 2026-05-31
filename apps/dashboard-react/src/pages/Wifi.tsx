@@ -308,7 +308,7 @@ export function Wifi() {
                 Clients
               </th>
               <th scope="col">Status</th>
-              <th scope="col" />
+              <th scope="col" aria-label="Actions" />
             </tr>
           </thead>
           <tbody>

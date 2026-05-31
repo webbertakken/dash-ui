@@ -229,7 +229,7 @@ export function Dashboard({ onAdopt }: DashboardProps) {
                           : '?'
                   return (
                     <tr key={r[0]}>
-                      <td>
+                      <td aria-label={r[0]}>
                         <div className="name-cell">
                           <span className="nc-thumb">{thumb}</span>
                           <div>
