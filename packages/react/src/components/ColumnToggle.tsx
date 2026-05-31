@@ -87,6 +87,7 @@ export function ColumnToggle({ columns, visible, onChange }: ColumnToggleProps) 
                 <label className="col-toggle__label">
                   <input
                     type="checkbox"
+                    aria-label={col.label}
                     className="col-toggle__check"
                     checked={visible.has(col.key)}
                     disabled={col.required}

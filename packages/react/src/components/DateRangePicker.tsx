@@ -145,8 +145,23 @@ export function DateRangePicker({
         setPicking(null)
       }
     }
+    // Escape closes the dialog and restores focus to the trigger. Handled
+    // at the document level (rather than a JSX onKeyDown on the dialog) so
+    // it works regardless of focus position inside the popover.
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        setOpen(false)
+        setPicking(null)
+        triggerRef.current?.focus()
+      }
+    }
     document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', handler)
+      document.removeEventListener('keydown', onKey)
+    }
   }, [open])
 
   function renderCalendar(grid: Date[], gridMonth: number, gridYear: number) {
@@ -302,14 +317,6 @@ export function DateRangePicker({
           aria-modal="true"
           aria-label="Select date range"
           className="drp-cal"
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') {
-              e.preventDefault()
-              setOpen(false)
-              setPicking(null)
-              triggerRef.current?.focus()
-            }
-          }}
         >
           <div className="drp-months">
             {renderCalendar(leftGrid, viewMonth, viewYear)}

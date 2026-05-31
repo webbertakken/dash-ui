@@ -814,7 +814,7 @@ export const FIXTURES: Record<string, Variant[]> = {
       name: 'default',
       node: (
         <U.Field label="Name">
-          <input />
+          <input aria-label="Name" />
         </U.Field>
       ),
     },

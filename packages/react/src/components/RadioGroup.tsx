@@ -49,6 +49,7 @@ export function RadioGroup({
             <input
               type="radio"
               id={optId}
+              aria-labelledby={`${optId}-label`}
               name={groupName}
               value={opt.value}
               checked={value !== undefined ? value === opt.value : undefined}
@@ -57,7 +58,7 @@ export function RadioGroup({
               onChange={() => onChange?.(opt.value)}
               className="radio"
             />
-            <span className="radio-text">
+            <span className="radio-text" id={`${optId}-label`}>
               <span>{opt.label}</span>
               {opt.description && <span className="radio-description">{opt.description}</span>}
             </span>

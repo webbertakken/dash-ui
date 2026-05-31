@@ -404,7 +404,7 @@ export function Wireless() {
                 <tr key={name}>
                   <td style={{ color: '#fff' }}>{name}</td>
                   <td style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12 }}>{ch}</td>
-                  <td>
+                  <td aria-label={`${util}% utilization`}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <div
                         style={{

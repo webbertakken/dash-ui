@@ -483,7 +483,7 @@ export function Vpn() {
             <caption className="sr-only">VPN servers</caption>
             <thead>
               <tr>
-                <th scope="col" />
+                <th scope="col" aria-label="Expand" />
                 <th scope="col">Name</th>
                 <th scope="col">Type</th>
                 <th scope="col">Endpoint</th>

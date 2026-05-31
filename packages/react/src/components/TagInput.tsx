@@ -61,7 +61,13 @@ export function TagInput({
   }
 
   return (
-    <div className={`tag-input-wrapper${className ? ` ${className}` : ''}`}>
+    // Click-to-focus lives on the presentational wrapper rather than the
+    // role="group" element, so a non-interactive ARIA role never carries a
+    // mouse handler.
+    <div
+      className={`tag-input-wrapper${className ? ` ${className}` : ''}`}
+      onClick={() => inputRef.current?.focus()}
+    >
       {label && (
         <label htmlFor={inputId} className="tag-input__label">
           {label}
@@ -72,7 +78,6 @@ export function TagInput({
         role="group"
         aria-label={label ?? 'Tags'}
         className={`tag-input${disabled ? ' tag-input--disabled' : ''}`}
-        onClick={() => inputRef.current?.focus()}
       >
         {tags.map((t, i) => (
           <Tag key={t} label={t} onRemove={disabled ? undefined : () => removeTag(i)} />

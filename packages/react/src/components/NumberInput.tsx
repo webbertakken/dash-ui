@@ -98,6 +98,7 @@ export function NumberInput({
           id={inputId}
           type="number"
           role="spinbutton"
+          aria-label={label}
           aria-valuenow={value}
           aria-valuemin={min}
           aria-valuemax={max}

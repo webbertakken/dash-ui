@@ -411,7 +411,7 @@ export function Alarms() {
                 <th scope="col" style={{ textAlign: 'right' }}>
                   When
                 </th>
-                <th scope="col" />
+                <th scope="col" aria-label="Actions" />
               </tr>
             </thead>
             <tbody>
@@ -422,7 +422,7 @@ export function Alarms() {
                       {r.sev === 'danger' ? 'Critical' : 'Warning'}
                     </Pill>
                   </td>
-                  <td>
+                  <td aria-label={r.source[1]}>
                     <div className="name-cell">
                       <span className="nc-thumb">{r.source[0]}</span>
                       <div>
