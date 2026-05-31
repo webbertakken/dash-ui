@@ -367,7 +367,7 @@ function SettingsBody({ tab }: { tab: SettingsTab }) {
                   <th scope="col">VLAN</th>
                   <th scope="col">Subnet</th>
                   <th scope="col">Clients</th>
-                  <th scope="col" />
+                  <th scope="col" aria-label="Actions" />
                 </tr>
               </thead>
               <tbody>
@@ -877,7 +877,7 @@ function VLANCard() {
                   background: selected === r.name ? 'rgba(255,255,255,0.03)' : undefined,
                 }}
               >
-                <td>
+                <td aria-label="Colour">
                   <span
                     style={{
                       display: 'inline-block',

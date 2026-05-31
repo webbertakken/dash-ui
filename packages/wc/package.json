@@ -1,6 +1,6 @@
 {
   "name": "@w5-ui/wc",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Framework-agnostic web components for the Dash UI design system - ~165 custom elements (dash-*) compiled from @w5-ui/svelte. Use in any framework or vanilla HTML. Part of Webber's design systems.",
   "keywords": [
     "web-components",
@@ -54,7 +54,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^4.0.4",
     "svelte": "^5.55.9",
-    "tsx": "^4.19.2",
+    "tsx": "^4.22.4",
     "typescript": "^5.6.3",
     "vite": "^5.4.11"
   }

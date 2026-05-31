@@ -22,6 +22,7 @@ export function ExpandableRow({
           <button
             type="button"
             className="exp-toggle"
+            aria-label={open ? 'Collapse row' : 'Expand row'}
             aria-expanded={open}
             aria-controls={detailId}
             onClick={() => setOpen((o) => !o)}

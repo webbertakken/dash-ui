@@ -426,7 +426,7 @@ export function Infrastructure() {
                 <th scope="col">MAC</th>
                 <th scope="col">IP</th>
                 <th scope="col">Firmware</th>
-                <th scope="col" />
+                <th scope="col" aria-label="Actions" />
               </tr>
             </thead>
             <tbody>

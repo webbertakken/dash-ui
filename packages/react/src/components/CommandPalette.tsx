@@ -110,6 +110,7 @@ export function CommandPalette({
             className="cp-input"
             type="text"
             role="combobox"
+            aria-label={placeholder}
             aria-expanded={filtered.length > 0}
             aria-autocomplete="list"
             aria-controls={listId}

@@ -103,7 +103,7 @@ export function ContextMenu({
     >
       {items.map((entry, i) => {
         if ('separator' in entry) {
-          return <li key={i} role="separator" className="ctx-menu-sep" />
+          return <li key={i} role="separator" aria-hidden="true" className="ctx-menu-sep" />
         }
         const ai = actionItems.indexOf(entry)
         return (

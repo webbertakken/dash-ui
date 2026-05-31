@@ -150,7 +150,12 @@ export function Devices({ onAdopt }: DevicesProps) {
                   className="checkbox-label"
                   style={{ display: 'flex', padding: '4px 0' }}
                 >
-                  <input type="checkbox" className="checkbox" defaultChecked={s === 'Online'} />
+                  <input
+                    type="checkbox"
+                    aria-label={s}
+                    className="checkbox"
+                    defaultChecked={s === 'Online'}
+                  />
                   {s}
                 </label>
               ))}
@@ -163,7 +168,7 @@ export function Devices({ onAdopt }: DevicesProps) {
                   className="checkbox-label"
                   style={{ display: 'flex', padding: '4px 0' }}
                 >
-                  <input type="checkbox" className="checkbox" defaultChecked />
+                  <input type="checkbox" aria-label={t} className="checkbox" defaultChecked />
                   {t}
                 </label>
               ))}
@@ -247,7 +252,7 @@ export function Devices({ onAdopt }: DevicesProps) {
             <tbody>
               {rows.map((r) => (
                 <tr key={r[2]}>
-                  <td>
+                  <td aria-label={r[0]}>
                     <HoverCard
                       placement="bottom"
                       content={

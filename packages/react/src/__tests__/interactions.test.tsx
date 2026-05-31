@@ -1312,7 +1312,7 @@ describe('InputGroup variants', () => {
   it('renders without prefix or suffix', () => {
     render(
       <U.InputGroup>
-        <input />
+        <input aria-label="Demo input" />
       </U.InputGroup>,
     )
   })

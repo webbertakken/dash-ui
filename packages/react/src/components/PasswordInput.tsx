@@ -89,6 +89,7 @@ export function PasswordInput({
         <input
           id={inputId}
           type={shown ? 'text' : 'password'}
+          aria-label={label}
           className="pwd-input__field"
           value={value}
           placeholder={placeholder}

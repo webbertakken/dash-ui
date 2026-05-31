@@ -1,5 +1,32 @@
 # @w5-ui/tokens
 
+## 0.5.0
+
+### Minor Changes
+
+- [#37](https://github.com/webbertakken/dash-ui/pull/37) [`c87d128`](https://github.com/webbertakken/dash-ui/commit/c87d1289aa82912b3df766980342312837b21a71) Thanks [@webbertakken](https://github.com/webbertakken)! - feat(ContextMenu): `warning` tone for caution / heads-up items
+
+  Adds an optional `warning?: boolean` to `ContextMenuItem` (React +
+  Svelte), rendered via a `data-warning="true"` attribute and styled in
+  yellow (`status-warning` token / amber `#f5a623`). Mirrors the existing
+  `danger?: boolean` convention. Mutually exclusive with `danger`.
+
+  Use case: surface a non-destructive but consequential action (e.g.
+  "Mark older as completed", "Skip remaining steps") that should stand
+  out without reading as a destructive red.
+
+- [#46](https://github.com/webbertakken/dash-ui/pull/46) [`cf8fe45`](https://github.com/webbertakken/dash-ui/commit/cf8fe455761e8f6a539364e7aad7f44b941cf04f) Thanks [@webbertakken](https://github.com/webbertakken)! - feat(Modal): `size` prop for panel width
+
+  Adds an optional `size?: ModalSize` (`'sm' | 'md' | 'lg' | 'xl' | '2xl'`)
+  to `Modal` (React + Svelte, forwarded by the `uni-modal` custom element).
+  `md` (520px) stays the default; the scale widens to 400 / 520 / 720 /
+  960 / 1200px, always clamped to `90vw`.
+
+  Svelte expresses the widths via pre-composed Tailwind utilities; the
+  React sibling adds matching `.modal--sm|lg|xl|2xl` rules in
+  `dashboard.css`. Suits data-dense or editor-style dialogs that need more
+  room than the default.
+
 ## 0.2.1
 
 ### Patch Changes
