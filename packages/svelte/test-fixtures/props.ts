@@ -887,6 +887,7 @@ export const BUNDLES: Record<string, Bundle[]> = {
   Modal: [
     { name: 'open', props: { open: true, title: 't', onClose: noop }, slot: 'body' },
     { name: 'closed', props: { open: false, title: 't', onClose: noop } },
+    { name: 'large', props: { open: true, title: 't', size: 'xl', onClose: noop }, slot: 'body' },
   ],
   MultiSelect: [
     {

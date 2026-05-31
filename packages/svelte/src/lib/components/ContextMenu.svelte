@@ -1,11 +1,23 @@
 <script lang="ts" module>
+  export type ContextMenuPillVariant = 'success' | 'warn' | 'danger' | 'info' | 'neutral';
+  /** Inline badge rendered where the label's `{pill}` placeholder sits. */
+  export interface ContextMenuPill {
+    text: string;
+    variant?: ContextMenuPillVariant;
+  }
   export interface ContextMenuItem {
     id: string;
+    /** Item copy. May contain a single `{pill}` placeholder slot which is
+     *  replaced by an inline {@link ContextMenuPill} when `pill` is set. */
     label: string;
+    /** Inline badge substituted for the `{pill}` slot in `label`. */
+    pill?: ContextMenuPill;
     /** Red tone (destructive). Mutually exclusive with `warning`. */
     danger?: boolean;
     /** Yellow tone (caution / heads-up). Mutually exclusive with `danger`. */
     warning?: boolean;
+    /** Green tone (active / positive state). Mutually exclusive with `danger` + `warning`. */
+    success?: boolean;
     disabled?: boolean;
   }
   export type ContextMenuEntry = ContextMenuItem | { separator: true };
@@ -13,6 +25,22 @@
 
 <script lang="ts">
   import { onDestroy, tick } from 'svelte';
+  import Pill from './Pill.svelte';
+
+  const PILL_SLOT = '{pill}';
+
+  /** Split a label around its first `{pill}` slot so the pill can be
+   *  rendered inline between the surrounding copy. Returns null when the
+   *  item has no pill or no slot, signalling a plain-text label. */
+  function pillParts(entry: ContextMenuItem): { before: string; after: string } | null {
+    if (entry.pill === undefined) return null;
+    const idx = entry.label.indexOf(PILL_SLOT);
+    if (idx === -1) return null;
+    return {
+      before: entry.label.slice(0, idx),
+      after: entry.label.slice(idx + PILL_SLOT.length),
+    };
+  }
 
   interface Props {
     items?: ContextMenuEntry[];
@@ -114,10 +142,15 @@
           data-active={actionIndex(entry) === activeIdx ? 'true' : undefined}
           data-danger={entry.danger || undefined}
           data-warning={entry.warning || undefined}
-          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-3 py-1.5 text-13 text-text-2 outline-none hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 data-[danger=true]:text-status-danger data-[danger=true]:hover:bg-status-danger/10 data-[warning=true]:text-status-warning data-[warning=true]:hover:bg-status-warning/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
+          data-success={entry.success || undefined}
+          class="flex cursor-pointer items-center whitespace-nowrap rounded-[5px] px-3 py-1.5 text-13 text-text-2 outline-none hover:bg-row-active hover:text-text-1 data-[active=true]:bg-row-active data-[active=true]:text-text-1 data-[danger=true]:text-status-danger data-[danger=true]:hover:bg-status-danger/10 data-[warning=true]:text-status-warning data-[warning=true]:hover:bg-status-warning/10 data-[success=true]:text-status-success data-[success=true]:hover:bg-status-success/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-40"
           onmouseenter={() => (activeIdx = actionIndex(entry))}
           onmousedown={(e) => { e.preventDefault(); (() => { if (!entry.disabled) activate(entry.id); })(); }}
-        >{entry.label}</li>
+        >{#if pillParts(entry)}{@const parts = pillParts(entry)}{parts?.before}<Pill
+            variant={entry.pill?.variant ?? 'neutral'}
+            showDot={false}
+            class="mx-0.5 !px-1.5 !py-0 text-[10px] font-semibold leading-[1]"
+          >{entry.pill?.text}</Pill>{parts?.after}{:else}{entry.label}{/if}</li>
       {/if}
     {/each}
   </ul>

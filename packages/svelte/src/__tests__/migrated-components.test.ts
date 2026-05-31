@@ -455,6 +455,58 @@ describe('ContextMenu (Tailwind)', () => {
     expect(item.getAttribute('data-warning')).toBe('true')
     expect(item.getAttribute('data-danger')).toBeNull()
   })
+
+  it('marks an item as success via data-success + status-success text class', () => {
+    const { container } = render(ContextMenu, {
+      props: {
+        open: true,
+        items: [
+          { id: 'plain', label: 'Plain' },
+          { id: 'ok', label: 'Stop focus', success: true },
+        ],
+      },
+    })
+    const items = container.querySelectorAll('[role="menuitem"]')
+    expect(items).toHaveLength(2)
+    expect(items[0].getAttribute('data-success')).toBeNull()
+    expect(items[1].getAttribute('data-success')).toBe('true')
+    expect((items[1] as HTMLElement).className).toMatch(/data-\[success=true\]:text-status-success/)
+  })
+
+  it('renders an inline pill in place of the {pill} slot', () => {
+    const { container } = render(ContextMenu, {
+      props: {
+        open: true,
+        items: [
+          {
+            id: 'bulk',
+            label: 'Archive this {pill} and older',
+            pill: { text: 'R', variant: 'info' },
+          },
+        ],
+      },
+    })
+    const item = container.querySelector('[role="menuitem"]') as HTMLElement
+    // The literal placeholder is gone; the surrounding copy survives.
+    expect(item.textContent).not.toContain('{pill}')
+    expect(item.textContent?.replace(/\s+/g, ' ').trim()).toBe('Archive this R and older')
+    // A real Pill (info variant) is rendered inline, not plain text.
+    const pill = item.querySelector('span.rounded-full') as HTMLElement
+    expect(pill).toBeTruthy()
+    expect(pill.textContent?.trim()).toBe('R')
+    expect(pill.className).toMatch(/text-status-info/)
+  })
+
+  it('falls back to plain text when an item has no pill', () => {
+    const { container } = render(ContextMenu, {
+      props: { open: true, items: [{ id: 'a', label: 'Archive this {pill} and older' }] },
+    })
+    const item = container.querySelector('[role="menuitem"]') as HTMLElement
+    // No pill descriptor -> the raw label (placeholder and all) is shown
+    // verbatim, never silently swallowed.
+    expect(item.textContent).toContain('{pill}')
+    expect(item.querySelector('span.rounded-full')).toBeNull()
+  })
 })
 
 describe('Menubar (Tailwind)', () => {
