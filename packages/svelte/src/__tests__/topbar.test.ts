@@ -37,6 +37,32 @@ describe('Topbar', () => {
     }
   })
 
+  it('paints a status-coloured glow behind the site logo', () => {
+    for (const [status, token] of [
+      ['ok', '--status-success'],
+      ['warn', '--status-warning'],
+      ['danger', '--status-danger'],
+    ] as const) {
+      const { container, unmount: u } = render(Topbar, {
+        props: { siteName: 'Demo', activeApp: 'system', status, siteLogo: '/logo.png' },
+      })
+      const glow = container.querySelector('[data-testid="site-logo-glow"]')
+      expect(glow, `expected a glow element for status=${status}`).toBeTruthy()
+      const style = glow?.getAttribute('style') ?? ''
+      expect(style, `glow should use ${token} for status=${status}`).toContain(token)
+      u()
+    }
+  })
+
+  it('omits the logo glow for neutral status', () => {
+    const { container } = render(Topbar, {
+      props: { siteName: 'Demo', activeApp: 'system', status: 'neutral', siteLogo: '/logo.png' },
+    })
+    const glow = container.querySelector('[data-testid="site-logo-glow"]')
+    const style = glow?.getAttribute('style') ?? ''
+    expect(style).not.toContain('--status-')
+  })
+
   it('renders the site label as a non-button when siteSwitchable=false', () => {
     const { container, queryByLabelText } = render(Topbar, {
       props: { siteName: 'Single', activeApp: 'system', siteSwitchable: false },
