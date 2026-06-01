@@ -3166,7 +3166,7 @@ __metadata:
   dependencies:
     "@w5-ui/assets": "workspace:*"
     "@w5-ui/tokens": "workspace:*"
-    svelte: "npm:^5.55.9"
+    svelte: "npm:^5.56.0"
     typescript: "npm:^5.5.0"
   peerDependencies:
     svelte: ^5
@@ -3187,7 +3187,7 @@ __metadata:
     "@w5-ui/assets": "workspace:*"
     "@w5-ui/svelte": "workspace:*"
     "@w5-ui/tokens": "workspace:*"
-    svelte: "npm:^5.55.9"
+    svelte: "npm:^5.56.0"
     tsx: "npm:^4.22.4"
     typescript: "npm:^5.6.3"
     vite: "npm:^5.4.11"
@@ -3841,7 +3841,7 @@ __metadata:
     "@w5-ui/svelte": "workspace:*"
     "@w5-ui/tokens": "workspace:*"
     pngjs: "npm:^7.0.0"
-    svelte: "npm:^5.55.9"
+    svelte: "npm:^5.56.0"
     svelte-check: "npm:^4.3.4"
     svelte-preprocess: "npm:^6.0.5"
     typescript: "npm:^5.5.0"
@@ -3980,7 +3980,7 @@ __metadata:
     oxlint: "npm:^1.66.0"
     react: "npm:^18.3.0"
     react-dom: "npm:^18.3.0"
-    svelte: "npm:^5.55.9"
+    svelte: "npm:^5.56.0"
     svelte-migrate: "npm:^1.10"
     tailwindcss: "npm:^4.3.0"
     tsx: "npm:^4.22.4"
@@ -8505,7 +8505,7 @@ __metadata:
     react-dom: "npm:^18.3.0"
     remark-gfm: "npm:^4.0.0"
     storybook: "npm:^8.6.14"
-    svelte: "npm:^5.55.9"
+    svelte: "npm:^5.56.0"
     tailwindcss: "npm:^4.3.0"
     typescript: "npm:^5.6.3"
     vite: "npm:^5.4.11"
@@ -8831,9 +8831,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^5.55.9":
-  version: 5.55.9
-  resolution: "svelte@npm:5.55.9"
+"svelte@npm:^5.56.0":
+  version: 5.56.0
+  resolution: "svelte@npm:5.56.0"
   dependencies:
     "@jridgewell/remapping": "npm:^2.3.4"
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
@@ -8851,7 +8851,7 @@ __metadata:
     locate-character: "npm:^3.0.0"
     magic-string: "npm:^0.30.11"
     zimmerframe: "npm:^1.1.2"
-  checksum: 10c0/dbfbfed9e10b13365f36039887188faaf940bb5c796bc634f8218d907a0405742d20564b48224afd06c547e6905cdbcdf8446710cf17df3faa8d525c295eda2b
+  checksum: 10c0/0b71ff8256b06b2661dee13e7ebae04d98a4781b43093cd4efcc80ffcc33af0850521c266d4d45ac0ed690d3a9eca3987c362eca78879b5ea90a9f1871777d8a
   languageName: node
   linkType: hard
 
