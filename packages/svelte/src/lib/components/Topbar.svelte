@@ -144,7 +144,7 @@
   {#if siteSwitchable}
     <button
       type="button"
-      class="flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+      class="flex shrink-0 cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 max-md:px-1.5"
       aria-label="Switch site: {siteName}"
       aria-haspopup="menu"
       title={`${siteName} — status: ${status}`}
@@ -164,12 +164,12 @@
       {:else}
         <span class={ringWrapClass}><span class={ringDotClass}></span></span>
       {/if}
-      <span class="text-13 font-medium text-text-1" aria-hidden="true">{siteName}</span>
-      <CaretIcon class="h-3.5 w-3.5 text-text-3" />
+      <span class="text-13 font-medium text-text-1 max-md:hidden" aria-hidden="true">{siteName}</span>
+      <CaretIcon class="h-3.5 w-3.5 text-text-3 max-md:hidden" />
     </button>
   {:else}
     <div
-      class="flex items-center gap-2 px-2.5 py-1.5"
+      class="flex shrink-0 items-center gap-2 px-2.5 py-1.5 max-md:px-1.5"
       role="presentation"
       title={`${siteName} — status: ${status}`}
     >
@@ -188,11 +188,21 @@
       {:else}
         <span class={ringWrapClass}><span class={ringDotClass}></span></span>
       {/if}
-      <span class="text-13 font-medium text-text-1">{siteName}</span>
+      <span class="text-13 font-medium text-text-1 max-md:hidden">{siteName}</span>
     </div>
   {/if}
 
-  <nav class="ml-3.5 flex h-12 items-center gap-0.5" aria-label="Apps">
+  <!--
+    Apps nav. On phones (< md) the fixed-width app buttons can exceed
+    the viewport, so the strip becomes a horizontally swipeable rail
+    (`flex-1 min-w-0 overflow-x-auto`, scrollbar hidden) instead of
+    overflowing the header. Desktop keeps its natural auto width with
+    the flex spacer pushing the actions to the right edge.
+  -->
+  <nav
+    class="ml-3.5 flex h-12 items-center gap-0.5 max-md:ml-1 max-md:min-w-0 max-md:flex-1 max-md:overflow-x-auto max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden"
+    aria-label="Apps"
+  >
     {#each apps as a (a.id)}
       <button
         type="button"
@@ -213,14 +223,14 @@
               ? 'opacity-100 dark:brightness-[1.6]'
               : 'opacity-65 hover:opacity-90 dark:hover:brightness-[1.4]'}"
         />
-        <span class="mt-0.5 text-[10px] font-medium leading-none">{a.label}</span>
+        <span class="mt-0.5 text-[10px] font-medium leading-none max-md:hidden">{a.label}</span>
       </button>
     {/each}
   </nav>
 
-  <div class="flex-1"></div>
+  <div class="flex-1 max-md:hidden"></div>
 
-  <div class="flex items-center gap-1 pr-2">
+  <div class="flex shrink-0 items-center gap-1 pr-2">
     {#if actions}
       {@render actions()}
     {:else}
