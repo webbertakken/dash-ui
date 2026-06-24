@@ -1,5 +1,6 @@
 <script module lang="ts">
   let counter = 0;
+  export type PopoverWidth = 'sm' | 'md' | 'lg' | 'xl';
 </script>
 
 <script lang="ts">
@@ -13,6 +14,14 @@
     variant?: 'ghost' | 'primary';
     title?: string | undefined;
     placement?: 'bottom-start' | 'bottom-end' | 'bottom';
+    /**
+     * Panel max-width. `sm` (320px) is the default and suits menus /
+     * option lists. Wider sizes suit content-dense panels (e.g. a
+     * folder picker with a path field, breadcrumb and file rows).
+     * The panel still shrinks to its content and is kept on-screen by
+     * the viewport-clamp in `recomputePosition`.
+     */
+    width?: PopoverWidth;
     /**
      * Controlled open state. Default uncontrolled (`$bindable(false)`):
      * the trigger button toggles it and outside-clicks close it.
@@ -42,9 +51,19 @@
     title = undefined,
     placement = 'bottom-start',
     open = $bindable(false),
+    width = 'sm',
     trigger,
     children,
   }: Props = $props();
+
+  // Pre-composed width utilities so Tailwind's static scanner keeps
+  // each class in the build (mirrors `Modal`'s `size` scale).
+  const WIDTH: Record<PopoverWidth, string> = {
+    sm: 'max-w-[320px]',
+    md: 'max-w-[400px]',
+    lg: 'max-w-[480px]',
+    xl: 'max-w-[560px]',
+  };
 
   const uid = `dash-ui-pop-${++counter}`;
   const titleId = `${uid}-title`;
@@ -181,7 +200,7 @@
       use:portal
       role="dialog"
       aria-labelledby={title ? titleId : undefined}
-      class="fixed z-[9100] min-w-[200px] max-w-[320px] rounded-[10px] border border-border-3 bg-bg-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none"
+      class={`fixed z-[9100] min-w-[200px] ${WIDTH[width]} rounded-[10px] border border-border-3 bg-bg-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] focus:outline-none`}
       style={`top: ${panelTop}px; left: ${panelLeft}px`}
       tabindex={-1}
     >
