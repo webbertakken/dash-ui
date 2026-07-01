@@ -7,6 +7,23 @@ A multi-framework dashboard design system:
 - Shipped for **React**, **Svelte**, and as **framework-agnostic Web Components**.
 - Online [demo](https://webbertakken.github.io/dash-ui).
 
+## Preview
+
+A few pages from the reference dashboard (dark motif), built entirely from the shipped components.
+
+![Dashboard overview](./docs/screenshots/dashboard-overview.png)
+
+_Dashboard overview: KPI cards, sparklines, a status donut and a live device table._
+
+|                                                                      |                                                                    |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![Network topology](./docs/screenshots/topology.png)                 | ![Infrastructure health](./docs/screenshots/infrastructure.png)    |
+| **Topology** graph with an interactive device inspector and port map | **Infrastructure** health meters, PoE budget and storage breakdown |
+
+Every chart is its own component (40+ of them). A dozen of them on the Wireless page alone:
+
+![Chart gallery](./docs/screenshots/charts-gallery.png)
+
 ## Origin and creation
 
 - The initial designs were created using a combination of Claude Design and Google Stitch.

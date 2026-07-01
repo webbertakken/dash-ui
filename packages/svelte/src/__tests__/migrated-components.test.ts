@@ -397,6 +397,21 @@ describe('Popover (Tailwind)', () => {
     panel.dispatchEvent(new Event('pointerdown', { bubbles: true }))
     expect(document.body.querySelector('[role="dialog"]')).toBeTruthy()
   })
+
+  it('defaults to the narrow (sm) panel max-width', async () => {
+    const { getByRole } = render(Popover, { props: { label: 'Open' } })
+    await fireEvent.click(getByRole('button', { name: /Open/ }))
+    const panel = document.body.querySelector('[role="dialog"]') as HTMLElement
+    expect(panel.className).toMatch(/max-w-\[320px\]/)
+  })
+
+  it('applies the wide panel max-width for width="lg"', async () => {
+    const { getByRole } = render(Popover, { props: { label: 'Open', width: 'lg' } })
+    await fireEvent.click(getByRole('button', { name: /Open/ }))
+    const panel = document.body.querySelector('[role="dialog"]') as HTMLElement
+    expect(panel.className).toMatch(/max-w-\[480px\]/)
+    expect(panel.className).not.toMatch(/max-w-\[320px\]/)
+  })
 })
 
 describe('HoverCard (Tailwind)', () => {
