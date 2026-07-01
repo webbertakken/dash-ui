@@ -270,13 +270,12 @@
     />
   {/each}
 </ul>
-
-<style>
-  .w5-tb :global([data-tree-id]:focus-visible > .w5-tb__row) {
-    outline: var(--focus-ring);
-    outline-offset: -2px;
-  }
-  .w5-tb :global([data-tree-id]:focus) {
-    outline: none;
-  }
-</style>
+<!--
+  NOTE: This component is intentionally STYLE-LESS (Tailwind utilities
+  only, no `<style>` block). The assistant dashboard serves
+  `@w5-ui/svelte` as raw source (not prebundled); a `<style>` block
+  there emits a `?type=style` virtual module that `@tailwindcss/vite`
+  mis-parses ("Invalid declaration"). The focus ring is therefore
+  expressed via the `group-focus-visible/tb` utilities in
+  TreeBrowserNode instead of a scoped `:global` rule.
+-->

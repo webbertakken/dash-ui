@@ -60,11 +60,11 @@
   tabindex={focusedId === id ? 0 : -1}
   data-tree-id={id}
   data-type={type}
-  class="w5-tb__item list-none"
+  class="w5-tb__item group/tb list-none outline-none focus:outline-none focus-visible:outline-none"
 >
   <div
     data-selected={isSelected ? 'true' : undefined}
-    class="w5-tb__row group/row flex min-h-8 cursor-pointer select-none items-center gap-2 rounded px-2 text-13 text-text-2 hover:bg-row-hover data-[selected=true]:bg-brand-05/[0.18] data-[selected=true]:text-text-1"
+    class="w5-tb__row flex min-h-8 cursor-pointer select-none items-center gap-2 rounded px-2 text-13 text-text-2 hover:bg-row-hover group-focus-visible/tb:[outline:var(--focus-ring)] group-focus-visible/tb:[outline-offset:-2px] data-[selected=true]:bg-brand-05/[0.18] data-[selected=true]:text-text-1"
   >
     {#if nodeHasChildren}
       <svg
