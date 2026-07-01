@@ -38,6 +38,9 @@ const MANIFEST_PATH = path.join(REPO_ROOT, 'packages/wc/src/manifest.json')
 // HTML attributes, and the Svelte index doesn't export it.
 const SKIP = new Set<string>([
   'TreeItem',
+  // TreeBrowserNode is the recursive internal renderer for TreeBrowser
+  // (takes a Set + node maps as props, not exported from the index).
+  'TreeBrowserNode',
   // CenterNode used to be skipped pre-emptively but the component never
   // landed; remove if/when it ships.
 ])

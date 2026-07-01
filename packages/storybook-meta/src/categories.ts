@@ -116,6 +116,7 @@ export const COMPONENT_CATEGORY: Record<string, Category> = {
   SortableTable: 'Data display',
   Timeline: 'Data display',
   TreeView: 'Data display',
+  TreeBrowser: 'Data display',
   KVTable: 'Data display',
   JsonViewer: 'Data display',
   CodeBlock: 'Data display',

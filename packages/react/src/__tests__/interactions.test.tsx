@@ -825,6 +825,119 @@ describe('TreeView', () => {
   })
 })
 
+describe('TreeBrowser', () => {
+  const collections = {
+    root: { id: 'root', name: '', collections: ['game-types'], items: ['rules', 'interface'] },
+    'game-types': {
+      id: 'game-types',
+      name: 'game-types',
+      descriptor: '2 types',
+      items: ['classic', 'mini'],
+    },
+  }
+  const items = {
+    rules: { id: 'rules', name: 'RULES', descriptor: 'spec' },
+    interface: { id: 'interface', name: 'INTERFACE' },
+    classic: { id: 'classic', name: 'classic' },
+    mini: { id: 'mini', name: 'mini' },
+  }
+
+  it('renders top-level rows and toggles a folder on click', () => {
+    const onSelect = vi.fn()
+    render(
+      <U.TreeBrowser
+        rootId="root"
+        collections={collections}
+        items={items}
+        onSelect={onSelect}
+        label="Files"
+      />,
+    )
+    expect(screen.getByText('game-types')).toBeTruthy()
+    expect(screen.queryByText('classic')).toBeNull()
+    fireEvent.click(screen.getByText('game-types'))
+    expect(onSelect).toHaveBeenCalledWith('game-types', 'collection')
+    expect(screen.getByText('classic')).toBeTruthy()
+    fireEvent.click(screen.getByText('game-types'))
+    expect(screen.queryByText('classic')).toBeNull()
+  })
+
+  it('selects a leaf and marks aria-selected', () => {
+    const onSelect = vi.fn()
+    render(
+      <U.TreeBrowser rootId="root" collections={collections} items={items} onSelect={onSelect} />,
+    )
+    fireEvent.click(screen.getByText('RULES'))
+    expect(onSelect).toHaveBeenCalledWith('rules', 'item')
+    expect(
+      screen.getByText('RULES').closest('[role="treeitem"]')?.getAttribute('aria-selected'),
+    ).toBe('true')
+  })
+
+  it('walks the tree by keyboard', () => {
+    render(
+      <U.TreeBrowser
+        rootId="root"
+        collections={collections}
+        items={items}
+        defaultExpanded={['game-types']}
+        label="T"
+      />,
+    )
+    const folder = screen.getByText('game-types').closest('[role="treeitem"]') as HTMLElement
+    folder.focus()
+    fireEvent.keyDown(folder, { key: 'ArrowDown' })
+    fireEvent.keyDown(folder, { key: 'ArrowUp' })
+    fireEvent.keyDown(folder, { key: 'ArrowLeft' })
+    fireEvent.keyDown(folder, { key: 'ArrowRight' })
+    fireEvent.keyDown(folder, { key: 'ArrowRight' })
+    fireEvent.keyDown(folder, { key: 'Home' })
+    fireEvent.keyDown(folder, { key: 'End' })
+    fireEvent.keyDown(folder, { key: 'Enter' })
+    fireEvent.keyDown(folder, { key: ' ' })
+  })
+
+  it('controlled expansion reports intent via onToggle without self-expanding', () => {
+    const onToggle = vi.fn()
+    render(
+      <U.TreeBrowser
+        rootId="root"
+        collections={collections}
+        items={items}
+        expanded={[]}
+        onToggle={onToggle}
+      />,
+    )
+    expect(screen.queryByText('classic')).toBeNull()
+    fireEvent.click(screen.getByText('game-types'))
+    expect(onToggle).toHaveBeenCalledWith('game-types')
+    expect(screen.queryByText('classic')).toBeNull()
+  })
+
+  it('renders custom icon + badge snippets with row context', () => {
+    render(
+      <U.TreeBrowser
+        rootId="root"
+        collections={collections}
+        items={items}
+        defaultExpanded={['game-types']}
+        renderIcon={(ctx) => <span data-testid={`icon-${ctx.id}`} data-kind={ctx.type} />}
+        renderBadge={(ctx) =>
+          ctx.id === 'rules' ? <span data-testid="badge-rules">!</span> : null
+        }
+      />,
+    )
+    expect(screen.getByTestId('icon-classic').getAttribute('data-kind')).toBe('item')
+    expect(screen.getByTestId('icon-game-types').getAttribute('data-kind')).toBe('collection')
+    expect(screen.getByTestId('badge-rules')).toBeTruthy()
+  })
+
+  it('exports topLevelIds helper matching the root children', () => {
+    expect(U.topLevelIds(collections, 'root')).toEqual(['game-types', 'rules', 'interface'])
+    expect(U.topLevelIds(collections, 'nope')).toEqual([])
+  })
+})
+
 describe('ColumnToggle', () => {
   it('opens then toggles a column', () => {
     const onChange = vi.fn()
