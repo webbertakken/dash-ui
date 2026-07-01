@@ -1,5 +1,21 @@
 # @w5-ui/svelte
 
+## 0.6.0
+
+### Minor Changes
+
+- [#58](https://github.com/webbertakken/dash-ui/pull/58) [`6936230`](https://github.com/webbertakken/dash-ui/commit/69362300a38ae641898d7d15bd644909d745083d) Thanks [@webbertakken](https://github.com/webbertakken)! - Popover: add `width` prop (`sm` | `md` | `lg` | `xl`) to control the panel
+  max-width. Defaults to `sm` (320px), matching the previous behaviour. Mirrors
+  `Modal`'s `size` scale for content-dense panels.
+
+### Patch Changes
+
+- [#59](https://github.com/webbertakken/dash-ui/pull/59) [`26be749`](https://github.com/webbertakken/dash-ui/commit/26be74913718c2e2084e303bdd9f1814946b7e6e) Thanks [@webbertakken](https://github.com/webbertakken)! - Topbar: fit on phones (< md). The fixed-width app buttons used to overflow
+  the viewport on narrow screens. Below `md` the site-name label + caret are
+  hidden (the logo + health glow still identify the site), the app strip
+  collapses to icon-only and becomes a horizontally swipeable rail, and the
+  right-side actions stay pinned. Desktop layout is unchanged.
+
 ## 0.5.0
 
 ### Minor Changes
