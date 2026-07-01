@@ -48,7 +48,7 @@
     "@w5-ui/tokens": "workspace:*"
   },
   "devDependencies": {
-    "svelte": "^5.55.9",
+    "svelte": "^5.56.4",
     "typescript": "^5.5.0"
   },
   "files": [
