@@ -75,6 +75,16 @@ export type { ComboboxOption } from './components/Combobox.svelte'
 export { default as Drawer } from './components/Drawer.svelte'
 export { default as TreeView } from './components/TreeView.svelte'
 export type { TreeNode } from './components/TreeView.svelte'
+export { default as TreeBrowser, topLevelIds } from './components/TreeBrowser.svelte'
+export type {
+  TreeBrowserCollection,
+  TreeBrowserItem,
+  TreeBrowserData,
+  TreeBrowserNodeType,
+  TreeBrowserRowContext,
+  FlatNode,
+} from './components/TreeBrowser.svelte'
+export { childIds, hasChildren, flattenVisible } from './components/tree-browser-model.ts'
 export { default as DatePicker } from './components/DatePicker.svelte'
 export { default as CommandPalette } from './components/CommandPalette.svelte'
 export type { CommandItem } from './components/CommandPalette.svelte'

@@ -2353,6 +2353,29 @@ export const FIXTURES: Record<string, Variant[]> = {
     },
     { name: 'flat', node: <U.TreeView nodes={[{ id: 'a', label: 'A' }]} className="x" /> },
   ],
+  TreeBrowser: [
+    {
+      name: 'default',
+      node: (
+        <U.TreeBrowser
+          rootId="root"
+          collections={{
+            root: { id: 'root', name: '', collections: ['folder'], items: ['a'] },
+            folder: { id: 'folder', name: 'folder', descriptor: '1 item', items: ['b'] },
+          }}
+          items={{ a: { id: 'a', name: 'A', descriptor: 'spec' }, b: { id: 'b', name: 'B' } }}
+          defaultExpanded={['folder']}
+          selected="a"
+          onSelect={noop}
+          label="Files"
+        />
+      ),
+    },
+    {
+      name: 'empty',
+      node: <U.TreeBrowser rootId="root" collections={{ root: { id: 'root', name: '' } }} />,
+    },
+  ],
   UptimeTimeline: [
     {
       name: 'default',

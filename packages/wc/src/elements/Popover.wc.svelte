@@ -6,10 +6,11 @@
     variant = 'ghost',
     title = undefined,
     placement = 'bottom-start',
-    open = false
+    open = false,
+    width = 'sm'
   } = $props();
 </script>
 
-<Original {label} {variant} {title} {placement} {open}>
+<Original {label} {variant} {title} {placement} {open} {width}>
   <slot />
 </Original>

@@ -1678,6 +1678,59 @@ export const BUNDLES: Record<string, Bundle[]> = {
     },
     { name: 'flat', props: { nodes: [{ id: 'a', label: 'A' }] } },
   ],
+  TreeBrowser: [
+    {
+      name: 'default',
+      props: {
+        rootId: 'root',
+        collections: {
+          root: { id: 'root', name: '', collections: ['folder'], items: ['a'] },
+          folder: { id: 'folder', name: 'folder', descriptor: '1 item', items: ['b'] },
+        },
+        items: {
+          a: { id: 'a', name: 'A', descriptor: 'spec' },
+          b: { id: 'b', name: 'B' },
+        },
+        defaultExpanded: ['folder'],
+        selected: 'a',
+        onselect: noop,
+        label: 'Files',
+      },
+    },
+    {
+      name: 'deep nesting',
+      props: {
+        rootId: 'root',
+        collections: {
+          root: { id: 'root', name: '', collections: ['docs'] },
+          docs: { id: 'docs', name: 'docs', collections: ['spec'], items: ['readme'] },
+          spec: { id: 'spec', name: 'spec', descriptor: '2 files', items: ['rules', 'interface'] },
+        },
+        items: {
+          readme: { id: 'readme', name: 'README' },
+          rules: { id: 'rules', name: 'RULES' },
+          interface: { id: 'interface', name: 'INTERFACE' },
+        },
+        defaultExpanded: ['docs', 'spec'],
+        label: 'Docs',
+      },
+    },
+    {
+      name: 'controlled expansion',
+      props: {
+        rootId: 'root',
+        collections: {
+          root: { id: 'root', name: '', collections: ['folder'] },
+          folder: { id: 'folder', name: 'folder', items: ['a'] },
+        },
+        items: { a: { id: 'a', name: 'A' } },
+        expanded: ['folder'],
+        ontoggle: noop,
+        label: 'Files',
+      },
+    },
+    { name: 'empty', props: { rootId: 'root', collections: { root: { id: 'root', name: '' } } } },
+  ],
   TreeItem: [
     {
       name: 'default',
