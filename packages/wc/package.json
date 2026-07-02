@@ -1,6 +1,6 @@
 {
   "name": "@w5-ui/wc",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Framework-agnostic web components for the Dash UI design system - ~165 custom elements (dash-*) compiled from @w5-ui/svelte. Use in any framework or vanilla HTML. Part of Webber's design systems.",
   "keywords": [
     "web-components",
