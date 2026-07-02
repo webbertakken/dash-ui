@@ -1,6 +1,6 @@
 {
   "name": "@w5-ui/react",
-  "version": "0.5.1",
+  "version": "0.7.0",
   "description": "React 18 components for the Dash UI design system - ~170 dashboard-focused components with full type defs and SSR support. Part of Webber's design systems.",
   "keywords": [
     "react",
