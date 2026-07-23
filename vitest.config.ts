@@ -8,7 +8,7 @@ export default defineConfig({
     react({ include: /\.tsx?$/ }),
     svelte({
       compilerOptions: { customElement: false },
-      include: [/packages\/svelte\/.*\.svelte$/],
+      include: [/packages\/(svelte|fleet)\/.*\.svelte$/],
       preprocess: vitePreprocess(),
       hot: false,
     }),
@@ -19,6 +19,7 @@ export default defineConfig({
       '@w5-ui/assets': path.resolve(__dirname, 'packages/assets/src/index.ts'),
       '@w5-ui/react': path.resolve(__dirname, 'packages/react/src/index.ts'),
       '@w5-ui/svelte': path.resolve(__dirname, 'packages/svelte/src/lib/index.ts'),
+      '@w5-ui/fleet': path.resolve(__dirname, 'packages/fleet/src/lib/index.ts'),
     },
     // Svelte 5 ships separate server/client builds; tests run in jsdom
     // which is browser-like, so resolve to the browser/client build.
@@ -37,6 +38,7 @@ export default defineConfig({
         'packages/react/src/components/**/*.{ts,tsx}',
         'packages/svelte/src/lib/components/**/*.{ts,svelte}',
         'packages/wc/src/**/*.{ts,svelte}',
+        'packages/fleet/src/lib/**/*.{ts,svelte}',
       ],
       exclude: [
         '**/index.ts',

@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@w5-ui/assets": "workspace:*",
+    "@w5-ui/fleet": "workspace:*",
     "@w5-ui/storybook-meta": "workspace:*",
     "@w5-ui/svelte": "workspace:*",
     "@w5-ui/tokens": "workspace:*",
+    "@xyflow/svelte": "^1.5.2",
     "dashboard-svelte": "workspace:*",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
