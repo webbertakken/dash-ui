@@ -1,6 +1,6 @@
 {
   "name": "@w5-ui/fleet",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fleet-board: a grouped SvelteFlow topology canvas + drill-down panel for operator dashboards, driven by an injectable backend contract. Part of Webber's design systems.",
   "keywords": [
     "svelte",
