@@ -42,8 +42,10 @@ jobs:
 
       - name: Upgrade npm to a Trusted Publishing-aware version
         # Node 22 ships with npm 10.x. Trusted Publishing (OIDC exchange) needs
-        # npm >= 11.5.1.
-        run: npm install -g npm@latest
+        # npm >= 11.5.1. Pin to the 11.x line: npm@latest (12.x) requires
+        # node >= 22.22.2, newer than the mise-pinned toolchain, and would
+        # fail to install here.
+        run: npm install -g npm@^11
 
       - name: Install deps
         env:
