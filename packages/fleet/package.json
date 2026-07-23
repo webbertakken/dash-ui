@@ -1,0 +1,59 @@
+{
+  "name": "@w5-ui/fleet",
+  "version": "0.1.0",
+  "description": "Fleet-board: a grouped SvelteFlow topology canvas + drill-down panel for operator dashboards, driven by an injectable backend contract. Part of Webber's design systems.",
+  "keywords": [
+    "svelte",
+    "svelteflow",
+    "topology",
+    "fleet",
+    "dashboard",
+    "design-system",
+    "dash-ui"
+  ],
+  "author": "Webber Takken (https://github.com/webbertakken)",
+  "license": "MIT",
+  "homepage": "https://github.com/webbertakken/dash-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webbertakken/dash-ui.git",
+    "directory": "packages/fleet"
+  },
+  "bugs": "https://github.com/webbertakken/dash-ui/issues",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.svelte"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "svelte": "./src/lib/index.ts",
+  "main": "./src/lib/index.ts",
+  "types": "./src/lib/index.ts",
+  "exports": {
+    ".": {
+      "svelte": "./src/lib/index.ts",
+      "types": "./src/lib/index.ts",
+      "default": "./src/lib/index.ts"
+    },
+    "./components/*.svelte": "./src/lib/components/*.svelte"
+  },
+  "peerDependencies": {
+    "@xyflow/svelte": "^1",
+    "svelte": "^5"
+  },
+  "dependencies": {
+    "@w5-ui/svelte": "workspace:*",
+    "@w5-ui/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@xyflow/svelte": "^1.5.2",
+    "svelte": "^5.56.4",
+    "typescript": "^5.5.0"
+  },
+  "files": [
+    "src/lib/**"
+  ]
+}
