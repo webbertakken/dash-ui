@@ -6,25 +6,25 @@ import {
   rollupStatus,
   statusToColor,
 } from './helpers.ts'
-import { COMPONENTS, GROUPS, component, statusMap } from './test-fixtures.ts'
+import { COMPONENTS, GROUPS, component, keyed, statusMap } from './test-fixtures.ts'
 import type { Status } from './types.ts'
 
 describe('groupedComponents', () => {
   it('returns one bucket per group, every component placed exactly once', () => {
     const grouped = groupedComponents(COMPONENTS, GROUPS)
-    const total = GROUPS.reduce((sum, g) => sum + grouped[g.id].length, 0)
+    const total = GROUPS.reduce((sum, g) => sum + keyed(grouped, g.id).length, 0)
     expect(total).toBe(COMPONENTS.length)
   })
 
   it('preserves declaration order inside each group', () => {
     const grouped = groupedComponents(COMPONENTS, GROUPS)
-    expect(grouped.alpha.map((c) => c.id)).toEqual(['a1', 'a2'])
+    expect(keyed(grouped, 'alpha').map((c) => c.id)).toEqual(['a1', 'a2'])
   })
 
   it('creates a bucket for a component whose group is not in the groups list', () => {
     const orphan = component({ id: 'z1', group: 'zeta' })
     const grouped = groupedComponents([...COMPONENTS, orphan], GROUPS)
-    expect(grouped['zeta'].map((c) => c.id)).toEqual(['z1'])
+    expect(keyed(grouped, 'zeta').map((c) => c.id)).toEqual(['z1'])
   })
 })
 
@@ -52,7 +52,7 @@ describe('rollupStatus', () => {
 
   it('excludes decommissioned members', () => {
     const dead = component({ id: 'ghost', group: 'alpha', decommissioned: true })
-    const withDead = { ...grouped, alpha: [dead, ...grouped.alpha] }
+    const withDead = { ...grouped, alpha: [dead, ...keyed(grouped, 'alpha')] }
     expect(rollupStatus('alpha', statusMap({ ghost: 'down' }), withDead)).toBe('up')
   })
 
@@ -81,7 +81,7 @@ describe('groupCounts', () => {
 
   it('excludes decommissioned from the total', () => {
     const dead = component({ id: 'ghost', group: 'alpha', decommissioned: true })
-    const withDead = { ...grouped, alpha: [dead, ...grouped.alpha] }
+    const withDead = { ...grouped, alpha: [dead, ...keyed(grouped, 'alpha')] }
     expect(groupCounts('alpha', statusMap({}), withDead)).toEqual({ reachable: 2, total: 2 })
   })
 })

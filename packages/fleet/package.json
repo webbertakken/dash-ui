@@ -49,11 +49,15 @@
     "@w5-ui/tokens": "workspace:*"
   },
   "devDependencies": {
+    "@tsconfig/svelte": "^5.0.4",
     "@xyflow/svelte": "^1.5.2",
     "svelte": "^5.56.4",
     "typescript": "^5.5.0"
   },
   "files": [
     "src/lib/**"
-  ]
+  ],
+  "scripts": {
+    "typecheck": "yarn run -T tsgo --noEmit"
+  }
 }
