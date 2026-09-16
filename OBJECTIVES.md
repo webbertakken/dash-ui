@@ -14,10 +14,24 @@ more like the intended design, as shown in the "Dashboard" section in Storybook.
 
 ## Success criteria
 
-A row in `results.tsv` is `keep` only if the change improves at least one of:
+### Hard gate: total gzipped size must go down
+
+Total gzipped JS across the shipped packages is the headline metric in `results.tsv`.
+
+- An iteration is `keep` only if total gzipped size is **lower than the previous `keep` row**. Equal
+  is not good enough.
+- An iteration that raises total gzipped size is `fail`. Revert it and move on.
+- Adding functionality is not an excuse to grow. The target is more capability for fewer bytes: earn
+  every addition by deleting, merging or simplifying something else in the same iteration.
+
+This gate is not optional and not tradeable against the criteria below. A change that improves
+documentation but grows the bundle is still `fail`.
+
+### Additional criteria
+
+On top of shrinking, a `keep` row must improve at least one of:
 
 - _e.g. Lighthouse performance score on `/` ≥ 90 (was: TBD baseline)_
-- _e.g. Total JS for `dashboard-react` < 200 KB gzipped_
 - _e.g. All pages render without console errors_
 - _e.g. Visual parity between React and Svelte on Dashboard, Devices, Clients_
 - _e.g. Visual regression testing shows clear improvement to before_
