@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { groupedComponents } from './helpers.ts'
-import { COMPONENTS, GROUPS, component, statusMap } from './test-fixtures.ts'
+import { COMPONENTS, GROUPS, at, component, keyed, statusMap } from './test-fixtures.ts'
 import {
   buildGroupedTopology,
   buildTopologyEdges,
@@ -64,8 +64,8 @@ describe('rowsByDepth', () => {
       component({ id: 'b' }),
       component({ id: 'c', upstreams: ['a'] }),
     ])
-    expect(rows[0].map((x) => x.id)).toEqual(['a', 'b'])
-    expect(rows[1].map((x) => x.id)).toEqual(['c'])
+    expect(at(rows, 0).map((x) => x.id)).toEqual(['a', 'b'])
+    expect(at(rows, 1).map((x) => x.id)).toEqual(['c'])
   })
 
   it('returns [[]] when there are no components', () => {
@@ -88,8 +88,8 @@ describe('buildTopologyNodes', () => {
       components: [component({ id: 'a' }), component({ id: 'b' }), component({ id: 'c' })],
     })
     const expectedLeft = -(3 * TOPO_X_STEP - TOPO_X_GAP) / 2
-    expect(nodes[0].position.x).toBe(expectedLeft)
-    expect(nodes[2].position.x).toBe(expectedLeft + 2 * TOPO_X_STEP)
+    expect(at(nodes, 0).position.x).toBe(expectedLeft)
+    expect(at(nodes, 2).position.x).toBe(expectedLeft + 2 * TOPO_X_STEP)
   })
 
   it('clusters cards within a row by group order', () => {
@@ -131,10 +131,10 @@ describe('buildTopologyNodes', () => {
       statusFor: statusMap({ a: { status: 'down', details: { model: 'x.gguf' } } }),
       components: [component({ id: 'a', decommissioned: true })],
     })
-    expect(nodes[0].data.status).toBe('down')
-    expect(nodes[0].data.decommissioned).toBe(true)
-    expect(nodes[0].data.subtitle).toBe('model: x.gguf')
-    expect(nodes[0].data.details).toEqual({ model: 'x.gguf' })
+    expect(at(nodes, 0).data.status).toBe('down')
+    expect(at(nodes, 0).data.decommissioned).toBe(true)
+    expect(at(nodes, 0).data.subtitle).toBe('model: x.gguf')
+    expect(at(nodes, 0).data.details).toEqual({ model: 'x.gguf' })
   })
 
   it('subtitle is undefined when there are no details', () => {
@@ -142,7 +142,7 @@ describe('buildTopologyNodes', () => {
       statusFor: statusMap(),
       components: [component({ id: 'a' })],
     })
-    expect(nodes[0].data.subtitle).toBeUndefined()
+    expect(at(nodes, 0).data.subtitle).toBeUndefined()
   })
 
   it('applies cardExtras (chips + openUrl) to node.data', () => {
@@ -151,8 +151,8 @@ describe('buildTopologyNodes', () => {
       components: [component({ id: 'a' })],
       cardExtras: (c) => ({ openUrl: `https://open/${c.id}`, chips: [{ label: 'x' }] }),
     })
-    expect(nodes[0].data.openUrl).toBe('https://open/a')
-    expect(nodes[0].data.chips).toEqual([{ label: 'x' }])
+    expect(at(nodes, 0).data.openUrl).toBe('https://open/a')
+    expect(at(nodes, 0).data.chips).toEqual([{ label: 'x' }])
   })
 
   it('every node carries explicit width/height', () => {
@@ -160,8 +160,8 @@ describe('buildTopologyNodes', () => {
       statusFor: statusMap(),
       components: [component({ id: 'a' })],
     })
-    expect(nodes[0].width).toBe(TOPO_NODE_WIDTH)
-    expect(nodes[0].height).toBe(TOPO_NODE_HEIGHT)
+    expect(at(nodes, 0).width).toBe(TOPO_NODE_WIDTH)
+    expect(at(nodes, 0).height).toBe(TOPO_NODE_HEIGHT)
   })
 })
 
@@ -198,7 +198,10 @@ describe('buildGroupedTopology', () => {
       groups: GROUPS,
       grouped,
       rollupFor: (_g: GroupId): Status => 'up',
-      countsFor: (g: GroupId) => ({ reachable: grouped[g].length, total: grouped[g].length }),
+      countsFor: (g: GroupId) => ({
+        reachable: keyed(grouped, g).length,
+        total: keyed(grouped, g).length,
+      }),
       ...over,
     }
   }
@@ -323,7 +326,7 @@ describe('buildTopologyEdges', () => {
       component({ id: 'a' }),
       component({ id: 'b', upstreams: ['a'] }),
     ])
-    expect(edges[0].type).toBe('smoothstep')
+    expect(at(edges, 0).type).toBe('smoothstep')
   })
 
   it('flags cross-group edges with a dashed stroke', () => {
@@ -331,7 +334,7 @@ describe('buildTopologyEdges', () => {
       component({ id: 'a', group: 'g1' }),
       component({ id: 'b', group: 'g2', upstreams: ['a'] }),
     ])
-    expect(edges[0].style).toMatch(/dasharray/)
+    expect(at(edges, 0).style).toMatch(/dasharray/)
   })
 
   it('returns an empty list when there are no upstreams', () => {

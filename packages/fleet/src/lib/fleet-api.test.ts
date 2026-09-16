@@ -5,11 +5,12 @@ import {
   decodeResources,
   decodeStatusReport,
 } from './fleet-api.ts'
+import { keyed, present } from './test-fixtures.ts'
 
 describe('decodeStatusReport', () => {
   it('accepts a report with a components object', () => {
     const r = decodeStatusReport({ ts: 1, components: { a: { status: 'up' } } })
-    expect(r?.components.a.status).toBe('up')
+    expect(keyed(present(r, 'report').components, 'a').status).toBe('up')
   })
 
   it('rejects a non-object or a report without components', () => {
