@@ -331,44 +331,44 @@ describe('ensureAccessibleName', () => {
   it('names an icon-only control after the tooltip', () => {
     const root = mount('<button><svg></svg></button>')
     ensureAccessibleName(root, 'Zoom in')
-    expect(root.querySelector('button')).toHaveAttribute('aria-label', 'Zoom in')
+    expect(root.querySelector('button')?.getAttribute('aria-label')).toBe('Zoom in')
   })
 
   it('finds a nested control', () => {
     const root = mount('<span><a href="#x"><svg></svg></a></span>')
     ensureAccessibleName(root, 'Open')
-    expect(root.querySelector('a')).toHaveAttribute('aria-label', 'Open')
+    expect(root.querySelector('a')?.getAttribute('aria-label')).toBe('Open')
   })
 
   it('keeps an existing aria-label', () => {
     const root = mount('<button aria-label="Mine"><svg></svg></button>')
     ensureAccessibleName(root, 'Zoom in')
-    expect(root.querySelector('button')).toHaveAttribute('aria-label', 'Mine')
+    expect(root.querySelector('button')?.getAttribute('aria-label')).toBe('Mine')
   })
 
   it('keeps an existing aria-labelledby', () => {
     const root = mount('<button aria-labelledby="n"><svg></svg></button>')
     ensureAccessibleName(root, 'Zoom in')
-    expect(root.querySelector('button')).not.toHaveAttribute('aria-label')
+    expect(root.querySelector('button')?.hasAttribute('aria-label')).toBe(false)
   })
 
   it('leaves visible text as the name', () => {
     const root = mount('<button>Save</button>')
     ensureAccessibleName(root, 'Save')
-    expect(root.querySelector('button')).not.toHaveAttribute('aria-label')
+    expect(root.querySelector('button')?.hasAttribute('aria-label')).toBe(false)
   })
 
   it('updates a label it set itself when the tooltip changes', () => {
     const root = mount('<button><svg></svg></button>')
     ensureAccessibleName(root, 'Map view')
     ensureAccessibleName(root, 'List view')
-    expect(root.querySelector('button')).toHaveAttribute('aria-label', 'List view')
+    expect(root.querySelector('button')?.getAttribute('aria-label')).toBe('List view')
   })
 
   it('ignores non-interactive content', () => {
     const root = mount('<span><svg></svg></span>')
     ensureAccessibleName(root, 'Icon')
-    expect(root.querySelector('span')).not.toHaveAttribute('aria-label')
+    expect(root.querySelector('span')?.hasAttribute('aria-label')).toBe(false)
   })
 
   it('looks through a slot into its assigned elements', () => {
@@ -378,7 +378,7 @@ describe('ensureAccessibleName', () => {
     const shadow = host.attachShadow({ mode: 'open' })
     shadow.innerHTML = '<span><slot></slot></span>'
     ensureAccessibleName(shadow.querySelector('span')!, 'Help')
-    expect(host.querySelector('button')).toHaveAttribute('aria-label', 'Help')
+    expect(host.querySelector('button')?.getAttribute('aria-label')).toBe('Help')
   })
 
   it('tolerates a missing root', () => {
