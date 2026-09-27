@@ -13,7 +13,7 @@
 
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { appLogos, type AppLogoKey } from '@w5-ui/assets';
+  import { appLogos } from '@w5-ui/assets';
 
   /** Resolve an `AppLogo` to an `<img src>` URL. Known keys go
    *  through the bundled `appLogos` map; anything else is treated as
@@ -23,6 +23,8 @@
     return logo
   }
   import IconButton from './IconButton.svelte';
+  import Tooltip from './Tooltip.svelte';
+  import HoverCard from './HoverCard.svelte';
   import Avatar from './Avatar.svelte';
   import CaretIcon from '../icons/CaretIcon.svelte';
   import SearchIcon from '../icons/SearchIcon.svelte';
@@ -141,56 +143,56 @@
 <header
   class="flex h-12 shrink-0 items-center gap-0 bg-bg-page px-2"
 >
-  {#if siteSwitchable}
-    <button
-      type="button"
-      class="flex shrink-0 cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 max-md:px-1.5"
-      aria-label="Switch site: {siteName}"
-      aria-haspopup="menu"
-      title={`${siteName} — status: ${status}`}
-    >
-      {#if siteLogo !== undefined}
-        <span class="relative inline-flex h-6 w-6 items-center justify-center">
-          <span
-            data-testid="site-logo-glow"
-            aria-hidden="true"
-            class="pointer-events-none absolute -inset-1.5 rounded-full transition-opacity duration-300"
-            style={logoGlowStyle}
-          ></span>
-          <span class={`relative ${logoRingClass}`} aria-hidden="true">
-            <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+  <HoverCard heading={siteName} description={`Status: ${status}`} class="shrink-0">
+    {#if siteSwitchable}
+      <button
+        type="button"
+        class="flex shrink-0 cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 max-md:px-1.5"
+        aria-label="Switch site: {siteName}"
+        aria-haspopup="menu"
+      >
+        {#if siteLogo !== undefined}
+          <span class="relative inline-flex h-6 w-6 items-center justify-center">
+            <span
+              data-testid="site-logo-glow"
+              aria-hidden="true"
+              class="pointer-events-none absolute -inset-1.5 rounded-full transition-opacity duration-300"
+              style={logoGlowStyle}
+            ></span>
+            <span class={`relative ${logoRingClass}`} aria-hidden="true">
+              <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+            </span>
           </span>
-        </span>
-      {:else}
-        <span class={ringWrapClass}><span class={ringDotClass}></span></span>
-      {/if}
-      <span class="text-13 font-medium text-text-1 max-md:hidden" aria-hidden="true">{siteName}</span>
-      <CaretIcon class="h-3.5 w-3.5 text-text-3 max-md:hidden" />
-    </button>
-  {:else}
-    <div
-      class="flex shrink-0 items-center gap-2 px-2.5 py-1.5 max-md:px-1.5"
-      role="presentation"
-      title={`${siteName} — status: ${status}`}
-    >
-      {#if siteLogo !== undefined}
-        <span class="relative inline-flex h-6 w-6 items-center justify-center">
-          <span
-            data-testid="site-logo-glow"
-            aria-hidden="true"
-            class="pointer-events-none absolute -inset-1.5 rounded-full transition-opacity duration-300"
-            style={logoGlowStyle}
-          ></span>
-          <span class={`relative ${logoRingClass}`} aria-hidden="true">
-            <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+        {:else}
+          <span class={ringWrapClass}><span class={ringDotClass}></span></span>
+        {/if}
+        <span class="text-13 font-medium text-text-1 max-md:hidden" aria-hidden="true">{siteName}</span>
+        <CaretIcon class="h-3.5 w-3.5 text-text-3 max-md:hidden" />
+      </button>
+    {:else}
+      <div
+        class="flex shrink-0 items-center gap-2 px-2.5 py-1.5 max-md:px-1.5"
+        role="presentation"
+      >
+        {#if siteLogo !== undefined}
+          <span class="relative inline-flex h-6 w-6 items-center justify-center">
+            <span
+              data-testid="site-logo-glow"
+              aria-hidden="true"
+              class="pointer-events-none absolute -inset-1.5 rounded-full transition-opacity duration-300"
+              style={logoGlowStyle}
+            ></span>
+            <span class={`relative ${logoRingClass}`} aria-hidden="true">
+              <img src={resolveLogo(siteLogo)} alt="" width="24" height="24" class="h-full w-full object-cover" />
+            </span>
           </span>
-        </span>
-      {:else}
-        <span class={ringWrapClass}><span class={ringDotClass}></span></span>
-      {/if}
-      <span class="text-13 font-medium text-text-1 max-md:hidden">{siteName}</span>
-    </div>
-  {/if}
+        {:else}
+          <span class={ringWrapClass}><span class={ringDotClass}></span></span>
+        {/if}
+        <span class="text-13 font-medium text-text-1 max-md:hidden">{siteName}</span>
+      </div>
+    {/if}
+  </HoverCard>
 
   <!--
     Apps nav. On phones (< md) the fixed-width app buttons can exceed
@@ -234,24 +236,25 @@
     {#if actions}
       {@render actions()}
     {:else}
-      <IconButton aria-label="Search" title="Search"><SearchIcon /></IconButton>
-      <IconButton aria-label="Updates" title="Updates"><UpdatesIcon /></IconButton>
-      <IconButton
-        aria-label={notificationCount > 0
-          ? `Notifications, ${notificationCount} new`
-          : 'Notifications'}
-        title="Notifications"
-        class="relative"
-      >
-        <BellIcon />
-        {#if notificationCount > 0}
-          <span
-            aria-hidden="true"
-            class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border-[1.5px] border-bg-page bg-status-danger"
-          ></span>
-        {/if}
-      </IconButton>
-      <IconButton aria-label="Help" title="Help"><HelpIcon /></IconButton>
+      <Tooltip label="Search" placement="bottom"><IconButton aria-label="Search"><SearchIcon /></IconButton></Tooltip>
+      <Tooltip label="Updates" placement="bottom"><IconButton aria-label="Updates"><UpdatesIcon /></IconButton></Tooltip>
+      <Tooltip label="Notifications" placement="bottom">
+        <IconButton
+          aria-label={notificationCount > 0
+            ? `Notifications, ${notificationCount} new`
+            : 'Notifications'}
+          class="relative"
+        >
+          <BellIcon />
+          {#if notificationCount > 0}
+            <span
+              aria-hidden="true"
+              class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border-[1.5px] border-bg-page bg-status-danger"
+            ></span>
+          {/if}
+        </IconButton>
+      </Tooltip>
+      <Tooltip label="Help" placement="bottom"><IconButton aria-label="Help"><HelpIcon /></IconButton></Tooltip>
       <Avatar initials={initials} size="sm" alt="Account, {initials}" class="ml-1" />
     {/if}
   </div>

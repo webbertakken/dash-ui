@@ -4910,8 +4910,11 @@ tr:hover .action-menu-trigger,
 .banner__action:hover {
   opacity: 1;
 }
-.banner__dismiss {
+.banner__dismiss-tip {
   margin-left: 4px;
+  flex-shrink: 0;
+}
+.banner__dismiss {
   flex-shrink: 0;
   width: 24px;
   height: 24px;
@@ -6462,8 +6465,11 @@ tr:hover .action-menu-trigger,
 .alert-body {
   flex: 1;
 }
-.alert-dismiss {
+.alert-dismiss-tip {
   margin-left: auto;
+  flex-shrink: 0;
+}
+.alert-dismiss {
   width: 24px;
   height: 24px;
   flex-shrink: 0;

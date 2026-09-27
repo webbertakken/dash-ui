@@ -20,6 +20,8 @@
 </script>
 
 <script lang="ts">
+  import Tooltip from './Tooltip.svelte';
+
   interface Props {
     label?: string;
     srOnlyLabel?: boolean;
@@ -76,7 +78,8 @@
     {#each swatches as sw, i}
       {@const checked = sw.value === value}
       {@const tabIdx = checked || (i === 0 && !hasMatch) ? 0 : -1}
-      <label class="group/sw inline-flex cursor-pointer" title={sw.label}>
+      <Tooltip label={sw.label}>
+      <label class="group/sw inline-flex cursor-pointer">
         <input
           type="radio"
           name={groupId}
@@ -97,6 +100,7 @@
           aria-hidden="true"
         ></span>
       </label>
+      </Tooltip>
     {/each}
   </div>
 </div>
