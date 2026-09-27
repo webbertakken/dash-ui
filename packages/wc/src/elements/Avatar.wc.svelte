@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-avatar" />
+<svelte:options customElement={{ tag: "uni-avatar", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Avatar.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     initials = '?',
     src = undefined,

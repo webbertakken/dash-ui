@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-calendar-heatmap" />
+<svelte:options customElement={{ tag: "uni-calendar-heatmap", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/CalendarHeatmap.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     data = [],
     maxValue = undefined,

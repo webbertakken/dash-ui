@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-bubble-chart" />
+<svelte:options customElement={{ tag: "uni-bubble-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/BubbleChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     points = [],
     xRange = undefined,

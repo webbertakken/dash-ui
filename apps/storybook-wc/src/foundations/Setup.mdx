@@ -77,6 +77,10 @@ import '@w5-ui/wc' // side-effect register for all uni-* elements
 // then mount your framework-of-choice, or just render plain HTML
 ```
 
+`styles.css` styles the page (tokens, `.app` / `.grid` / `.card`). The elements style their own
+shadow roots: the bundle adopts the components' compiled CSS into each one, so a page without
+Tailwind still renders every `uni-*` element exactly like the Svelte build.
+
 Two things go wrong here often enough to call out:
 
 - **Duplicate imports.** If you also `import '@w5-ui/tokens/tokens.css'` somewhere later, the

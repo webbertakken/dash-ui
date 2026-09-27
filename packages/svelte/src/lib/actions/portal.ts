@@ -1,7 +1,8 @@
 import type { Action } from 'svelte/action'
 
 /**
- * Move a DOM node into `target` (default: `document.body`) for the
+ * Move a DOM node into `target` (default: `document.body`, or the enclosing
+ * shadow root when the node renders inside one) for the
  * lifetime of the action. Used by floating UI primitives so
  * `position: fixed` + `z-index` always escape:
  *
@@ -25,10 +26,15 @@ import type { Action } from 'svelte/action'
  */
 export const portal: Action<HTMLElement, HTMLElement | string | undefined> = (
   node,
-  target = 'body',
+  target = undefined,
 ) => {
-  const resolveTarget = (value: HTMLElement | string | undefined): HTMLElement | null => {
-    if (value === undefined) return document.body
+  // Inside a shadow root (the @w5-ui/wc custom elements) the default target is
+  // that shadow root: its adopted stylesheet does not reach document.body.
+  const resolveTarget = (value: HTMLElement | string | undefined): Node | null => {
+    if (value === undefined) {
+      const root = node.getRootNode()
+      return root instanceof ShadowRoot ? root : document.body
+    }
     if (typeof value === 'string') {
       return document.querySelector<HTMLElement>(value)
     }

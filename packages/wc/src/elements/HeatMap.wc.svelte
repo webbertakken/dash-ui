@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-heat-map" />
+<svelte:options customElement={{ tag: "uni-heat-map", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/HeatMap.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     data = [],
     colors = ['#1B2D5A', '#3F7BC4', '#7FB6FF', '#F5C26B', '#F5A623', '#FF7B7B'],

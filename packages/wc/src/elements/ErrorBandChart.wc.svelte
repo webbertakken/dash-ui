@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-error-band-chart" />
+<svelte:options customElement={{ tag: "uni-error-band-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/ErrorBandChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     xLabels = [],

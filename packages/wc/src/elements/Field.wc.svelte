@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-field" />
+<svelte:options customElement={{ tag: "uni-field", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Field.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     value = '',

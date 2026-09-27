@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-beeswarm-chart" />
+<svelte:options customElement={{ tag: "uni-beeswarm-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/BeeswarmChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     yRange = undefined,

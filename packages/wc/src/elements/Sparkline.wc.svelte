@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-sparkline" />
+<svelte:options customElement={{ tag: "uni-sparkline", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Sparkline.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     bars = 36,
     active = false,

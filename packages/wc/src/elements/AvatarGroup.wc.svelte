@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-avatar-group" />
+<svelte:options customElement={{ tag: "uni-avatar-group", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/AvatarGroup.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     avatars = [],
     max = 5,

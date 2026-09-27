@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-h2" />
+<svelte:options customElement={{ tag: "uni-h2", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/H2.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     class: className = ''
   } = $props();

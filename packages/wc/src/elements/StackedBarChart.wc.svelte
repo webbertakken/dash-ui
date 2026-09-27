@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-stacked-bar-chart" />
+<svelte:options customElement={{ tag: "uni-stacked-bar-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/StackedBarChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     labels = [],

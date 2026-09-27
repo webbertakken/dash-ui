@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-horizon-chart" />
+<svelte:options customElement={{ tag: "uni-horizon-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/HorizonChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     xLabels = undefined,

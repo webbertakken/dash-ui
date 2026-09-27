@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-line-chart" />
+<svelte:options customElement={{ tag: "uni-line-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/LineChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     labels = [],

@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-radio-group" />
+<svelte:options customElement={{ tag: "uni-radio-group", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/RadioGroup.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     legend = undefined,
     name = undefined,
