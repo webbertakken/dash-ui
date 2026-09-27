@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-dendrogram" />
+<svelte:options customElement={{ tag: "uni-dendrogram", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Dendrogram.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     root = undefined,
     colWidth = 130,

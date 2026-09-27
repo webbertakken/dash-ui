@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-funnel-chart" />
+<svelte:options customElement={{ tag: "uni-funnel-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/FunnelChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     segments = [],
     height = 160,

@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-display2" />
+<svelte:options customElement={{ tag: "uni-display2", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Display2.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     class: className = ''
   } = $props();

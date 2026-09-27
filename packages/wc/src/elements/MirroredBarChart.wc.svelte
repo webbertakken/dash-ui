@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-mirrored-bar-chart" />
+<svelte:options customElement={{ tag: "uni-mirrored-bar-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/MirroredBarChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     items = [],
     leftLabel = 'Download',

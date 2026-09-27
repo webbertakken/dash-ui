@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-punch-card" />
+<svelte:options customElement={{ tag: "uni-punch-card", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/PunchCard.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     data = undefined,
     rowLabels = undefined,

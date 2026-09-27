@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-select" />
+<svelte:options customElement={{ tag: "uni-select", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Select.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     options = [],
     value = undefined,

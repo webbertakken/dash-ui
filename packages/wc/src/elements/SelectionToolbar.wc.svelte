@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-selection-toolbar" />
+<svelte:options customElement={{ tag: "uni-selection-toolbar", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/SelectionToolbar.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     count = undefined,
     actions = [],

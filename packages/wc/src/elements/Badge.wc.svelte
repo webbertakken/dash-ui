@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-badge" />
+<svelte:options customElement={{ tag: "uni-badge", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Badge.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     count = undefined,
     dot = false,

@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-number-input" />
+<svelte:options customElement={{ tag: "uni-number-input", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/NumberInput.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     value = 0,

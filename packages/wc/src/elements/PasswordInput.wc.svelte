@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-password-input" />
+<svelte:options customElement={{ tag: "uni-password-input", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/PasswordInput.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     value = '',

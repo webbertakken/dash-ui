@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-multi-select" />
+<svelte:options customElement={{ tag: "uni-multi-select", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/MultiSelect.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     options = [],
     value = [],

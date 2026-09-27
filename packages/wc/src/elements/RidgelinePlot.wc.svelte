@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-ridgeline-plot" />
+<svelte:options customElement={{ tag: "uni-ridgeline-plot", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/RidgelinePlot.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     xRange = undefined,

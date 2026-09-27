@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-field-stack" />
+<svelte:options customElement={{ tag: "uni-field-stack", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/FieldStack.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     class: className = ''
   } = $props();

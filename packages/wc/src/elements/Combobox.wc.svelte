@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-combobox" />
+<svelte:options customElement={{ tag: "uni-combobox", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Combobox.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     options = [],
     value = undefined,

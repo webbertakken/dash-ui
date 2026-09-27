@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-topbar" />
+<svelte:options customElement={{ tag: "uni-topbar", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Topbar.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     siteName = undefined,
     activeApp = undefined,

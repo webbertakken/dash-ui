@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-bar-chart" />
+<svelte:options customElement={{ tag: "uni-bar-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/BarChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     labels = [],

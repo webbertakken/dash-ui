@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-donut" />
+<svelte:options customElement={{ tag: "uni-donut", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Donut.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     size = 96,
     segments = [],

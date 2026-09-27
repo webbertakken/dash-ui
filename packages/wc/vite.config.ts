@@ -1,9 +1,12 @@
 import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
+    // 0. Compiles src/shadow.css (imported ?inline by styled.ts) with Tailwind.
+    tailwindcss(),
     // 1. Custom-element wrappers from packages/wc/src/elements
     svelte({
       compilerOptions: {

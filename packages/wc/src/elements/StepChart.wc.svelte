@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-step-chart" />
+<svelte:options customElement={{ tag: "uni-step-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/StepChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     labels = [],

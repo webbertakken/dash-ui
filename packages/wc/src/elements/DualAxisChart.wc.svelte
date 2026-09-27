@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-dual-axis-chart" />
+<svelte:options customElement={{ tag: "uni-dual-axis-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/DualAxisChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     bars = undefined,
     line = undefined,

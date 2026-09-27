@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-contextual-help" />
+<svelte:options customElement={{ tag: "uni-contextual-help", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/ContextualHelp.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     title = undefined,
     body = undefined,

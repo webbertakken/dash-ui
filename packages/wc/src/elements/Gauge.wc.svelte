@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-gauge" />
+<svelte:options customElement={{ tag: "uni-gauge", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Gauge.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     value = 0,
     label = '',
