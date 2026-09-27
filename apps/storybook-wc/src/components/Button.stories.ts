@@ -45,7 +45,7 @@ export const Variant2: Story = {
 export const Variant3: Story = {
   name: 'iconOnly',
   render: () => {
-    const props: Record<string, unknown> = { iconOnly: true, title: 'x' }
+    const props: Record<string, unknown> = { iconOnly: true, 'aria-label': 'Export' }
     const el = document.createElement('uni-button') as HTMLElement & Record<string, unknown>
     for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'x'

@@ -6,7 +6,16 @@ const variants = FIXTURES.Popover!
 
 const meta: Meta = {
   title: 'Selection & menus/Popover',
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'A **click-opened**, interactive surface anchored to its trigger: menus, pickers, filters. Focus moves into the panel and returns to the trigger; closes on outside click and `Escape`. For a control’s name use a Tooltip; for read-only extra detail on hover use a HoverCard.',
+      },
+    },
+  },
+  tags: ['autodocs'],
 }
 export default meta
 

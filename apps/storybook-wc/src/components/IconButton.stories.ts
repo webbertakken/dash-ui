@@ -12,18 +12,7 @@ type Story = StoryObj
 export const Variant0: Story = {
   name: 'default',
   render: () => {
-    const props: Record<string, unknown> = { title: 'x' }
-    const el = document.createElement('uni-icon-button') as HTMLElement & Record<string, unknown>
-    for (const [k, v] of Object.entries(props)) el[k] = v
-    el.textContent = 'x'
-    return el
-  },
-}
-
-export const Variant1: Story = {
-  name: 'aria',
-  render: () => {
-    const props: Record<string, unknown> = {}
+    const props: Record<string, unknown> = { 'aria-label': 'Search' }
     const el = document.createElement('uni-icon-button') as HTMLElement & Record<string, unknown>
     for (const [k, v] of Object.entries(props)) el[k] = v
     el.textContent = 'x'

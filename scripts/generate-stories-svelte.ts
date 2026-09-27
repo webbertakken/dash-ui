@@ -11,6 +11,7 @@ import { mkdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { categoryFor } from '../packages/storybook-meta/src/categories.js'
+import { storyMetaFields } from '../packages/storybook-meta/src/docs.js'
 import { BUNDLES, COMPONENT_NAMES } from '../packages/svelte/test-fixtures/props.js'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
@@ -107,7 +108,7 @@ import { ${exportName} } from '@w5-ui/svelte';
 const meta = {
   title: '${titleCategory}/${fixtureName}',
   component: ${exportName},
-  parameters: { layout: 'padded' },
+  ${storyMetaFields(fixtureName)}
 } satisfies Meta<typeof ${exportName}>;
 export default meta;
 

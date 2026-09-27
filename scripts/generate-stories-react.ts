@@ -9,6 +9,7 @@
 import { mkdir, writeFile, readFile, rm } from 'node:fs/promises'
 import path from 'node:path'
 import { categoryFor } from '../packages/storybook-meta/src/categories.js'
+import { storyMetaFields } from '../packages/storybook-meta/src/docs.js'
 
 const fixturesPath = path.resolve('packages/react/test-fixtures/fixtures.tsx')
 const src = await readFile(fixturesPath, 'utf8')
@@ -94,7 +95,7 @@ const variants = FIXTURES.${name}!;
 
 const meta: Meta = {
   title: '${titleCategory}/${name}',
-  parameters: { layout: 'padded' },
+  ${storyMetaFields(name)}
 };
 export default meta;
 

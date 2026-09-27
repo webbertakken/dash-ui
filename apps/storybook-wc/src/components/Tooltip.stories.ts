@@ -3,7 +3,16 @@ import type { Meta, StoryObj } from '@storybook/web-components'
 
 const meta: Meta = {
   title: 'Selection & menus/Tooltip',
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The **name** of a control: short, plain, non-interactive text. Opens after **1 s** of hover, **instantly** on keyboard focus, and on a touch long-press; closes on pointer leave, blur, `Escape` or pressing the control. Never the only carrier of meaning: an icon-only control inside is named after the tooltip, a control with its own name keeps it. Replaces the native `title` attribute. Rich content belongs in a HoverCard; interactive content in a Popover.',
+      },
+    },
+  },
+  tags: ['autodocs'],
 }
 export default meta
 
@@ -12,10 +21,10 @@ type Story = StoryObj
 export const Variant0: Story = {
   name: 'default',
   render: () => {
-    const props: Record<string, unknown> = { label: 't' }
+    const props: Record<string, unknown> = { label: 'Zoom in' }
     const el = document.createElement('uni-tooltip') as HTMLElement & Record<string, unknown>
     for (const [k, v] of Object.entries(props)) el[k] = v
-    el.textContent = 'x'
+    el.textContent = 'Zoom'
     return el
   },
 }

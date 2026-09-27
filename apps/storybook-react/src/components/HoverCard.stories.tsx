@@ -6,7 +6,16 @@ const variants = FIXTURES.HoverCard!
 
 const meta: Meta = {
   title: 'Selection & menus/HoverCard',
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Rich, **non-essential** content about its trigger: a bold `heading`, a `description`, and optional rich `content` (preview, key/value rows). Opens **instantly** on hover and keyboard focus; hoverable, and dismissible with `Escape`. Everything in it must also be reachable elsewhere. A control’s name belongs in a Tooltip; interactive content in a Popover.',
+      },
+    },
+  },
+  tags: ['autodocs'],
 }
 export default meta
 
@@ -20,4 +29,9 @@ export const Variant0: Story = {
 export const Variant1: Story = {
   name: variants[1]!.name,
   render: () => variants[1]!.node,
+}
+
+export const Variant2: Story = {
+  name: variants[2]!.name,
+  render: () => variants[2]!.node,
 }
