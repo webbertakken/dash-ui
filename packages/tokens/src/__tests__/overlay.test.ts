@@ -381,6 +381,20 @@ describe('ensureAccessibleName', () => {
     expect(host.querySelector('button')?.getAttribute('aria-label')).toBe('Help')
   })
 
+  it('reaches into a slotted custom element’s open shadow root', () => {
+    const host = document.createElement('div')
+    document.body.append(host)
+    const iconButton = document.createElement('x-icon-button')
+    host.append(iconButton)
+    iconButton.attachShadow({ mode: 'open' }).innerHTML = '<button><svg></svg></button>'
+    const shadow = host.attachShadow({ mode: 'open' })
+    shadow.innerHTML = '<span><slot></slot></span>'
+    ensureAccessibleName(shadow.querySelector('span')!, 'Zoom in')
+    expect(iconButton.shadowRoot!.querySelector('button')?.getAttribute('aria-label')).toBe(
+      'Zoom in',
+    )
+  })
+
   it('tolerates a missing root', () => {
     expect(() => ensureAccessibleName(null, 'x')).not.toThrow()
   })

@@ -207,15 +207,18 @@ const NAMED_CONTENT = 'img[alt]:not([alt=""]), [aria-label], [aria-labelledby], 
 /** Marks an `aria-label` the tooltip set, so a label change can follow it. */
 const OWNED = 'data-w5-tooltip-name'
 
-function childrenOf(el: Element): Element[] {
-  if (el.localName === 'slot' && 'assignedElements' in el) {
+/** Children in the flattened tree: a slot yields its assigned elements, a
+ *  custom element with an open shadow root (e.g. `uni-icon-button`) its shadow. */
+function childrenOf(el: Element | ShadowRoot): Element[] {
+  if ('localName' in el && el.localName === 'slot' && 'assignedElements' in el) {
     const assigned = (el as HTMLSlotElement).assignedElements({ flatten: true })
     if (assigned.length) return assigned
   }
+  if ('shadowRoot' in el && el.shadowRoot) return Array.from(el.shadowRoot.children)
   return Array.from(el.children)
 }
 
-function findInteractive(el: Element): Element | null {
+function findInteractive(el: Element | ShadowRoot): Element | null {
   for (const child of childrenOf(el)) {
     if (child.matches(INTERACTIVE)) return child
     const nested = findInteractive(child)
