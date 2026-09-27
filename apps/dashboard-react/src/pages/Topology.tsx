@@ -208,7 +208,7 @@ export function Topology(_props: TopologyProps) {
         </div>
 
         <div className="topo-zoom">
-          <Tooltip label="Zoom in" placement="left">
+          <Tooltip label="Zoom in" placement="right">
             <IconButton>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path
@@ -220,14 +220,14 @@ export function Topology(_props: TopologyProps) {
               </svg>
             </IconButton>
           </Tooltip>
-          <Tooltip label="Zoom out" placement="left">
+          <Tooltip label="Zoom out" placement="right">
             <IconButton>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M3 7h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </IconButton>
           </Tooltip>
-          <Tooltip label="Fit to screen" placement="left">
+          <Tooltip label="Fit to screen" placement="right">
             <IconButton>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path

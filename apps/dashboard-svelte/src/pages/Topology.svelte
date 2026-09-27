@@ -172,21 +172,21 @@
   </div>
 
   <div class="topo-zoom">
-    <Tooltip label="Zoom in" placement="left">
+    <Tooltip label="Zoom in" placement="right">
       <IconButton>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
         </svg>
       </IconButton>
     </Tooltip>
-    <Tooltip label="Zoom out" placement="left">
+    <Tooltip label="Zoom out" placement="right">
       <IconButton>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
         </svg>
       </IconButton>
     </Tooltip>
-    <Tooltip label="Fit to screen" placement="left">
+    <Tooltip label="Fit to screen" placement="right">
       <IconButton>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M3 5V3h2M11 5V3H9M3 9v2h2M11 9v2H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
