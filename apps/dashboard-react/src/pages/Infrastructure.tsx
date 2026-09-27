@@ -16,6 +16,7 @@ import {
   CountUp,
   ToggleGroup,
   StackedProgress,
+  Tooltip,
 } from '@w5-ui/react'
 import type {
   GanttTask,
@@ -213,9 +214,11 @@ export function Infrastructure() {
         <div className="ph-actions">
           <Button>All sites</Button>
           <Button>Last 24 h</Button>
-          <Button iconOnly title="Export">
-            <DownloadIcon />
-          </Button>
+          <Tooltip label="Export" placement="bottom">
+            <Button iconOnly>
+              <DownloadIcon />
+            </Button>
+          </Tooltip>
         </div>
       </div>
       <div className="grid">

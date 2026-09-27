@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, Button, Pill, DownloadIcon, ProgressBar, Gauge, Stat, BulletChart, GanttChart, SparklineMatrix, ThresholdAreaChart, QuadrantChart, CorrelationMatrix, FlameGraph, ResizablePanel, CountUp, ToggleGroup, StackedProgress } from '@w5-ui/svelte';
+  import { Card, Button, Tooltip, Pill, DownloadIcon, ProgressBar, Gauge, Stat, BulletChart, GanttChart, SparklineMatrix, ThresholdAreaChart, QuadrantChart, CorrelationMatrix, FlameGraph, ResizablePanel, CountUp, ToggleGroup, StackedProgress } from '@w5-ui/svelte';
   import type { BulletItem, GanttTask, SparklineMatrixRow, QuadrantPoint, FlameNode, StackedProgressSegment } from '@w5-ui/svelte';
 
   const SYSTEM_METRICS: BulletItem[] = [
@@ -131,7 +131,7 @@
   <div class="ph-actions">
     <Button>All sites</Button>
     <Button>Last 24 h</Button>
-    <Button iconOnly title="Export"><DownloadIcon /></Button>
+    <Tooltip label="Export" placement="bottom"><Button iconOnly><DownloadIcon /></Button></Tooltip>
   </div>
 </div>
 <div class="grid">

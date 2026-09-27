@@ -120,13 +120,13 @@
   <div class="ph-actions">
     <SearchBox placeholder="Search devices…" />
     <Button>Auto-arrange</Button>
-    <Button iconOnly title="Export"><DownloadIcon /></Button>
+    <Tooltip label="Export" placement="bottom"><Button iconOnly><DownloadIcon /></Button></Tooltip>
   </div>
 </div>
 <div class="topo">
   <div class="topo-toolbar">
     <Tooltip label="Map view" placement="bottom">
-      <IconButton title="Map" aria-pressed={view === 'map'} onclick={() => (view = 'map')}>
+      <IconButton aria-pressed={view === 'map'} onclick={() => (view = 'map')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <circle cx="7" cy="3" r="1.4" stroke="currentColor" stroke-width="1.4" />
           <circle cx="3" cy="11" r="1.4" stroke="currentColor" stroke-width="1.4" />
@@ -136,14 +136,14 @@
       </IconButton>
     </Tooltip>
     <Tooltip label="List view" placement="bottom">
-      <IconButton title="List" aria-pressed={view === 'list'} onclick={() => (view = 'list')}>
+      <IconButton aria-pressed={view === 'list'} onclick={() => (view = 'list')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M3 3.5h8M3 7h8M3 10.5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
         </svg>
       </IconButton>
     </Tooltip>
     <Tooltip label="Tree view" placement="bottom">
-      <IconButton title="Tree" aria-pressed={view === 'tree'} onclick={() => (view = 'tree')}>
+      <IconButton aria-pressed={view === 'tree'} onclick={() => (view = 'tree')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <circle cx="2.5" cy="7" r="1.5" stroke="currentColor" stroke-width="1.2" />
           <circle cx="11.5" cy="3" r="1.5" stroke="currentColor" stroke-width="1.2" />
@@ -153,37 +153,41 @@
       </IconButton>
     </Tooltip>
     <div class="sep"></div>
-    <IconButton title="Show clients">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <circle cx="7" cy="5" r="2.2" stroke="currentColor" stroke-width="1.5" />
-        <path d="M2.5 11.5c0-2.2 2-4 4.5-4s4.5 1.8 4.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-    </IconButton>
-    <IconButton title="Show RF">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M2 6c2-2 8-2 10 0M3.5 8.2c1.5-1.4 5.5-1.4 7 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-        <circle cx="7" cy="10.5" r="0.9" fill="currentColor" />
-      </svg>
-    </IconButton>
+    <Tooltip label="Show clients" placement="bottom">
+      <IconButton>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="5" r="2.2" stroke="currentColor" stroke-width="1.5" />
+          <path d="M2.5 11.5c0-2.2 2-4 4.5-4s4.5 1.8 4.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </IconButton>
+    </Tooltip>
+    <Tooltip label="Show RF" placement="bottom">
+      <IconButton>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 6c2-2 8-2 10 0M3.5 8.2c1.5-1.4 5.5-1.4 7 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <circle cx="7" cy="10.5" r="0.9" fill="currentColor" />
+        </svg>
+      </IconButton>
+    </Tooltip>
   </div>
 
   <div class="topo-zoom">
     <Tooltip label="Zoom in" placement="left">
-      <IconButton title="Zoom in">
+      <IconButton>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
         </svg>
       </IconButton>
     </Tooltip>
     <Tooltip label="Zoom out" placement="left">
-      <IconButton title="Zoom out">
+      <IconButton>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
         </svg>
       </IconButton>
     </Tooltip>
     <Tooltip label="Fit to screen" placement="left">
-      <IconButton title="Fit">
+      <IconButton>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M3 5V3h2M11 5V3H9M3 9v2h2M11 9v2H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
         </svg>
