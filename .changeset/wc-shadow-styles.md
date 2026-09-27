@@ -20,5 +20,8 @@ Also fixed, in `@w5-ui/svelte` and so in `uni-popover`:
   `aria-expanded`.
 - Inside a shadow root, pressing within the popover panel closed it (the document sees the event
   retargeted to the host); outside-click detection now uses `composedPath()`.
+- `Pagination` painted the current page white on a transparent background (its idle
+  `bg-transparent` won over `bg-brand-05`), invisible in the light motif. Idle and current styles are
+  now exclusive.
 - The `portal` action keeps a node inside its enclosing shadow root by default, so portalled
   panels keep the element's styles. Outside shadow DOM it still portals to `document.body`.
