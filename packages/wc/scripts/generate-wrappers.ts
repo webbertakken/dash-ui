@@ -76,13 +76,11 @@ function extractScriptInfo(src: string): { props: Prop[]; snippetNames: Set<stri
   const body = instance[2]!
   const ifaceMatch = body.match(/interface\s+Props\b[\s\S]*?\{([\s\S]*?)\n\s*\}/m)
   if (!ifaceMatch) return { props, snippetNames }
-  const fields = ifaceMatch[1]!
+  // Strip JSDoc / line comments before splitting: prose such as `control's`
+  // would otherwise open a quote in splitTopLevel and swallow later fields.
+  const fields = ifaceMatch[1]!.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '')
   for (const raw of splitTopLevel(fields, ';')) {
-    // Strip leading JSDoc / line comments before matching the field name.
-    const t = raw
-      .replace(/\/\*[\s\S]*?\*\//g, '')
-      .replace(/^\s*\/\/.*$/gm, '')
-      .trim()
+    const t = raw.trim()
     if (!t) continue
     const m = t.match(/^([A-Za-z_$][\w$]*)\??\s*:\s*([\s\S]+)$/)
     if (!m) continue

@@ -139,7 +139,7 @@ describe('DrillDown', () => {
     const { getByLabelText } = render(DrillDown, {
       props: { component: pm2Comp, result: up, api: fakeApi(), onClose },
     })
-    await fireEvent.click(getByLabelText('close panel'))
+    await fireEvent.click(getByLabelText('Close panel'))
     expect(onClose).toHaveBeenCalled()
   })
 })

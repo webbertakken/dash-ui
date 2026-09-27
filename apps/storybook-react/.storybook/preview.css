@@ -365,6 +365,16 @@ html[data-motif='light'] {
 .sbdocs td {
   color: var(--text-1);
 }
+/* Storybook's docs theme paints tables light (`.css-… tr td` text, `tr:nth-of-type(2n)`
+   rows), out-ranking the rules above: grey text on dark rows, white zebra rows in the
+   dark motif. Out-rank it so every row follows the motif tokens. */
+.sbdocs table tr td,
+.sbdocs table tr th {
+  color: var(--text-1);
+}
+.sbdocs table tbody tr:nth-of-type(n) {
+  background-color: transparent;
+}
 /* Zebra rhythm: foundation lookup tables (ForAgents Tailwind-drift cheat
    sheet, Troubleshooting symptom map) run 25–80 rows of left-vs-right pairs.
    Plain MDX tables make the eye lose its place mid-row. --row-hover is the

@@ -1,4 +1,5 @@
 import { useId, useState, useRef, useCallback } from 'react'
+import { Tooltip } from './Tooltip.js'
 
 export interface ColorSwatchDef {
   value: string
@@ -94,24 +95,26 @@ export function ColorPicker({
           const checked = sw.value === current
           const tabIdx = checked || (i === 0 && !hasMatch) ? 0 : -1
           return (
-            <label key={sw.value} className="color-picker__swatch" title={sw.label}>
-              <input
-                type="radio"
-                name={groupId}
-                value={sw.value}
-                checked={checked}
-                onChange={() => set(sw.value)}
-                disabled={disabled}
-                className="sr-only"
-                tabIndex={tabIdx}
-                aria-label={sw.label}
-              />
-              <span
-                className={`color-picker__circle${checked ? ' color-picker__circle--selected' : ''}`}
-                style={{ background: sw.color }}
-                aria-hidden="true"
-              />
-            </label>
+            <Tooltip key={sw.value} label={sw.label}>
+              <label className="color-picker__swatch">
+                <input
+                  type="radio"
+                  name={groupId}
+                  value={sw.value}
+                  checked={checked}
+                  onChange={() => set(sw.value)}
+                  disabled={disabled}
+                  className="sr-only"
+                  tabIndex={tabIdx}
+                  aria-label={sw.label}
+                />
+                <span
+                  className={`color-picker__circle${checked ? ' color-picker__circle--selected' : ''}`}
+                  style={{ background: sw.color }}
+                  aria-hidden="true"
+                />
+              </label>
+            </Tooltip>
           )
         })}
       </div>

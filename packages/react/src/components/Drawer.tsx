@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { CloseIcon } from '../icons.js'
 import { IconButton } from './Button.js'
+import { Tooltip } from './Tooltip.js'
 
 export interface DrawerProps {
   open: boolean
@@ -70,9 +71,11 @@ export function Drawer({ open, title, onClose, children }: DrawerProps) {
       >
         <div className="drawer-h">
           <h2 id={titleId}>{title}</h2>
-          <IconButton onClick={onClose} aria-label="Close">
-            <CloseIcon />
-          </IconButton>
+          <Tooltip label="Close" placement="left">
+            <IconButton onClick={onClose} aria-label="Close">
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
         </div>
         <div className="drawer-b">{children}</div>
       </div>

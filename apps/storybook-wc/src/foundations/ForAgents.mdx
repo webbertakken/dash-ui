@@ -119,6 +119,8 @@ styles. Radius: `--radius-md` (6 px, default), `--radius-lg` (12 px, modals), `-
 - Wrapper `<div>` around `.grid`, or `display: flex; gap: …` on the page root
 - `border-radius: 50%` on app-logo squircles (use `--radius-app`)
 - `tokens.css` imported without `dashboard.css` (or without `styles.css`)
+- Native `title` as a control's name, a sentence or link inside a tooltip, or a hover-opened menu: a
+  Tooltip names, a HoverCard describes, a Popover is click-opened
 
 ## When something looks "almost right"
 
@@ -296,8 +298,8 @@ the page truly needs something off-scale, surface it as a design fork before shi
 | Hand-rolled stack of overlapping `<img>` thumbs + `+N` chip                                                   | `<uni-avatar-group max="5" size="md" aria-label="Members"></uni-avatar-group>` + `.avatars = […]`                                                       |
 | `<span class="relative">…<span class="absolute -top-1 -right-1 …">3</span></span>`                            | `<uni-badge count="3" max="99" color="danger\|brand\|neutral">…</uni-badge>` (auto `99+`)                                                               |
 | `<span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-status-danger rounded-full" />` notification dot        | `<uni-badge dot color="danger">…</uni-badge>` (or `<uni-notif-dot>` on a `<uni-topbar-actions>` bell)                                                   |
-| `title="…"` attribute (no styling, no a11y wiring) or hand-rolled `position:absolute` bubble                  | `<uni-tooltip label="…" placement="top\|bottom\|left\|right">{trigger}</uni-tooltip>` (`aria-describedby` + `role="tooltip"`)                           |
-| Hand-rolled hover-triggered preview card (`mouseenter` + bespoke `absolute` panel)                            | `<uni-hover-card placement="top" delay="200">…</uni-hover-card>` + `.content` (hover/focus + delay)                                                     |
+| `title="…"` attribute (no styling, no a11y wiring) or hand-rolled `position:absolute` bubble                  | `<uni-tooltip label="…" placement="top\|bottom\|left\|right">{trigger}</uni-tooltip>` (the control's name: 1 s hover, instant keyboard focus, `Escape`) |
+| Hand-rolled hover-triggered preview card (`mouseenter` + bespoke `absolute` panel)                            | `<uni-hover-card heading="…" description="…">{trigger}</uni-hover-card>` (rich, non-essential: opens instantly on hover and focus)                      |
 | `<button>` + bespoke `position:absolute` panel + click-outside listener for a menu                            | `<uni-popover label="Filters" title="…" placement="bottom">…</uni-popover>` (focus trap + ESC + outside-click)                                          |
 | Kebab `<uni-icon-button>` (`⋯`) + hand-rolled `position:absolute` menu + manual roving-tabindex               | `<uni-action-menu label="Row actions"></uni-action-menu>` + `.items = […]` + `action` event (canonical kebab menu + arrow-key roving + ESC)             |
 | `contextmenu` handler + bespoke `position:fixed` panel at `{x, y}` + manual viewport-edge clamp               | `<uni-context-menu open x="…" y="…"></uni-context-menu>` + `.items = […]` + `action` / `close` events                                                   |
@@ -318,7 +320,7 @@ the page truly needs something off-scale, surface it as a design fork before shi
 | Multiple `<uni-toggle>`s in a `<div class="flex gap-1">` for a multi-select toolbar                           | `<uni-toggle-group aria-label="…" size="sm\|md"></uni-toggle-group>` + `.options = […]` + `.value = […]`                                                |
 | Click-to-edit `<span>` swapping to `<input>` on focus with manual confirm/cancel logic                        | `<uni-inline-edit label="…" placeholder="…"></uni-inline-edit>` + `.value` + `confirm` event                                                            |
 | `<uni-button>` + adjacent caret `<uni-icon-button>` + bespoke menu popover for secondary actions              | `<uni-split-button label="Save"></uni-split-button>` + `.items = […]` + `primaryclick` / `action` events                                                |
-| `<uni-icon-button>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" tooltip                      | `<uni-copy-button text="…" label="Copy"></uni-copy-button>` (clipboard + transient confirm + a11y live)                                                 |
+| `<uni-icon-button>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" bubble                       | `<uni-copy-button text="…" label="Copy"></uni-copy-button>` (clipboard + transient confirm + a11y live)                                                 |
 | Hand-rolled "no results" panel (`<div class="text-center py-10 text-text-3">…</div>`)                         | `<uni-empty-state title="…" description="…"></uni-empty-state>` + optional `action` slot                                                                |
 | Hand-rolled wizard progress bar (`<ol class="flex gap-2">` + active/complete CSS state)                       | `<uni-stepper active="2"></uni-stepper>` + `.steps = […]` (`aria-current="step"` + complete/upcoming state)                                             |
 | Four `<input maxlength=3>` octet boxes + manual `.` separator + 0-255 clamp logic                             | `<uni-ip-input label="…" value="10.0.0.1"></uni-ip-input>` (WAI-ARIA spinbutton per octet)                                                              |
@@ -369,7 +371,7 @@ re-deriving the contract:
 | Colour tokens picked wrong (`text-1` vs `text-2`, bg ladder)                                 | **Foundations / Colours**           |
 | Colours wash out / motif flashes                                                             | **Foundations / Motifs**            |
 | Three primaries fighting / wrong `Button` variant / `<uni-icon-button>` missing `aria-label` | **Foundations / Actions**           |
-| Modal / Drawer / Popover / ConfirmDialog drift                                               | **Foundations / Overlays**          |
+| Modal / Drawer / Popover / ConfirmDialog drift, or tooltip vs hover card vs popover          | **Foundations / Overlays**          |
 | Cards have wrong `<h3>` rhythm or `<uni-card-title>` / `<uni-card-more>` missing             | **Foundations / Cards**             |
 | KPI / stats / KVTable / list hierarchy drifts                                                | **Foundations / Data display**      |
 | Status text inconsistent                                                                     | **Foundations / Status & feedback** |

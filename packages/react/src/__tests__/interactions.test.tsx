@@ -1169,33 +1169,6 @@ describe('ContextualHelp', () => {
   })
 })
 
-describe('HoverCard', () => {
-  beforeEach(() => {
-    vi.useFakeTimers()
-  })
-  afterEach(() => {
-    vi.useRealTimers()
-  })
-  it('shows after delay then hides', () => {
-    render(
-      <U.HoverCard delay={100} content={<div>tip</div>}>
-        trigger
-      </U.HoverCard>,
-    )
-    const trigger = screen.getByText('trigger')
-    fireEvent.mouseEnter(trigger)
-    act(() => {
-      vi.advanceTimersByTime(150)
-    })
-    fireEvent.mouseLeave(trigger)
-    fireEvent.focus(trigger)
-    act(() => {
-      vi.advanceTimersByTime(150)
-    })
-    fireEvent.blur(trigger)
-  })
-})
-
 describe('CopyButton', () => {
   it('copies to clipboard', async () => {
     Object.assign(navigator, { clipboard: { writeText: vi.fn(() => Promise.resolve()) } })

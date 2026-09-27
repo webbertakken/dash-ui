@@ -3494,7 +3494,7 @@ tr:hover .action-menu-trigger,
     transition: none;
   }
 }
-/* HoverCard */
+/* HoverCard: rich, non-essential content. Opens instantly (HoverCard.tsx). */
 .hovercard-wrapper {
   position: relative;
   display: block;
@@ -3507,12 +3507,24 @@ tr:hover .action-menu-trigger,
   z-index: 9998;
   min-width: 200px;
   max-width: 280px;
-  background: #1a1a1c;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--depthBg-2);
+  color: var(--text-2);
+  border: 1px solid var(--border-3);
   border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   padding: 12px;
   font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    visibility var(--dur-base);
+}
+.hovercard-wrapper[data-state='open'] .hovercard {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 .hovercard-bottom .hovercard {
   top: calc(100% + 6px);
@@ -3533,9 +3545,17 @@ tr:hover .action-menu-trigger,
 .hovercard-title {
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-1);
   margin: 0 0 8px;
   line-height: 1.3;
+}
+.hovercard-description {
+  margin: 0;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+.hovercard-description:not(:last-child) {
+  margin-bottom: 8px;
 }
 .hovercard-row {
   display: flex;
@@ -3544,13 +3564,18 @@ tr:hover .action-menu-trigger,
   padding: 2px 0;
 }
 .hovercard-row .hc-key {
-  color: #6e7079;
+  color: var(--text-3);
   flex-shrink: 0;
 }
 .hovercard-row .hc-val {
-  color: #c8c9d0;
+  color: var(--text-2);
   font-variant-numeric: tabular-nums;
   text-align: right;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hovercard {
+    transition: none;
+  }
 }
 /* IPInput */
 .ip-input-wrapper {
@@ -4885,8 +4910,11 @@ tr:hover .action-menu-trigger,
 .banner__action:hover {
   opacity: 1;
 }
-.banner__dismiss {
+.banner__dismiss-tip {
   margin-left: 4px;
+  flex-shrink: 0;
+}
+.banner__dismiss {
   flex-shrink: 0;
   width: 24px;
   height: 24px;
@@ -6437,8 +6465,11 @@ tr:hover .action-menu-trigger,
 .alert-body {
   flex: 1;
 }
-.alert-dismiss {
+.alert-dismiss-tip {
   margin-left: auto;
+  flex-shrink: 0;
+}
+.alert-dismiss {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
@@ -6589,7 +6620,8 @@ tr:hover .action-menu-trigger,
   padding: 16px 0;
 }
 
-/* ---- Tooltip (Tooltip.tsx) ------------------------------------------- */
+/* ---- Tooltip (Tooltip.tsx): the name of a control. Opens after 1 s hover,
+   instantly on keyboard focus; state is driven by data-state, not :hover. -- */
 .tooltip-wrapper {
   position: relative;
   display: inline-flex;
@@ -6603,18 +6635,22 @@ tr:hover .action-menu-trigger,
   z-index: 9999;
   white-space: nowrap;
   border-radius: 4px;
-  border: 1px solid var(--border-1);
-  background: var(--bg-2);
+  border: 1px solid var(--border-2);
+  background: var(--depthBg-2);
   padding: 4px 8px;
   font-size: 11px;
   line-height: 1.3;
-  color: var(--text-2);
+  color: var(--text-1);
   opacity: 0;
-  transition: opacity 100ms var(--ease-out);
+  visibility: hidden;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    visibility var(--dur-base);
 }
-.tooltip-wrapper:hover .tooltip-content,
-.tooltip-wrapper:focus-within .tooltip-content {
+.tooltip-wrapper[data-state='open'] .tooltip-content {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 .tooltip-top .tooltip-content {
   bottom: 100%;
@@ -6639,6 +6675,11 @@ tr:hover .action-menu-trigger,
   top: 50%;
   transform: translateY(-50%);
   margin-left: 6px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tooltip-content {
+    transition: none;
+  }
 }
 
 /* ---- EmptyState (EmptyState.tsx) ------------------------------------- */

@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { CloseIcon } from '../icons.js'
 import { IconButton } from './Button.js'
+import { Tooltip } from './Tooltip.js'
 
 export type NotifType = 'alarm' | 'system' | 'update'
 export type NotifSeverity = 'danger' | 'warn' | 'info' | 'success'
@@ -167,15 +168,16 @@ export function NotificationPanel({
                   <span className="np-type-badge">{TYPE_LABEL[n.type]}</span>
                 </div>
                 {!n.read && onMarkRead && (
-                  <button
-                    type="button"
-                    className="np-read-btn"
-                    onClick={() => onMarkRead(n.id)}
-                    aria-label={`Mark as read: ${n.title}`}
-                    title="Mark as read"
-                  >
-                    ✓
-                  </button>
+                  <Tooltip label="Mark as read" placement="left">
+                    <button
+                      type="button"
+                      className="np-read-btn"
+                      onClick={() => onMarkRead(n.id)}
+                      aria-label={`Mark as read: ${n.title}`}
+                    >
+                      ✓
+                    </button>
+                  </Tooltip>
                 )}
               </div>
             ))

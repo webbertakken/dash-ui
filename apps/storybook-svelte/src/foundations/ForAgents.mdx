@@ -113,6 +113,8 @@ styles. Radius: `--radius-md` (6 px, default), `--radius-lg` (12 px, modals), `-
 - Wrapper `<div>` around `.grid`, or `display: flex; gap: …` on the page root
 - `border-radius: 50%` on app-logo squircles (use `--radius-app`)
 - `tokens.css` imported without `dashboard.css` (or without `styles.css`)
+- Native `title` as a control's name, a sentence or link inside a tooltip, or a hover-opened menu: a
+  Tooltip names, a HoverCard describes, a Popover is click-opened
 - Passing `Topbar` / `Sidebar` as children instead of via snippet props
 - `class:my-class` directive on a primitive — pass a `class="my-class"` string instead
 - Plain `<Topbar activeApp={x}>` without `bind:` — selection never round-trips
@@ -283,8 +285,8 @@ imports doesn't need to relearn the contract).
 | Hand-rolled stack of overlapping `<img>` thumbs + `+N` chip                                                                         | `<AvatarGroup avatars={[…]} max={5} size="md" aria-label="Members" />`                                                                                                         |
 | `<span class="relative">…<span class="absolute -top-1 -right-1 …">3</span></span>`                                                  | `<Badge count={3} max={99} color="danger\|brand\|neutral">…</Badge>` (auto `99+`)                                                                                              |
 | `<span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-status-danger rounded-full" />` notification dot                              | `<Badge dot color="danger">…</Badge>` (or `<NotifDot>` on a `<TopbarActions>` bell)                                                                                            |
-| `title="…"` attribute (no styling, no a11y wiring) or hand-rolled `position:absolute` bubble                                        | `<Tooltip label="…" placement="top\|bottom\|left\|right">{trigger}</Tooltip>` (`aria-describedby` + `role="tooltip"`)                                                          |
-| Hand-rolled hover-triggered preview card (`onmouseenter` + bespoke `absolute` panel)                                                | `<HoverCard content={…} placement="top" delay={200}>{trigger}</HoverCard>` (hover/focus + delay)                                                                               |
+| `title="…"` attribute (no styling, no a11y wiring) or hand-rolled `position:absolute` bubble                                        | `<Tooltip label="…" placement="top\|bottom\|left\|right">{trigger}</Tooltip>` (the control's name: 1 s hover, instant keyboard focus, `Escape`)                                |
+| Hand-rolled hover-triggered preview card (`onmouseenter` + bespoke `absolute` panel)                                                | `<HoverCard heading="…" description="…">{trigger}</HoverCard>` (rich, non-essential: opens instantly on hover and focus)                                                       |
 | `<button>` + bespoke `position:absolute` panel + click-outside listener for a menu                                                  | `<Popover label="Filters" title="…" placement="bottom">…</Popover>` (focus trap + ESC + outside-click)                                                                         |
 | Kebab `<IconButton>` (`⋯`) + hand-rolled `position:absolute` menu + manual roving-tabindex + danger-item red text                   | `<ActionMenu items={[{ id, label, danger?, disabled? }]} onaction={(id) => …} label="Row actions" />` (canonical kebab menu + arrow-key roving + ESC)                          |
 | `oncontextmenu` handler + bespoke `position:fixed` panel at `{x, y}` + manual viewport-edge clamp + separator `<div>`s              | `<ContextMenu bind:open x={x} y={y} items={[…, { separator: true }, …]} onclose={…} onaction={(id) => …} />` (right-click menu + edge clamp + ESC)                             |
@@ -305,7 +307,7 @@ imports doesn't need to relearn the contract).
 | Multiple `<Toggle>`s in a `<div class="flex gap-1">` for a multi-select toolbar                                                     | `<ToggleGroup options={…} bind:value aria-label="…" size="sm\|md" />` (multi-pressed + group a11y)                                                                             |
 | Click-to-edit `<span>` swapping to `<input>` on focus with manual confirm/cancel logic                                              | `<InlineEdit bind:value onconfirm={…} label="…" placeholder="…" />` (Enter/Esc + focus return)                                                                                 |
 | `<Button>` + adjacent caret `<IconButton>` + bespoke menu popover for secondary actions                                             | `<SplitButton label="Save" items={[{ id, label }]} onprimaryclick={…} onaction={…} />` (primary + menu)                                                                        |
-| `<IconButton>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" tooltip                                                 | `<CopyButton text={value} label="Copy" />` (clipboard + transient confirm + a11y live)                                                                                         |
+| `<IconButton>` + manual `navigator.clipboard.writeText` + bespoke "Copied!" bubble                                                  | `<CopyButton text={value} label="Copy" />` (clipboard + transient confirm + a11y live)                                                                                         |
 | Hand-rolled "no results" panel (`<div class="text-center py-10 text-text-3">…</div>`)                                               | `<EmptyState title="…" description="…" action={…} />` (canonical zero-state rhythm)                                                                                            |
 | Hand-rolled wizard progress bar (`<ol class="flex gap-2">` + active/complete CSS state)                                             | `<Stepper steps={[{ label }]} active={n} />` (`aria-current="step"` + complete/upcoming state)                                                                                 |
 | Four `<input maxlength=3>` octet boxes + manual `.` separator + 0-255 clamp logic                                                   | `<IPInput label="…" bind:value />` (WAI-ARIA spinbutton per octet)                                                                                                             |
@@ -353,7 +355,7 @@ re-deriving the contract:
 | Colour tokens picked wrong (`text-1` vs `text-2`, bg ladder)                          | **Foundations / Colours**           |
 | Colours wash out / motif flashes                                                      | **Foundations / Motifs**            |
 | Three primaries fighting / wrong `Button` variant / `IconButton` missing `aria-label` | **Foundations / Actions**           |
-| Modal / Drawer / Popover / ConfirmDialog drift                                        | **Foundations / Overlays**          |
+| Modal / Drawer / Popover / ConfirmDialog drift, or tooltip vs hover card vs popover   | **Foundations / Overlays**          |
 | Cards have wrong `<h3>` rhythm or `<CardTitle>`/`<CardMore>` missing                  | **Foundations / Cards**             |
 | KPI / stats / KVTable / list hierarchy drifts                                         | **Foundations / Data display**      |
 | Status text inconsistent                                                              | **Foundations / Status & feedback** |

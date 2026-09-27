@@ -1,6 +1,7 @@
 <script lang="ts">
   import CloseIcon from '../icons/CloseIcon.svelte';
   import IconButton from './IconButton.svelte';
+  import Tooltip from './Tooltip.svelte';
 
   interface Props {
     variant?: 'success' | 'warn' | 'danger' | 'info';
@@ -30,13 +31,10 @@
 >
   <span class="flex-1">{@render children?.()}</span>
   {#if onDismiss}
-    <IconButton
-      title="Dismiss alert"
-      onclick={onDismiss}
-      class="ml-auto h-6 w-6 shrink-0"
-      aria-label="Dismiss alert"
-    >
-      <CloseIcon />
-    </IconButton>
+    <Tooltip label="Dismiss alert" placement="left" class="ml-auto shrink-0">
+      <IconButton onclick={onDismiss} class="h-6 w-6" aria-label="Dismiss alert">
+        <CloseIcon />
+      </IconButton>
+    </Tooltip>
   {/if}
 </div>

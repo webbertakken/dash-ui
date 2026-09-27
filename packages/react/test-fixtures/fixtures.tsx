@@ -342,7 +342,16 @@ export const FIXTURES: Record<string, Variant[]> = {
     { name: 'disabled', node: <U.Button disabled>Disabled</U.Button> },
   ],
   IconButton: [
-    { name: 'default', node: <U.IconButton title="x">x</U.IconButton> },
+    {
+      name: 'with tooltip',
+      node: (
+        <U.Tooltip label="Search">
+          <U.IconButton>
+            <U.SearchIcon />
+          </U.IconButton>
+        </U.Tooltip>
+      ),
+    },
     { name: 'with aria-label', node: <U.IconButton aria-label="more">x</U.IconButton> },
   ],
   CIDRInput: [
@@ -1026,13 +1035,42 @@ export const FIXTURES: Record<string, Variant[]> = {
     },
   ],
   HoverCard: [
-    { name: 'default', node: <U.HoverCard content={<div>tip</div>}>trigger</U.HoverCard> },
+    {
+      name: 'default',
+      node: (
+        <U.HoverCard heading="gw-hq" description="Gateway · 99.98% uptime · 42 clients">
+          <a href="#gw-hq">gw-hq</a>
+        </U.HoverCard>
+      ),
+    },
+    {
+      name: 'rich content',
+      node: (
+        <U.HoverCard
+          heading="AP Pro · Lobby"
+          content={
+            <>
+              <div className="hovercard-row">
+                <span className="hc-key">IP</span>
+                <span className="hc-val">192.168.1.18</span>
+              </div>
+              <div className="hovercard-row">
+                <span className="hc-key">Clients</span>
+                <span className="hc-val">24</span>
+              </div>
+            </>
+          }
+        >
+          <a href="#ap-lobby">AP Pro · Lobby</a>
+        </U.HoverCard>
+      ),
+    },
     {
       name: 'placements',
       node: (
         <div>
           {(['top', 'bottom', 'left', 'right'] as const).map((p) => (
-            <U.HoverCard key={p} placement={p} delay={0} content={<div>tip</div>}>
+            <U.HoverCard key={p} placement={p} description={`Opens ${p}`}>
               {p}
             </U.HoverCard>
           ))}
@@ -2282,8 +2320,10 @@ export const FIXTURES: Record<string, Variant[]> = {
     {
       name: 'default',
       node: (
-        <U.Tooltip label="t">
-          <span>x</span>
+        <U.Tooltip label="Zoom in">
+          <U.IconButton>
+            <U.PlusIcon />
+          </U.IconButton>
         </U.Tooltip>
       ),
     },
@@ -2292,8 +2332,10 @@ export const FIXTURES: Record<string, Variant[]> = {
       node: (
         <div>
           {(['top', 'bottom', 'left', 'right'] as const).map((p) => (
-            <U.Tooltip key={p} label="t" placement={p} className="x">
-              <span>{p}</span>
+            <U.Tooltip key={p} label={`Opens ${p}`} placement={p} className="x">
+              <U.IconButton>
+                <U.PlusIcon />
+              </U.IconButton>
             </U.Tooltip>
           ))}
         </div>

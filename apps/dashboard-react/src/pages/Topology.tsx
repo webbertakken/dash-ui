@@ -129,15 +129,17 @@ export function Topology(_props: TopologyProps) {
         <div className="ph-actions">
           <SearchBox placeholder="Search devices…" />
           <Button>Auto-arrange</Button>
-          <Button iconOnly title="Export">
-            <DownloadIcon />
-          </Button>
+          <Tooltip label="Export" placement="bottom">
+            <Button iconOnly>
+              <DownloadIcon />
+            </Button>
+          </Tooltip>
         </div>
       </div>
       <div className="topo">
         <div className="topo-toolbar">
           <Tooltip label="Map view" placement="bottom">
-            <IconButton title="Map" aria-pressed={view === 'map'} onClick={() => setView('map')}>
+            <IconButton aria-pressed={view === 'map'} onClick={() => setView('map')}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <circle cx="7" cy="3" r="1.4" stroke="currentColor" strokeWidth="1.4" />
                 <circle cx="3" cy="11" r="1.4" stroke="currentColor" strokeWidth="1.4" />
@@ -151,7 +153,7 @@ export function Topology(_props: TopologyProps) {
             </IconButton>
           </Tooltip>
           <Tooltip label="List view" placement="bottom">
-            <IconButton title="List" aria-pressed={view === 'list'} onClick={() => setView('list')}>
+            <IconButton aria-pressed={view === 'list'} onClick={() => setView('list')}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path
                   d="M3 3.5h8M3 7h8M3 10.5h8"
@@ -163,7 +165,7 @@ export function Topology(_props: TopologyProps) {
             </IconButton>
           </Tooltip>
           <Tooltip label="Tree view" placement="bottom">
-            <IconButton title="Tree" aria-pressed={view === 'tree'} onClick={() => setView('tree')}>
+            <IconButton aria-pressed={view === 'tree'} onClick={() => setView('tree')}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <circle cx="2.5" cy="7" r="1.5" stroke="currentColor" strokeWidth="1.2" />
                 <circle cx="11.5" cy="3" r="1.5" stroke="currentColor" strokeWidth="1.2" />
@@ -177,33 +179,37 @@ export function Topology(_props: TopologyProps) {
             </IconButton>
           </Tooltip>
           <div className="sep" />
-          <IconButton title="Show clients">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <circle cx="7" cy="5" r="2.2" stroke="currentColor" strokeWidth="1.5" />
-              <path
-                d="M2.5 11.5c0-2.2 2-4 4.5-4s4.5 1.8 4.5 4"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </IconButton>
-          <IconButton title="Show RF">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path
-                d="M2 6c2-2 8-2 10 0M3.5 8.2c1.5-1.4 5.5-1.4 7 0"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              <circle cx="7" cy="10.5" r="0.9" fill="currentColor" />
-            </svg>
-          </IconButton>
+          <Tooltip label="Show clients" placement="bottom">
+            <IconButton>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="5" r="2.2" stroke="currentColor" strokeWidth="1.5" />
+                <path
+                  d="M2.5 11.5c0-2.2 2-4 4.5-4s4.5 1.8 4.5 4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="Show RF" placement="bottom">
+            <IconButton>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M2 6c2-2 8-2 10 0M3.5 8.2c1.5-1.4 5.5-1.4 7 0"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+                <circle cx="7" cy="10.5" r="0.9" fill="currentColor" />
+              </svg>
+            </IconButton>
+          </Tooltip>
         </div>
 
         <div className="topo-zoom">
-          <Tooltip label="Zoom in" placement="left">
-            <IconButton title="Zoom in">
+          <Tooltip label="Zoom in" placement="right">
+            <IconButton>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path
                   d="M7 3v8M3 7h8"
@@ -214,15 +220,15 @@ export function Topology(_props: TopologyProps) {
               </svg>
             </IconButton>
           </Tooltip>
-          <Tooltip label="Zoom out" placement="left">
-            <IconButton title="Zoom out">
+          <Tooltip label="Zoom out" placement="right">
+            <IconButton>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M3 7h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </IconButton>
           </Tooltip>
-          <Tooltip label="Fit to screen" placement="left">
-            <IconButton title="Fit">
+          <Tooltip label="Fit to screen" placement="right">
+            <IconButton>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path
                   d="M3 5V3h2M11 5V3H9M3 9v2h2M11 9v2H9"

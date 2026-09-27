@@ -6,7 +6,6 @@
     variant?: 'primary' | 'ghost' | 'danger';
     iconOnly?: boolean;
     loading?: boolean;
-    title?: string | undefined;
     type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
     class?: string;
@@ -28,7 +27,6 @@
     variant = 'ghost',
     iconOnly = false,
     loading = false,
-    title = undefined,
     type = 'button',
     disabled = false,
     class: className = '',
@@ -56,7 +54,6 @@
 
 <button
   {type}
-  {title}
   aria-label={ariaLabel}
   aria-haspopup={ariaHasPopup}
   aria-expanded={ariaExpanded}

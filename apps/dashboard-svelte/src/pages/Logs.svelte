@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button, SearchBox, Tabs, DownloadIcon, TimeRange, DateRangePicker, Card, PunchCard, LogViewer, FilterBuilder } from '@w5-ui/svelte';
+  import { Button, SearchBox, Tooltip, Tabs, DownloadIcon, TimeRange, DateRangePicker, Card, PunchCard, LogViewer, FilterBuilder } from '@w5-ui/svelte';
   import type { TimeRangeId, DateRange, LogEntry, FilterField, FilterRule } from '@w5-ui/svelte';
   import { LOG_ROWS } from '../data';
 
@@ -70,7 +70,7 @@
     <SearchBox placeholder="Search logs…" />
     <TimeRange value={timeRange} onchange={(e) => { timeRange = e; }} />
     <DateRangePicker value={customRange} onchange={(e) => { customRange = e; }} placeholder="Custom range" />
-    <Button iconOnly title="Download"><DownloadIcon /></Button>
+    <Tooltip label="Download" placement="bottom"><Button iconOnly><DownloadIcon /></Button></Tooltip>
   </div>
 </div>
 <Tabs
