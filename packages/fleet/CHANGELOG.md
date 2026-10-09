@@ -1,5 +1,13 @@
 # @w5-ui/fleet
 
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies [[`65f00e4`](https://github.com/webbertakken/dash-ui/commit/65f00e4862bdd05f9d7043a85c1a453b0c1f029a)]:
+  - @w5-ui/tokens@0.8.0
+  - @w5-ui/svelte@0.8.0
+
 ## 0.2.1
 
 ### Patch Changes
