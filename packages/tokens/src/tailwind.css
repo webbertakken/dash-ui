@@ -94,9 +94,10 @@
   --color-row-active: var(--row-active);
 
   --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-primary-press: var(--primary-press);
-  --color-primary-fg: var(--primary-fg);
+  --color-primary-fill: var(--primary-fill);
+  --color-primary-fill-hover: var(--primary-fill-hover);
+  --color-primary-fill-press: var(--primary-fill-press);
+  --color-primary-fill-fg: var(--primary-fill-fg);
   --color-primary-twotone-bg: var(--primary-twotone-bg);
 
   /* ---- Spacing scale ----

@@ -154,9 +154,10 @@
   --row-active: rgba(0, 111, 255, 0.12);
 
   --primary: var(--brand-05);
-  --primary-hover: var(--brand-06);
-  --primary-press: var(--brand-04);
-  --primary-fg: #ffffff;
+  --primary-fill: var(--brand-04);
+  --primary-fill-hover: var(--brand-03);
+  --primary-fill-press: var(--brand-02);
+  --primary-fill-fg: #ffffff;
   --primary-twotone-bg: #05254d;
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
@@ -194,9 +195,10 @@
   --row-active: rgba(0, 111, 255, 0.08);
 
   --primary: var(--brand-05);
-  --primary-hover: var(--brand-04);
-  --primary-press: var(--brand-03);
-  --primary-fg: #ffffff;
+  --primary-fill: var(--brand-04);
+  --primary-fill-hover: var(--brand-03);
+  --primary-fill-press: var(--brand-02);
+  --primary-fill-fg: #ffffff;
   --primary-twotone-bg: #e5f1ff;
 
   --shadow-card: 0 1px 2px rgba(10, 10, 11, 0.04), 0 8px 24px rgba(10, 10, 11, 0.04);

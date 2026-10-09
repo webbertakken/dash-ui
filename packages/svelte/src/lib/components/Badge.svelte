@@ -33,7 +33,7 @@
     // Status-warning is yellow in both motifs; near-black text stays
     // legible against it. `text-neutral-10` resolves to `#0a0a0b`.
     warn: 'bg-status-warning text-neutral-10',
-    info: 'bg-brand-05 text-white',
+    info: 'bg-primary-fill text-primary-fill-fg',
     success: 'bg-status-success text-white',
     neutral: 'bg-status-neutral text-white',
   };

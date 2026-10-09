@@ -37,6 +37,18 @@ export const neutral = {
   '10': '#0A0A0B',
 } as const
 
+/**
+ * A filled primary control and the text on it (`--primary-fill*`): the same
+ * in both motifs. `brand-05` stays the accent (`--primary`, focus rings);
+ * text on it falls under WCAG AA, so the fill starts one step darker.
+ */
+export const primaryFill = {
+  rest: brand['04'],
+  hover: brand['03'],
+  press: brand['02'],
+  fg: neutral['00'],
+} as const
+
 export const space = {
   1: 4,
   2: 8,

@@ -668,8 +668,8 @@ describe('Sidebar (Tailwind)', () => {
     expect(container.textContent).toContain('3') // pill
     // Pill chip carries the brand background utility.
     const pill = Array.from(container.querySelectorAll('span')).find((s) =>
-      /bg-brand-05/.test(s.className),
+      /bg-primary-fill/.test(s.className),
     )
-    expect(pill, 'expected a sidebar pill chip with bg-brand-05').toBeTruthy()
+    expect(pill, 'expected a sidebar pill chip with bg-primary-fill').toBeTruthy()
   })
 })

@@ -135,7 +135,7 @@
     if (outside) cls += ' text-text-4';
     else cls += ' text-text-2';
     if (isToday && !isSelected) cls += ' ring-1 ring-inset ring-brand-05';
-    if (isSelected) cls += ' bg-brand-05 text-white hover:bg-brand-06';
+    if (isSelected) cls += ' bg-primary-fill text-primary-fill-fg hover:bg-primary-fill-hover';
     return cls;
   }
 </script>
