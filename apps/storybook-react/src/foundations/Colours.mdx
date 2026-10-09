@@ -40,7 +40,9 @@ resolves at that subtree.
 ```
 
 ```html
-<section data-motif="light"><!-- a light marketing strip inside the dashboard --></section>
+<section data-motif="light">
+  <!-- a light marketing strip inside the dashboard -->
+</section>
 ```
 
 Tailwind's `dark:` variant is wired to `data-motif="dark"` via `@custom-variant`, so `dark:bg-bg-1`
@@ -89,13 +91,19 @@ you need a hairline between rows that share a surface (table rows, settings list
 
 ### Primary (brand actions)
 
-| Use case                                          | Token                  | Tailwind class                |
-| ------------------------------------------------- | ---------------------- | ----------------------------- |
-| Primary button fill, focus ring, slider track     | `--primary`            | `bg-primary` / `ring-primary` |
-| Primary button hover state                        | `--primary-hover`      | `bg-primary-hover`            |
-| Primary button active / press state               | `--primary-press`      | `bg-primary-press`            |
-| Foreground on a primary fill                      | `--primary-fg`         | `text-primary-fg`             |
-| Two-tone primary tint (selected, active row tint) | `--primary-twotone-bg` | `bg-primary-twotone-bg`       |
+| Use case                                                               | Token                  | Tailwind class                    |
+| ---------------------------------------------------------------------- | ---------------------- | --------------------------------- |
+| Focus ring, slider track, selected accent                              | `--primary`            | `ring-primary` / `border-primary` |
+| Filled primary control: button, active page, selected day, count badge | `--primary-fill`       | `bg-primary-fill`                 |
+| Its hover                                                              | `--primary-fill-hover` | `hover:bg-primary-fill-hover`     |
+| Its press                                                              | `--primary-fill-press` | `active:bg-primary-fill-press`    |
+| Text and icons on it                                                   | `--primary-fill-fg`    | `text-primary-fill-fg`            |
+| Two-tone primary tint (selected, active row tint)                      | `--primary-twotone-bg` | `bg-primary-twotone-bg`           |
+
+`--primary` (brand-05) is an accent, never a background for text: white on it is 4.45:1, under WCAG
+AA for small text. A filled control uses `--primary-fill` (brand-04, 5.83:1) and darkens on hover
+(brand-03, 9.81:1) and press (brand-02); `--primary` stays brand-05 because as a focus ring it must
+clear 3:1 on every dark depth, which brand-04 does not.
 
 This is the **only** saturated colour in the dashboard. If you find yourself adding a second brand
 colour for a feature, that's a design fork — surface it before shipping.
@@ -133,7 +141,7 @@ row inside a popover lights up the same way as a hovered row inside a card.
 | Page goes blank when motif switches                    | Hardcoded `#0a0a0b` (or any hex) on a background                | Replace with `var(--bg-page)` or `bg-bg-page`. Hex doesn't motif-flip                        |
 | Borders disappear in light motif                       | `border-white/10` or `rgba(255,255,255,0.1)` baked into a class | Use `border-border-1`; it resolves to a black-tinted hairline in light motif                 |
 | Status pill colour clashes with its background         | Custom `bg-red-500/10` + `text-red-500`                         | Use the matched pair `bg-status-danger-bg` + `text-status-danger`                            |
-| Primary button on hover stays the same colour          | Hardcoded `bg-[#006fff]` with no `hover:`                       | Use `bg-primary hover:bg-primary-hover active:bg-primary-press`                              |
+| Primary button on hover stays the same colour          | Hardcoded `bg-[#006fff]` with no `hover:`                       | Use `bg-primary-fill hover:bg-primary-fill-hover active:bg-primary-fill-press`               |
 | Selected table row tint looks too vivid in light motif | `bg-blue-500/20` baked in                                       | Use `bg-row-active`; it's already the right tint per motif                                   |
 | Two cards next to each other have different greys      | One uses `bg-bg-1`, the other inherits `bg-bg-2` from a parent  | Cards always sit on `--depthBg-1`. Don't nest cards inside `--depthBg-2` panels              |
 | Focus ring is invisible on a primary button            | Overriding `outline` to `none` without `:focus-visible`         | Don't override. Components ship `:focus-visible` rings using `--focus-ring` (2px brand-05)   |

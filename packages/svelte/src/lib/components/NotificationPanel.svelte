@@ -114,7 +114,7 @@
       <h2 id={titleId} class="m-0 flex items-center gap-2 text-15 font-semibold text-text-1">
         Notifications
         {#if unread > 0}
-          <span class="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand-05 px-1.5 text-11 font-bold text-white tabular-nums" aria-label={`${unread} unread`}>{unread}</span>
+          <span class="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary-fill px-1.5 text-11 font-bold text-primary-fill-fg tabular-nums" aria-label={`${unread} unread`}>{unread}</span>
         {/if}
       </h2>
       <div class="flex items-center gap-1.5">

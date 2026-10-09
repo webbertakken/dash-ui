@@ -20,7 +20,7 @@
   //   - label: colour + weight
   //   - connector line (::before via Tailwind arbitrary): bg colour
   const NUM: Record<'active' | 'done' | 'upcoming', string> = {
-    active: 'border-brand-05 bg-brand-05 text-white',
+    active: 'border-primary-fill bg-primary-fill text-primary-fill-fg',
     done: 'border-brand-05 bg-brand-05/[0.18] text-status-info',
     upcoming: 'border-bg-3 bg-bg-1 text-text-4',
   };
