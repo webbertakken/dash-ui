@@ -146,19 +146,28 @@ script causes a one-frame flash of the wrong motif on every refresh.
 
 ## 6. Fonts
 
-`@w5-ui/tokens` declares **Inter** for body and **JetBrains Mono** for tabular text (IPs, MACs,
-SKUs). Self-host or load via Google Fonts in `index.html`:
+`@w5-ui/tokens` ships **Inter** (body) and **JetBrains Mono** (tabular text: IPs, MACs, SKUs) as
+self-hosted variable fonts. Importing the tokens (`tokens.css`, `tailwind.css` or your framework's
+`styles.css`) is all it takes: nothing to add to `index.html`, no request to a third party.
+
+- Each script subset (Latin, Latin Extended, Cyrillic, Greek, Vietnamese) downloads only when the
+  page uses its characters, so a Latin-only page fetches about 48 kB per font.
+- `font-display: swap` shows the fallback stack until the font arrives.
+- To start the Latin files alongside your CSS, optionally preload them with the URL your build emits
+  for `@w5-ui/tokens/fonts/inter-latin-wght-normal.woff2` (and the `jetbrains-mono` twin):
 
 ```html
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="preload"
+  href="/assets/inter-latin-wght-normal.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
 />
 ```
 
-If a custom system font is preferred, override `--dash-ui-font-sans` / `--dash-ui-font-mono` once on
-`:root` — never per component. See **Foundations / Type**.
+If a different font is preferred, override `--font-sans` / `--font-mono` once on `:root`, never per
+component. See **Foundations / Type**.
 
 ## 7. Tailwind (optional)
 
