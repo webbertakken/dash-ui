@@ -1,5 +1,6 @@
 <script lang="ts">
   import IconButton from './IconButton.svelte';
+  import Tooltip from './Tooltip.svelte';
   import Avatar from './Avatar.svelte';
   import SearchIcon from '../icons/SearchIcon.svelte';
   import UpdatesIcon from '../icons/UpdatesIcon.svelte';
@@ -31,22 +32,23 @@
   Topbar keeps the search / bell / avatar rhythm the reference dashboard
   ships without copying classes, icons, or the inline notif span.
 -->
-<IconButton aria-label="Search" title="Search"><SearchIcon /></IconButton>
-<IconButton aria-label="Updates" title="Updates"><UpdatesIcon /></IconButton>
-<IconButton
-  aria-label={notificationCount > 0
-    ? `Notifications, ${notificationCount} new`
-    : 'Notifications'}
-  title="Notifications"
-  class="relative"
->
-  <BellIcon />
-  {#if notificationCount > 0}
-    <span
-      aria-hidden="true"
-      class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border-[1.5px] border-bg-page bg-status-danger"
-    ></span>
-  {/if}
-</IconButton>
-<IconButton aria-label="Help" title="Help"><HelpIcon /></IconButton>
+<Tooltip label="Search" placement="bottom"><IconButton aria-label="Search"><SearchIcon /></IconButton></Tooltip>
+<Tooltip label="Updates" placement="bottom"><IconButton aria-label="Updates"><UpdatesIcon /></IconButton></Tooltip>
+<Tooltip label="Notifications" placement="bottom">
+  <IconButton
+    aria-label={notificationCount > 0
+      ? `Notifications, ${notificationCount} new`
+      : 'Notifications'}
+    class="relative"
+  >
+    <BellIcon />
+    {#if notificationCount > 0}
+      <span
+        aria-hidden="true"
+        class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border-[1.5px] border-bg-page bg-status-danger"
+      ></span>
+    {/if}
+  </IconButton>
+</Tooltip>
+<Tooltip label="Help" placement="bottom"><IconButton aria-label="Help"><HelpIcon /></IconButton></Tooltip>
 <Avatar initials={initials} size="sm" alt="Account, {initials}" class="ml-1" />

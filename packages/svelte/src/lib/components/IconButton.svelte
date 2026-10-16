@@ -1,8 +1,11 @@
+<!--
+  Icon-only button. Name it with `aria-label`, or wrap it in
+  `<Tooltip label>`, which names an unlabelled icon button after the tooltip.
+-->
 <script lang="ts">
   import type { Snippet } from 'svelte';
 
   interface Props {
-    title?: string | undefined;
     type?: 'button' | 'submit' | 'reset';
     class?: string;
     style?: string;
@@ -13,7 +16,6 @@
 
   // svelte-ignore state_referenced_locally
   let {
-    title = undefined,
     type = 'button',
     class: className = '',
     style = '',
@@ -26,10 +28,8 @@
 <button
   {type}
   class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-text-3 hover:bg-row-hover hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05 {className}"
-  {title}
   {style}
   {...rest}
-  aria-label={(rest['aria-label'] as string | undefined) ?? title}
   {onclick}
 >
   {@render children?.()}

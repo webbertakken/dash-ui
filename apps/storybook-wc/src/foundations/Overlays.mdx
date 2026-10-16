@@ -1,17 +1,101 @@
-import { Meta } from '@storybook/blocks'
+import { Canvas, Meta } from '@storybook/blocks'
+import * as OverlaysCompared from '../overlays/OverlaysCompared.stories'
 
 <Meta title="Foundations/Overlays" />
 
 # Overlays
 
 Modals, drawers, popovers, confirm dialogs, and the command palette all share one job: pull a
-focused task above the page without losing the user's place. They are also the part of the design
-system that userland most commonly re-rolls from scratch — and that's where focus traps break,
-scroll locks leak, spacing drifts and the dialogs stop feeling like the rest of the dashboard.
+focused task above the page without losing the user's place. Tooltips and hover cards float too, but
+never take focus: they name or describe what is under the pointer. They are also the part of the
+design system that userland most commonly re-rolls from scratch — and that's where focus traps
+break, scroll locks leak, spacing drifts and the dialogs stop feeling like the rest of the
+dashboard.
 
 > Reach for the named component every time. The chrome (border, radius, header/body/footer rhythm,
 > backdrop, focus trap, scroll lock, escape handling) is already wired up — userland never has to
 > own that surface area.
+
+## Tooltip vs hover card vs popover
+
+Three surfaces float next to a trigger. They are not interchangeable: each has one job, one way to
+open and one canonical name. Use exactly these three names in code, docs and UI copy, with no
+synonyms ("hint", "info bubble", "flyout", "popup").
+
+<Canvas of={OverlaysCompared.Compared} />
+
+| Pick one when…             | Tooltip                                                       | Hover card                                                    | Popover                                                             |
+| -------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------- |
+| The user needs…            | to know **what a control is** (its name)                      | **more about a thing**, but can do without it                 | to **do something**: choose, filter, type, follow a link            |
+| It holds                   | Short, plain, non-interactive text                            | Bold title + description, preview, key/value rows             | Interactive content: menus, pickers, filters, small forms           |
+| It opens on                | Hover after **1 s**; keyboard focus **instantly**; long-press | Hover **instantly**; keyboard focus **instantly**             | **Click** (or Enter / Space) on the trigger                         |
+| It closes on               | Pointer leaves, blur, `Escape`, pressing the control          | Pointer leaves, blur, `Escape`                                | Outside click, `Escape`, the trigger again                          |
+| Focus                      | Stays on the control                                          | Stays on the trigger                                          | Moves into the panel, returns to the trigger on close               |
+| Assistive tech hears it as | The control's **accessible name**                             | The trigger's **description** (`aria-describedby`) while open | A `role="dialog"` behind an `aria-expanded` trigger                 |
+| Component                  | `<uni-tooltip label>`                                         | `<uni-hover-card heading description>`                        | `<uni-popover label>`, `<uni-contextual-help>`, `<uni-action-menu>` |
+
+If the content is **essential**, it is none of the three: show it inline. If it is interactive, it
+is never a tooltip or a hover card.
+
+### Shared rules
+
+- **WCAG 2.2 AA, including 1.4.13.** Dismissible with `Escape` without moving the pointer or focus,
+  hoverable (the pointer can cross onto the surface), persistent until the pointer leaves, focus
+  moves or `Escape` is pressed.
+- **No layout shift.** Tooltip and hover card are always rendered and absolutely positioned; opening
+  changes only opacity and visibility.
+- **Snappy.** A 150 ms fade (`--dur-base`); none under `prefers-reduced-motion`.
+- **Motif-aware.** Surfaces use `--depthBg-2`, `--text-1` / `--text-2` and `--border-*`, so both
+  motifs read correctly.
+- **One controller.** The timings are tokens (`overlay` from `@w5-ui/tokens`: `tooltipOpenDelayMs`
+  1000, `hoverCardOpenDelayMs` 0, `closeGraceMs` 100, `longPressMs` 500, `touchDismissMs` 1500,
+  `fadeMs` 150) and React, Svelte and the Web Components drive the same `createOverlayTrigger`
+  controller, so all three behave identically.
+
+### Tooltip
+
+```html
+<uni-tooltip label="Zoom in" placement="right">
+  <uni-icon-button>+</uni-icon-button>
+</uni-tooltip>
+```
+
+- `label` is the control's **name**. An icon-only control with no name of its own is named after the
+  tooltip (`aria-label`); a control with visible text or its own `aria-label` keeps it. Make sure
+  the tooltip text is part of that name (WCAG 2.5.3, label in name).
+- Never the only carrier of meaning, never interactive, never more than a few words. Needs a
+  sentence? Hover card. Needs a link or a button? Popover.
+- `delay` overrides the 1 s hover delay for edge cases; keyboard focus always opens instantly.
+- Touch: a 500 ms long-press shows the tooltip, which lingers 1.5 s after release. Use it where no
+  other label is visible (icon-only controls).
+- Pick a `placement` that stays inside clipping containers: controls on the left edge open `right`,
+  controls in a top bar open `bottom`.
+
+### Native `title` is not a tooltip
+
+The browser's `title` bubble is unreachable by keyboard and touch, unstyled, on a browser-chosen
+delay and not dismissible. Use `<Tooltip>` instead; `uni-button` and `uni-icon-button` no longer
+take a `title` prop. `title` stays only where it is semantically required:
+
+- `<abbr title="…">`: the expansion of an abbreviation.
+- `<iframe title="…">`: the frame's accessible name.
+- SVG `<title>`: the accessible name of a graphic (for example `StripeChart` segments).
+
+### Hover card
+
+```html
+<uni-hover-card heading="gw-hq" description="Gateway · 99.98% uptime · 42 clients">
+  <a href="/devices/gw-hq">gw-hq</a>
+</uni-hover-card>
+```
+
+- `heading` renders bold and `description` beneath it; the slotted element is the trigger. Rich
+  `content` is available in the React and Svelte builds.
+- It opens **instantly**, so keep triggers deliberate (a name, a link, an avatar) rather than whole
+  rows of a dense grid.
+- Non-essential by definition: everything in it must also be reachable elsewhere (a detail page, a
+  drawer). There is no touch gesture for it; a tap goes to the trigger's own action.
+- `delay` exists for edge cases only; the default is instant.
 
 ## Pick the right overlay
 
@@ -129,7 +213,8 @@ visible, so the user can scan from row to row without losing their place.
 ## Popover
 
 Use it for short controls anchored to a trigger button: filters, view toggles, sort options, column
-toggles, colour pickers.
+toggles, colour pickers. A popover is **click-opened**: never open one on hover. For read-only
+detail on hover, use a hover card; for a control's name, a tooltip.
 
 ```html
 <!-- register all uni-* elements once at app entry -->
@@ -188,6 +273,10 @@ Cmd-K style launcher. One per app, mounted at the root.
 | Popover clipped by a parent `overflow: hidden`            | Trigger sits inside a card or scroll container             | Move the `<Popover>` out of the clipping container, or render the trigger inside the page-header actions |
 | Confirm dialog with a long form inside                    | Misuse of `<ConfirmDialog>`                                | Switch to `<Modal>`. ConfirmDialog is for yes/no only                                                    |
 | Two modals open at once                                   | No mutex on `open` state                                   | Close the active overlay before opening another; nesting modals breaks focus restoration                 |
+| Native `title` bubble on an icon button                   | Pre-terminology habit                                      | Wrap the control in a `Tooltip`; `Button` / `IconButton` no longer take `title`                          |
+| A sentence, a link or a button inside a tooltip           | Tooltip used for content                                   | Sentence: hover card. Link or button: popover. A tooltip holds a name only                               |
+| Menu or picker opens on hover                             | Hover-triggered popover                                    | Popovers are click-opened. Hover is for tooltips and hover cards                                         |
+| Tooltip or hover card cannot be dismissed with `Escape`   | Hand-rolled hover bubble                                   | Use `Tooltip` / `HoverCard`: `Escape`, hoverable and persistent (WCAG 1.4.13) are built in               |
 | Backdrop click closes mid-text-selection                  | Custom `onClick` handler closes on any backdrop event      | Use `<Modal>`; it tracks `mousedown` on the backdrop and only closes on a true outside click             |
 
 ## CSS hooks userland can rely on
@@ -202,6 +291,8 @@ Lean on them if you need to extend an overlay; don't replace them with bespoke s
 - `.popover-root`, `.popover`, `.popover-bottom-{start|end}`, `.popover-h`, `.popover-b` — popover
   anchor + panel
 - `.cp-backdrop`, `.cmd-*` — command palette chrome
+- Tooltip and hover card wrappers carry `data-state="open"|"closed"` and `data-placement`: style or
+  test against those, never against `:hover`
 
 See **Foundations / Spacing** for the underlying `--space-*` and `--radius-*` tokens these classes
 consume, and **Foundations / Page layout** for where overlays sit relative to the rest of the page

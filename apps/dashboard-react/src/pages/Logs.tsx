@@ -9,6 +9,7 @@ import {
   PunchCard,
   LogViewer,
   FilterBuilder,
+  Tooltip,
 } from '@w5-ui/react'
 import type { TimeRangeId, DateRange, LogEntry, FilterField, FilterRule } from '@w5-ui/react'
 import { useState, useMemo } from 'react'
@@ -94,9 +95,11 @@ export function Logs() {
             onChange={setCustomRange}
             placeholder="Custom range"
           />
-          <Button iconOnly title="Download">
-            <DownloadIcon />
-          </Button>
+          <Tooltip label="Download" placement="bottom">
+            <Button iconOnly>
+              <DownloadIcon />
+            </Button>
+          </Tooltip>
         </div>
       </div>
       <Tabs

@@ -28,7 +28,7 @@ export const Variant2: Story = {
 
 export const Variant3: Story = {
   name: 'iconOnly',
-  args: { iconOnly: true, title: 'x' },
+  args: { iconOnly: true, 'aria-label': 'Export' },
 }
 
 export const Variant4: Story = {

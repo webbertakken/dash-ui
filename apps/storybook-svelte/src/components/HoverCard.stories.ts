@@ -5,7 +5,16 @@ import { HoverCard } from '@w5-ui/svelte'
 const meta = {
   title: 'Selection & menus/HoverCard',
   component: HoverCard,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Rich, **non-essential** content about its trigger: a bold `heading`, a `description`, and optional rich `content` (preview, key/value rows). Opens **instantly** on hover and keyboard focus; hoverable, and dismissible with `Escape`. Everything in it must also be reachable elsewhere. A control’s name belongs in a Tooltip; interactive content in a Popover.',
+      },
+    },
+  },
+  tags: ['autodocs'],
 } satisfies Meta<typeof HoverCard>
 export default meta
 
@@ -13,5 +22,5 @@ type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',
-  args: {},
+  args: { heading: 'gw-hq', description: 'Gateway · 99.98% uptime · 42 clients' },
 }

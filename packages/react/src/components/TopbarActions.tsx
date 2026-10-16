@@ -2,6 +2,7 @@ import { SearchIcon, UpdatesIcon, BellIcon, HelpIcon } from '../icons.js'
 import { Avatar } from './Avatar.js'
 import { IconButton } from './Button.js'
 import { NotifDot } from './NotifDot.js'
+import { Tooltip } from './Tooltip.js'
 
 export interface TopbarActionsProps {
   /** Avatar initials shown in the trailing account chip. */
@@ -45,25 +46,32 @@ export interface TopbarActionsProps {
 export function TopbarActions({ initials = 'MS', notificationCount = 1 }: TopbarActionsProps) {
   return (
     <>
-      <IconButton aria-label="Search" title="Search">
-        <SearchIcon />
-      </IconButton>
-      <IconButton aria-label="Updates" title="Updates">
-        <UpdatesIcon />
-      </IconButton>
-      <IconButton
-        aria-label={
-          notificationCount > 0 ? `Notifications, ${notificationCount} new` : 'Notifications'
-        }
-        title="Notifications"
-        style={{ position: 'relative' }}
-      >
-        <BellIcon />
-        {notificationCount > 0 && <NotifDot />}
-      </IconButton>
-      <IconButton aria-label="Help" title="Help">
-        <HelpIcon />
-      </IconButton>
+      <Tooltip label="Search" placement="bottom">
+        <IconButton aria-label="Search">
+          <SearchIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip label="Updates" placement="bottom">
+        <IconButton aria-label="Updates">
+          <UpdatesIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip label="Notifications" placement="bottom">
+        <IconButton
+          aria-label={
+            notificationCount > 0 ? `Notifications, ${notificationCount} new` : 'Notifications'
+          }
+          style={{ position: 'relative' }}
+        >
+          <BellIcon />
+          {notificationCount > 0 && <NotifDot />}
+        </IconButton>
+      </Tooltip>
+      <Tooltip label="Help" placement="bottom">
+        <IconButton aria-label="Help">
+          <HelpIcon />
+        </IconButton>
+      </Tooltip>
       <Avatar initials={initials} size="sm" alt={`Account, ${initials}`} />
     </>
   )

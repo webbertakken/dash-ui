@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { CloseIcon } from '../icons.js'
+import { Tooltip } from './Tooltip.js'
 
 export type AlertVariant = 'success' | 'warn' | 'danger' | 'info'
 
@@ -19,14 +20,16 @@ export function Alert({ variant = 'info', children, onDismiss }: AlertProps) {
     >
       <span className="alert-body">{children}</span>
       {onDismiss && (
-        <button
-          type="button"
-          className="alert-dismiss icon-btn"
-          onClick={onDismiss}
-          aria-label="Dismiss alert"
-        >
-          <CloseIcon aria-hidden="true" />
-        </button>
+        <Tooltip label="Dismiss alert" placement="left" className="alert-dismiss-tip">
+          <button
+            type="button"
+            className="alert-dismiss icon-btn"
+            onClick={onDismiss}
+            aria-label="Dismiss alert"
+          >
+            <CloseIcon aria-hidden="true" />
+          </button>
+        </Tooltip>
       )}
     </div>
   )

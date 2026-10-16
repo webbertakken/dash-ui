@@ -3,7 +3,16 @@ import type { Meta, StoryObj } from '@storybook/web-components'
 
 const meta: Meta = {
   title: 'Selection & menus/HoverCard',
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Rich, **non-essential** content about its trigger: a bold `heading`, a `description`, and optional rich `content` (preview, key/value rows). Opens **instantly** on hover and keyboard focus; hoverable, and dismissible with `Escape`. Everything in it must also be reachable elsewhere. A control’s name belongs in a Tooltip; interactive content in a Popover.',
+      },
+    },
+  },
+  tags: ['autodocs'],
 }
 export default meta
 
@@ -12,10 +21,13 @@ type Story = StoryObj
 export const Variant0: Story = {
   name: 'default',
   render: () => {
-    const props: Record<string, unknown> = {}
+    const props: Record<string, unknown> = {
+      heading: 'gw-hq',
+      description: 'Gateway · 99.98% uptime · 42 clients',
+    }
     const el = document.createElement('uni-hover-card') as HTMLElement & Record<string, unknown>
     for (const [k, v] of Object.entries(props)) el[k] = v
-    el.textContent = 'trigger'
+    el.textContent = 'gw-hq'
     return el
   },
 }

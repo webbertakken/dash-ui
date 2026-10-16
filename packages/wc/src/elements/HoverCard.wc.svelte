@@ -2,12 +2,14 @@
 <script>
   import Original from '@w5-ui/svelte/components/HoverCard.svelte';
   let {
+    heading = undefined,
+    description = undefined,
     placement = 'bottom',
-    delay = 300,
+    delay = undefined,
     class: className = ''
   } = $props();
 </script>
 
-<Original {placement} {delay} class={className}>
+<Original {heading} {description} {placement} {delay} class={className}>
   <slot />
 </Original>

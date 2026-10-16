@@ -37,7 +37,7 @@ afterEach(() => {
 
 describe('IconButton (Tailwind)', () => {
   it('emits the core utility classes for the chrome', () => {
-    const { getByRole } = render(IconButton, { props: { title: 'Search' } })
+    const { getByRole } = render(IconButton, { props: { 'aria-label': 'Search' } })
     const btn = getByRole('button')
     const cls = btn.className
     expect(cls).toMatch(/h-8/)
@@ -46,21 +46,22 @@ describe('IconButton (Tailwind)', () => {
     expect(cls).toMatch(/focus-visible:outline-brand-05/)
   })
 
-  it('forwards aria-label from title when no explicit aria-label is given', () => {
-    const { getByLabelText } = render(IconButton, { props: { title: 'Help' } })
-    expect(getByLabelText('Help')).toBeTruthy()
+  it('is named by its aria-label, not a native title', () => {
+    const { getByRole } = render(IconButton, { props: { 'aria-label': 'Help' } })
+    expect(getByRole('button')).toHaveAccessibleName('Help')
+    expect(getByRole('button')).not.toHaveAttribute('title')
   })
 
   it('merges consumer-supplied class names', () => {
     const { getByRole } = render(IconButton, {
-      props: { title: 'X', class: 'relative ring-1' },
+      props: { 'aria-label': 'X', class: 'relative ring-1' },
     })
     expect(getByRole('button').className).toMatch(/relative ring-1/)
   })
 
   it('invokes onclick', async () => {
     const onclick = vi.fn()
-    const { getByRole } = render(IconButton, { props: { title: 'X', onclick } })
+    const { getByRole } = render(IconButton, { props: { 'aria-label': 'X', onclick } })
     await fireEvent.click(getByRole('button'))
     expect(onclick).toHaveBeenCalledOnce()
   })

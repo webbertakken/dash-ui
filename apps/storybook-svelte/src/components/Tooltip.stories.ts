@@ -5,7 +5,16 @@ import { Tooltip } from '@w5-ui/svelte'
 const meta = {
   title: 'Selection & menus/Tooltip',
   component: Tooltip,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The **name** of a control: short, plain, non-interactive text. Opens after **1 s** of hover, **instantly** on keyboard focus, and on a touch long-press; closes on pointer leave, blur, `Escape` or pressing the control. Never the only carrier of meaning: an icon-only control inside is named after the tooltip, a control with its own name keeps it. Replaces the native `title` attribute. Rich content belongs in a HoverCard; interactive content in a Popover.',
+      },
+    },
+  },
+  tags: ['autodocs'],
 } satisfies Meta<typeof Tooltip>
 export default meta
 
@@ -13,5 +22,5 @@ type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',
-  args: { label: 't' },
+  args: { label: 'Zoom in' },
 }

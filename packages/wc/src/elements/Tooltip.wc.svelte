@@ -4,10 +4,11 @@
   let {
     label = undefined,
     placement = 'top',
+    delay = undefined,
     class: className = ''
   } = $props();
 </script>
 
-<Original {label} {placement} class={className}>
+<Original {label} {placement} {delay} class={className}>
   <slot />
 </Original>

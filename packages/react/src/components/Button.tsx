@@ -3,7 +3,8 @@ import { Spinner } from './Spinner.js'
 
 export type ButtonVariant = 'primary' | 'ghost' | 'danger'
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+/** Native `title` is omitted: name a control with `aria-label` and wrap it in a `Tooltip`. */
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
   variant?: ButtonVariant
   iconOnly?: boolean
   loading?: boolean
@@ -35,7 +36,11 @@ export function Button({
   )
 }
 
-export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+/**
+ * Icon-only button. Name it with `aria-label`, or wrap it in `<Tooltip label>`,
+ * which names an unlabelled icon button after the tooltip.
+ */
+export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
   children?: ReactNode
 }
 
@@ -43,18 +48,10 @@ export function IconButton({
   className = '',
   type = 'button',
   children,
-  title,
-  'aria-label': ariaLabel,
   ...rest
 }: IconButtonProps) {
   return (
-    <button
-      type={type}
-      className={`icon-btn ${className}`.trim()}
-      title={title}
-      aria-label={ariaLabel ?? title}
-      {...rest}
-    >
+    <button type={type} className={`icon-btn ${className}`.trim()} {...rest}>
       {children}
     </button>
   )

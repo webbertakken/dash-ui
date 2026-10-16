@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { CloseIcon } from '../icons.js'
 import { IconButton } from './Button.js'
+import { Tooltip } from './Tooltip.js'
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
@@ -89,9 +90,11 @@ export function Modal({ open, title, size = 'md', onClose, children, footer }: M
       >
         <div className="modal-h">
           <h2 id={titleId}>{title}</h2>
-          <IconButton onClick={onClose} aria-label="Close">
-            <CloseIcon />
-          </IconButton>
+          <Tooltip label="Close" placement="left">
+            <IconButton onClick={onClose} aria-label="Close">
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
         </div>
         <div className="modal-b">{children}</div>
         {footer && <div className="modal-f">{footer}</div>}

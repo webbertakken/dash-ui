@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react'
 import { CloseIcon } from '../icons.js'
+import { Tooltip } from './Tooltip.js'
 
 export type BannerVariant = 'info' | 'success' | 'warn' | 'danger'
 
@@ -35,14 +36,16 @@ export function Banner({ variant = 'info', title, children, action, onDismiss }:
         </button>
       )}
       {onDismiss && (
-        <button
-          type="button"
-          className="banner__dismiss icon-btn"
-          onClick={onDismiss}
-          aria-label="Dismiss banner"
-        >
-          <CloseIcon aria-hidden="true" />
-        </button>
+        <Tooltip label="Dismiss banner" placement="left" className="banner__dismiss-tip">
+          <button
+            type="button"
+            className="banner__dismiss icon-btn"
+            onClick={onDismiss}
+            aria-label="Dismiss banner"
+          >
+            <CloseIcon aria-hidden="true" />
+          </button>
+        </Tooltip>
       )}
     </div>
   )
