@@ -57,7 +57,7 @@
     "@changesets/cli": "^2.27.10",
     "@mdx-js/mdx": "^3",
     "@sveltejs/vite-plugin-svelte": "^4.0.4",
-    "@tailwindcss/vite": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.3",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
