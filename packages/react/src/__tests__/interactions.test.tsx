@@ -406,6 +406,57 @@ describe('ContextMenu', () => {
   })
 })
 
+describe('ContextMenu placement', () => {
+  function sized(width: number, height: number) {
+    return vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      width,
+      height,
+      top: 0,
+      left: 0,
+      right: width,
+      bottom: height,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    })
+  }
+
+  it('keeps a wide menu inside the viewport, measured rather than guessed', () => {
+    const spy = sized(320, 120)
+    const { container } = render(
+      <U.ContextMenu
+        open
+        x={window.innerWidth - 20}
+        y={40}
+        onClose={() => {}}
+        onAction={() => {}}
+        items={[{ id: 'a', label: 'Open 2 files in WebStorm' }]}
+      />,
+    )
+    const menu = container.querySelector('[role=menu]') as HTMLElement
+    expect(parseFloat(menu.style.left) + 320).toBeLessThanOrEqual(window.innerWidth - 8)
+    expect(menu.style.top).toBe('40px')
+    spy.mockRestore()
+  })
+
+  it('opens above the pointer near the bottom', () => {
+    const spy = sized(200, 300)
+    const { container } = render(
+      <U.ContextMenu
+        open
+        x={10}
+        y={window.innerHeight - 10}
+        onClose={() => {}}
+        onAction={() => {}}
+        items={[{ id: 'a', label: 'A' }]}
+      />,
+    )
+    const menu = container.querySelector('[role=menu]') as HTMLElement
+    expect(menu.style.top).toBe(`${window.innerHeight - 10 - 300}px`)
+    spy.mockRestore()
+  })
+})
+
 describe('Menubar', () => {
   it('opens menus and triggers actions', () => {
     const onAction = vi.fn()
