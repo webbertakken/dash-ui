@@ -1,5 +1,11 @@
 # @w5-ui/react
 
+## 0.8.1
+
+### Patch Changes
+
+- [#89](https://github.com/webbertakken/dash-ui/pull/89) [`0b3c0b3`](https://github.com/webbertakken/dash-ui/commit/0b3c0b3cbede2eaf022d22912790f16966b7a889) Thanks [@webbertakken](https://github.com/webbertakken)! - ContextMenu stays inside the viewport whatever its labels: it is placed from its measured size, not a guessed 168px, and opens to the pointer's left or above it when it would cross an edge.
+
 ## 0.8.0
 
 ### Minor Changes
