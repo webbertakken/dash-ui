@@ -1,5 +1,12 @@
 # @w5-ui/wc
 
+## 0.8.1
+
+### Patch Changes
+
+- Updated dependencies [[`0b3c0b3`](https://github.com/webbertakken/dash-ui/commit/0b3c0b3cbede2eaf022d22912790f16966b7a889)]:
+  - @w5-ui/svelte@0.8.1
+
 ## 0.8.0
 
 ### Minor Changes
