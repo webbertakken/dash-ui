@@ -23,22 +23,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Read Node version from mise.toml
-        id: node
-        run:
-          echo "version=$(grep -E '^node\s*=' mise.toml | sed -E 's/.*"([^"]+)".*/\1/')" >>
-          "$GITHUB_OUTPUT"
-
-      - name: Install package manager (from package.json)
-        run: |
-          corepack enable
-          corepack install
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ steps.node.outputs.version }}
-          registry-url: https://registry.npmjs.org
+      # Installs (and caches) node and yarn exactly as pinned in mise.toml,
+      # ahead of the runner's own on PATH.
+      - uses: jdx/mise-action@v5
 
       - name: Upgrade npm to a Trusted Publishing-aware version
         # Node 22 ships with npm 10.x. Trusted Publishing (OIDC exchange) needs
