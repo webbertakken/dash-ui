@@ -23,29 +23,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Read Node version from mise.toml
-        id: node
-        run:
-          echo "version=$(grep -E '^node\s*=' mise.toml | sed -E 's/.*"([^"]+)".*/\1/')" >>
-          "$GITHUB_OUTPUT"
+      # Installs (and caches) node and yarn exactly as pinned in mise.toml,
+      # ahead of the runner's own on PATH.
+      - uses: jdx/mise-action@v5
 
-      - name: Install package manager (from package.json)
+      - name: Check npm can do Trusted Publishing
+        # The OIDC exchange needs npm >= 11.5.1; the npm bundled with the
+        # mise-pinned Node provides it. Fail here, not at publish time.
         run: |
-          corepack enable
-          corepack install
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ steps.node.outputs.version }}
-          registry-url: https://registry.npmjs.org
-
-      - name: Upgrade npm to a Trusted Publishing-aware version
-        # Node 22 ships with npm 10.x. Trusted Publishing (OIDC exchange) needs
-        # npm >= 11.5.1. Pin to the 11.x line: npm@latest (12.x) requires
-        # node >= 22.22.2, newer than the mise-pinned toolchain, and would
-        # fail to install here.
-        run: npm install -g npm@^11
+          npm_version="$(npm --version)"
+          echo "npm $npm_version from $(command -v npm)"
+          node -e 'const [maj, min] = process.argv[1].split(".").map(Number); process.exit(maj > 11 || (maj === 11 && min >= 5) ? 0 : 1)' "$npm_version" ||
+            { echo "npm $npm_version is too old for Trusted Publishing (needs >= 11.5.1)"; exit 1; }
 
       - name: Install deps
         env:
