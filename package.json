@@ -50,7 +50,7 @@
     ]
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=26"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.7.0",
