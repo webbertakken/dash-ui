@@ -137,7 +137,7 @@
     if (outside) cls += ' text-text-4';
     else cls += ' text-text-2';
     if (isTodayDay && !start && !end) cls += ' ring-1 ring-inset ring-brand-05';
-    if (start || end) cls += ' bg-brand-05 text-white hover:bg-brand-06';
+    if (start || end) cls += ' bg-primary-fill text-primary-fill-fg hover:bg-primary-fill-hover';
     else if (inRange) cls += ' bg-brand-05/20 text-text-1';
     return cls;
   }

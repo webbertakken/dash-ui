@@ -50,14 +50,14 @@
     ]
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=26"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.27.10",
     "@mdx-js/mdx": "^3",
     "@sveltejs/vite-plugin-svelte": "^4.0.4",
-    "@tailwindcss/vite": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.3",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.3.3",
@@ -77,7 +77,7 @@
     "react-dom": "^18.3.0",
     "svelte": "^5.56.4",
     "svelte-migrate": "^1.10",
-    "tailwindcss": "^4.3.0",
+    "tailwindcss": "^4.3.3",
     "tsx": "^4.22.4",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",

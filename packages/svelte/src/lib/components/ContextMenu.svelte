@@ -26,6 +26,7 @@
 <script lang="ts">
   import { onDestroy, tick } from 'svelte';
   import Pill from './Pill.svelte';
+  import { computeMenuPosition } from './menu-position';
 
   const PILL_SLOT = '{pill}';
 
@@ -71,10 +72,29 @@
     }, []),
   );
 
-  const menuW = 168;
-  let menuH = $derived(items.length * 30 + 8);
-  let cx = $derived(Math.min(x, (typeof window !== 'undefined' ? window.innerWidth : 1200) - menuW - 8));
-  let cy = $derived(Math.min(y, (typeof window !== 'undefined' ? window.innerHeight : 800) - menuH - 8));
+  /** Space kept between the menu and every viewport edge. */
+  const MENU_MARGIN = 8;
+  // Placed from the menu's MEASURED size once it is in the DOM, by the
+  // effect below. Effects run before the browser paints, so the menu is
+  // never seen at this starting point.
+  let cx = $state(0);
+  let cy = $state(0);
+  $effect(() => {
+    void items;
+    if (!open || menuEl === undefined) return;
+    const { width, height } = menuEl.getBoundingClientRect();
+    const placed = computeMenuPosition({
+      x,
+      y,
+      menuWidth: width,
+      menuHeight: height,
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
+      margin: MENU_MARGIN,
+    });
+    cx = placed.left;
+    cy = placed.top;
+  });
 
   function activate(id: string) {
     onaction?.(id);

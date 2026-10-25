@@ -60,7 +60,7 @@
             {/if}
             {#if it.pill !== undefined}
               <span
-                class="ml-auto rounded-full bg-brand-05 px-1.5 py-px text-[10px] font-semibold text-white"
+                class="ml-auto rounded-full bg-primary-fill px-1.5 py-px text-[10px] font-semibold text-primary-fill-fg"
               >{it.pill}<span class="sr-only"> alert{it.pill !== 1 ? 's' : ''}</span></span>
             {/if}
           </button>
