@@ -13,6 +13,7 @@ packages/
   react/           @w5-ui/react           ~170 React 18 components
   svelte/          @w5-ui/svelte          ~170 Svelte 4 components, mirrored API
   wc/              @w5-ui/wc              ~165 framework-agnostic custom elements compiled from the Svelte sources
+  fleet/           @w5-ui/fleet           Grouped SvelteFlow topology board + drill-down, driven by an injectable FleetApi contract (Svelte 5; @xyflow/svelte peer)
   storybook-meta/  @w5-ui/storybook-meta  Shared sidebar category map (single source of truth across all storybooks)
 
 apps/

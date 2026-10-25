@@ -16,8 +16,10 @@ export function groupedComponents(
 ): GroupedComponents {
   const out = Object.fromEntries(groups.map((g) => [g.id, [] as Component[]])) as GroupedComponents
   for (const c of components) {
-    if (out[c.group] === undefined) out[c.group] = []
-    out[c.group].push(c)
+    // A component may name a group that is not in `groups`; it gets a
+    // bucket of its own rather than being dropped.
+    const bucket = (out[c.group] ??= [])
+    bucket.push(c)
   }
   return out
 }

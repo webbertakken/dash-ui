@@ -47,7 +47,7 @@
   //   ghost:   transparent surface with motif-aware text/border + hover.
   //   danger:  semantic status-danger text + faded border.
   const VARIANT: Record<NonNullable<Props['variant']>, string> = {
-    primary: 'bg-brand-05 text-white hover:bg-brand-06 border-transparent',
+    primary: 'bg-primary-fill text-primary-fill-fg hover:bg-primary-fill-hover active:bg-primary-fill-press border-transparent',
     ghost:
       'bg-transparent text-text-2 border-border-2 hover:bg-row-hover hover:text-text-1',
     danger: 'bg-transparent text-status-danger border-status-danger/30',

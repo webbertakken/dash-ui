@@ -103,6 +103,16 @@ export function computeDepths(components: readonly Component[]): Map<ComponentId
   return depth
 }
 
+/** The row at `depth`, created on demand. The callers pre-size `rows`
+ *  from the maximum depth, so a miss cannot happen - but making the row
+ *  ON DEMAND keeps that invariant local and provable instead of
+ *  asserting it at every push. */
+function rowAt(rows: Component[][], depth: number): Component[] {
+  const row = rows[depth] ?? []
+  rows[depth] = row
+  return row
+}
+
 /** Group components by depth, preserving declaration order within a row. */
 export function rowsByDepth(
   components: readonly Component[],
@@ -110,10 +120,7 @@ export function rowsByDepth(
 ): Component[][] {
   const maxDepth = Math.max(0, ...Array.from(depths.values()))
   const rows: Component[][] = Array.from({ length: maxDepth + 1 }, () => [])
-  for (const c of components) {
-    const d = depths.get(c.id) ?? 0
-    rows[d].push(c)
-  }
+  for (const c of components) rowAt(rows, depths.get(c.id) ?? 0).push(c)
   return rows
 }
 
@@ -317,10 +324,7 @@ function laneSpec(group: Group, members: Component[], byId: Map<ComponentId, Com
   const depths = depthsInGroup(group.id, members, byId)
   const maxDepth = members.length === 0 ? -1 : Math.max(0, ...Array.from(depths.values()))
   const rows: Component[][] = maxDepth < 0 ? [] : Array.from({ length: maxDepth + 1 }, () => [])
-  for (const c of members) {
-    const d = depths.get(c.id) ?? 0
-    rows[d].push(c)
-  }
+  for (const c of members) rowAt(rows, depths.get(c.id) ?? 0).push(c)
   for (const row of rows) row.sort((a, b) => (a.groupOrder ?? 100) - (b.groupOrder ?? 100))
 
   const maxCols = group.maxCols ?? GROUP_MAX_COLS

@@ -294,8 +294,8 @@ a {
   margin-left: auto;
   padding: 1px 6px;
   border-radius: 9999px;
-  background: var(--brand-05);
-  color: #fff;
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
   font-size: 10px;
   font-weight: 600;
 }
@@ -376,12 +376,15 @@ a {
   opacity: 0.55;
 }
 .btn-primary {
-  background: var(--brand-05);
-  color: #fff;
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
   border-color: transparent;
 }
 .btn-primary:hover:not(:disabled) {
-  background: var(--brand-06);
+  background: var(--primary-fill-hover);
+}
+.btn-primary:active:not(:disabled) {
+  background: var(--primary-fill-press);
 }
 .btn-ghost {
   background: transparent;
@@ -1404,13 +1407,13 @@ tbody tr:hover td {
   border-color: rgba(255, 255, 255, 0.1);
 }
 .pagination-btn.active {
-  background: #006fff;
-  color: #fff;
-  border-color: #006fff;
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
+  border-color: var(--primary-fill);
 }
 .pagination-btn.active:hover {
-  background: #4797ff;
-  border-color: #4797ff;
+  background: var(--primary-fill-hover);
+  border-color: var(--primary-fill-hover);
 }
 .pagination-btn:disabled {
   opacity: 0.35;
@@ -2380,9 +2383,9 @@ tr:hover .action-menu-trigger,
   background: #141415;
 }
 .stepper__item--active .stepper__num {
-  border-color: #006fff;
-  background: #006fff;
-  color: #fff;
+  border-color: var(--primary-fill);
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
 }
 .stepper__item--done .stepper__num {
   border-color: #006fff;
@@ -2896,8 +2899,8 @@ tr:hover .action-menu-trigger,
   font-weight: 600;
 }
 .dp-day--selected {
-  background: #006fff;
-  color: #fff;
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
 }
 .dp-day--selected:hover {
   background: #1a7cff;
@@ -2939,15 +2942,15 @@ tr:hover .action-menu-trigger,
   text-align: center;
 }
 .dp-day--start {
-  background: #006fff;
-  color: #fff;
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
 }
 .dp-day--start:hover {
   background: #1a7cff;
 }
 .dp-day--end {
-  background: #006fff;
-  color: #fff;
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
 }
 .dp-day--end:hover {
   background: #1a7cff;
@@ -4460,11 +4463,11 @@ tr:hover .action-menu-trigger,
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
-  background: #006fff;
+  background: var(--primary-fill);
   border-radius: 9px;
   font-size: 11px;
   font-weight: 700;
-  color: #fff;
+  color: var(--primary-fill-fg);
   line-height: 1;
 }
 .np-header-actions {
@@ -4654,11 +4657,11 @@ tr:hover .action-menu-trigger,
   background: #ffba42;
 }
 .cd-confirm--info {
-  background: #006fff;
-  color: #fff;
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
 }
 .cd-confirm--info:hover {
-  background: #4797ff;
+  background: var(--primary-fill-hover);
 }
 .cd-confirm:focus-visible {
   outline: 2px solid #fff;
@@ -5506,8 +5509,8 @@ tr:hover .action-menu-trigger,
   color: #111;
 }
 .badge-info {
-  background: #006fff;
-  color: #fff;
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
 }
 .badge-success {
   background: #00b070;
@@ -6990,8 +6993,8 @@ textarea.textarea {
   left: 8px;
   z-index: 999;
   padding: 6px 10px;
-  background: var(--brand-05);
-  color: var(--neutral-00);
+  background: var(--primary-fill);
+  color: var(--primary-fill-fg);
   border-radius: 4px;
   text-decoration: none;
   font-size: 12px;

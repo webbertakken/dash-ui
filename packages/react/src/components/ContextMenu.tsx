@@ -1,5 +1,9 @@
-import { useState, useRef, useEffect, useId } from 'react'
+import { useState, useRef, useEffect, useId, useLayoutEffect } from 'react'
 import type { KeyboardEvent } from 'react'
+import { computeMenuPosition } from './menu-position'
+
+/** Space kept between the menu and every viewport edge. */
+const MENU_MARGIN = 8
 
 export interface ContextMenuItem {
   id: string
@@ -36,6 +40,25 @@ export function ContextMenu({
   const menuId = `${uid}-ctxmenu`
   const [activeIdx, setActiveIdx] = useState(0)
   const menuRef = useRef<HTMLUListElement>(null)
+  // Placed from the menu's MEASURED size once it is in the DOM. A layout
+  // effect runs before the browser paints, so the menu is never seen at
+  // this starting point.
+  const [position, setPosition] = useState({ left: 0, top: 0 })
+  useLayoutEffect(() => {
+    if (!open || menuRef.current === null) return
+    const { width, height } = menuRef.current.getBoundingClientRect()
+    setPosition(
+      computeMenuPosition({
+        x,
+        y,
+        menuWidth: width,
+        menuHeight: height,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        margin: MENU_MARGIN,
+      }),
+    )
+  }, [open, x, y, items])
 
   const actionItems = items.reduce<ContextMenuItem[]>((acc, e) => {
     if (!('separator' in e)) acc.push(e)
@@ -85,11 +108,6 @@ export function ContextMenu({
 
   if (!open) return null
 
-  const menuW = 168
-  const menuH = items.length * 30 + 8
-  const cx = Math.min(x, window.innerWidth - menuW - 8)
-  const cy = Math.min(y, window.innerHeight - menuH - 8)
-
   return (
     <ul
       ref={menuRef}
@@ -98,7 +116,7 @@ export function ContextMenu({
       aria-label={label}
       tabIndex={-1}
       className="ctx-menu"
-      style={{ left: cx, top: cy }}
+      style={{ left: position.left, top: position.top }}
       onKeyDown={onKeyDown}
     >
       {items.map((entry, i) => {
