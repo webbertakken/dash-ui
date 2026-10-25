@@ -92,8 +92,9 @@ not one per patch.
 
 Each `@w5-ui/*` package has a [Trusted Publisher](https://docs.npmjs.com/trusted-publishers)
 configured on npm that authorises `webbertakken/dash-ui` -> `release.yml` to publish via GitHub
-OIDC. No `NPM_TOKEN` is stored in the repo; npm CLI 11.5.1+ exchanges a short-lived OIDC token for a
-publish credential per run. Provenance attestations are signed automatically.
+OIDC. No `NPM_TOKEN` is stored in the repo; `changeset publish` runs `yarn npm publish` per package,
+which exchanges a short-lived OIDC token for a publish credential per run. Provenance attestations
+are signed automatically, as each package sets `publishConfig.provenance`.
 
 ### Linked packages
 

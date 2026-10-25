@@ -10,8 +10,10 @@ jobs:
   release:
     name: Version + publish
     runs-on: ubuntu-latest
-    # Trusted Publishing: id-token: write lets npm CLI 11.5.1+ exchange a
-    # short-lived OIDC token for an npm credential. No NPM_TOKEN secret needed.
+    # Trusted Publishing: id-token: write lets `yarn npm publish` (which
+    # `changeset publish` runs per package) exchange a short-lived OIDC token
+    # for an npm credential. No NPM_TOKEN secret needed. Provenance comes from
+    # each package's publishConfig.provenance.
     # contents: write is for changesets to push tags and the Version Packages PR.
     # pull-requests: write is for opening the Version Packages PR.
     permissions:
@@ -26,15 +28,6 @@ jobs:
       # Installs (and caches) node and yarn exactly as pinned in mise.toml,
       # ahead of the runner's own on PATH.
       - uses: jdx/mise-action@v5
-
-      - name: Check npm can do Trusted Publishing
-        # The OIDC exchange needs npm >= 11.5.1; the npm bundled with the
-        # mise-pinned Node provides it. Fail here, not at publish time.
-        run: |
-          npm_version="$(npm --version)"
-          echo "npm $npm_version from $(command -v npm)"
-          node -e 'const [maj, min] = process.argv[1].split(".").map(Number); process.exit(maj > 11 || (maj === 11 && min >= 5) ? 0 : 1)' "$npm_version" ||
-            { echo "npm $npm_version is too old for Trusted Publishing (needs >= 11.5.1)"; exit 1; }
 
       - name: Install deps
         env:
@@ -52,9 +45,8 @@ jobs:
           publish-script: yarn release
           pr-title: 'chore: version packages'
           commit-message: 'chore: version packages'
-        env:
-          # No NPM_TOKEN: npm CLI does Trusted Publishing via OIDC.
-          NPM_CONFIG_PROVENANCE: 'true'
+          # Tags only; the next step creates GitHub Releases for majors.
+          create-github-releases: false
 
       - name: Create GitHub Releases for major versions only
         # Tags created by changesets/action via the default GITHUB_TOKEN do not
