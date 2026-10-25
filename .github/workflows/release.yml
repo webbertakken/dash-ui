@@ -59,12 +59,11 @@ jobs:
         id: changesets
         uses: changesets/action@v2
         with:
-          version: yarn version-packages
-          publish: yarn release
-          title: 'chore: version packages'
-          commit: 'chore: version packages'
+          version-script: yarn version-packages
+          publish-script: yarn release
+          pr-title: 'chore: version packages'
+          commit-message: 'chore: version packages'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # No NPM_TOKEN: npm CLI does Trusted Publishing via OIDC.
           NPM_CONFIG_PROVENANCE: 'true'
 
@@ -75,7 +74,7 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISHED: ${{ steps.changesets.outputs.publishedPackages }}
+          PUBLISHED: ${{ steps.changesets.outputs.published-packages }}
         run: |
           echo "Published packages: $PUBLISHED"
           echo "$PUBLISHED" | jq -c '.[]' | while read -r entry; do
