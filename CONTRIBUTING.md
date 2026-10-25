@@ -4,7 +4,7 @@ Thanks for your interest in contributing!
 
 ## Local setup
 
-Prerequisites: Node 22+, yarn 4+.
+Prerequisites: Node 26+, yarn 4+.
 
 ```sh
 git clone https://github.com/webbertakken/dash-ui.git

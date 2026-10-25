@@ -40,3 +40,45 @@ export function statusMap(
     return typeof v === 'string' ? { status: v } : v
   }
 }
+
+/**
+ * The element at `index`, or a failure naming what was actually there.
+ *
+ * This package is type-checked under `noUncheckedIndexedAccess` because
+ * it SHIPS ITS SOURCE and a consumer compiles it with their flags. In a
+ * test that has just asserted a length, `!` would crash with no context
+ * and `?.` would let the assertion pass vacuously against `undefined`.
+ */
+export function at<T>(items: ArrayLike<T> | undefined, index: number, label = 'item'): T {
+  if (items === undefined) throw new Error(`expected ${label}[${index}], but the list is undefined`)
+  const item = items[index]
+  if (item === undefined) {
+    throw new Error(`expected ${label}[${index}], but the list has ${items.length}`)
+  }
+  return item
+}
+
+/** The value under `key`, or a failure naming the keys that were there. */
+export function keyed<T>(
+  record: Readonly<Record<string, T>> | undefined,
+  key: string,
+  label = 'entry',
+): T {
+  if (record === undefined) throw new Error(`expected ${label} '${key}', but the map is undefined`)
+  const value = record[key]
+  if (value === undefined) {
+    throw new Error(
+      `expected ${label} '${key}', but the map has: ${Object.keys(record).join(', ')}`,
+    )
+  }
+  return value
+}
+
+/** `value`, or a failure. For the "this cannot be null here" step in a
+ *  test that has already proved it. */
+export function present<T>(value: T | null | undefined, label = 'value'): T {
+  if (value === null || value === undefined) {
+    throw new Error(`expected ${label}, got ${value === null ? 'null' : 'undefined'}`)
+  }
+  return value
+}

@@ -123,16 +123,16 @@ Setting `data-motif` re-resolves every semantic token defined under `[data-motif
 `[data-motif='light']` in `@w5-ui/tokens/tokens.css`. The raw ramps (`--brand-*`, `--neutral-*`,
 `--status-*` foregrounds) don't flip — they're motif-independent inputs to the semantic layer.
 
-| Category           | Flips per motif                           | Example tokens                           |
-| ------------------ | ----------------------------------------- | ---------------------------------------- |
-| Page & surfaces    | Yes                                       | `--bg-page`, `--depthBg-0` → `-3`        |
-| Text               | Yes                                       | `--text-1` → `--text-4`, `--text-link`   |
-| Borders            | Yes                                       | `--border-1` → `--border-3`, `--divider` |
-| Row interactions   | Yes                                       | `--row-hover`, `--row-active`            |
-| Primary states     | Hover / press flip; brand hue stays put   | `--primary-hover`, `--primary-press`     |
-| Shadows            | Yes (light gains an outer shadow)         | `--shadow-card`, `--shadow-modal`        |
-| Status foregrounds | No (brand-tied)                           | `--status-success`, `--status-danger`    |
-| Status backgrounds | No (already 12% tinted to pair correctly) | `--status-*-bg`                          |
+| Category           | Flips per motif                                                     | Example tokens                              |
+| ------------------ | ------------------------------------------------------------------- | ------------------------------------------- |
+| Page & surfaces    | Yes                                                                 | `--bg-page`, `--depthBg-0` → `-3`           |
+| Text               | Yes                                                                 | `--text-1` → `--text-4`, `--text-link`      |
+| Borders            | Yes                                                                 | `--border-1` → `--border-3`, `--divider`    |
+| Row interactions   | Yes                                                                 | `--row-hover`, `--row-active`               |
+| Primary fill       | The same in both motifs: white text needs the darker fill on either | `--primary-fill`, `-hover`, `-press`, `-fg` |
+| Shadows            | Yes (light gains an outer shadow)                                   | `--shadow-card`, `--shadow-modal`           |
+| Status foregrounds | No (brand-tied)                                                     | `--status-success`, `--status-danger`       |
+| Status backgrounds | No (already 12% tinted to pair correctly)                           | `--status-*-bg`                             |
 
 If a value you styled doesn't flip when you toggle motif, you probably wrote a hex (or reached for a
 raw `--neutral-*` / `--brand-*` ramp) instead of the semantic token. See **Foundations / Colours**

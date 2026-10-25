@@ -29,7 +29,7 @@
 
   const BTN_BASE =
     'inline-flex h-[30px] min-w-[30px] cursor-pointer items-center justify-center rounded-md border border-transparent bg-transparent px-1.5 text-13 font-medium leading-none text-text-3 transition-[background-color,color,border-color] duration-100 hover:bg-row-hover hover:text-text-1 hover:border-border-2 disabled:cursor-not-allowed disabled:opacity-35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05';
-  const BTN_ACTIVE = 'bg-brand-05 text-white border-brand-05 hover:bg-brand-06 hover:border-brand-06';
+  const BTN_ACTIVE = 'bg-primary-fill text-primary-fill-fg border-primary-fill hover:bg-primary-fill-hover hover:border-primary-fill-hover';
 </script>
 
 {#if totalPages > 1}

@@ -8,7 +8,12 @@ export default defineConfig({
     react({ include: /\.tsx?$/ }),
     svelte({
       compilerOptions: { customElement: false },
-      include: [/packages\/(svelte|fleet)\/.*\.svelte$/],
+      // @testing-library/svelte mounts components through svelte-core's own
+      // wrapper .svelte file, so that package needs compiling too.
+      include: [
+        /packages\/(svelte|fleet)\/.*\.svelte$/,
+        /node_modules\/@testing-library\/svelte-core\/.*\.svelte$/,
+      ],
       preprocess: vitePreprocess(),
       hot: false,
     }),
