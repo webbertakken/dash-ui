@@ -501,16 +501,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clack/core@npm:1.0.0-alpha.1":
-  version: 1.0.0-alpha.1
-  resolution: "@clack/core@npm:1.0.0-alpha.1"
-  dependencies:
-    picocolors: "npm:^1.0.0"
-    sisteransi: "npm:^1.0.5"
-  checksum: 10c0/ced8d68d611465b539500ee66a1417bd11c66b32caa0c0d96bc1316f71a3730d93243e5aa73c34015d6ab384c925ad96df34fc3be0b5e73e9d340f6324bdd8f0
-  languageName: node
-  linkType: hard
-
 "@clack/core@npm:1.5.1":
   version: 1.5.1
   resolution: "@clack/core@npm:1.5.1"
@@ -518,17 +508,6 @@ __metadata:
     fast-wrap-ansi: "npm:^0.2.0"
     sisteransi: "npm:^1.0.5"
   checksum: 10c0/6dca93ff5a34bfe8c150367519bc40a847e9172cb1a78b18c88da0507cb6ad899debe1ad5cfcb9796e439108f12f003cf06fd002e2293bc85ff500975e45ff13
-  languageName: node
-  linkType: hard
-
-"@clack/prompts@npm:1.0.0-alpha.1":
-  version: 1.0.0-alpha.1
-  resolution: "@clack/prompts@npm:1.0.0-alpha.1"
-  dependencies:
-    "@clack/core": "npm:1.0.0-alpha.1"
-    picocolors: "npm:^1.0.0"
-    sisteransi: "npm:^1.0.5"
-  checksum: 10c0/50da54afdb08bac1a6cb838e51b10994c975730e937014e15682139eb5cb4c2892bb78cc6ba190dc237979c8846f3fb1c4e3ac3cfea98b70069f8c375b719802
   languageName: node
   linkType: hard
 
@@ -2678,17 +2657,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.25.0":
-  version: 0.25.0
-  resolution: "@ts-morph/common@npm:0.25.0"
-  dependencies:
-    minimatch: "npm:^9.0.4"
-    path-browserify: "npm:^1.0.1"
-    tinyglobby: "npm:^0.2.9"
-  checksum: 10c0/c67e66db678e44886e9823e6482834acebfae0ea52ccbfa2af1ca9abfe5a9774dad6e852c8f480909bc196175f17e15454af71d7a41a1c137db09e74f046a830
-  languageName: node
-  linkType: hard
-
 "@tsconfig/svelte@npm:^5.0.0, @tsconfig/svelte@npm:^5.0.4":
   version: 5.0.8
   resolution: "@tsconfig/svelte@npm:5.0.8"
@@ -3913,13 +3881,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"code-block-writer@npm:^13.0.3":
-  version: 13.0.3
-  resolution: "code-block-writer@npm:13.0.3"
-  checksum: 10c0/87db97b37583f71cfd7eced8bf3f0a0a0ca53af912751a734372b36c08cd27f3e8a4878ec05591c0cd9ae11bea8add1423e132d660edd86aab952656dd41fd66
-  languageName: node
-  linkType: hard
-
 "collapse-white-space@npm:^2.0.0":
   version: 2.1.0
   resolution: "collapse-white-space@npm:2.1.0"
@@ -4242,7 +4203,7 @@ __metadata:
     react: "npm:^18.3.0"
     react-dom: "npm:^18.3.0"
     svelte: "npm:^5.56.4"
-    svelte-migrate: "npm:^1.10"
+    svelte-migrate: "npm:^2.0.0"
     tailwindcss: "npm:^4.3.3"
     tsx: "npm:^4.23.1"
     typescript: "npm:^7.0.0"
@@ -5234,20 +5195,6 @@ __metadata:
   dependencies:
     type-fest: "npm:^0.20.2"
   checksum: 10c0/d3c11aeea898eb83d5ec7a99508600fbe8f83d2cf00cbb77f873dbf2bcb39428eff1b538e4915c993d8a3b3473fa71eeebfe22c9bb3a3003d1e26b1f2c8a42cd
-  languageName: node
-  linkType: hard
-
-"globalyzer@npm:0.1.0":
-  version: 0.1.0
-  resolution: "globalyzer@npm:0.1.0"
-  checksum: 10c0/e16e47a5835cbe8a021423d4c7fcd9f5f85815b4190a7f50c1fdb95fc559d72e4fb30be96f106c66a99413f36d72da0f8323d19d27f60a8feec9d936139ec5a8
-  languageName: node
-  linkType: hard
-
-"globrex@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "globrex@npm:0.1.2"
-  checksum: 10c0/a54c029520cf58bda1d8884f72bd49b4cd74e977883268d931fd83bcbd1a9eb96d57c7dbd4ad80148fb9247467ebfb9b215630b2ed7563b2a8de02e1ff7f89d1
   languageName: node
   linkType: hard
 
@@ -7322,15 +7269,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"package-manager-detector@npm:^0.2.11":
-  version: 0.2.11
-  resolution: "package-manager-detector@npm:0.2.11"
-  dependencies:
-    quansync: "npm:^0.2.7"
-  checksum: 10c0/247991de461b9e731f3463b7dae9ce187e53095b7b94d7d96eec039abf418b61ccf74464bec1d0c11d97311f33472e77baccd4c5898f77358da4b5b33395e0b1
-  languageName: node
-  linkType: hard
-
 "package-manager-detector@npm:^1.6.0, package-manager-detector@npm:^1.8.0":
   version: 1.9.0
   resolution: "package-manager-detector@npm:1.9.0"
@@ -7368,13 +7306,6 @@ __metadata:
   dependencies:
     entities: "npm:^8.0.0"
   checksum: 10c0/c3c1c5aab55f6e4be5245599790e56e64be7764a4a0edd7f98db4fe3bb380f63add752fa047dff0496446c25f4104f0c7c1967723de640bde92306a7bb67ed2f
-  languageName: node
-  linkType: hard
-
-"path-browserify@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "path-browserify@npm:1.0.1"
-  checksum: 10c0/8b8c3fd5c66bd340272180590ae4ff139769e9ab79522e2eb82e3d571a89b8117c04147f65ad066dccfb42fcad902e5b7d794b3d35e0fd840491a8ddbedf8c66
   languageName: node
   linkType: hard
 
@@ -7559,13 +7490,6 @@ __metadata:
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
   checksum: 10c0/14f76a8206bc3464f794fb2e3d3cc665ae416c01893ad7a02b23766eb07159144ee612ad67af5e84fa4479ccfe67678c4feb126b0485651b302babf66f04f9e9
-  languageName: node
-  linkType: hard
-
-"quansync@npm:^0.2.7":
-  version: 0.2.11
-  resolution: "quansync@npm:0.2.11"
-  checksum: 10c0/cb9a1f8ebce074069f2f6a78578873ffedd9de9f6aa212039b44c0870955c04a71c3b1311b5d97f8ac2f2ec476de202d0a5c01160cb12bc0a11b7ef36d22ef56
   languageName: node
   linkType: hard
 
@@ -8095,7 +8019,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.2.1, semver@npm:^7.3.5, semver@npm:^7.5.3, semver@npm:^7.6.2, semver@npm:^7.7.3":
+"semver@npm:^7.2.1, semver@npm:^7.3.5, semver@npm:^7.5.3, semver@npm:^7.6.2":
   version: 7.8.0
   resolution: "semver@npm:7.8.0"
   bin:
@@ -8485,23 +8409,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-migrate@npm:^1.10":
-  version: 1.10.2
-  resolution: "svelte-migrate@npm:1.10.2"
-  dependencies:
-    "@clack/prompts": "npm:1.0.0-alpha.1"
-    import-meta-resolve: "npm:^4.2.0"
-    magic-string: "npm:^0.30.21"
-    package-manager-detector: "npm:^0.2.11"
-    picocolors: "npm:^1.1.1"
-    semver: "npm:^7.7.3"
-    tiny-glob: "npm:^0.2.9"
-    ts-morph: "npm:^24.0.0"
-    typescript: "npm:^5.9.3"
-    zimmerframe: "npm:^1.1.4"
+"svelte-migrate@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "svelte-migrate@npm:2.0.0"
   bin:
-    svelte-migrate: bin.js
-  checksum: 10c0/18ab0962531735860cb6b91cf9eccdd2ecaaf08bcede0f06883ed29dae4789c5e7ea7f139b1a70d7d2816ec6dc53080f3e5d75c7f63be84ca828dfda66cfbf26
+    svelte-migrate: ./bin.js
+  checksum: 10c0/44ab75e5dadf5424a92caba368e1c993ed6ddde43d002b4bd4bd10fa50ec0a0f9c0c30c79452a5d349397f92cddfe25aa83a44516ed7e1a80b65634333282df8
   languageName: node
   linkType: hard
 
@@ -8673,16 +8586,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-glob@npm:^0.2.9":
-  version: 0.2.9
-  resolution: "tiny-glob@npm:0.2.9"
-  dependencies:
-    globalyzer: "npm:0.1.0"
-    globrex: "npm:^0.1.2"
-  checksum: 10c0/cbe072f0d213a1395d30aa94845a051d4af18fe8ffb79c8e99ac1787cd25df69083f17791a53997cb65f469f48950cb61426ccc0683cc9df170ac2430e883702
-  languageName: node
-  linkType: hard
-
 "tiny-invariant@npm:^1.3.1, tiny-invariant@npm:^1.3.3":
   version: 1.3.3
   resolution: "tiny-invariant@npm:1.3.3"
@@ -8704,7 +8607,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyglobby@npm:^0.2.12, tinyglobby@npm:^0.2.9":
+"tinyglobby@npm:^0.2.12":
   version: 0.2.16
   resolution: "tinyglobby@npm:0.2.16"
   dependencies:
@@ -8809,16 +8712,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-morph@npm:^24.0.0":
-  version: 24.0.0
-  resolution: "ts-morph@npm:24.0.0"
-  dependencies:
-    "@ts-morph/common": "npm:~0.25.0"
-    code-block-writer: "npm:^13.0.3"
-  checksum: 10c0/2a0813ba428a154966d4038901f6c32457a60870936b23778f2629433257f87d1881fc4ecae7b791a223a88c2edf96aaac9fb0f88bf34d3c652af8c09c4f43bc
-  languageName: node
-  linkType: hard
-
 "tsconfig-paths@npm:^4.2.0":
   version: 4.2.0
   resolution: "tsconfig-paths@npm:4.2.0"
@@ -8875,7 +8768,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.9.4 || ^5.0.0, typescript@npm:^5.5.0, typescript@npm:^5.9.3":
+"typescript@npm:^4.9.4 || ^5.0.0, typescript@npm:^5.5.0":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -8956,7 +8849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^4.9.4 || ^5.0.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^4.9.4 || ^5.0.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.0#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
@@ -9582,7 +9475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zimmerframe@npm:^1.1.2, zimmerframe@npm:^1.1.4":
+"zimmerframe@npm:^1.1.2":
   version: 1.1.4
   resolution: "zimmerframe@npm:1.1.4"
   checksum: 10c0/9470cbf22cefae975ab413c7158a119d082b354ddcf0da48a842f2f42246fa15943cd9b92c047de39db38015e3b866e32f383bc217e8e4f4192945c7d425536b
