@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react({ include: /\.tsx?$/ }),
     svelte({
-      compilerOptions: { customElement: false },
+      compilerOptions: { customElement: false, hmr: false },
       // @testing-library/svelte mounts components through svelte-core's own
       // wrapper .svelte file, so that package needs compiling too.
       include: [
@@ -15,16 +15,15 @@ export default defineConfig({
         /node_modules\/@testing-library\/svelte-core\/.*\.svelte$/,
       ],
       preprocess: vitePreprocess(),
-      hot: false,
     }),
   ],
   resolve: {
     alias: {
-      '@w5-ui/tokens': path.resolve(__dirname, 'packages/tokens/src/tokens.ts'),
-      '@w5-ui/assets': path.resolve(__dirname, 'packages/assets/src/index.ts'),
-      '@w5-ui/react': path.resolve(__dirname, 'packages/react/src/index.ts'),
-      '@w5-ui/svelte': path.resolve(__dirname, 'packages/svelte/src/lib/index.ts'),
-      '@w5-ui/fleet': path.resolve(__dirname, 'packages/fleet/src/lib/index.ts'),
+      '@w5-ui/tokens': path.resolve(import.meta.dirname, 'packages/tokens/src/tokens.ts'),
+      '@w5-ui/assets': path.resolve(import.meta.dirname, 'packages/assets/src/index.ts'),
+      '@w5-ui/react': path.resolve(import.meta.dirname, 'packages/react/src/index.ts'),
+      '@w5-ui/svelte': path.resolve(import.meta.dirname, 'packages/svelte/src/lib/index.ts'),
+      '@w5-ui/fleet': path.resolve(import.meta.dirname, 'packages/fleet/src/lib/index.ts'),
     },
     // Svelte 5 ships separate server/client builds; tests run in jsdom
     // which is browser-like, so resolve to the browser/client build.
