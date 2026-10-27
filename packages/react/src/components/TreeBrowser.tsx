@@ -30,7 +30,10 @@ export interface TreeBrowserRowContext {
   name: string
 }
 
-export interface TreeBrowserProps extends Omit<HTMLAttributes<HTMLUListElement>, 'onSelect'> {
+export interface TreeBrowserProps extends Omit<
+  HTMLAttributes<HTMLUListElement>,
+  'onSelect' | 'onToggle'
+> {
   collections: Record<string, TreeBrowserCollection>
   items?: Record<string, TreeBrowserItem>
   rootId: string
