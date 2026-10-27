@@ -4203,7 +4203,6 @@ __metadata:
     react: "npm:^18.3.0"
     react-dom: "npm:^18.3.0"
     svelte: "npm:^5.56.4"
-    svelte-migrate: "npm:^2.0.0"
     tailwindcss: "npm:^4.3.3"
     tsx: "npm:^4.23.1"
     typescript: "npm:^7.0.0"
@@ -8406,15 +8405,6 @@ __metadata:
   bin:
     svelte-check: bin/svelte-check
   checksum: 10c0/ecfcad25c6bb450c1d9c1fd0eb4c244156d0477db73048637addbf8c3159ce53e125e5411d9009f124196c6b7e359a5a5a3af5b304adebb51d85e2a9dac9ae9c
-  languageName: node
-  linkType: hard
-
-"svelte-migrate@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "svelte-migrate@npm:2.0.0"
-  bin:
-    svelte-migrate: ./bin.js
-  checksum: 10c0/44ab75e5dadf5424a92caba368e1c993ed6ddde43d002b4bd4bd10fa50ec0a0f9c0c30c79452a5d349397f92cddfe25aa83a44516ed7e1a80b65634333282df8
   languageName: node
   linkType: hard
 
