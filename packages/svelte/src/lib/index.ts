@@ -84,7 +84,7 @@ export type {
   TreeBrowserRowContext,
   FlatNode,
 } from './components/TreeBrowser.svelte'
-export { childIds, hasChildren, flattenVisible } from './components/tree-browser-model.ts'
+export { childIds, hasChildren, flattenVisible } from './components/tree-browser-model'
 export { default as DatePicker } from './components/DatePicker.svelte'
 export { default as CommandPalette } from './components/CommandPalette.svelte'
 export type { CommandItem } from './components/CommandPalette.svelte'
@@ -321,4 +321,4 @@ export { default as H4 } from './components/H4.svelte'
 
 export * from './icons.js'
 
-export { portal } from './actions/portal.ts'
+export { portal } from './actions/portal'

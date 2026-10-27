@@ -58,6 +58,9 @@ jobs:
       - name: Typecheck (shipped packages)
         run: yarn typecheck
 
+      - name: Typecheck (reference dashboards)
+        run: yarn typecheck:apps
+
       - name: Build packages
         # Must run before tests because the @w5-ui/wc registration test
         # imports the built bundle at packages/wc/dist/index.js.

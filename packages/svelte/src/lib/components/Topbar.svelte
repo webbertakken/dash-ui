@@ -13,7 +13,7 @@
 
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { appLogos, type AppLogoKey } from '@w5-ui/assets';
+  import { appLogos } from '@w5-ui/assets';
 
   /** Resolve an `AppLogo` to an `<img src>` URL. Known keys go
    *  through the bundled `appLogos` map; anything else is treated as
