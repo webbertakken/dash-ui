@@ -3,7 +3,7 @@
   import type {
     TreeBrowserCollection,
     TreeBrowserItem,
-  } from '../../lib/components/tree-browser-model.ts'
+  } from '../../lib/components/tree-browser-model'
 
   interface Props {
     collections: Record<string, TreeBrowserCollection>
