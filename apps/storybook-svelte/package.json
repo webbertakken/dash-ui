@@ -15,8 +15,8 @@
     "@w5-ui/tokens": "workspace:*",
     "@xyflow/svelte": "^1.5.2",
     "dashboard-svelte": "workspace:*",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "svelte": "^5.56.4"
   },
   "devDependencies": {
