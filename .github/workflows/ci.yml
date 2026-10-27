@@ -14,11 +14,11 @@ jobs:
     name: Test + build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       # Installs (and caches) node and yarn exactly as pinned in mise.toml,
       # ahead of the runner's own on PATH.
-      - uses: jdx/mise-action@v5
+      - uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5
 
       - name: Read the Node version mise installed
         id: node
@@ -30,7 +30,7 @@ jobs:
 
       - name: Restore yarn install cache (node_modules + cacheFolder + install-state)
         id: yarn-cache
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: |
             node_modules
