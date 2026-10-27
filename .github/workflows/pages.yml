@@ -58,7 +58,7 @@ jobs:
           STORYBOOK_DISABLE_TELEMETRY: '1'
         run: yarn build:site
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - uses: actions/upload-pages-artifact@v5
         with:
