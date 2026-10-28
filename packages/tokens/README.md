@@ -29,6 +29,14 @@ The package ships four CSS files. Pick by what your app needs:
 | `@w5-ui/tokens/tailwind.css`      | `tokens.css` + `@theme inline` bridge + `dark:` data-motif variant | You use Tailwind v4 and want token utilities only |
 | `@w5-ui/tokens/tailwind-full.css` | `tailwind.css` + `dashboard.css` (single import)                   | You use Tailwind v4 and want chrome classes too   |
 
+## Fonts
+
+`tokens.css` (and so every entry above) imports `@w5-ui/tokens/fonts.css`: self-hosted variable
+**Inter** and **JetBrains Mono** (SIL OFL 1.1, licences in `src/fonts/`), split by script with
+`unicode-range` and `font-display: swap`. No request leaves your origin. The files live under
+`@w5-ui/tokens/fonts/*` for preloading; regenerate them with
+`yarn tsx scripts/fonts/vendor-fonts.ts` after bumping the pinned Fontsource versions.
+
 `tailwind.css` does **not** include `dashboard.css`. Tailwind users who also want the canonical
 chrome classes can either reach for the one-stop `tailwind-full.css`:
 

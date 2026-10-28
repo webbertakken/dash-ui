@@ -2,7 +2,10 @@
    Dash UI Design System — Colors + Type
    ========================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* Self-hosted Inter + JetBrains Mono. A local import, so bundlers (Tailwind
+   included) inline it; a remote @import url() lands mid-file after inlining
+   and browsers drop it. */
+@import './fonts.css';
 
 /* ---- Brand blue ramp ----------------------------------------------------
    The only saturated color in the system. Used for primary actions,
