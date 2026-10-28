@@ -7,6 +7,7 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { categoryFor } from '../packages/storybook-meta/src/categories.js'
+import { storyMetaFields } from '../packages/storybook-meta/src/docs.js'
 import { BUNDLES } from '../packages/svelte/test-fixtures/props.js'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
@@ -100,7 +101,7 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
   title: '${titleCategory}/${name}',
-  parameters: { layout: 'padded' },
+  ${storyMetaFields(name)}
 };
 export default meta;
 

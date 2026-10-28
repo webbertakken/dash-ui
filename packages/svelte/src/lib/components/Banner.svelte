@@ -9,6 +9,7 @@
 <script lang="ts">
   import CloseIcon from '../icons/CloseIcon.svelte';
   import IconButton from './IconButton.svelte';
+  import Tooltip from './Tooltip.svelte';
 
   interface Props {
     variant?: BannerVariant;
@@ -65,13 +66,10 @@
     >{action.label}</button>
   {/if}
   {#if onDismiss}
-    <IconButton
-      title="Dismiss banner"
-      onclick={onDismiss}
-      class="ml-1 h-6 w-6 shrink-0"
-      aria-label="Dismiss banner"
-    >
-      <CloseIcon />
-    </IconButton>
+    <Tooltip label="Dismiss banner" placement="left" class="ml-1 shrink-0">
+      <IconButton onclick={onDismiss} class="h-6 w-6" aria-label="Dismiss banner">
+        <CloseIcon />
+      </IconButton>
+    </Tooltip>
   {/if}
 </div>

@@ -1,52 +1,58 @@
-import { useId, useRef, useState, type ReactNode } from 'react'
+import { overlay } from '@w5-ui/tokens'
+import { useId, type ReactNode } from 'react'
+import { useOverlayTrigger } from './overlay-trigger.js'
 
 export type HoverCardPlacement = 'top' | 'bottom' | 'left' | 'right'
 
 export interface HoverCardProps {
-  content: ReactNode
+  /** Bold title line. */
+  heading?: string
+  /** Supporting text under the heading. */
+  description?: string
+  /** Rich content (preview, key/value rows), rendered after heading and description. */
+  content?: ReactNode
   children: ReactNode
   placement?: HoverCardPlacement
+  /** Hover delay in ms; defaults to `overlay.hoverCardOpenDelayMs` (instant). */
   delay?: number
   className?: string
 }
 
+/**
+ * Hover card: rich, non-essential content about its trigger. Opens instantly on
+ * hover and keyboard focus; dismissible with Escape and hoverable (WCAG 1.4.13).
+ * A control's name belongs in a `Tooltip`; interactive surfaces in a `Popover`.
+ */
 export function HoverCard({
+  heading,
+  description,
   content,
   children,
   placement = 'bottom',
-  delay = 300,
+  delay = overlay.hoverCardOpenDelayMs,
   className = '',
 }: HoverCardProps) {
   const id = useId()
-  const [open, setOpen] = useState(false)
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  function show() {
-    if (timer.current) clearTimeout(timer.current)
-    timer.current = setTimeout(() => setOpen(true), delay)
-  }
-
-  function hide() {
-    if (timer.current) clearTimeout(timer.current)
-    setOpen(false)
-  }
+  const { open, handlers } = useOverlayTrigger({
+    openDelayMs: delay,
+    closeOnPress: false,
+    longPressMs: null,
+  })
 
   return (
     <div
       className={`hovercard-wrapper hovercard-${placement} ${className}`.trim()}
-      onMouseEnter={show}
-      onMouseLeave={hide}
-      onFocus={show}
-      onBlur={hide}
+      data-state={open ? 'open' : 'closed'}
+      {...handlers}
     >
       <div className="hovercard-trigger" aria-describedby={open ? id : undefined}>
         {children}
       </div>
-      {open && (
-        <div id={id} role="tooltip" className="hovercard">
-          {content}
-        </div>
-      )}
+      <div id={id} className="hovercard">
+        {heading && <p className="hovercard-title">{heading}</p>}
+        {description && <p className="hovercard-description">{description}</p>}
+        {content}
+      </div>
     </div>
   )
 }

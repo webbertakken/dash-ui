@@ -6,7 +6,6 @@
     variant = 'ghost',
     iconOnly = false,
     loading = false,
-    title = undefined,
     type = 'button',
     disabled = false,
     class: className = '',
@@ -14,6 +13,6 @@
   } = $props();
 </script>
 
-<Original {variant} {iconOnly} {loading} {title} {type} {disabled} class={className} {style}>
+<Original {variant} {iconOnly} {loading} {type} {disabled} class={className} {style}>
   <slot />
 </Original>

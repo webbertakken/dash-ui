@@ -11,7 +11,7 @@
    * All mutations go through the injected `FleetApi`; the panel degrades
    * cleanly when a capability is absent.
    */
-  import { AccordionItem, Alert, Button, Card, IconButton, KVTable, Pill, Toggle } from '@w5-ui/svelte'
+  import { AccordionItem, Alert, Button, Card, IconButton, KVTable, Pill, Toggle, Tooltip } from '@w5-ui/svelte'
   import type { Snippet } from 'svelte'
   import type {
     CheckResult,
@@ -233,7 +233,7 @@
     </div>
     <div class="flex shrink-0 items-center gap-2">
       <Pill variant={STATUS_VARIANT[result.status] ?? 'neutral'}>{result.status}</Pill>
-      <IconButton title="Close" aria-label="close panel" onclick={onClose}>×</IconButton>
+      <Tooltip label="Close" placement="left"><IconButton aria-label="Close panel" onclick={onClose}>×</IconButton></Tooltip>
     </div>
   </header>
 

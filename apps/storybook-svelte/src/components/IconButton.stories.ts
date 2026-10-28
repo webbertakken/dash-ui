@@ -13,10 +13,5 @@ type Story = StoryObj<typeof meta>
 
 export const Variant0: Story = {
   name: 'default',
-  args: { title: 'x' },
-}
-
-export const Variant1: Story = {
-  name: 'aria',
-  args: {},
+  args: { 'aria-label': 'Search' },
 }

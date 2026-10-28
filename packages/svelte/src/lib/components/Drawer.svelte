@@ -1,6 +1,7 @@
 <script lang="ts">
   import { tick } from 'svelte';
   import IconButton from './IconButton.svelte';
+  import Tooltip from './Tooltip.svelte';
   import CloseIcon from '../icons/CloseIcon.svelte';
   interface Props {
     open?: boolean;
@@ -60,9 +61,11 @@
 >
   <div class="flex shrink-0 items-center justify-between border-b border-border-1 px-5 py-4">
     <h2 id={titleId} class="m-0 text-16 font-semibold">{title}</h2>
-    <IconButton title="Close" onclick={() => (open = false)}>
-      <CloseIcon />
-    </IconButton>
+    <Tooltip label="Close" placement="left">
+      <IconButton aria-label="Close" onclick={() => (open = false)}>
+        <CloseIcon />
+      </IconButton>
+    </Tooltip>
   </div>
   <div class="flex-1 overflow-y-auto px-5 py-4">{@render children?.()}</div>
 </div>

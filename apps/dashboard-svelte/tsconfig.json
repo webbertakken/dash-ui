@@ -12,6 +12,7 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": false,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true
   },
   "include": ["src", "src/**/*.svelte"]

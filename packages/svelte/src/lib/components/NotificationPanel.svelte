@@ -14,6 +14,7 @@
 
 <script lang="ts">
   import { onDestroy } from 'svelte';
+  import Tooltip from './Tooltip.svelte';
 
   interface Props {
     open?: boolean;
@@ -183,13 +184,14 @@
             <span class="mt-1 inline-block rounded bg-row-active px-1.5 py-0.5 text-[10px] uppercase tracking-[0.05em] text-text-4">{TYPE_LABEL[n.type]}</span>
           </div>
           {#if !n.read && onMarkRead}
-            <button
-              type="button"
-              aria-label={`Mark as read: ${n.title}`}
-              title="Mark as read"
-              class="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-status-success hover:bg-status-success/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
-              onclick={() => onMarkRead?.(n.id)}
-            >&#10003;</button>
+            <Tooltip label="Mark as read" placement="left" class="shrink-0">
+              <button
+                type="button"
+                aria-label={`Mark as read: ${n.title}`}
+                class="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-status-success hover:bg-status-success/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-05"
+                onclick={() => onMarkRead?.(n.id)}
+              >&#10003;</button>
+            </Tooltip>
           {/if}
         </div>
       {/each}

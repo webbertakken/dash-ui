@@ -205,14 +205,11 @@ export const BUNDLES: Record<string, Bundle[]> = {
     { name: 'ghost', slot: 'Click' },
     { name: 'primary', props: { variant: 'primary' }, slot: 'Save' },
     { name: 'danger', props: { variant: 'danger' }, slot: 'Delete' },
-    { name: 'iconOnly', props: { iconOnly: true, title: 'x' }, slot: 'x' },
+    { name: 'iconOnly', props: { iconOnly: true, 'aria-label': 'Export' }, slot: 'x' },
     { name: 'loading', props: { loading: true }, slot: 'Loading' },
     { name: 'disabled', props: { disabled: true }, slot: 'd' },
   ],
-  IconButton: [
-    { name: 'default', props: { title: 'x' }, slot: 'x' },
-    { name: 'aria', props: {}, slot: 'x' },
-  ],
+  IconButton: [{ name: 'default', props: { 'aria-label': 'Search' }, slot: 'x' }],
   CIDRInput: [
     { name: 'default', props: { label: 'C' } },
     { name: 'controlled', props: { label: 'C', value: '10.0.0.0/8', onChange: noop } },
@@ -721,7 +718,13 @@ export const BUNDLES: Record<string, Bundle[]> = {
       },
     },
   ],
-  HoverCard: [{ name: 'default', props: {}, slot: 'trigger' }],
+  HoverCard: [
+    {
+      name: 'default',
+      props: { heading: 'gw-hq', description: 'Gateway · 99.98% uptime · 42 clients' },
+      slot: 'gw-hq',
+    },
+  ],
   IPInput: [
     { name: 'default', props: { label: 'IP' } },
     { name: 'controlled', props: { label: 'IP', value: '1.2.3.4', onChange: noop } },
@@ -1610,7 +1613,7 @@ export const BUNDLES: Record<string, Bundle[]> = {
       },
     },
   ],
-  Tooltip: [{ name: 'default', props: { label: 't' }, slot: 'x' }],
+  Tooltip: [{ name: 'default', props: { label: 'Zoom in' }, slot: 'Zoom' }],
   Topbar: [
     // activeApp must match one of DEFAULT_APPS ('system' / 'instances' /
     // 'agents'); otherwise no tab renders as `aria-current="page"` and the
