@@ -3124,10 +3124,12 @@ __metadata:
   resolution: "@w5-ui/wc@workspace:packages/wc"
   dependencies:
     "@sveltejs/vite-plugin-svelte": "npm:^7.3.1"
+    "@tailwindcss/vite": "npm:^4.3.3"
     "@w5-ui/assets": "workspace:*"
     "@w5-ui/svelte": "workspace:*"
     "@w5-ui/tokens": "workspace:*"
     svelte: "npm:^5.56.4"
+    tailwindcss: "npm:^4.3.3"
     tsx: "npm:^4.23.1"
     typescript: "npm:^7.0.0"
     vite: "npm:^8.0.0"

@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-correlation-matrix" />
+<svelte:options customElement={{ tag: "uni-correlation-matrix", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/CorrelationMatrix.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     labels = [],
     data = [],

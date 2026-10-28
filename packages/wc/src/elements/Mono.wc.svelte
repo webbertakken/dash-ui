@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-mono" />
+<svelte:options customElement={{ tag: "uni-mono", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Mono.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     class: className = ''
   } = $props();

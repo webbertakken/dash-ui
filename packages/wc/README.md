@@ -78,6 +78,18 @@ Userland looking different almost always comes down to one of these:
 `@w5-ui/wc/styles.css` re-exports `@w5-ui/tokens/dashboard.css`, so importing it once is enough for
 tokens, the `.app` / `.workspace` / `.grid` / `.card` classes, and component styles.
 
+### Styles inside the shadow roots
+
+Each `uni-*` element renders in an open shadow root, which page stylesheets (including your own
+Tailwind) do not reach. The bundle therefore ships the components' compiled CSS and adopts it into
+every shadow root as one shared constructable stylesheet (a `<style>` element where
+`adoptedStyleSheets` is unavailable). Tokens still come from the page: the motif variables on
+`<html data-motif>` inherit into every element, so `styles.css` stays required. Tailwind's
+`@property` rules are added to the document once, as they only register there. Floating panels
+(`uni-popover`) portal within their own shadow root rather than to `<body>`, so they keep their
+styles. `dark:` utilities inside elements follow the motif in Chromium (`:host-context`); other
+engines use the base value, which only affects a few decorative shadows.
+
 ## Themes
 
 Two motifs ship in tokens. Set the attribute on `<html>` (or any ancestor of the app root):

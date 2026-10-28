@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-banner" />
+<svelte:options customElement={{ tag: "uni-banner", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Banner.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     variant = 'info',
     title = undefined,

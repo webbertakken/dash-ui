@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-ipinput" />
+<svelte:options customElement={{ tag: "uni-ipinput", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/IPInput.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     value = '0.0.0.0',

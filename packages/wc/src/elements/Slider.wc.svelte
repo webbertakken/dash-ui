@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-slider" />
+<svelte:options customElement={{ tag: "uni-slider", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Slider.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     value = 0,

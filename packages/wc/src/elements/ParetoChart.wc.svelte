@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-pareto-chart" />
+<svelte:options customElement={{ tag: "uni-pareto-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/ParetoChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     items = [],
     height = 160,

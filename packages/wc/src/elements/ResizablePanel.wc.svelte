@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-resizable-panel" />
+<svelte:options customElement={{ tag: "uni-resizable-panel", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/ResizablePanel.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     defaultSize = 50,
     min = 20,

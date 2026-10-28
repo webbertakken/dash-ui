@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-split-button" />
+<svelte:options customElement={{ tag: "uni-split-button", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/SplitButton.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     variant = 'ghost',

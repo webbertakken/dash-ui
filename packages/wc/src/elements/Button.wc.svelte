@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-button" />
+<svelte:options customElement={{ tag: "uni-button", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Button.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     variant = 'ghost',
     iconOnly = false,

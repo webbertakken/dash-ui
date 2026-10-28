@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-annotated-time-series" />
+<svelte:options customElement={{ tag: "uni-annotated-time-series", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/AnnotatedTimeSeries.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     data = [],
     labels = [],

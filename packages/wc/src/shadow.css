@@ -1,0 +1,14 @@
+/* Compiled into every uni-* shadow root (see shadow-styles.ts). Tailwind
+   scans the @w5-ui/svelte sources the custom elements wrap. */
+@import 'tailwindcss';
+@import '@w5-ui/tokens/tailwind.css';
+/* Layered like the Svelte storybook: unlayered chrome rules (button, input)
+   would otherwise beat every layered utility. */
+@import '@w5-ui/svelte/styles.css' layer(base);
+
+@source '../../svelte/src/lib/components';
+
+/* The motif attribute sits on an ancestor outside the shadow root, which
+   `[data-motif='dark'] *` cannot see. `:host-context` can (Chromium); the
+   forgiving `:where()` drops it where unsupported. */
+@custom-variant dark (&:where([data-motif='dark'], [data-motif='dark'] *, :host-context([data-motif='dark']) *));

@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-sankey-diagram" />
+<svelte:options customElement={{ tag: "uni-sankey-diagram", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/SankeyDiagram.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     nodes = [],
     links = [],

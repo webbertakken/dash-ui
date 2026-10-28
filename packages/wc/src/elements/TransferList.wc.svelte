@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-transfer-list" />
+<svelte:options customElement={{ tag: "uni-transfer-list", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/TransferList.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     sourceLabel = 'Available',
     targetLabel = 'Selected',

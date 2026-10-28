@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-quadrant-chart" />
+<svelte:options customElement={{ tag: "uni-quadrant-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/QuadrantChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     points = [],
     xThreshold = undefined,

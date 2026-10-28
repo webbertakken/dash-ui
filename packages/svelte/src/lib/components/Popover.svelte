@@ -144,12 +144,12 @@
 
   function onPointer(e: PointerEvent) {
     if (!open) return;
-    const target = e.target as Node;
-    // The panel is portalled to <body> so it's no longer a descendant
-    // of rootEl. Check both so clicks INSIDE the panel don't count as
-    // outside-clicks and immediately close the popover.
-    if (rootEl?.contains(target)) return;
-    if (panelEl?.contains(target)) return;
+    // The panel is portalled out of rootEl, so check both. Use the composed
+    // path: inside a shadow root (the @w5-ui/wc build) the document sees
+    // `e.target` retargeted to the host element.
+    const path = e.composedPath();
+    if (rootEl && path.includes(rootEl)) return;
+    if (panelEl && path.includes(panelEl)) return;
     open = false;
   }
 
@@ -184,7 +184,7 @@
   {#if trigger}
     {@render trigger({ toggle, open })}
   {:else}
-    <Button {variant} aria-label={label} onclick={toggle}>
+    <Button {variant} aria-label={label} aria-haspopup="dialog" aria-expanded={open} onclick={toggle}>
       {label}
     </Button>
   {/if}

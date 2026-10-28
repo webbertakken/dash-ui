@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-force-graph" />
+<svelte:options customElement={{ tag: "uni-force-graph", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/ForceGraph.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     nodes = [],
     links = [],

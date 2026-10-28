@@ -295,9 +295,10 @@ for (const file of files) {
   // We don't typecheck these wrappers (vite-plugin-svelte compiles them
   // directly without `lang="ts"` running through tsc), so the prop types are
   // intentionally erased — defaults carry the runtime intent.
-  const wrapper = `<svelte:options customElement="${tag}" />
+  const wrapper = `<svelte:options customElement={{ tag: "${tag}", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/${name}.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
 ${propLines || '    /* no public props */'}
   } = $props();

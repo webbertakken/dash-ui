@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-log-viewer" />
+<svelte:options customElement={{ tag: "uni-log-viewer", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/LogViewer.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     entries = [],
     height = 360,

@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-duration-input" />
+<svelte:options customElement={{ tag: "uni-duration-input", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/DurationInput.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     value = 0,

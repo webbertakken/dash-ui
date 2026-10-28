@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-ranked-list" />
+<svelte:options customElement={{ tag: "uni-ranked-list", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/RankedList.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     items = undefined,
     unit = undefined,
