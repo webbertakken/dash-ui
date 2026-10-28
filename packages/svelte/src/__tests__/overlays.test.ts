@@ -23,7 +23,9 @@ async function advance(ms: number) {
   await tick()
 }
 
+/** Keyboard focus: Tab is pressed, then focus lands, so `:focus-visible` matches. */
 async function focus(el: HTMLElement) {
+  await fireEvent.keyDown(document.activeElement ?? document.body, { key: 'Tab' })
   el.focus()
   await tick()
 }

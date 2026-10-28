@@ -17,6 +17,12 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
+/** Keyboard focus: Tab is pressed, then focus lands, so `:focus-visible` matches. */
+function tabTo(el: HTMLElement) {
+  fireEvent.keyDown(document.activeElement ?? document.body, { key: 'Tab' })
+  act(() => el.focus())
+}
+
 const advance = (ms: number) =>
   act(() => {
     vi.advanceTimersByTime(ms)
@@ -82,7 +88,7 @@ describe('Tooltip', () => {
 
   it('opens instantly on keyboard focus and closes on blur', () => {
     const { button, isOpen } = renderTooltip()
-    act(() => button.focus())
+    tabTo(button)
     expect(isOpen()).toBe(true)
     act(() => button.blur())
     expect(isOpen()).toBe(false)
@@ -109,14 +115,14 @@ describe('Tooltip', () => {
 
   it('is dismissed with Escape', () => {
     const { button, isOpen } = renderTooltip()
-    act(() => button.focus())
+    tabTo(button)
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(isOpen()).toBe(false)
   })
 
   it('ignores other keys', () => {
     const { button, isOpen } = renderTooltip()
-    act(() => button.focus())
+    tabTo(button)
     fireEvent.keyDown(document, { key: 'Enter' })
     expect(isOpen()).toBe(true)
   })
@@ -158,8 +164,8 @@ describe('Tooltip', () => {
     )
     const [a, b] = screen.getAllByRole('button')
     const wrapper = screen.getByRole('tooltip', { hidden: true }).parentElement!
-    act(() => a!.focus())
-    act(() => b!.focus())
+    tabTo(a!)
+    tabTo(b!)
     expect(wrapper).toHaveAttribute('data-state', 'open')
   })
 
@@ -199,7 +205,7 @@ describe('HoverCard', () => {
   it('opens instantly on keyboard focus and describes the trigger while open', () => {
     const { link, card, isOpen } = renderHoverCard()
     expect(link.parentElement).not.toHaveAttribute('aria-describedby')
-    act(() => link.focus())
+    tabTo(link)
     expect(isOpen()).toBe(true)
     expect(link.parentElement).toHaveAttribute('aria-describedby', card.id)
   })

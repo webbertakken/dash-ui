@@ -29,6 +29,14 @@ function pointer(el: Element, type: string, pointerType: string) {
   el.dispatchEvent(new PointerEvent(type, { bubbles: true, composed: true, pointerType }))
 }
 
+/** Keyboard focus: Tab is pressed, then focus lands, so `:focus-visible` matches. */
+function tabTo(el: HTMLElement) {
+  ;(document.activeElement ?? document.body).dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true }),
+  )
+  el.focus()
+}
+
 async function mount(html: string) {
   document.body.innerHTML = html
   await flush()
@@ -60,7 +68,7 @@ describe('uni-tooltip', () => {
 
   it('opens instantly on keyboard focus and closes on blur', async () => {
     const { host, isOpen } = await mount(html)
-    host.querySelector('button')!.focus()
+    tabTo(host.querySelector<HTMLElement>('button')!)
     await flush()
     expect(isOpen()).toBe(true)
     host.querySelector('button')!.blur()
@@ -70,7 +78,7 @@ describe('uni-tooltip', () => {
 
   it('is dismissed with Escape', async () => {
     const { host, isOpen } = await mount(html)
-    host.querySelector('button')!.focus()
+    tabTo(host.querySelector<HTMLElement>('button')!)
     await flush()
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
     await flush()
@@ -116,7 +124,7 @@ describe('uni-hover-card', () => {
 
   it('opens instantly on keyboard focus', async () => {
     const { host, isOpen } = await mount(html)
-    host.querySelector('a')!.focus()
+    tabTo(host.querySelector<HTMLElement>('a')!)
     await flush()
     expect(isOpen()).toBe(true)
   })
