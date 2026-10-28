@@ -8,7 +8,7 @@ import {
   topLevelIds,
   type TreeBrowserCollection,
   type TreeBrowserItem,
-} from '../lib/components/tree-browser-model.ts'
+} from '../lib/components/tree-browser-model'
 import TreeBrowser from '../lib/components/TreeBrowser.svelte'
 
 afterEach(() => {

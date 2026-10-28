@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["local>webbertakken/.github:renovate-config"],
+  "packageRules": [
+    {
+      "description": "dashboard-svelte stays on TypeScript below 7: svelte-check and svelte-preprocess need the classic TypeScript JS API, which TypeScript 7 no longer ships",
+      "matchFileNames": ["apps/dashboard-svelte/package.json"],
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<7"
+    }
+  ]
+}

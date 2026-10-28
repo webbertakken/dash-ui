@@ -5,6 +5,7 @@
  * up) plus the component's documented public-API behaviour.
  */
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
+import { tick } from 'svelte'
 import { describe, it, expect, afterEach, vi } from 'vitest'
 import ActionMenu from '../lib/components/ActionMenu.svelte'
 import Avatar from '../lib/components/Avatar.svelte'
@@ -435,6 +436,51 @@ describe('ActionMenu (Tailwind)', () => {
   })
 })
 
+describe('ContextMenu placement', () => {
+  /** jsdom lays nothing out, so the menu's size is given here. */
+  function sized(width: number, height: number) {
+    return vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      width,
+      height,
+      top: 0,
+      left: 0,
+      right: width,
+      bottom: height,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    })
+  }
+
+  it('keeps a wide menu inside the viewport, measured rather than guessed', async () => {
+    const spy = sized(320, 120)
+    const { container } = render(ContextMenu, {
+      props: {
+        open: true,
+        x: window.innerWidth - 20,
+        y: 40,
+        items: [{ id: 'a', label: 'Open 2 files in WebStorm' }],
+      },
+    })
+    await tick()
+    const menu = container.querySelector('[role="menu"]') as HTMLElement
+    expect(parseFloat(menu.style.left) + 320).toBeLessThanOrEqual(window.innerWidth - 8)
+    expect(menu.style.top).toBe('40px')
+    spy.mockRestore()
+  })
+
+  it('opens above the pointer near the bottom', async () => {
+    const spy = sized(200, 300)
+    const { container } = render(ContextMenu, {
+      props: { open: true, x: 10, y: window.innerHeight - 10, items: [{ id: 'a', label: 'A' }] },
+    })
+    await tick()
+    const menu = container.querySelector('[role="menu"]') as HTMLElement
+    expect(menu.style.top).toBe(`${window.innerHeight - 10 - 300}px`)
+    spy.mockRestore()
+  })
+})
+
 describe('ContextMenu (Tailwind)', () => {
   it('renders the menu with utility classes when open (no legacy ctx-menu)', () => {
     const { container } = render(ContextMenu, {
@@ -669,8 +715,8 @@ describe('Sidebar (Tailwind)', () => {
     expect(container.textContent).toContain('3') // pill
     // Pill chip carries the brand background utility.
     const pill = Array.from(container.querySelectorAll('span')).find((s) =>
-      /bg-brand-05/.test(s.className),
+      /bg-primary-fill/.test(s.className),
     )
-    expect(pill, 'expected a sidebar pill chip with bg-brand-05').toBeTruthy()
+    expect(pill, 'expected a sidebar pill chip with bg-primary-fill').toBeTruthy()
   })
 })

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
 export type CalloutVariant = 'info' | 'success' | 'warn' | 'danger' | 'tip'
 
@@ -60,7 +60,7 @@ function TipIcon() {
   )
 }
 
-const ICON: Record<CalloutVariant, () => JSX.Element> = {
+const ICON: Record<CalloutVariant, () => ReactElement> = {
   info: InfoIcon,
   success: SuccessIcon,
   warn: WarnIcon,
