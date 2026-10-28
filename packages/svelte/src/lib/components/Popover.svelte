@@ -6,8 +6,8 @@
 <script lang="ts">
   import { onMount, onDestroy, tick } from 'svelte';
   import Button from './Button.svelte';
-  import { portal } from '../actions/portal.ts';
-  import { computePanelPosition } from './popover-position.ts';
+  import { portal } from '../actions/portal';
+  import { computePanelPosition } from './popover-position';
 
   interface Props {
     label: string;

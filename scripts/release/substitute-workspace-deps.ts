@@ -5,10 +5,10 @@
  *
  * Why: `@changesets/cli`'s `version` command bumps `version` fields
  * but does not substitute the workspace protocol. `changeset
- * publish` then shells out to `npm publish` per package, and
- * `npm publish` from inside a package directory does not know about
- * yarn workspaces, so it uploads the raw `workspace:*` string to
- * the registry. Consumers outside the monorepo cannot resolve it.
+ * publish` then runs `yarn npm publish` per package, which turns
+ * `workspace:*` into an exact pin (`X.Y.Z`). Consumers would then
+ * get duplicate copies of sibling packages instead of one shared,
+ * semver-compatible version, so this script writes caret ranges first.
  *
  * This script is meant to run in CI between `changeset version`
  * (which produces the bumped version numbers) and `changeset

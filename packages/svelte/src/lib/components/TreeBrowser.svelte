@@ -5,8 +5,8 @@
     TreeBrowserData,
     TreeBrowserNodeType,
     FlatNode,
-  } from './tree-browser-model.ts'
-  export { topLevelIds } from './tree-browser-model.ts'
+  } from './tree-browser-model'
+  export { topLevelIds } from './tree-browser-model'
   export type { TreeBrowserRowContext } from './TreeBrowserNode.svelte'
 </script>
 
@@ -60,7 +60,7 @@
     type TreeBrowserCollection,
     type TreeBrowserItem,
     type TreeBrowserNodeType,
-  } from './tree-browser-model.ts'
+  } from './tree-browser-model'
 
   interface Props {
     collections?: Record<string, TreeBrowserCollection>;

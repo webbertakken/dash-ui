@@ -33,7 +33,8 @@
   // `bg-transparent` win by source order and hid the current page in the light motif.
   const BTN_IDLE =
     'border-transparent bg-transparent text-text-3 hover:bg-row-hover hover:text-text-1 hover:border-border-2';
-  const BTN_ACTIVE = 'bg-brand-05 text-white border-brand-05 hover:bg-brand-06 hover:border-brand-06';
+  const BTN_ACTIVE =
+    'bg-primary-fill text-primary-fill-fg border-primary-fill hover:bg-primary-fill-hover hover:border-primary-fill-hover';
 </script>
 
 {#if totalPages > 1}

@@ -3,37 +3,32 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
 import { defineConfig } from 'vite'
 
+const isCustomElementWrapper = (filename: string) => /packages\/wc\/src\/.*\.svelte$/.test(filename)
+
 export default defineConfig({
   plugins: [
-    // 0. Compiles src/shadow.css (imported ?inline by styled.ts) with Tailwind.
+    // Compiles src/shadow.css (imported ?inline by styled.ts) with Tailwind.
     tailwindcss(),
-    // 1. Custom-element wrappers from packages/wc/src/elements
+    // One Svelte plugin compiles both the custom-element wrappers in
+    // packages/wc/src/elements and the @w5-ui/svelte components they mount
+    // inside their shadow root; only the wrappers compile as custom elements.
     svelte({
-      compilerOptions: {
-        customElement: true,
-      },
-      include: [/packages\/wc\/src\/.*\.svelte$/],
       preprocess: vitePreprocess(),
-    }),
-    // 2. The underlying @w5-ui/svelte components, compiled normally so the
-    //    wrappers can mount them inside their custom-element shadow root.
-    svelte({
-      compilerOptions: { customElement: false },
-      include: [/packages\/svelte\/.*\.svelte$/],
-      preprocess: vitePreprocess(),
+      dynamicCompileOptions: ({ filename }) =>
+        isCustomElementWrapper(filename) ? { customElement: true } : undefined,
     }),
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: path.resolve(import.meta.dirname, 'src/index.ts'),
       formats: ['es'],
       fileName: () => 'index.js',
     },
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         // Inline everything into a single bundle so consumers only need
         // one import to register all elements.
-        inlineDynamicImports: true,
+        codeSplitting: false,
       },
     },
     sourcemap: true,
