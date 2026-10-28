@@ -10,8 +10,10 @@ jobs:
   release:
     name: Version + publish
     runs-on: ubuntu-latest
-    # Trusted Publishing: id-token: write lets npm CLI 11.5.1+ exchange a
-    # short-lived OIDC token for an npm credential. No NPM_TOKEN secret needed.
+    # Trusted Publishing: id-token: write lets `yarn npm publish` (which
+    # `changeset publish` runs per package) exchange a short-lived OIDC token
+    # for an npm credential. No NPM_TOKEN secret needed. Provenance comes from
+    # each package's publishConfig.provenance.
     # contents: write is for changesets to push tags and the Version Packages PR.
     # pull-requests: write is for opening the Version Packages PR.
     permissions:
@@ -19,33 +21,13 @@ jobs:
       pull-requests: write
       id-token: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
-      - name: Read Node version from mise.toml
-        id: node
-        run:
-          echo "version=$(grep -E '^node\s*=' mise.toml | sed -E 's/.*"([^"]+)".*/\1/')" >>
-          "$GITHUB_OUTPUT"
-
-      - name: Install package manager (from package.json)
-        run: |
-          corepack enable
-          corepack install
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ steps.node.outputs.version }}
-          registry-url: https://registry.npmjs.org
-
-      - name: Upgrade npm to a Trusted Publishing-aware version
-        # Node 22 ships with npm 10.x. Trusted Publishing (OIDC exchange) needs
-        # npm >= 11.5.1. Pin to the 11.x line: npm@latest (12.x) requires
-        # node >= 22.22.2, newer than the mise-pinned toolchain, and would
-        # fail to install here.
-        run: npm install -g npm@^11
+      # Installs (and caches) node and yarn exactly as pinned in mise.toml,
+      # ahead of the runner's own on PATH.
+      - uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5
 
       - name: Install deps
         env:
@@ -57,16 +39,14 @@ jobs:
 
       - name: Create release PR or publish
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
-          version: yarn version-packages
-          publish: yarn release
-          title: 'chore: version packages'
-          commit: 'chore: version packages'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # No NPM_TOKEN: npm CLI does Trusted Publishing via OIDC.
-          NPM_CONFIG_PROVENANCE: 'true'
+          version-script: yarn version-packages
+          publish-script: yarn release
+          pr-title: 'chore: version packages'
+          commit-message: 'chore: version packages'
+          # Tags only; the next step creates GitHub Releases for majors.
+          create-github-releases: false
 
       - name: Create GitHub Releases for major versions only
         # Tags created by changesets/action via the default GITHUB_TOKEN do not
@@ -75,7 +55,7 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISHED: ${{ steps.changesets.outputs.publishedPackages }}
+          PUBLISHED: ${{ steps.changesets.outputs.published-packages }}
         run: |
           echo "Published packages: $PUBLISHED"
           echo "$PUBLISHED" | jq -c '.[]' | while read -r entry; do

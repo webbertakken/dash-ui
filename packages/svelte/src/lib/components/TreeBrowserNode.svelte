@@ -3,7 +3,7 @@
   import type {
     TreeBrowserData,
     TreeBrowserNodeType,
-  } from './tree-browser-model.ts'
+  } from './tree-browser-model'
 
   export interface TreeBrowserRowContext {
     id: string
@@ -26,7 +26,7 @@
 
 <script lang="ts">
   import TreeBrowserNode from './TreeBrowserNode.svelte'
-  import { childIds, hasChildren } from './tree-browser-model.ts'
+  import { childIds, hasChildren } from './tree-browser-model'
 
   let {
     id,

@@ -3,18 +3,11 @@ import path from 'node:path'
 import { describe, it, expect } from 'vitest'
 
 /**
- * Storybook 8.6's `@storybook/addon-docs` preset reads the active
- * `mdxPluginOptions` via `presets.apply("options", {})` — i.e. it only sees
- * options that are exposed at the addon-docs preset level. Nesting the
- * option under `@storybook/addon-essentials > options.docs.mdxPluginOptions`
- * (the shape Storybook's older docs suggested) is silently dropped, so
- * `remark-gfm` never plugs in and pipe-tables in MDX render as a literal
- * paragraph of `|` characters.
- *
- * The canonical fix in Storybook 8.x is to:
- *   1. Disable docs in addon-essentials (`options.docs = false`)
- *   2. Register `@storybook/addon-docs` as a separate addon entry with
- *      `options.mdxPluginOptions.mdxCompileOptions.remarkPlugins = [remarkGfm]`.
+ * Storybook folds its essentials (controls, actions, backgrounds, toolbars,
+ * viewport) into core, but MDX docs stay in `@storybook/addon-docs`. That
+ * addon only sees `mdxPluginOptions` passed directly in its own addon
+ * entry; without them `remark-gfm` never plugs in and pipe-tables in MDX
+ * render as a literal paragraph of `|` characters.
  *
  * This test guards that shape across all three storybooks so a future
  * refactor can't silently re-break GFM tables.
@@ -37,15 +30,8 @@ describe.each(storybookRoots)('storybook MDX config: %s', (configPath) => {
     expect(src).toMatch(/import\s+remarkGfm\s+from\s+['"]remark-gfm['"]/)
   })
 
-  it('disables docs in addon-essentials so the docs preset is owned by addon-docs', () => {
-    // The bundled docs preset inside @storybook/addon-essentials does not
-    // forward `mdxPluginOptions` to @storybook/addon-docs. Disabling it
-    // lets the standalone addon-docs entry below own that pipeline.
-    const essentials = src.match(
-      /name:\s*['"]@storybook\/addon-essentials['"][^}]*?options:\s*\{[^}]*?docs:\s*([^,}]+)/s,
-    )
-    expect(essentials, 'addon-essentials entry must opt-out of docs').not.toBeNull()
-    expect(essentials![1].trim()).toBe('false')
+  it('does not register the retired @storybook/addon-essentials', () => {
+    expect(src).not.toMatch(/@storybook\/addon-essentials/)
   })
 
   it('registers @storybook/addon-docs as a separate addon with mdxPluginOptions', () => {
@@ -61,7 +47,7 @@ describe.each(storybookRoots)('storybook MDX config: %s', (configPath) => {
     expect(optionsBody).toMatch(/remarkGfm/)
   })
 
-  it('keeps the addon list addon-essentials -> addon-docs -> addon-a11y -> addon-themes', () => {
+  it('keeps the addon list addon-docs -> addon-a11y -> addon-themes', () => {
     // Order matters: addon-docs must register before addon-a11y/addon-themes
     // so its preset wins the MDX pipeline. (Storybook applies addons in order;
     // later entries can only override, never inject earlier.)
@@ -72,12 +58,10 @@ describe.each(storybookRoots)('storybook MDX config: %s', (configPath) => {
       const m = new RegExp(`(?:name:\\s*['"]${name}['"]|^\\s*['"]${name}['"])`, 'm').exec(code)
       return m ? m.index : -1
     }
-    const idxEssentials = indexOfAddon('@storybook/addon-essentials')
     const idxDocs = indexOfAddon('@storybook/addon-docs')
     const idxA11y = indexOfAddon('@storybook/addon-a11y')
     const idxThemes = indexOfAddon('@storybook/addon-themes')
-    expect(idxEssentials).toBeGreaterThanOrEqual(0)
-    expect(idxDocs).toBeGreaterThan(idxEssentials)
+    expect(idxDocs).toBeGreaterThanOrEqual(0)
     expect(idxA11y).toBeGreaterThan(idxDocs)
     expect(idxThemes).toBeGreaterThan(idxA11y)
   })
@@ -99,5 +83,15 @@ describe('storybook MDX config: package.json has @storybook/addon-docs as devDep
     const versionFromProd = pkg.dependencies?.['@storybook/addon-docs']
     const version = versionFromDev ?? versionFromProd
     expect(version, `${pkgPath} must depend on @storybook/addon-docs`).toBeDefined()
+  })
+
+  it.each(apps)('%s drops the v8-only essentials and blocks packages', (pkgPath) => {
+    const pkg = JSON.parse(read(pkgPath)) as {
+      devDependencies?: Record<string, string>
+      dependencies?: Record<string, string>
+    }
+    const all = { ...pkg.dependencies, ...pkg.devDependencies }
+    expect(all['@storybook/addon-essentials']).toBeUndefined()
+    expect(all['@storybook/blocks']).toBeUndefined()
   })
 })
