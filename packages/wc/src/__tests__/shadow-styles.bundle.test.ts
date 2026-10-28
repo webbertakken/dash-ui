@@ -86,6 +86,13 @@ describe('@w5-ui/wc shadow styles', () => {
     expect(host.shadowRoot!.querySelector('[role="dialog"]')).toBeNull()
   })
 
+  it('leaves the fonts to the page instead of shipping them in every shadow root', () => {
+    const css = shadowCss(document.createElement('uni-button'))
+    expect(css).toContain('--font-sans')
+    expect(css).not.toContain('@font-face')
+    expect(css).not.toContain('data:font/')
+  })
+
   it('lets page tokens such as --radius-md inherit into shadow roots', () => {
     const css = shadowCss(document.createElement('uni-button'))
     expect(css).not.toMatch(/--radius-md:\s*var\(--radius-md\)/)
