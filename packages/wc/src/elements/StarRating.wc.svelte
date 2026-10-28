@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-star-rating" />
+<svelte:options customElement={{ tag: "uni-star-rating", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/StarRating.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     value = 0,

@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-pie-chart" />
+<svelte:options customElement={{ tag: "uni-pie-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/PieChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     slices = [],
     size = 140,

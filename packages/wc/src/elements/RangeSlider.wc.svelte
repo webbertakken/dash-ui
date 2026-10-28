@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-range-slider" />
+<svelte:options customElement={{ tag: "uni-range-slider", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/RangeSlider.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = undefined,
     min = 0,

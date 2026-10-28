@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-venn-diagram" />
+<svelte:options customElement={{ tag: "uni-venn-diagram", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/VennDiagram.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     sets = [],
     intersections = [],

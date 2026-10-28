@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-candlestick-chart" />
+<svelte:options customElement={{ tag: "uni-candlestick-chart", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/CandlestickChart.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     bars = [],
     yRange = undefined,

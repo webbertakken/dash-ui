@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-search-box" />
+<svelte:options customElement={{ tag: "uni-search-box", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/SearchBox.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     placeholder = '',
     value = '',

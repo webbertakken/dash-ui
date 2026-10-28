@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-file-upload" />
+<svelte:options customElement={{ tag: "uni-file-upload", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/FileUpload.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = 'Upload file',
     hint = undefined,

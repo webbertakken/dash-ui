@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-textarea" />
+<svelte:options customElement={{ tag: "uni-textarea", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Textarea.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     value = '',
     rows = 4,

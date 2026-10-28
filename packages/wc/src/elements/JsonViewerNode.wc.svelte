@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-json-viewer-node" />
+<svelte:options customElement={{ tag: "uni-json-viewer-node", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/JsonViewerNode.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     v = undefined,
     k = undefined,

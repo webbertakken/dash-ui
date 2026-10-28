@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-color-picker" />
+<svelte:options customElement={{ tag: "uni-color-picker", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/ColorPicker.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     label = 'Colour',
     srOnlyLabel = false,

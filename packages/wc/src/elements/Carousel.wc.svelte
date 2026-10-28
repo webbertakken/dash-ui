@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-carousel" />
+<svelte:options customElement={{ tag: "uni-carousel", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Carousel.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     slides = [],
     label = undefined,

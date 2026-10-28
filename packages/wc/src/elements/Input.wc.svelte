@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-input" />
+<svelte:options customElement={{ tag: "uni-input", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/Input.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     value = '',
     placeholder = '',

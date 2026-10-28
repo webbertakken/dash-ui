@@ -34,7 +34,9 @@
     "./tokens.css": "./src/tokens.css",
     "./tailwind.css": "./src/tailwind.css",
     "./tailwind-full.css": "./src/tailwind-full.css",
-    "./dashboard.css": "./src/dashboard.css"
+    "./dashboard.css": "./src/dashboard.css",
+    "./fonts.css": "./src/fonts.css",
+    "./fonts/*": "./src/fonts/*"
   },
   "files": [
     "src"

@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-arc-diagram" />
+<svelte:options customElement={{ tag: "uni-arc-diagram", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/ArcDiagram.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     nodes = undefined,
     links = undefined,

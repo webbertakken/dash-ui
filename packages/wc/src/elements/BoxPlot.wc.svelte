@@ -1,6 +1,7 @@
-<svelte:options customElement="uni-box-plot" />
+<svelte:options customElement={{ tag: "uni-box-plot", extend: withShadowStyles }} />
 <script>
   import Original from '@w5-ui/svelte/components/BoxPlot.svelte';
+  import { withShadowStyles } from '../styled.ts';
   let {
     series = [],
     yRange = undefined,
