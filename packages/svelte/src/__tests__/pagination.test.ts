@@ -7,7 +7,7 @@ afterEach(() => {
 })
 
 describe('Pagination current page', () => {
-  it('is painted brand-blue, not overridden by the idle surface utilities', () => {
+  it('wears the primary fill, not overridden by the idle surface utilities', () => {
     const { container } = render(Pagination, { props: { page: 1, total: 50, pageSize: 10 } })
     const current = container.querySelector('[aria-current="page"]') as HTMLElement
     const idle = Array.from(container.querySelectorAll('button')).find(
@@ -15,7 +15,7 @@ describe('Pagination current page', () => {
     )!
     const cls = (el: HTMLElement) => el.className.split(/\s+/)
     expect(cls(current)).toEqual(
-      expect.arrayContaining(['bg-brand-05', 'text-white', 'border-brand-05']),
+      expect.arrayContaining(['bg-primary-fill', 'text-primary-fill-fg', 'border-primary-fill']),
     )
     expect(cls(current)).not.toEqual(expect.arrayContaining(['bg-transparent']))
     expect(cls(current)).not.toContain('text-text-3')
