@@ -39,6 +39,11 @@ export function ContextMenu({
   const uid = useId()
   const menuId = `${uid}-ctxmenu`
   const [activeIdx, setActiveIdx] = useState(0)
+  const [wasOpen, setWasOpen] = useState(open)
+  if (open !== wasOpen) {
+    setWasOpen(open)
+    if (open) setActiveIdx(0)
+  }
   const menuRef = useRef<HTMLUListElement>(null)
   // Placed from the menu's MEASURED size once it is in the DOM. A layout
   // effect runs before the browser paints, so the menu is never seen at
@@ -67,7 +72,6 @@ export function ContextMenu({
 
   useEffect(() => {
     if (!open) return
-    setActiveIdx(0)
     requestAnimationFrame(() => menuRef.current?.focus())
     function handler(e: MouseEvent) {
       if (!menuRef.current?.contains(e.target as Node)) onClose()

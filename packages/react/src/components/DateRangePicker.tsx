@@ -64,7 +64,7 @@ export function DateRangePicker({
   placeholder = 'Select date range',
   disabled = false,
 }: DateRangePickerProps) {
-  const today = new Date()
+  const [today] = useState(() => new Date())
   const [open, setOpen] = useState(false)
   const [picking, setPicking] = useState<Date | null>(null)
   const [hoverDate, setHoverDate] = useState<Date | null>(null)

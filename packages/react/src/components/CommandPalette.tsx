@@ -27,6 +27,14 @@ export function CommandPalette({
 }: CommandPaletteProps) {
   const [query, setQuery] = useState('')
   const [activeIdx, setActiveIdx] = useState(0)
+  const [wasOpen, setWasOpen] = useState(open)
+  if (open !== wasOpen) {
+    setWasOpen(open)
+    if (open) {
+      setQuery('')
+      setActiveIdx(0)
+    }
+  }
   const inputRef = useRef<HTMLInputElement>(null)
   const listId = useId()
 
@@ -45,15 +53,9 @@ export function CommandPalette({
 
   useEffect(() => {
     if (!open) return
-    setQuery('')
-    setActiveIdx(0)
     const frame = requestAnimationFrame(() => inputRef.current?.focus())
     return () => cancelAnimationFrame(frame)
   }, [open])
-
-  useEffect(() => {
-    setActiveIdx(0)
-  }, [query])
 
   function commit(id: string) {
     onSelect(id)
@@ -117,7 +119,10 @@ export function CommandPalette({
             aria-activedescendant={filtered[activeIdx] ? `${listId}-${activeIdx}` : undefined}
             placeholder={placeholder}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value)
+              setActiveIdx(0)
+            }}
             onKeyDown={handleKey}
           />
           <span className="cp-kbd">Esc</span>

@@ -39,10 +39,7 @@ export function CountUp({
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
-    if (reduced) {
-      setCurrent(to)
-      return
-    }
+    if (reduced) return
     const t0 = performance.now()
     const range = to - from
     function tick(now: number) {
@@ -54,7 +51,7 @@ export function CountUp({
     return () => cancelAnimationFrame(rafRef.current)
   }, [from, to, duration, reduced])
 
-  const display = fmt(current, decimals, separator)
+  const display = fmt(reduced ? to : current, decimals, separator)
   const label = `${prefix}${fmt(to, decimals, separator)}${suffix}`
 
   return (

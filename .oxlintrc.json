@@ -50,7 +50,8 @@
     "jsx-a11y/prefer-tag-over-role": "off",
     "jsx-a11y/no-redundant-roles": "off",
     "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
-    "jsx-a11y/interactive-supports-focus": "off"
+    "jsx-a11y/interactive-supports-focus": "off",
+    "import/namespace": "off"
   },
   "overrides": [
     {
