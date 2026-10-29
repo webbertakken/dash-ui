@@ -1,5 +1,16 @@
 # @w5-ui/fleet
 
+## 0.2.4
+
+### Patch Changes
+
+- [#84](https://github.com/webbertakken/dash-ui/pull/84) [`29f6719`](https://github.com/webbertakken/dash-ui/commit/29f6719c5eb8a662e78a5e64ad62ce261466c902) Thanks [@webbertakken](https://github.com/webbertakken)! - The DrillDown close button shows a `Tooltip` ("Close") instead of a native `title`, and its
+  accessible name is now "Close panel" (was "close panel"), following the canonical overlay
+  terminology in `@w5-ui/svelte`.
+- Updated dependencies [[`29f6719`](https://github.com/webbertakken/dash-ui/commit/29f6719c5eb8a662e78a5e64ad62ce261466c902), [`2b84e65`](https://github.com/webbertakken/dash-ui/commit/2b84e65c79cea508445bf491261939c43961c299), [`2f429cd`](https://github.com/webbertakken/dash-ui/commit/2f429cda8cef757ac8e57998f6618be46c5044be), [`898b9ee`](https://github.com/webbertakken/dash-ui/commit/898b9ee5730f5259110a8754bbabe773c8505d1c)]:
+  - @w5-ui/svelte@0.9.0
+  - @w5-ui/tokens@0.9.0
+
 ## 0.2.3
 
 ### Patch Changes
