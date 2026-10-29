@@ -60,7 +60,7 @@ export function DatePicker({
   placeholder = 'Pick a date',
   disabled = false,
 }: DatePickerProps) {
-  const today = new Date()
+  const [today] = useState(() => new Date())
   const [open, setOpen] = useState(false)
   const [viewYear, setViewYear] = useState(() => value?.getFullYear() ?? today.getFullYear())
   const [viewMonth, setViewMonth] = useState(() => value?.getMonth() ?? today.getMonth())

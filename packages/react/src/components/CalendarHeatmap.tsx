@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 export interface CalendarDay {
   date: string
@@ -34,17 +34,22 @@ function toDateStr(d: Date): string {
 const W = LEFT + WEEKS * STEP
 const H = TOP + DAYS * STEP + 2
 
+function startOfToday(): Date {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return today
+}
+
 export function CalendarHeatmap({
   data,
   maxValue,
   ariaLabel = 'Calendar heatmap',
 }: CalendarHeatmapProps) {
+  const [today] = useState(startOfToday)
   const { cells, monthLabels } = useMemo(() => {
     const byDate = new Map(data.map((d) => [d.date, d.value]))
     const mx = maxValue ?? Math.max(1, ...data.map((d) => d.value))
 
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
     const start = new Date(today)
     start.setDate(start.getDate() - WEEKS * 7 + 1)
     start.setDate(start.getDate() - start.getDay())
@@ -71,7 +76,7 @@ export function CalendarHeatmap({
     }
 
     return { cells, monthLabels }
-  }, [data, maxValue])
+  }, [data, maxValue, today])
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%', overflowX: 'auto' }}>

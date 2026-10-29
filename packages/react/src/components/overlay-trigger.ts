@@ -1,11 +1,5 @@
 import { createOverlayTrigger, isFocusVisible, type OverlayTrigger } from '@w5-ui/tokens'
-import {
-  useEffect,
-  useRef,
-  useState,
-  type FocusEvent,
-  type PointerEvent as ReactPointerEvent,
-} from 'react'
+import { useEffect, useState, type FocusEvent, type PointerEvent as ReactPointerEvent } from 'react'
 
 export interface UseOverlayTriggerOptions {
   openDelayMs: number
@@ -20,16 +14,14 @@ export function useOverlayTrigger({
   longPressMs,
 }: UseOverlayTriggerOptions) {
   const [open, setOpen] = useState(false)
-  const ref = useRef<OverlayTrigger | null>(null)
-  if (!ref.current) {
-    ref.current = createOverlayTrigger({
+  const [trigger] = useState<OverlayTrigger>(() =>
+    createOverlayTrigger({
       openDelayMs,
       closeOnPress,
       longPressMs,
       onOpenChange: setOpen,
-    })
-  }
-  const trigger = ref.current
+    }),
+  )
 
   useEffect(() => {
     trigger.setOpenDelay(openDelayMs)

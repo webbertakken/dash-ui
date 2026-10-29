@@ -24,7 +24,6 @@ export function Donut({
   const total = segments.reduce((s, x) => s + x.value, 0) || 1
   const r = (size - 20) / 2
   const c = 2 * Math.PI * r
-  let cumulative = 0
   const segDesc = segments
     .map((s) => `${s.label} ${Math.round((s.value / total) * 100)}%`)
     .join(', ')
@@ -50,12 +49,12 @@ export function Donut({
           stroke={trackColor}
           strokeWidth={10}
         />
-        {segments.map((seg) => {
+        {segments.map((seg, i) => {
           const frac = seg.value / total
+          const cumulative = segments.slice(0, i).reduce((s, x) => s + x.value / total, 0)
           const dash = c
           const offset = c * (1 - cumulative - frac)
           const rotate = cumulative * 360
-          cumulative += frac
           return (
             <circle
               key={seg.label}
