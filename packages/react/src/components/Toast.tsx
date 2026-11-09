@@ -27,6 +27,10 @@ export const toast = {
 export function Toaster() {
   const [items, setItems] = useState<ToastItem[]>([])
 
+  function remove(id: string) {
+    setItems((prev) => prev.filter((t) => t.id !== id))
+  }
+
   useEffect(() => {
     const add = (item: ToastItem) => {
       setItems((prev) => [...prev, item])
@@ -37,10 +41,6 @@ export function Toaster() {
       listeners.delete(add)
     }
   }, [])
-
-  function remove(id: string) {
-    setItems((prev) => prev.filter((t) => t.id !== id))
-  }
 
   return (
     <div
