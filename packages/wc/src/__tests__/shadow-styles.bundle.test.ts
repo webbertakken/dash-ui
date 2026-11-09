@@ -1,5 +1,5 @@
 // The built bundle styles every uni-* shadow root with the compiled Tailwind
-// output of the @w5-ui/svelte sources (jsdom takes the <style> fallback).
+// output of the @w5-ui/svelte sources (adopted as constructable stylesheets).
 
 import { beforeAll, describe, expect, it } from 'vitest'
 import manifest from '../manifest.json'
@@ -24,10 +24,12 @@ function enclosingBlocks(css: string, index: number): string[] {
   return stack
 }
 
+function sheetText(sheets: readonly CSSStyleSheet[]): string {
+  return sheets.flatMap((sheet) => Array.from(sheet.cssRules, (rule) => rule.cssText)).join('\n')
+}
+
 function shadowCss(el: Element): string {
-  return Array.from(el.shadowRoot?.querySelectorAll('style[data-w5-wc]') ?? [])
-    .map((s) => s.textContent ?? '')
-    .join('\n')
+  return sheetText(el.shadowRoot?.adoptedStyleSheets ?? [])
 }
 
 describe('@w5-ui/wc shadow styles', () => {
@@ -55,10 +57,7 @@ describe('@w5-ui/wc shadow styles', () => {
 
   it('registers Tailwind @property rules on the document', () => {
     document.createElement('uni-button')
-    const doc = Array.from(document.head.querySelectorAll('style[data-w5-wc]'))
-      .map((s) => s.textContent)
-      .join('\n')
-    expect(doc).toContain('@property --tw-')
+    expect(sheetText(document.adoptedStyleSheets)).toContain('@property --tw-')
   })
 
   it('keeps a portalled popover panel inside the shadow root', async () => {
