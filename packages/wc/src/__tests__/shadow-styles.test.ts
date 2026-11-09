@@ -10,6 +10,7 @@ const CSS = `:host { --radius-md: var(--radius-md); }
 afterEach(() => {
   document.body.innerHTML = ''
   document.head.querySelectorAll('style[data-w5-wc]').forEach((s) => s.remove())
+  document.adoptedStyleSheets = []
   vi.restoreAllMocks()
 })
 
@@ -18,6 +19,13 @@ function host(): ShadowRoot {
   document.body.append(el)
   return el.attachShadow({ mode: 'open' })
 }
+
+function sheetText(sheets: readonly CSSStyleSheet[]): string {
+  return sheets.flatMap((sheet) => Array.from(sheet.cssRules, (rule) => rule.cssText)).join('\n')
+}
+
+/** No constructable stylesheet class: forces the `<style>` fallback. */
+const styleFallback = () => ({ document })
 
 describe('splitDocumentRules', () => {
   it('moves @property rules out of the shadow sheet', () => {
@@ -50,7 +58,7 @@ describe('dropSelfReferences', () => {
 describe('createShadowStyler (no adoptedStyleSheets: <style> fallback)', () => {
   it('adds the component styles to a shadow root', () => {
     const root = host()
-    createShadowStyler(CSS).adopt(root)
+    createShadowStyler(CSS, styleFallback()).adopt(root)
     const style = root.querySelector('style[data-w5-wc]')
     expect(style?.textContent).toContain('.inline-flex')
     expect(style?.textContent).not.toContain('@property')
@@ -59,14 +67,14 @@ describe('createShadowStyler (no adoptedStyleSheets: <style> fallback)', () => {
 
   it('is idempotent per shadow root', () => {
     const root = host()
-    const styler = createShadowStyler(CSS)
+    const styler = createShadowStyler(CSS, styleFallback())
     styler.adopt(root)
     styler.adopt(root)
     expect(root.querySelectorAll('style[data-w5-wc]')).toHaveLength(1)
   })
 
   it('registers @property rules on the document exactly once', () => {
-    const styler = createShadowStyler(CSS)
+    const styler = createShadowStyler(CSS, styleFallback())
     styler.adopt(host())
     styler.adopt(host())
     const docStyles = document.head.querySelectorAll('style[data-w5-wc]')
@@ -75,7 +83,7 @@ describe('createShadowStyler (no adoptedStyleSheets: <style> fallback)', () => {
   })
 
   it('skips the document sheet when there are no @property rules', () => {
-    createShadowStyler('.x { color: red }').adopt(host())
+    createShadowStyler('.x { color: red }', styleFallback()).adopt(host())
     expect(document.head.querySelector('style[data-w5-wc]')).toBeNull()
   })
 })
@@ -110,6 +118,15 @@ describe('createShadowStyler (constructable stylesheets)', () => {
     expect(doc.adoptedStyleSheets).toHaveLength(1)
     expect(replaced).toHaveLength(2)
   })
+
+  it('adopts real constructable sheets by default where the platform supports them', () => {
+    const root = host()
+    createShadowStyler(CSS).adopt(root)
+    expect(root.querySelector('style[data-w5-wc]')).toBeNull()
+    expect(sheetText(root.adoptedStyleSheets)).toContain('.inline-flex')
+    expect(sheetText(root.adoptedStyleSheets)).not.toContain('@property')
+    expect(sheetText(document.adoptedStyleSheets)).toContain('@property --tw-translate-x')
+  })
 })
 
 describe('withShadowStyles', () => {
@@ -124,7 +141,7 @@ describe('withShadowStyles', () => {
     const Styled = styler.extend(Base as unknown as new () => HTMLElement)
     customElements.define('x-shadow-styles-probe', Styled)
     const el = document.createElement('x-shadow-styles-probe')
-    expect(el.shadowRoot?.querySelector('style[data-w5-wc]')?.textContent).toContain('.probe')
+    expect(sheetText(el.shadowRoot?.adoptedStyleSheets ?? [])).toContain('.probe')
   })
 
   it('does nothing for elements without a shadow root', () => {
