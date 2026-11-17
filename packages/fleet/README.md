@@ -13,9 +13,9 @@ Part of [Dash UI](https://github.com/webbertakken/dash-ui), Webber's design syst
 yarn add @w5-ui/fleet @w5-ui/tokens @xyflow/svelte svelte
 ```
 
-`svelte` (^5) and `@xyflow/svelte` (^1) are peer dependencies. The components use `@w5-ui/tokens`
-CSS variables and Tailwind utility classes, so your app's Tailwind build must scan `@w5-ui/fleet`
-(and your own topology data file, which carries any per-group accent class strings).
+`svelte` (^5) and `@xyflow/svelte` (^1 or ^2) are peer dependencies. The components use
+`@w5-ui/tokens` CSS variables and Tailwind utility classes, so your app's Tailwind build must scan
+`@w5-ui/fleet` (and your own topology data file, which carries any per-group accent class strings).
 
 ## Concepts
 

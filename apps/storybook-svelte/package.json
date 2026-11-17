@@ -13,7 +13,7 @@
     "@w5-ui/storybook-meta": "workspace:*",
     "@w5-ui/svelte": "workspace:*",
     "@w5-ui/tokens": "workspace:*",
-    "@xyflow/svelte": "^1.5.2",
+    "@xyflow/svelte": "^2.0.0",
     "dashboard-svelte": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

@@ -110,7 +110,7 @@
     edges={topoEdges}
     {nodeTypes}
     fitView
-    fitViewOptions={{ padding: 0.08 }}
+    fitViewOptions={{ padding: '3.7%' }}
     proOptions={{ hideAttribution: true }}
     minZoom={0.25}
     maxZoom={2.5}
@@ -127,7 +127,9 @@
 </div>
 
 <style>
+  /* The motif owns the colour scheme, so xyflow's light-dark() defaults follow it, not the OS. */
   .topology-canvas :global(.svelte-flow) {
+    color-scheme: inherit;
     background-color: var(--bg-page);
     --xy-background-color: var(--bg-page);
     --xy-background-pattern-dots-color: var(--border-2);
