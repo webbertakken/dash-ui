@@ -1,5 +1,20 @@
 # @w5-ui/fleet
 
+## 0.3.0
+
+### Minor Changes
+
+- [#129](https://github.com/webbertakken/dash-ui/pull/129) [`b51d235`](https://github.com/webbertakken/dash-ui/commit/b51d235d2bb0f29a0f426bebc964c8f5838b6a84) Thanks [@renovate](https://github.com/apps/renovate)! - Support `@xyflow/svelte` 2 as a peer: the board keeps its fit-view framing (now a `3.7%` padding, which v2 no longer reads as a bare number) and its canvas follows the dashboard motif rather than the system colour scheme.
+
+### Patch Changes
+
+- [#84](https://github.com/webbertakken/dash-ui/pull/84) [`29f6719`](https://github.com/webbertakken/dash-ui/commit/29f6719c5eb8a662e78a5e64ad62ce261466c902) Thanks [@webbertakken](https://github.com/webbertakken)! - The DrillDown close button shows a `Tooltip` ("Close") instead of a native `title`, and its
+  accessible name is now "Close panel" (was "close panel"), following the canonical overlay
+  terminology in `@w5-ui/svelte`.
+- Updated dependencies [[`29f6719`](https://github.com/webbertakken/dash-ui/commit/29f6719c5eb8a662e78a5e64ad62ce261466c902), [`2b84e65`](https://github.com/webbertakken/dash-ui/commit/2b84e65c79cea508445bf491261939c43961c299), [`2f429cd`](https://github.com/webbertakken/dash-ui/commit/2f429cda8cef757ac8e57998f6618be46c5044be), [`898b9ee`](https://github.com/webbertakken/dash-ui/commit/898b9ee5730f5259110a8754bbabe773c8505d1c)]:
+  - @w5-ui/svelte@0.9.0
+  - @w5-ui/tokens@0.9.0
+
 ## 0.2.3
 
 ### Patch Changes

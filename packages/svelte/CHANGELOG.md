@@ -1,5 +1,88 @@
 # @w5-ui/svelte
 
+## 0.9.0
+
+### Minor Changes
+
+- [#84](https://github.com/webbertakken/dash-ui/pull/84) [`29f6719`](https://github.com/webbertakken/dash-ui/commit/29f6719c5eb8a662e78a5e64ad62ce261466c902) Thanks [@webbertakken](https://github.com/webbertakken)! - feat(overlays): one canonical Tooltip / HoverCard / Popover terminology
+  
+  Three surfaces float next to a trigger, each with one job and one name:
+  
+  - **Tooltip**: the name of a control. Opens after **1 s** of hover, **instantly** on keyboard focus
+    (`:focus-visible`) and on a 500 ms touch long-press. Closes on pointer leave, blur, `Escape` or
+    pressing the control.
+  - **HoverCard**: rich, non-essential content. Opens **instantly** on hover and keyboard focus.
+  - **Popover**: click-opened, interactive. Unchanged.
+  
+  Tooltip and HoverCard now meet WCAG 1.4.13 (dismissible with `Escape`, hoverable, persistent),
+  fade in 150 ms (none under reduced motion), cause no layout shift and use motif tokens. React,
+  Svelte and the Web Components drive one shared controller, so all three behave identically.
+  
+  **Breaking changes (pre-1.0, so a minor):**
+  
+  - `Tooltip` waits 1 s on hover (it was instant via CSS `:hover`). A `delay` prop overrides it.
+  - `Tooltip` no longer wires `aria-describedby`: the tooltip is the control's name. An icon-only
+    control inside it with no name of its own is given `aria-label={label}`.
+  - `HoverCard` opens instantly (`delay` default `300` → `0`). The card no longer has
+    `role="tooltip"`, is always rendered (visibility toggles) and exposes `data-state`.
+  - `Button` / `IconButton` no longer take `title` (React omits it from the props type; Svelte
+    removes the prop), and `IconButton` no longer derives `aria-label` from `title`. Name an icon
+    button with `aria-label` or wrap it in `<Tooltip label>`.
+  - Built-in controls that used a native `title` (Topbar and TopbarActions icons, Drawer / Modal
+    close, Banner / Alert dismiss, NotificationPanel "Mark as read", ColorPicker swatches) now show a
+    `Tooltip`; the Svelte Topbar site switcher shows its status in a `HoverCard`.
+  
+  Migration:
+  
+  ```tsx
+  // before
+  <IconButton title="Zoom in"><PlusIcon /></IconButton>
+  // after
+  <Tooltip label="Zoom in"><IconButton><PlusIcon /></IconButton></Tooltip>
+  ```
+  
+  **New:**
+  
+  - `@w5-ui/tokens`: `overlay` timing tokens (`tooltipOpenDelayMs`, `hoverCardOpenDelayMs`,
+    `closeGraceMs`, `longPressMs`, `touchDismissMs`, `fadeMs`) and the framework-agnostic
+    `createOverlayTrigger`, `isFocusVisible` and `ensureAccessibleName`.
+  - `HoverCard` takes `heading` (bold) and `description`; `content` stays for rich extras. In Svelte
+    the trigger may be the default slot, so `<uni-hover-card heading description>` now renders.
+  
+  **Fixed:**
+  
+  - The React tooltip bubble was transparent (`var(--bg-2)` does not exist; now `--depthBg-2`).
+  - The React hover card was hard-coded dark in the light motif.
+
+### Patch Changes
+
+- [#116](https://github.com/webbertakken/dash-ui/pull/116) [`2f429cd`](https://github.com/webbertakken/dash-ui/commit/2f429cda8cef757ac8e57998f6618be46c5044be) Thanks [@webbertakken](https://github.com/webbertakken)! - Typecheck cleanly in consumers without `allowImportingTsExtensions`: relative imports drop their `.ts` suffix, and `Topbar` no longer imports `AppLogoKey` twice.
+
+- [#85](https://github.com/webbertakken/dash-ui/pull/85) [`898b9ee`](https://github.com/webbertakken/dash-ui/commit/898b9ee5730f5259110a8754bbabe773c8505d1c) Thanks [@webbertakken](https://github.com/webbertakken)! - fix(wc): style every custom element inside its shadow root
+  
+  `uni-*` elements rendered with browser-default styling: the Svelte components are styled with
+  Tailwind utilities, and page stylesheets never reach a shadow root. The bundle now compiles the
+  components' CSS (Tailwind over the `@w5-ui/svelte` sources, with the dashboard chrome in
+  `@layer base`) and adopts it into every shadow root as one shared constructable stylesheet, with a
+  `<style>` fallback. Tailwind's `@property` rules are registered on the document once, and the
+  cyclic `--x: var(--x)` theme bridge variables are dropped so page tokens (radius, fonts, easing)
+  inherit into the elements. The bundle grows by about 30 kB gzipped.
+  
+  Also fixed, in `@w5-ui/svelte` and so in `uni-popover`:
+  
+  - `Popover` opened its panel at the top-left of the viewport: the default trigger lacked
+    `aria-haspopup="dialog"`, which is how the panel finds its anchor. The trigger now also exposes
+    `aria-expanded`.
+  - Inside a shadow root, pressing within the popover panel closed it (the document sees the event
+    retargeted to the host); outside-click detection now uses `composedPath()`.
+  - `Pagination` painted the current page white on a transparent background (its idle
+    `bg-transparent` won over `bg-brand-05`), invisible in the light motif. Idle and current styles are
+    now exclusive.
+  - The `portal` action keeps a node inside its enclosing shadow root by default, so portalled
+    panels keep the element's styles. Outside shadow DOM it still portals to `document.body`.
+- Updated dependencies [[`29f6719`](https://github.com/webbertakken/dash-ui/commit/29f6719c5eb8a662e78a5e64ad62ce261466c902), [`2b84e65`](https://github.com/webbertakken/dash-ui/commit/2b84e65c79cea508445bf491261939c43961c299)]:
+  - @w5-ui/tokens@0.9.0
+
 ## 0.8.1
 
 ### Patch Changes
