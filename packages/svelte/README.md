@@ -82,6 +82,20 @@ row to wrap unevenly.
 `@w5-ui/svelte/styles.css` re-exports `@w5-ui/tokens/dashboard.css`, so importing it once is enough
 for tokens, the `.app` / `.workspace` / `.grid` / `.card` classes, and component styles.
 
+### Importing only what a page draws
+
+The barrel loads every component. A page that wants only what it draws imports each module by its
+subpath:
+
+```svelte
+<script lang="ts">
+  import Button from '@w5-ui/svelte/components/Button.svelte'
+  import type { ContextMenuEntry } from '@w5-ui/svelte/components/ContextMenu.svelte'
+  import PlusIcon from '@w5-ui/svelte/icons/PlusIcon.svelte'
+  import { portal } from '@w5-ui/svelte/actions/portal'
+</script>
+```
+
 ## Themes
 
 Two motifs ship in tokens:

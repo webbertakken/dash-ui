@@ -38,7 +38,9 @@
       "default": "./src/lib/index.ts"
     },
     "./styles.css": "./src/lib/styles.css",
-    "./components/*.svelte": "./src/lib/components/*.svelte"
+    "./components/*.svelte": "./src/lib/components/*.svelte",
+    "./icons/*.svelte": "./src/lib/icons/*.svelte",
+    "./actions/*": "./src/lib/actions/*.ts"
   },
   "peerDependencies": {
     "svelte": "^5"
